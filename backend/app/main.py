@@ -6,7 +6,7 @@ import os
 
 app = FastAPI(title="Statistical Project API")
 
-# CORS - permitir local dev do frontend (ajuste origem em produção)
+#cors - permitir local dev do front
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:8000"],

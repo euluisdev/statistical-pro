@@ -6,7 +6,7 @@ BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "gro
 # garante que base exista
 os.makedirs(BASE_DIR, exist_ok=True)
 
-# nome aceitável: letras, números, underscore e hífen (ajuste se quiser)
+# nomes === letras, números, underscore e hífen
 VALID_NAME = re.compile(r"^[A-Za-z0-9_\-]+$")
 
 def list_groups():
@@ -36,7 +36,7 @@ def create_group(name: str):
     if os.path.exists(path):
         return False, f"Grupo '{safe}' já existe."
     os.makedirs(os.path.join(path, "pieces"), exist_ok=True)
-    # cria um arquivo info.json básico (opcional)
+    #this create um arquivo info.json básico
     info_path = os.path.join(path, "info.json")
     try:
         with open(info_path, "w", encoding="utf-8") as f:

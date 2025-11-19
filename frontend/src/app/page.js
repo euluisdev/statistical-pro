@@ -1,66 +1,88 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+
+export default function GroupsPage() {
+  const API = process.env.NEXT_PUBLIC_API_URL;
+
+  const [groups, setGroups] = useState([]);
+  const [newGroup, setNewGroup] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState(null);
+
+  //list groups
+  const loadGroups = async () => {
+    try {
+      const res = await fetch(`${API}/groups`);
+      const data = await res.json();
+      setGroups(data);
+    } catch (err) {
+      setMsg("Erro ao carregar grupos.");
+    }
+  };
+
+  //load init
+  useEffect(() => {
+    loadGroups();
+  }, []);
+
+  //create group
+  const createGroup = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMsg(null);
+
+    try {
+      const res = await fetch(`${API}/groups`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newGroup }),
+      });
+
+      if (res.status === 201) {
+        const data = await res.json();
+        setMsg(`Grupo "${data.created}" criado com sucesso!`);
+        setNewGroup("");
+        loadGroups(); // reload
+      } else {
+        const err = await res.json();
+        setMsg(`Erro: ${err.detail}`);
+      }
+    } catch (error) {
+      setMsg("Erro ao criar grupo.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className = "container">
+      <h1>Gerenciar Grupos</h1>
+
+      <form onSubmit={createGroup}>
+        <input
+          type="text"
+          placeholder="Nome do grupo"
+          value={newGroup}
+          onChange={(e) => setNewGroup(e.target.value)}
+          required
         />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        <button type="submit" disabled={loading}>
+          {loading ? "Criando..." : "Criar Grupo"}
+        </button>
+      </form>
+
+      {/*msg */}
+      {msg && <p>{msg}</p>}
+
+      <h2>Grupos existentes</h2>
+      <ul>
+        {groups.map((group) => (
+          <li key={group}>
+            {group}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
