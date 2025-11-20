@@ -9,6 +9,7 @@ export default function GroupsPage() {
   const [newGroup, setNewGroup] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState("");
 
   //list groups
   const loadGroups = async () => {
@@ -75,14 +76,24 @@ export default function GroupsPage() {
       {/*msg */}
       {msg && <p>{msg}</p>}
 
-      <h2>Grupos existentes</h2>
-      <ul>
+      <h1>Cadastro de Peças</h1>
+
+      <label>Escolha um grupo:</label>
+      <select
+        value={selectedGroup}
+        onChange={(e) => setSelectedGroup(e.target.value)}
+      >
+        <option value="">Selecione...</option>
+
         {groups.map((group) => (
-          <li key={group}>
+          <option key={group} value={group}>
             {group}
-          </li>
+          </option>
         ))}
-      </ul>
+      </select>
+      {selectedGroup && (
+        <p>Conjunto selecionado: {selectedGroup}</p>
+      )}
     </div>
   );
 }
