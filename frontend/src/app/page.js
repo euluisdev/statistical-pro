@@ -10,8 +10,12 @@ export default function GroupsPage() {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
   const [selectedGroup, setSelectedGroup] = useState("");
+  const [partNumber, setPartNumber] = useState("");
+  const [partName, setPartName] = useState("");
+  const [model, setModel] = useState("");
 
-  //list groups
+  const [pieces, setPieces] = useState([]);
+
   const loadGroups = async () => {
     try {
       const res = await fetch(`${API}/groups`);
@@ -22,12 +26,26 @@ export default function GroupsPage() {
     }
   };
 
-  //load init
   useEffect(() => {
     loadGroups();
   }, []);
 
-  //create group
+  const loadPieces = async (group) => {
+    try {
+      const res = await fetch(`${API}/pieces/${group}`);
+      const data = await res.json();
+      setPieces(data);
+    } catch (err) {
+      setPieces([]);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedGroup) {
+      loadPieces(selectedGroup);
+    }
+  }, [selectedGroup]);
+
   const createGroup = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -44,7 +62,7 @@ export default function GroupsPage() {
         const data = await res.json();
         setMsg(`Grupo "${data.created}" criado com sucesso!`);
         setNewGroup("");
-        loadGroups(); // reload
+        loadGroups();
       } else {
         const err = await res.json();
         setMsg(`Erro: ${err.detail}`);
@@ -56,8 +74,49 @@ export default function GroupsPage() {
     }
   };
 
+  const createPiece = async (e) => {
+    e.preventDefault();
+    setMsg(null);
+
+    if (!selectedGroup) {
+      setMsg("Selecione um grupo primeiro!");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/pieces`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          group: selectedGroup,
+          part_number: partNumber,
+          part_name: partName,
+          model: model,
+        }),
+      });
+
+      if (res.status === 201) {
+        const data = await res.json();
+        setMsg(`Peça "${data.created}" criada com sucesso!`);
+
+        //clear inputs
+        setPartNumber("");
+        setPartName("");
+        setModel("");
+
+        // update list
+        loadPieces(selectedGroup);
+      } else {
+        const err = await res.json();
+        setMsg(`Erro ao criar peça: ${err.detail}`);
+      }
+    } catch (error) {
+      setMsg("Erro ao criar peça.");
+    }
+  };
+
   return (
-    <div className = "container">
+    <div className="container">
       <h1>Gerenciar Grupos</h1>
 
       <form onSubmit={createGroup}>
@@ -73,7 +132,6 @@ export default function GroupsPage() {
         </button>
       </form>
 
-      {/*msg */}
       {msg && <p>{msg}</p>}
 
       <h1>Cadastro de Peças</h1>
@@ -91,8 +149,53 @@ export default function GroupsPage() {
           </option>
         ))}
       </select>
+
       {selectedGroup && (
-        <p>Conjunto selecionado: {selectedGroup}</p>
+        <>
+          <p>Grupo selecionado: {selectedGroup}</p>
+
+          {/* form part */}
+          <h3>Cadastrar nova peça</h3>
+
+          <form onSubmit={createPiece}>
+            <input
+              type="text"
+              placeholder="Part Number"
+              value={partNumber}
+              onChange={(e) => setPartNumber(e.target.value)}
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Nome da peça"
+              value={partName}
+              onChange={(e) => setPartName(e.target.value)}
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Modelo"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              required
+            />
+
+            <button type="submit">Criar Peça</button>
+          </form>
+
+          {/*list */}
+          <h3>Peças cadastradas</h3>
+
+          {pieces.length === 0 && <p>Nenhuma peça cadastrada neste grupo.</p>}
+
+          <ul>
+            {pieces.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   );
