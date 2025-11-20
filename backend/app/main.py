@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from .routes.groups import router as groups_router
 from .routes.pieces import router as pieces_router
 from fastapi.middleware.cors import CORSMiddleware
-import os
+import os 
 
 app = FastAPI(title="Statistical Project API")
 
