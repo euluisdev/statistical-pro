@@ -18,6 +18,7 @@ export default function GroupsPage() {
 
   const [pieces, setPieces] = useState([]);
   const [selectedPiece, setSelectedPiece] = useState("");
+  const [txtFiles, setTxtFiles] = useState([]); 
 
   const loadGroups = async () => {
     try {
@@ -130,6 +131,65 @@ export default function GroupsPage() {
     }
   };
 
+  const deleteGroup = async () => {
+    if (!selectedGroup) return;
+
+    try {
+      const res = await fetch(`${API}/groups/${selectedGroup}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMsg(`Grupo "${selectedGroup}" apagado!`);
+        setSelectedGroup("");
+        setPieces([]);
+        loadGroups();
+      } else {
+        setMsg(`Erro: ${data.detail}`);
+      }
+    } catch {
+      setMsg("Erro ao apagar grupo.");
+    }
+  };
+
+  //txtfiles upload
+  const uploadTxt = async () => {
+  if (!selectedGroup || !selectedPiece || txtFiles.length === 0) {
+    setMsg("Selecione grupo, peça e arquivos TXT.");
+    return;
+  }
+
+  const form = new FormData();
+  form.append("group", selectedGroup);
+  form.append("piece", selectedPiece);
+
+  for (let f of txtFiles) {
+    form.append("files", f);
+  }
+
+  try {
+    const res = await fetch(`${API}/pieces/upload_txt`, {
+      method: "POST",
+      body: form, // <-- sem headers aqui!
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setMsg(`Erro: ${data.detail || "Falha ao enviar TXT"}`);
+      return;
+    }
+
+    setMsg(`TXT enviado com sucesso! (${data.saved.length} arquivos)`);
+    setTxtFiles([]);
+  } catch (err) {
+    setMsg("Erro ao enviar TXT.");
+  }
+};
+
+
   return (
     <div className="page-container">
       <h1 className="title">Gerenciamento de Grupos e Peças</h1>
@@ -138,6 +198,7 @@ export default function GroupsPage() {
 
       <div className="grid unified-card">
 
+        {/* create group*/}
         <div className="card">
           <h2>Novo Grupo</h2>
 
@@ -157,6 +218,7 @@ export default function GroupsPage() {
           </form>
         </div>
 
+        {/*select/delet group  */}
         <div className="card">
           <h2>Selecionar Grupo</h2>
 
@@ -176,8 +238,17 @@ export default function GroupsPage() {
               Grupo selecionado: <b>{selectedGroup}</b>
             </p>
           )}
+
+          <button
+            className="btn-danger"
+            onClick={deleteGroup}
+            disabled={!selectedGroup}
+          >
+            Apagar Grupo
+          </button>
         </div>
 
+        {/*create part */}
         <div className="card">
           <h2>Cadastrar Peça</h2>
 
@@ -213,6 +284,7 @@ export default function GroupsPage() {
           </form>
         </div>
 
+        {/*list part */}
         <div className="card">
           <h2>Peças do Grupo</h2>
 
@@ -238,6 +310,28 @@ export default function GroupsPage() {
             Apagar Peça
           </button>
         </div>
+
+        {/* upload txt */}
+        <div className="card">
+          <h2>Importar TXT do PCDMIS</h2>
+          
+          <input
+            type="file"
+            className="input"
+            multiple
+            accept=".txt"
+            onChange={(e) => setTxtFiles([...e.target.files])}
+          />
+
+          <button
+           className="btn"
+           onClick={uploadTxt}
+           disabled={!selectedGroup || !selectedPiece || txtFiles.length === 0}
+          >
+            Enviar TXT
+          </button>
+        </div>
+
 
       </div>
     </div>

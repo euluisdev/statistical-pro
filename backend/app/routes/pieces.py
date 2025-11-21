@@ -1,8 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pydantic import BaseModel
 from typing import List
 
-from app.services.pieces_service import list_pieces, create_piece, delete_piece
+import os 
+import shutil 
+
+from app.services.pieces_service import list_pieces, create_piece, delete_piece, ensure_piece_dirs, sanitize_piece_name
 
 router = APIRouter(prefix="/pieces", tags=["pieces"])
 
@@ -43,3 +46,33 @@ def delete_piece_route(group: str, part_number: str):
 
     return {"deleted": info}
 
+@router.post("/upload_txt")
+async def upload_txt(
+    group: str = Form(...),
+    piece: str = Form(...),
+    files: list[UploadFile] = File(...)
+):
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+
+    # garante pastas
+    txt_path = ensure_piece_dirs(group_safe, piece_safe)
+
+    saved_files = []
+
+    for file in files:
+        if not file.filename.lower().endswith(".txt"):
+            raise HTTPException(400, f"Arquivo inválido: {file.filename}")
+
+        out_path = os.path.join(txt_path, file.filename)
+
+        with open(out_path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+
+        saved_files.append(file.filename)
+
+    return {
+        "status": "ok",
+        "saved": saved_files,
+        "path": txt_path
+    }

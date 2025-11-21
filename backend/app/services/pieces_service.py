@@ -92,3 +92,15 @@ def delete_piece(group: str, part_number: str):
 
     return True, safe_number
 
+
+def ensure_piece_dirs(group: str, piece: str):
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+
+    txt_dir = os.path.join(
+        BASE_DIR, group_safe, "pieces", piece_safe, "txt"
+    )
+    os.makedirs(txt_dir, exist_ok=True)
+
+    return txt_dir
+
