@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List
-from app.services.groups_service import list_groups, create_group
+from app.services.groups_service import list_groups, create_group, delete_group
 
 router = APIRouter(prefix="/groups", tags=["groups"])
 
@@ -21,3 +21,10 @@ def post_group(req: CreateGroupReq):
     if not ok:
         raise HTTPException(status_code=409, detail=info)
     return {"created": info}
+
+@router.delete("/{group_name}")
+def remove_group(group_name: str):
+    ok, info = delete_group(group_name)
+    if not ok:
+        raise HTTPException(status_code=404, detail=info)
+    return {"deleted": info}

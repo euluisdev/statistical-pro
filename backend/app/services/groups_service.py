@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "groups")
 
@@ -45,3 +46,19 @@ def create_group(name: str):
     except Exception:
         pass
     return True, safe
+
+def delete_group(group: str):
+    """Apaga completamente um grupo e todas as peças dele."""
+
+    safe_group = sanitize_group_name(group)  # usa o sanitizador correto!
+    group_path = os.path.join(BASE_DIR, safe_group)
+
+    if not os.path.exists(group_path):
+        return False, f"Grupo '{safe_group}' não existe"
+
+    try:
+        shutil.rmtree(group_path)
+    except Exception as e:
+        return False, f"Erro ao apagar grupo: {e}"
+
+    return True, safe_group
