@@ -1,11 +1,20 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pydantic import BaseModel
 from typing import List
+from app.services.pieces_service import(
+    list_pieces, 
+    create_piece, 
+    delete_piece, 
+    ensure_piece_dirs, 
+    sanitize_piece_name, 
+    list_txt_files, 
+    delete_txt_file
+    ) 
 
 import os 
 import shutil 
 
-from app.services.pieces_service import list_pieces, create_piece, delete_piece, ensure_piece_dirs, sanitize_piece_name
+
 
 router = APIRouter(prefix="/pieces", tags=["pieces"])
 
@@ -76,3 +85,22 @@ async def upload_txt(
         "saved": saved_files,
         "path": txt_path
     }
+    
+
+@router.get("/{group}/{piece}/txt")
+def get_txt_files(group: str, piece: str):
+    try:
+        files = list_txt_files(group, piece)
+        return files
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.delete("/{group}/{piece}/txt/{filename}")
+def delete_txt(group: str, piece: str, filename: str):
+    ok, info = delete_txt_file(group, piece, filename)
+
+    if not ok:
+        raise HTTPException(status_code=404, detail=info)
+
+    return {"deleted": info}

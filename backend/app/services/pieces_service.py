@@ -49,7 +49,7 @@ def create_piece(group: str, part_number: str, part_name: str, model: str):
     if os.path.exists(piece_path):
         return False, f"A peça '{safe_number}' já existe no grupo '{safe_group}'"
 
-    # cria pastas padrões
+    #create folder default
     os.makedirs(piece_path, exist_ok=True)
     os.makedirs(os.path.join(piece_path, "historico"), exist_ok=True)
     os.makedirs(os.path.join(piece_path, "graficos"), exist_ok=True)
@@ -103,4 +103,45 @@ def ensure_piece_dirs(group: str, piece: str):
     os.makedirs(txt_dir, exist_ok=True)
 
     return txt_dir
+
+
+def list_txt_files(group: str, piece: str):
+    """Retorna lista de arquivos TXT dentro da peça."""
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+
+    txt_dir = os.path.join(
+        BASE_DIR, group_safe, "pieces", piece_safe, "txt"
+    )
+
+    if not os.path.isdir(txt_dir):
+        return []
+
+    return sorted([
+        f for f in os.listdir(txt_dir)
+        if f.lower().endswith(".txt") and os.path.isfile(os.path.join(txt_dir, f))
+    ])
+
+
+def delete_txt_file(group: str, piece: str, filename: str):
+    """Deleta um arquivo TXT dentro da peça."""
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+
+    #protege contra path traversal
+    filename_safe = os.path.basename(filename)
+
+    txt_path = os.path.join(
+        BASE_DIR, group_safe, "pieces", piece_safe, "txt", filename_safe
+    )
+
+    if not os.path.exists(txt_path):
+        return False, f"Arquivo '{filename_safe}' não existe"
+
+    try:
+        os.remove(txt_path)
+    except Exception as e:
+        return False, f"Erro ao apagar TXT: {e}"
+
+    return True, filename_safe
 

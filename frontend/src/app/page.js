@@ -19,6 +19,8 @@ export default function GroupsPage() {
   const [pieces, setPieces] = useState([]);
   const [selectedPiece, setSelectedPiece] = useState("");
   const [txtFiles, setTxtFiles] = useState([]); 
+  const [txtList, setTxtList] = useState([]);
+
 
   const loadGroups = async () => {
     try {
@@ -75,6 +77,13 @@ export default function GroupsPage() {
       setLoading(false);
     }
   };
+
+  
+
+
+
+
+
 
   const createPiece = async (e) => {
     e.preventDefault();
@@ -184,10 +193,74 @@ export default function GroupsPage() {
 
     setMsg(`TXT enviado com sucesso! (${data.saved.length} arquivos)`);
     setTxtFiles([]);
+    loadTxtList();      
   } catch (err) {
     setMsg("Erro ao enviar TXT.");
   }
 };
+
+const loadTxtList = async () => {
+  if (!selectedGroup || !selectedPiece) {
+    setTxtList([]);
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/pieces/${selectedGroup}/${selectedPiece}/txt`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      setMsg(`Erro ao listar TXT: ${data.detail}`);
+      setTxtList([]);
+      return;
+    }
+
+    setTxtList(data);
+  } catch {
+    setMsg("Erro ao carregar arquivos TXT.");
+    setTxtList([]);
+  }
+};
+
+
+
+  // carregar lista de TXT sempre que a peça mudar
+  useEffect(() => {
+    if (selectedPiece && selectedGroup) {
+      loadTxtList();
+    } else {
+      setTxtList([]);
+    }
+  }, [selectedPiece, selectedGroup]);
+
+
+  // ---- APAGAR TXT ----
+  const deleteTxt = async (filename) => {
+    if (!selectedGroup || !selectedPiece) return;
+
+    try {
+      const res = await fetch(
+        `${API}/pieces/${encodeURIComponent(selectedGroup)}/${encodeURIComponent(
+          selectedPiece
+        )}/txt/${encodeURIComponent(filename)}`,
+        { method: "DELETE" }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMsg(`Erro ao apagar TXT: ${data.detail}`);
+        return;
+      }
+
+      setMsg(`Arquivo '${filename}' removido!`);
+      loadTxtList();
+    } catch {
+      setMsg("Erro ao apagar TXT.");
+    }
+  };
+
+
 
 
   return (
@@ -331,6 +404,37 @@ export default function GroupsPage() {
             Enviar TXT
           </button>
         </div>
+
+        {/*list txt*/}
+<div className="card">
+  <h2>Arquivos TXT Importados</h2>
+
+  {!selectedPiece && (
+    <p className="selected-text">Selecione uma peça para ver os TXT.</p>
+  )}
+
+  {selectedPiece && txtList.length === 0 && (
+    <p className="selected-text">Nenhum TXT importado ainda.</p>
+  )}
+
+  {txtList.length > 0 && (
+    <ul className="txt-list">
+      {txtList.map((file) => (
+        <li key={file} className="txt-item">
+          <span>{file}</span>
+
+          <button
+            className="btn-danger small"
+            onClick={() => deleteTxt(file)}
+          >
+            Apagar
+          </button>
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
 
 
       </div>
