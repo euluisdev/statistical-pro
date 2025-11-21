@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import shutil
 
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "groups")
 
@@ -16,15 +17,23 @@ def sanitize_piece_name(name: str) -> str:
     return name
 
 def list_pieces(group: str):
-    """Lista pastas de peças dentro do grupo selecionado."""
+    """Lista peças com suas informações."""
     group_path = os.path.join(BASE_DIR, group, "pieces")
     if not os.path.isdir(group_path):
         return []
 
-    return sorted([
-        p for p in os.listdir(group_path)
-        if os.path.isdir(os.path.join(group_path, p))
-    ])
+    pieces = []
+
+    for folder in os.listdir(group_path):
+        piece_path = os.path.join(group_path, folder)
+        if os.path.isdir(piece_path):
+            info_file = os.path.join(piece_path, "info.json")
+            if os.path.exists(info_file):
+                with open(info_file, "r", encoding="utf-8") as f:
+                    pieces.append(json.load(f))
+
+    return pieces
+
 
 def create_piece(group: str, part_number: str, part_name: str, model: str):
     """Cria uma peça dentro do grupo escolhido."""
@@ -63,3 +72,23 @@ def create_piece(group: str, part_number: str, part_name: str, model: str):
         )
 
     return True, safe_number
+
+
+def delete_piece(group: str, part_number: str):
+    """Apaga uma peça (a pasta inteira dela)."""
+
+    safe_group = sanitize_piece_name(group)
+    safe_number = sanitize_piece_name(part_number)
+
+    piece_path = os.path.join(BASE_DIR, safe_group, "pieces", safe_number)
+
+    if not os.path.exists(piece_path):
+        return False, f"Peça '{safe_number}' não encontrada no grupo '{safe_group}'"
+
+    try:
+        shutil.rmtree(piece_path)
+    except Exception as e:
+        return False, f"Erro ao apagar peça: {e}"
+
+    return True, safe_number
+

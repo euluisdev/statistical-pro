@@ -13,8 +13,8 @@ export default function GroupsPage() {
   const [partNumber, setPartNumber] = useState("");
   const [partName, setPartName] = useState("");
   const [model, setModel] = useState("");
-
   const [pieces, setPieces] = useState([]);
+  const [selectedPiece, setSelectedPiece] = useState("");
 
   const loadGroups = async () => {
     try {
@@ -115,6 +115,28 @@ export default function GroupsPage() {
     }
   };
 
+    const deletePiece = async () => {
+    if (!selectedGroup || !selectedPiece) return;
+
+    try {
+      const res = await fetch(
+        `${API}/pieces/${selectedGroup}/${selectedPiece}`,
+        { method: "DELETE" }
+      );
+
+      if (res.ok) {
+        setMsg(`Peça ${selectedPiece} apagada!`);
+        setSelectedPiece("");
+        loadPieces(selectedGroup);
+      } else {
+        const err = await res.json();
+        setMsg(`Erro: ${err.detail}`);
+      }
+    } catch (err) {
+      setMsg("Erro ao apagar peça.");
+    }
+  };
+
   return (
     <div className="container">
       <h1>Gerenciar Grupos</h1>
@@ -186,15 +208,30 @@ export default function GroupsPage() {
           </form>
 
           {/*list */}
-          <h3>Peças cadastradas</h3>
+      {selectedGroup && (
+        <>
+          <h3>Peças do grupo</h3>
 
-          {pieces.length === 0 && <p>Nenhuma peça cadastrada neste grupo.</p>}
+          <select
+            value={selectedPiece}
+            onChange={(e) => setSelectedPiece(e.target.value)}
+          >
+            <option value="">Selecione uma peça...</option>
 
-          <ul>
             {pieces.map((p) => (
-              <li key={p}>{p}</li>
+              <option key={p.part_number} value={p.part_number}>
+                {p.part_number}
+              </option>
             ))}
-          </ul>
+          </select>
+
+          {selectedPiece && (
+            <button onClick={deletePiece}>
+              Apagar
+            </button>
+          )}
+        </>
+      )}
         </>
       )}
     </div>
