@@ -20,6 +20,7 @@ export default function GroupsPage() {
   const [selectedPiece, setSelectedPiece] = useState("");
   const [txtFiles, setTxtFiles] = useState([]); 
   const [txtList, setTxtList] = useState([]);
+  const [selected, setSelected] = useState([]);
 
 
   const loadGroups = async () => {
@@ -260,6 +261,22 @@ const loadTxtList = async () => {
     }
   };
 
+function toggleSelect(file) {
+  setSelected(prev =>
+    prev.includes(file)
+      ? prev.filter(item => item !== file)
+      : [...prev, file]
+  );
+}
+
+async function deleteSelected() {
+  for (const file of selected) {
+    await deleteTxt(file); 
+  }
+  setTxtList(prev => prev.filter(item => !selected.includes(item)));
+  setSelected([]);
+}
+
 
 
 
@@ -406,36 +423,44 @@ const loadTxtList = async () => {
         </div>
 
         {/*list txt*/}
-<div className="card">
-  <h2>Arquivos TXT Importados</h2>
+        <div className="card">
+          <h2>Arquivos TXT Importados</h2>
 
-  {!selectedPiece && (
-    <p className="selected-text">Selecione uma peça para ver os TXT.</p>
-  )}
+          {!selectedPiece && (
+            <p className="selected-text">Selecione uma peça para ver os TXT.</p>
+          )}
 
-  {selectedPiece && txtList.length === 0 && (
-    <p className="selected-text">Nenhum TXT importado ainda.</p>
-  )}
+          {selectedPiece && txtList.length === 0 && (
+            <p className="selected-text">Nenhum TXT importado ainda.</p>
+          )}
 
-  {txtList.length > 0 && (
-    <ul className="txt-list">
-      {txtList.map((file) => (
-        <li key={file} className="txt-item">
-          <span>{file}</span>
-
-          <button
-            className="btn-danger small"
-            onClick={() => deleteTxt(file)}
-          >
-            Apagar
-          </button>
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
-
-
+          {txtList.length > 0 && (
+            <div>
+      
+              <div className="txt-box">
+                {txtList.map((file) => (
+                  <label key={file} className="txt-line">
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(file)}
+                      onChange={() => toggleSelect(file)}
+                    />
+                    {file}
+                  </label>
+                ))}
+              </div>
+      
+              <button
+                className="btn-danger"
+                onClick={deleteSelected}
+                disabled={selected.length === 0}
+              >
+                Apagar Selecionados
+              </button>
+      
+            </div>
+          )}
+        </div>
 
       </div>
     </div>
