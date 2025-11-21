@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import "./styles.css";
 
 export default function GroupsPage() {
   const API = process.env.NEXT_PUBLIC_API_URL;
@@ -9,10 +10,12 @@ export default function GroupsPage() {
   const [newGroup, setNewGroup] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
+
   const [selectedGroup, setSelectedGroup] = useState("");
   const [partNumber, setPartNumber] = useState("");
   const [partName, setPartName] = useState("");
   const [model, setModel] = useState("");
+
   const [pieces, setPieces] = useState([]);
   const [selectedPiece, setSelectedPiece] = useState("");
 
@@ -21,7 +24,7 @@ export default function GroupsPage() {
       const res = await fetch(`${API}/groups`);
       const data = await res.json();
       setGroups(data);
-    } catch (err) {
+    } catch {
       setMsg("Erro ao carregar grupos.");
     }
   };
@@ -35,15 +38,13 @@ export default function GroupsPage() {
       const res = await fetch(`${API}/pieces/${group}`);
       const data = await res.json();
       setPieces(data);
-    } catch (err) {
+    } catch {
       setPieces([]);
     }
   };
 
   useEffect(() => {
-    if (selectedGroup) {
-      loadPieces(selectedGroup);
-    }
+    if (selectedGroup) loadPieces(selectedGroup);
   }, [selectedGroup]);
 
   const createGroup = async (e) => {
@@ -58,16 +59,16 @@ export default function GroupsPage() {
         body: JSON.stringify({ name: newGroup }),
       });
 
+      const data = await res.json();
+
       if (res.status === 201) {
-        const data = await res.json();
         setMsg(`Grupo "${data.created}" criado com sucesso!`);
         setNewGroup("");
         loadGroups();
       } else {
-        const err = await res.json();
-        setMsg(`Erro: ${err.detail}`);
+        setMsg(`Erro: ${data.detail}`);
       }
-    } catch (error) {
+    } catch {
       setMsg("Erro ao criar grupo.");
     } finally {
       setLoading(false);
@@ -77,11 +78,6 @@ export default function GroupsPage() {
   const createPiece = async (e) => {
     e.preventDefault();
     setMsg(null);
-
-    if (!selectedGroup) {
-      setMsg("Selecione um grupo primeiro!");
-      return;
-    }
 
     try {
       const res = await fetch(`${API}/pieces`, {
@@ -95,27 +91,23 @@ export default function GroupsPage() {
         }),
       });
 
-      if (res.status === 201) {
-        const data = await res.json();
-        setMsg(`Peça "${data.created}" criada com sucesso!`);
+      const data = await res.json();
 
-        //clear inputs
+      if (res.status === 201) {
+        setMsg(`Peça "${data.created}" criada!`);
         setPartNumber("");
         setPartName("");
         setModel("");
-
-        // update list
         loadPieces(selectedGroup);
       } else {
-        const err = await res.json();
-        setMsg(`Erro ao criar peça: ${err.detail}`);
+        setMsg(`Erro: ${data.detail}`);
       }
-    } catch (error) {
+    } catch {
       setMsg("Erro ao criar peça.");
     }
   };
 
-    const deletePiece = async () => {
+  const deletePiece = async () => {
     if (!selectedGroup || !selectedPiece) return;
 
     try {
@@ -124,63 +116,74 @@ export default function GroupsPage() {
         { method: "DELETE" }
       );
 
+      const data = await res.json();
+
       if (res.ok) {
         setMsg(`Peça ${selectedPiece} apagada!`);
         setSelectedPiece("");
         loadPieces(selectedGroup);
       } else {
-        const err = await res.json();
-        setMsg(`Erro: ${err.detail}`);
+        setMsg(`Erro: ${data.detail}`);
       }
-    } catch (err) {
+    } catch {
       setMsg("Erro ao apagar peça.");
     }
   };
 
   return (
-    <div className="container">
-      <h1>Gerenciar Grupos</h1>
+    <div className="page-container">
+      <h1 className="title">Gerenciamento de Grupos e Peças</h1>
 
-      <form onSubmit={createGroup}>
-        <input
-          type="text"
-          placeholder="Nome do grupo"
-          value={newGroup}
-          onChange={(e) => setNewGroup(e.target.value)}
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Criando..." : "Criar Grupo"}
-        </button>
-      </form>
+      {msg && <p className="message">{msg}</p>}
 
-      {msg && <p>{msg}</p>}
+      <div className="grid unified-card">
 
-      <h1>Cadastro de Peças</h1>
+        <div className="card">
+          <h2>Novo Grupo</h2>
 
-      <label>Escolha um grupo:</label>
-      <select
-        value={selectedGroup}
-        onChange={(e) => setSelectedGroup(e.target.value)}
-      >
-        <option value="">Selecione...</option>
-
-        {groups.map((group) => (
-          <option key={group} value={group}>
-            {group}
-          </option>
-        ))}
-      </select>
-
-      {selectedGroup && (
-        <>
-          <p>Grupo selecionado: {selectedGroup}</p>
-
-          {/* form part */}
-          <h3>Cadastrar nova peça</h3>
-
-          <form onSubmit={createPiece}>
+          <form className="form" onSubmit={createGroup}>
             <input
+              className="input"
+              type="text"
+              placeholder="Nome do grupo"
+              value={newGroup}
+              onChange={(e) => setNewGroup(e.target.value)}
+              required
+            />
+
+            <button className="btn" type="submit" disabled={loading}>
+              {loading ? "Criando..." : "Criar Grupo"}
+            </button>
+          </form>
+        </div>
+
+        <div className="card">
+          <h2>Selecionar Grupo</h2>
+
+          <select
+            className="input"
+            value={selectedGroup}
+            onChange={(e) => setSelectedGroup(e.target.value)}
+          >
+            <option value="">Selecione...</option>
+            {groups.map((g) => (
+              <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
+
+          {selectedGroup && (
+            <p className="selected-text">
+              Grupo selecionado: <b>{selectedGroup}</b>
+            </p>
+          )}
+        </div>
+
+        <div className="card">
+          <h2>Cadastrar Peça</h2>
+
+          <form className="form" onSubmit={createPiece}>
+            <input
+              className="input"
               type="text"
               placeholder="Part Number"
               value={partNumber}
@@ -189,6 +192,7 @@ export default function GroupsPage() {
             />
 
             <input
+              className="input"
               type="text"
               placeholder="Nome da peça"
               value={partName}
@@ -197,6 +201,7 @@ export default function GroupsPage() {
             />
 
             <input
+              className="input"
               type="text"
               placeholder="Modelo"
               value={model}
@@ -204,15 +209,15 @@ export default function GroupsPage() {
               required
             />
 
-            <button type="submit">Criar Peça</button>
+            <button className="btn" type="submit">Criar Peça</button>
           </form>
+        </div>
 
-          {/*list */}
-      {selectedGroup && (
-        <>
-          <h3>Peças do grupo</h3>
+        <div className="card">
+          <h2>Peças do Grupo</h2>
 
           <select
+            className="input"
             value={selectedPiece}
             onChange={(e) => setSelectedPiece(e.target.value)}
           >
@@ -225,15 +230,16 @@ export default function GroupsPage() {
             ))}
           </select>
 
-          {selectedPiece && (
-            <button onClick={deletePiece}>
-              Apagar
-            </button>
-          )}
-        </>
-      )}
-        </>
-      )}
+          <button
+            className="btn-danger"
+            onClick={deletePiece}
+            disabled={!selectedPiece}
+          >
+            Apagar Peça
+          </button>
+        </div>
+
+      </div>
     </div>
   );
 }

@@ -1,0 +1,92 @@
+.page-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px; /* menor */
+  color: #1f2937;
+}
+
+.message {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* GRID compacto, mas ainda 2×2 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+/* Faz parecer UM CARD só */
+.unified-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.card {
+  padding: 15px;
+}
+
+.card h2 {
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #111827;
+}
+
+/* inputs menores */
+.input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+}
+
+.btn, .btn-danger {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+.btn:hover {
+  background: #1d4ed8;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+  border: none;
+}
+
+.btn-danger:disabled {
+  background: #fca5a5;
+  cursor: not-allowed;
+}
+
+.selected-text {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #111827;
+}
