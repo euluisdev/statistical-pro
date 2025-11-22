@@ -1,90 +1,73 @@
 "use client";
 
 import { useEffect, useState } from "react";
-//import "./analysis.css";  
 
 export default function AnalysisPage({ params }) {
-  const API = process.env.NEXT_PUBLIC_API_URL;
-
   const { group, piece } = params;
 
   const [data, setData] = useState([]);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
+  async function loadAnalysis() {
+    setLoading(true);
+
+    try {
+      // gera analysis.csv
+      await fetch(
+        `http://localhost:8000/pieces/${group}/${piece}/generate_analysis`,
+        { method: "POST" }
+      );
+
+      // carrega dataframe JSON
+      const res = await fetch(
+        `http://localhost:8000/pieces/${group}/${piece}/dataframe`
+      );
+
+      const json = await res.json();
+      setData(json.data ?? []);
+    } catch (err) {
+      console.error("Erro:", err);
+    }
+
+    setLoading(false);
+  }
+
   useEffect(() => {
-    const loadCSV = async () => {
-      try {
-        const res = await fetch(
-          `${API}/pieces/${group}/${piece}/analysis`
-        );
-
-        if (!res.ok) {
-          const txt = await res.text();
-          setError("Erro ao carregar CSV: " + txt);
-          return;
-        }
-
-        const json = await res.json(); // backend deve converter CSV → JSON
-        setData(json);
-      } catch (err) {
-        setError("Falha ao conectar ao servidor.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadCSV();
+    loadAnalysis();
   }, [group, piece]);
 
-  if (loading) return <p>Carregando dados...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (!data || data.length === 0) return <p>Nenhum dado encontrado.</p>;
-
   return (
-    <div className="analysis-container">
-      <h1 className="analysis-title">
-        📊 Análise da Peça {piece} — Grupo {group}
+    <div className="p-4">
+      <h1 className="text-xl font-bold mb-3">
+        Análise – {group} / {piece}
       </h1>
 
-      <table className="analysis-table">
-        <thead>
-          <tr>
-            {Object.keys(data[0]).map((col) => (
-              <th key={col}>{col}</th>
-            ))}
-          </tr>
-        </thead>
+      {loading && <p>Carregando...</p>}
 
-        <tbody>
-          {data.map((row, i) => (
-            <tr key={i}>
-              {Object.entries(row).map(([col, val]) => {
-                
-                // Cores estilo "PCDMIS"
-                let className = "";
+      {!loading && data.length === 0 && (
+        <p>Nenhum dado encontrado. Gere o analysis.csv primeiro.</p>
+      )}
 
-                if (col === "CPK") {
-                  if (val < 1) className = "cell-red";
-                  else if (val < 1.33) className = "cell-yellow";
-                  else className = "cell-green";
-                }
-
-                if (col === "Desvio") {
-                  if (Math.abs(val) > 0.5) className = "cell-red";
-                  else if (Math.abs(val) > 0.25) className = "cell-yellow";
-                }
-
-                return (
-                  <td key={col} className={className}>
-                    {val}
-                  </td>
-                );
-              })}
+      {!loading && data.length > 0 && (
+        <table className="min-w-full border text-sm">
+          <thead>
+            <tr>
+              {Object.keys(data[0]).map((h) => (
+                <th key={h} className="border p-1 bg-gray-100">{h}</th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((row, idx) => (
+              <tr key={idx}>
+                {Object.values(row).map((v, i) => (
+                  <td key={i} className="border p-1">{String(v)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

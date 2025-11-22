@@ -438,6 +438,18 @@ export default function GroupsPage() {
           >
             Apagar Peça
           </button>
+          <button
+  className="btn"
+  onClick={() => {
+    if (selectedGroup && selectedPiece) {
+      window.location.href = `/analysis/${selectedGroup}/${selectedPiece}`;
+    }
+  }}
+  disabled={!selectedGroup || !selectedPiece}
+>
+  📊 IR
+</button>
+
         </div>
 
         {/* upload txt */}

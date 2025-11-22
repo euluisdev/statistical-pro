@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List
 from app.services.pieces_service import(
@@ -10,7 +11,7 @@ from app.services.pieces_service import(
     list_txt_files, 
     delete_txt_file
 ) 
-from app.services.pcdmis_csv_service import extract_all_txt_to_csv, load_all_csv_as_dataframe
+from app.services.pcdmis_csv_service import extract_all_txt_to_csv, load_all_csv_as_dataframe, save_analysis_csv
 import os 
 import shutil 
 
@@ -129,3 +130,74 @@ def get_piece_dataframe(group: str, piece: str):
     #tipos serializáveis
     records = df.fillna("").to_dict(orient="records")
     return {"status": "ok", "rows": len(records), "data": records}
+
+@router.post("/{group}/{piece}/extract_analysis")
+def extract_analysis_csv(group: str, piece: str):
+    """
+    Combina TODOS os CSVs da pasta csv/ em um único arquivo analysis.csv.
+    """
+    import pandas as pd
+
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+
+    base_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "data", "groups", group_safe, "pieces", piece_safe
+    )
+
+    csv_dir = os.path.join(base_path, "csv")
+    analysis_path = os.path.join(base_path, "analysis.csv")
+
+    if not os.path.exists(csv_dir):
+        raise HTTPException(404, "Nenhum CSV encontrado. Extraia os TXT primeiro.")
+
+    dfs = []
+    for file in os.listdir(csv_dir):
+        if file.lower().endswith(".csv"):
+            try:
+                df = pd.read_csv(os.path.join(csv_dir, file))
+                df["Origem"] = file  # igual no Streamlit!
+                dfs.append(df)
+            except:
+                continue
+
+    if not dfs:
+        raise HTTPException(404, "Nenhum CSV válido encontrado.")
+
+    df_total = pd.concat(dfs, ignore_index=True)
+    df_total.to_csv(analysis_path, index=False)
+
+    return {
+        "status": "ok",
+        "rows": len(df_total),
+        "file": "analysis.csv"
+    }
+
+@router.get("/{group}/{piece}/analysis")
+def load_analysis_csv(group: str, piece: str):
+    import pandas as pd
+
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+
+    path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "data", "groups", group_safe, "pieces", piece_safe, "analysis.csv"
+    )
+
+    if not os.path.exists(path):
+        raise HTTPException(404, "analysis.csv não encontrado. Gere ele primeiro.")
+
+    df = pd.read_csv(path)
+    return df.to_dict(orient="records")
+
+@router.post("/{group}/{piece}/generate_analysis")
+def generate_analysis(group: str, piece: str):
+    path = save_analysis_csv(group, piece)
+    
+    if path is None:
+        raise HTTPException(status_code=404, detail="Nenhum CSV encontrado para gerar análise")
+
+    return {"status": "ok", "analysis_file": "analysis.csv"}
+

@@ -79,3 +79,24 @@ def load_all_csv_as_dataframe(group: str, piece: str) -> pd.DataFrame:
 
     df_all = pd.concat(dfs, ignore_index=True)
     return df_all
+
+def save_analysis_csv(group: str, piece: str):
+    """
+    Junta todos os CSV em um único analysis.csv dentro da pasta da peça.
+    """
+    df = load_all_csv_as_dataframe(group, piece)
+    if df.empty:
+        return None
+
+    g = sanitize_piece_name(group)
+    p = sanitize_piece_name(piece)
+
+    analysis_path = os.path.join(
+        BASE_DIR, g, "pieces", p, "analysis.csv"
+    )
+
+    df.to_csv(analysis_path, index=False, encoding="utf-8")
+
+    return analysis_path
+
+
