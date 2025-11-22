@@ -9,8 +9,8 @@ from app.services.pieces_service import(
     sanitize_piece_name, 
     list_txt_files, 
     delete_txt_file
-    ) 
-
+) 
+from app.services.pcdmis_csv_service import extract_all_txt_to_csv, load_all_csv_as_dataframe
 import os 
 import shutil 
 
@@ -64,7 +64,7 @@ async def upload_txt(
     group_safe = sanitize_piece_name(group)
     piece_safe = sanitize_piece_name(piece)
 
-    # garante pastas
+    #garante pastas
     txt_path = ensure_piece_dirs(group_safe, piece_safe)
 
     saved_files = []
@@ -104,3 +104,28 @@ def delete_txt(group: str, piece: str, filename: str):
         raise HTTPException(status_code=404, detail=info)
 
     return {"deleted": info}
+
+@router.post("/{group}/{piece}/extract_to_csv")
+def extract_to_csv_route(group: str, piece: str):
+    """
+    Extrai TODOS os TXT (na pasta txt/) da peça para CSVs (pasta csv/).
+    """
+    saved = extract_all_txt_to_csv(group, piece)
+    if saved is None:
+        raise HTTPException(status_code=500, detail="Erro interno")
+    return {"status": "ok", "saved": saved, "count": len(saved)}
+
+
+@router.get("/{group}/{piece}/dataframe")
+def get_piece_dataframe(group: str, piece: str):
+    """
+    Carrega todos os CSVs em csv/ e retorna os dados concatenados
+    como JSON (lista de registros).
+    """
+    df = load_all_csv_as_dataframe(group, piece)
+    if df.empty:
+        return {"status": "empty", "rows": 0, "data": []}
+
+    #tipos serializáveis
+    records = df.fillna("").to_dict(orient="records")
+    return {"status": "ok", "rows": len(records), "data": records}

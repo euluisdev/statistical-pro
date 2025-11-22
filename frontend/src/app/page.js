@@ -22,6 +22,9 @@ export default function GroupsPage() {
   const [txtList, setTxtList] = useState([]);
   const [selected, setSelected] = useState([]);
 
+  const [parsedData, setParsedData] = useState([]);
+  const [loadingExtract, setLoadingExtract] = useState(false);
+
 
   const loadGroups = async () => {
     try {
@@ -78,13 +81,6 @@ export default function GroupsPage() {
       setLoading(false);
     }
   };
-
-  
-
-
-
-
-
 
   const createPiece = async (e) => {
     e.preventDefault();
@@ -166,66 +162,63 @@ export default function GroupsPage() {
 
   //txtfiles upload
   const uploadTxt = async () => {
-  if (!selectedGroup || !selectedPiece || txtFiles.length === 0) {
-    setMsg("Selecione grupo, peça e arquivos TXT.");
-    return;
+    if (!selectedGroup || !selectedPiece || txtFiles.length === 0) {
+      setMsg("Selecione grupo, peça e arquivos TXT.");
+      return;
   }
 
   const form = new FormData();
-  form.append("group", selectedGroup);
-  form.append("piece", selectedPiece);
+    form.append("group", selectedGroup);
+    form.append("piece", selectedPiece);
 
-  for (let f of txtFiles) {
-    form.append("files", f);
-  }
-
-  try {
-    const res = await fetch(`${API}/pieces/upload_txt`, {
-      method: "POST",
-      body: form, // <-- sem headers aqui!
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setMsg(`Erro: ${data.detail || "Falha ao enviar TXT"}`);
-      return;
+    for (let f of txtFiles) {
+      form.append("files", f);
     }
 
-    setMsg(`TXT enviado com sucesso! (${data.saved.length} arquivos)`);
-    setTxtFiles([]);
-    loadTxtList();      
-  } catch (err) {
-    setMsg("Erro ao enviar TXT.");
-  }
-};
+    try {
+      const res = await fetch(`${API}/pieces/upload_txt`, {
+        method: "POST",
+        body: form, // <-- sem headers aqui!
+      });
 
-const loadTxtList = async () => {
-  if (!selectedGroup || !selectedPiece) {
-    setTxtList([]);
-    return;
-  }
+      const data = await res.json();
+      if (!res.ok) {
+        setMsg(`Erro: ${data.detail || "Falha ao enviar TXT"}`);
+        return;
+      }
 
-  try {
-    const res = await fetch(`${API}/pieces/${selectedGroup}/${selectedPiece}/txt`);
-    const data = await res.json();
+      setMsg(`TXT enviado com sucesso! (${data.saved.length} arquivos)`);
+      setTxtFiles([]);
+      loadTxtList();      
+    } catch (err) {
+      setMsg("Erro ao enviar TXT.");
+    }
+  };
 
-    if (!res.ok) {
-      setMsg(`Erro ao listar TXT: ${data.detail}`);
+  const loadTxtList = async () => {
+    if (!selectedGroup || !selectedPiece) {
       setTxtList([]);
       return;
     }
+  
+    try {
+      const res = await fetch(`${API}/pieces/${selectedGroup}/${selectedPiece}/txt`);
+      const data = await res.json();
+  
+      if (!res.ok) {
+        setMsg(`Erro ao listar TXT: ${data.detail}`);
+        setTxtList([]);
+        return;
+      }
 
-    setTxtList(data);
-  } catch {
-    setMsg("Erro ao carregar arquivos TXT.");
-    setTxtList([]);
+      setTxtList(data);
+    } catch {
+      setMsg("Erro ao carregar arquivos TXT.");
+      setTxtList([]);
   }
 };
 
-
-
-  // carregar lista de TXT sempre que a peça mudar
+  //load list txt
   useEffect(() => {
     if (selectedPiece && selectedGroup) {
       loadTxtList();
@@ -235,7 +228,6 @@ const loadTxtList = async () => {
   }, [selectedPiece, selectedGroup]);
 
 
-  // ---- APAGAR TXT ----
   const deleteTxt = async (filename) => {
     if (!selectedGroup || !selectedPiece) return;
 
@@ -261,28 +253,67 @@ const loadTxtList = async () => {
     }
   };
 
-function toggleSelect(file) {
-  setSelected(prev =>
-    prev.includes(file)
-      ? prev.filter(item => item !== file)
-      : [...prev, file]
-  );
-}
-
-async function deleteSelected() {
-  for (const file of selected) {
-    await deleteTxt(file); 
+  function toggleSelect(file) {
+    setSelected(prev =>
+      prev.includes(file)
+        ? prev.filter(item => item !== file)
+        : [...prev, file]
+    );
   }
-  setTxtList(prev => prev.filter(item => !selected.includes(item)));
-  setSelected([]);
-}
+
+  async function deleteSelected() {
+    for (const file of selected) {
+      await deleteTxt(file); 
+    }
+    setTxtList(prev => prev.filter(item => !selected.includes(item)));
+    setSelected([]);
+  }
 
 
+  const extractData = async () => {
+    if (!selectedGroup || !selectedPiece) {
+      setMsg("Selecione grupo e peça antes de extrair.");
+      return;
+    }
+
+  setLoadingExtract(true);
+  setMsg(null);
+
+  try {
+    // 1) extrai txt -> csv
+    const res1 = await fetch(`${API}/pieces/${encodeURIComponent(selectedGroup)}/${encodeURIComponent(selectedPiece)}/extract_to_csv`, {
+      method: "POST",
+    });
+    const json1 = await res1.json();
+    if (!res1.ok) {
+      setMsg(`Erro na extração: ${json1.detail || JSON.stringify(json1)}`);
+      setLoadingExtract(false);
+      return;
+    }
+
+    // 2) carrega dataframe concatenado
+    const res2 = await fetch(`${API}/pieces/${encodeURIComponent(selectedGroup)}/${encodeURIComponent(selectedPiece)}/dataframe`);
+    const json2 = await res2.json();
+    if (!res2.ok) {
+      setMsg(`Erro ao obter dataframe: ${json2.detail || JSON.stringify(json2)}`);
+      setLoadingExtract(false);
+      return;
+    }
+
+    setParsedData(json2.data || []);
+    setMsg(`Extração pronta — ${json2.rows} linhas.`);
+  } catch (err) {
+    console.error(err);
+    setMsg("Erro ao extrair dados.");
+  } finally {
+    setLoadingExtract(false);
+  }
+};
 
 
   return (
     <div className="page-container">
-      <h1 className="title">Gerenciamento de Grupos e Peças</h1>
+      <h1 className="title">LEAN SIX SIGMA</h1>
 
       {msg && <p className="message">{msg}</p>}
 
@@ -393,6 +424,14 @@ async function deleteSelected() {
           </select>
 
           <button
+            className="btn"
+            onClick={extractData}
+            disabled={!selectedGroup || !selectedPiece || loadingExtract}
+          >
+            {loadingExtract ? "Extraindo..." : "Extrair Dados"}
+          </button>
+
+          <button
             className="btn-danger"
             onClick={deletePiece}
             disabled={!selectedPiece}
@@ -434,7 +473,7 @@ async function deleteSelected() {
             <p className="selected-text">Nenhum TXT importado ainda.</p>
           )}
 
-          {txtList.length > 0 && (
+          {txtList && (
             <div>
       
               <div className="txt-box">
@@ -462,7 +501,34 @@ async function deleteSelected() {
           )}
         </div>
 
+        {parsedData && parsedData.length > 0 && (
+          <div className="card-table" style={{ marginTop: 20 }}>
+            <h2>Dados extraídos ({parsedData.length} linhas)</h2>
+
+            <div style={{ overflowX: "auto" }}>
+              <table className="table">
+                <thead>
+                  <tr>
+                    {Object.keys(parsedData[0]).map((col) => (
+                      <th key={col}>{col}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {parsedData.map((row, i) => (
+                    <tr key={i}>
+                      {Object.keys(parsedData[0]).map((col) => (
+                        <td key={col + i}>{String(row[col])}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
-}
+};
