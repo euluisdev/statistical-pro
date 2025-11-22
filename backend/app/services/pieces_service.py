@@ -124,24 +124,33 @@ def list_txt_files(group: str, piece: str):
 
 
 def delete_txt_file(group: str, piece: str, filename: str):
-    """Deleta um arquivo TXT dentro da peça."""
-    group_safe = sanitize_piece_name(group)
-    piece_safe = sanitize_piece_name(piece)
+    """
+    Apaga o TXT e o CSV correspondente (se existir).
+    """
+    g = sanitize_piece_name(group)
+    p = sanitize_piece_name(piece)
 
-    #protege contra path traversal
-    filename_safe = os.path.basename(filename)
-
-    txt_path = os.path.join(
-        BASE_DIR, group_safe, "pieces", piece_safe, "txt", filename_safe
-    )
+    base_path = os.path.join(BASE_DIR, g, "pieces", p)
+    txt_path = os.path.join(base_path, "txt", filename)
 
     if not os.path.exists(txt_path):
-        return False, f"Arquivo '{filename_safe}' não existe"
+        return False, f"TXT '{filename}' não encontrado"
 
+    # remove o TXT
     try:
         os.remove(txt_path)
     except Exception as e:
         return False, f"Erro ao apagar TXT: {e}"
 
-    return True, filename_safe
+    # remove o CSV correspondente
+    csv_name = os.path.splitext(filename)[0] + ".csv"
+    csv_path = os.path.join(base_path, "csv", csv_name)
+
+    if os.path.exists(csv_path):
+        try:
+            os.remove(csv_path)
+        except Exception:
+            pass  # CSV falhou? ignora, mas não trava
+
+    return True, filename
 

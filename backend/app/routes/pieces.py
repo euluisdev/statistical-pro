@@ -133,9 +133,6 @@ def get_piece_dataframe(group: str, piece: str):
 
 @router.post("/{group}/{piece}/extract_analysis")
 def extract_analysis_csv(group: str, piece: str):
-    """
-    Combina TODOS os CSVs da pasta csv/ em um único arquivo analysis.csv.
-    """
     import pandas as pd
 
     group_safe = sanitize_piece_name(group)
@@ -149,29 +146,44 @@ def extract_analysis_csv(group: str, piece: str):
     csv_dir = os.path.join(base_path, "csv")
     analysis_path = os.path.join(base_path, "analysis.csv")
 
+    print(f"🔍 Procurando CSVs em: {csv_dir}")
+    print(f"📁 CSV dir existe? {os.path.exists(csv_dir)}")
+
     if not os.path.exists(csv_dir):
         raise HTTPException(404, "Nenhum CSV encontrado. Extraia os TXT primeiro.")
 
+    arquivos = os.listdir(csv_dir)
+    print(f"📄 Arquivos encontrados: {arquivos}")
+
     dfs = []
-    for file in os.listdir(csv_dir):
+    for file in arquivos:
         if file.lower().endswith(".csv"):
             try:
-                df = pd.read_csv(os.path.join(csv_dir, file))
-                df["Origem"] = file  # igual no Streamlit!
+                caminho_completo = os.path.join(csv_dir, file)
+                print(f"✅ Lendo: {caminho_completo}")
+                df = pd.read_csv(caminho_completo)
+                df["Origem"] = file
                 dfs.append(df)
-            except:
+                print(f"   → {len(df)} linhas lidas")
+            except Exception as e:
+                print(f"❌ Erro ao ler {file}: {e}")
                 continue
 
     if not dfs:
         raise HTTPException(404, "Nenhum CSV válido encontrado.")
 
     df_total = pd.concat(dfs, ignore_index=True)
+    print(f"💾 Salvando {len(df_total)} linhas em: {analysis_path}")
+    
     df_total.to_csv(analysis_path, index=False)
+    
+    print(f"✅ Arquivo criado? {os.path.exists(analysis_path)}")
 
     return {
         "status": "ok",
         "rows": len(df_total),
-        "file": "analysis.csv"
+        "file": "analysis.csv",
+        "path": analysis_path  # ← Retorna o caminho pra você confirmar
     }
 
 @router.get("/{group}/{piece}/analysis")
