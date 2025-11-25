@@ -209,167 +209,151 @@ export default function AnalysisPage() {
               </div>
             </div>
 
-            {/* LINHA 2 - CG */}
-            <div className={`${summaryStyles.summaryRow} ${summaryStyles.cgRow}`}>
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
-                <span className={summaryStyles.label}>CG</span>
-              </div>
-              
-              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgGray}`}>
-                <span className={summaryStyles.value}>{statistics.summary.cg_count}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.value}>{statistics.summary.cg_percent}%</span>
-                )}
-              </div>
+{/* LINHA 2 - CG (LARANJA) */}
+<div className={`${summaryStyles.summaryRow} ${summaryStyles.cgRow}`}>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+    <span className={summaryStyles.label}>CG</span>
+  </div>
+  
+  <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgOrange}`}>
+    <span className={summaryStyles.value}>{statistics.summary.cg_green}</span>
+    {showPercentage && (
+      <span className={summaryStyles.value}>{statistics.summary.cg_green_percent}%</span>
+    )}
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
-                <span className={summaryStyles.label}>CP</span>
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+    <span className={summaryStyles.label}>CP</span>
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
-                <span className={summaryStyles.label}>QH</span>
-                <span className={summaryStyles.valueMedium}>{total}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.subvalue}>100,00%</span>
-                )}
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+    <span className={summaryStyles.label}>QH</span>
+    <span className={summaryStyles.valueMedium}>{total}</span>
+    {showPercentage && (
+      <span className={summaryStyles.subvalue}>100,00%</span>
+    )}
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
-                <span className={summaryStyles.label}>CPK</span>
-              </div>
+    <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+      <span className={summaryStyles.label}>CPK</span>
+    </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
-                <span className={summaryStyles.label}>QH</span>
-                <span className={summaryStyles.valueMedium}>{total}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.subvalue}>100,00%</span>
-                )}
-              </div>
-            </div>
+    <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+      <span className={summaryStyles.label}>QH</span>
+      <span className={summaryStyles.valueMedium}>{total}</span>
+      {showPercentage && (
+        <span className={summaryStyles.subvalue}>100,00%</span>
+      )}
+    </div>
+  </div>
 
-            {/* LINHA 3 - CG ≤ 75% */}
-            <div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
-                <span className={`${summaryStyles.label} ${summaryStyles.labelSmall}`}>CG ≤ 75%</span>
-              </div>
-              
-              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgGreen}`}>
-                <span className={summaryStyles.value}>{statistics.summary.cg_75_count}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.value}>{statistics.summary.cg_75_percent}%</span>
-                )}
-              </div>
+{/* LINHA 3 - CG ≤ 75% (VERDE) */}
+<div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+    <span className={`${summaryStyles.label} ${summaryStyles.labelSmall}`}>CG ≤ 75%</span>
+  </div>
+  
+  <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgGreen}`}>
+    <span className={summaryStyles.value}>{statistics.summary.cg_yellow}</span>
+    {showPercentage && (
+      <span className={summaryStyles.value}>{statistics.summary.cg_yellow_percent}%</span>
+    )}
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
-                <span className={summaryStyles.label}>CP ≥ 1,33</span>
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+    <span className={summaryStyles.label}>CP ≥ 1,33</span>
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
-                <span className={summaryStyles.valueMedium}>{cpGte133}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.subvalue}>
-                    {total > 0 ? ((cpGte133 / total) * 100).toFixed(2) : 0}%
-                  </span>
-                )}
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+    <span className={summaryStyles.valueMedium}>{statistics.summary.cp_green}</span>
+    {showPercentage && (
+      <span className={summaryStyles.subvalue}>{statistics.summary.cp_green_percent}%</span>
+    )}
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
-                <span className={summaryStyles.label}>CPK ≥ 1,33</span>
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+    <span className={summaryStyles.label}>CPK ≥ 1,33</span>
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
-                <span className={summaryStyles.valueMedium}>{cpkGte133}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.subvalue}>
-                    {total > 0 ? ((cpkGte133 / total) * 100).toFixed(2) : 0}%
-                  </span>
-                )}
-              </div>
-            </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+    <span className={summaryStyles.valueMedium}>{statistics.summary.cpk_green}</span>
+    {showPercentage && (
+      <span className={summaryStyles.subvalue}>{statistics.summary.cpk_green_percent}%</span>
+    )}
+  </div>
+</div>
 
-            {/* LINHA 4 - 75% < CG ≤ 100% */}
-            <div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
-                <span className={`${summaryStyles.label} ${summaryStyles.labelSmall}`}>75% &lt; CG ≤ 100%</span>
-              </div>
-              
-              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgYellow}`}>
-                <span className={summaryStyles.value}>{cg76to100}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.value}>
-                    {total > 0 ? ((cg76to100 / total) * 100).toFixed(2) : 0}%
-                  </span>
-                )}
-              </div>
+{/* LINHA 4 - 75% < CG ≤ 100% (AMARELO) */}
+<div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+    <span className={`${summaryStyles.label} ${summaryStyles.labelSmall}`}>75% &lt; CG ≤ 100%</span>
+  </div>
+  
+  <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgYellow}`}>
+    <span className={summaryStyles.value}>{statistics.summary.cg_yellow}</span>
+    {showPercentage && (
+      <span className={summaryStyles.value}>{statistics.summary.cg_yellow_percent}%</span>
+    )}
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
-                <span className={summaryStyles.label}>1 ≤ CP &lt; 1,33</span>
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+    <span className={summaryStyles.label}>1 ≤ CP &lt; 1,33</span>
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
-                <span className={summaryStyles.valueMedium}>{cp1to133}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.subvalue}>
-                    {total > 0 ? ((cp1to133 / total) * 100).toFixed(2) : 0}%
-                  </span>
-                )}
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+    <span className={summaryStyles.valueMedium}>{statistics.summary.cp_yellow}</span>
+    {showPercentage && (
+      <span className={summaryStyles.subvalue}>{statistics.summary.cp_yellow_percent}%</span>
+    )}
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
-                <span className={summaryStyles.label}>1 ≤ CPK &lt; 1,33</span>
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+    <span className={summaryStyles.label}>1 ≤ CPK &lt; 1,33</span>
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
-                <span className={summaryStyles.valueMedium}>{cpk1to133}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.subvalue}>
-                    {total > 0 ? ((cpk1to133 / total) * 100).toFixed(2) : 0}%
-                  </span>
-                )}
-              </div>
-            </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+    <span className={summaryStyles.valueMedium}>{statistics.summary.cpk_yellow}</span>
+    {showPercentage && (
+      <span className={summaryStyles.subvalue}>{statistics.summary.cpk_yellow_percent}%</span>
+    )}
+  </div>
+</div>
 
-            {/* LINHA 5 - CG < 100% */}
-            <div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-                <span className={summaryStyles.label}>CG &lt; 100%</span>
-              </div>
-              
-              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgRed}`}>
-                <span className={summaryStyles.value}>{cpkLt1}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.value}>
-                    {total > 0 ? ((cpkLt1 / total) * 100).toFixed(2) : 0}%
-                  </span>
-                )}
-              </div>
+{/* LINHA 5 - CG < 100% (VERMELHO) */}
+<div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+    <span className={summaryStyles.label}>CG &lt; 100%</span>
+  </div>
+  
+  <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgRed}`}>
+    <span className={summaryStyles.value}>{statistics.summary.cg_red}</span>
+    {showPercentage && (
+      <span className={summaryStyles.value}>{statistics.summary.cg_red_percent}%</span>
+    )}
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-                <span className={summaryStyles.label}>CP &lt; 1</span>
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+    <span className={summaryStyles.label}>CP &lt; 1</span>
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-                <span className={summaryStyles.valueMedium}>{cpLt1}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.subvalue}>
-                    {total > 0 ? ((cpLt1 / total) * 100).toFixed(2) : 0}%
-                  </span>
-                )}
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+    <span className={summaryStyles.valueMedium}>{statistics.summary.cp_red}</span>
+    {showPercentage && (
+      <span className={summaryStyles.subvalue}>{statistics.summary.cp_red_percent}%</span>
+    )}
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-                <span className={summaryStyles.label}>CPK &lt; 1</span>
-              </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+    <span className={summaryStyles.label}>CPK &lt; 1</span>
+  </div>
 
-              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-                <span className={summaryStyles.valueMedium}>{cpkLt1}</span>
-                {showPercentage && (
-                  <span className={summaryStyles.subvalue}>
-                    {total > 0 ? ((cpkLt1 / total) * 100).toFixed(2) : 0}%
-                  </span>
-                )}
-              </div>
-            </div>
+  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+    <span className={summaryStyles.valueMedium}>{statistics.summary.cpk_red}</span>
+    {showPercentage && (
+      <span className={summaryStyles.subvalue}>{statistics.summary.cpk_red_percent}%</span>
+    )}
+  </div>
+</div>
           </div>
         )}
 

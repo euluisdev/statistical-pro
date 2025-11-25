@@ -6,19 +6,11 @@ from typing import Dict, List
 def calculate_statistics(df: pd.DataFrame) -> Dict:
     """
     Calcula estatísticas no padrão do QH / PC-DMIS da indústria automotiva.
-    
-    Regras:
-    - Todos os cálculos são baseados APENAS nos desvios.
-    - Média = média dos desvios.
-    - Range = máx(desvio) – mín(desvio).
-    - Sigma = range / 6.
-    - Cp e Cpk calculados com sigma antigo.
     """
 
     if df.empty:
         return {"error": "DataFrame vazio"}
 
-    #característica = NomePonto + Eixo
     df['Caracteristica'] = df['NomePonto'].astype(str) + '_' + df['Eixo'].astype(str)
 
     results = {
@@ -26,9 +18,7 @@ def calculate_statistics(df: pd.DataFrame) -> Dict:
         "characteristics": []
     }
 
-    #para cada característica
     for caracteristica in df['Caracteristica'].unique():
-
         char_data = df[df['Caracteristica'] == caracteristica].copy()
 
         if len(char_data) < 2:
@@ -36,7 +26,6 @@ def calculate_statistics(df: pd.DataFrame) -> Dict:
 
         first = char_data.iloc[0]
 
-        #dados fixos
         nome_ponto = first['NomePonto']
         eixo = first['Eixo']
         nominal = float(first['Nominal'])
@@ -45,10 +34,8 @@ def calculate_statistics(df: pd.DataFrame) -> Dict:
         tipo_geom = first.get('TipoGeométrico', '')
         localizacao = first.get('Localização', '')
 
-        #desvios (base de tudo)
         desvios = char_data['Desvio'].astype(float).values
 
-        #calcula estatísticas
         calc = calculate_characteristic_qh(
             desvios=desvios,
             nominal=nominal,
@@ -64,13 +51,11 @@ def calculate_statistics(df: pd.DataFrame) -> Dict:
 
         results["characteristics"].append(calc)
 
-    # resumo
     results["summary"] = calculate_summary(results["characteristics"])
 
     return results
 
 
-#qh
 def calculate_characteristic_qh(
     desvios: np.ndarray,
     nominal: float,
@@ -78,37 +63,17 @@ def calculate_characteristic_qh(
     tol_minus: float
 ) -> Dict:
     """
-    Cálculo EXATO usado no QH / PC-DMIS:
-
-    Média     = média dos desvios
-    Range     = max(desvios) – min(desvios)
-    Sigma     = range / 6
-    Cp        = (USL - LSL) / (6 * sigma)
-    Cpk       = min(Cpu, Cpl)
-    Cpu       = (USL - Média) / (3 * sigma)
-    Cpl       = (Média - LSL) / (3 * sigma)
-
-    ATENÇÃO:
-    - Tudo baseado nos desvios!
-    - Valor "médio real" = nominal + média_dos_desvios (se o usuário quiser exibir).
+    Cálculo EXATO usado no QH / PC-DMIS.
     """
 
     n = len(desvios)
-
-    #média
     mean_dev = np.mean(desvios)
-
-    #range
     r = np.max(desvios) - np.min(desvios)
-
-    #sigma
     sigma = r / 6 if r > 0 else 0
 
-    #limites
     lsl = -abs(tol_minus)
     usl = abs(tol_plus)
 
-    #cp-cpk
     if sigma > 0:
         cp = (usl - lsl) / (6 * sigma)
         cpu = (usl - mean_dev) / (3 * sigma)
@@ -117,11 +82,15 @@ def calculate_characteristic_qh(
     else:
         cp = cpu = cpl = cpk = 0
 
-    #fora de especificação
     below_lsl = np.sum(desvios < lsl)
     above_usl = np.sum(desvios > usl)
     out_of_spec = below_lsl + above_usl
     ok_percent = ((n - out_of_spec) / n * 100) if n > 0 else 0
+
+    #classifica cor baseada na celula tabela
+    mean_color = classify_mean_color(mean_dev, lsl, usl)
+    cp_color = classify_cp_color(cp)
+    cpk_color = classify_cpk_color(cpk)
 
     return {
         "n": int(n),
@@ -143,45 +112,96 @@ def calculate_characteristic_qh(
         "above_usl": int(above_usl),
         "out_of_spec": int(out_of_spec),
         "ok_percent": round(float(ok_percent), 2),
-        "classification": classify_capability(cp, cpk),
-        "risk_level": calculate_risk(cpk),
+        "mean_color": mean_color,      #verde/amarelo/vermelho
+        "cp_color": cp_color,            # verde/amarelo/vermelho
+        "cpk_color": cpk_color,          # verde/amarelo/vermelho
         "desvio_medio": round(float(mean_dev), 3),
         "desvio_max": round(float(np.max(desvios)), 3),
         "desvio_min": round(float(np.min(desvios)), 3)
     }
 
-def classify_capability(cp: float, cpk: float) -> str:
-    if cpk >= 1.67:
-        return "CG"
-    elif cpk >= 1.33:
-        return "CG < 75%"
-    elif cpk >= 1.0:
-        return "1 ≤ CP < 1.33"
-    else:
-        return "CP < 1"
 
-def calculate_risk(cpk: float) -> int:
+def classify_mean_color(mean: float, lsl: float, usl: float) -> str:
+    """
+    Classifica a cor da célula da MÉDIA baseado na zona de tolerância.
+    """
+    #fora da tol
+    if mean < lsl or mean > usl:
+        return "red"
+    
+    #dentro da tol- calcula percentual
+    abs_mean = abs(mean)
+    max_dev = min(abs(lsl), abs(usl))
+    percent = abs_mean / max_dev if max_dev > 0 else 0
+    
+    if percent >= 0.8:
+        return "yellow"  # Próximo/limiet
+    return "green"       # OK
+
+
+def classify_cp_color(cp: float) -> str:
+    """Classifica a cor do CP."""
+    if cp >= 1.33:
+        return "green"
+    elif cp >= 1.0:
+        return "yellow"
+    return "red"
+
+
+def classify_cpk_color(cpk: float) -> str:
+    """Classifica a cor do CPK."""
     if cpk >= 1.33:
-        return 0
+        return "green"
     elif cpk >= 1.0:
-        return 1
-    else:
-        return 3
+        return "yellow"
+    return "red"
 
-#resumo
+
 def calculate_summary(characteristics: List[Dict]) -> Dict:
+    """
+    Calcula resumo baseado nas CORES das células.
+    
+    Lógica:
+    - CG (verde): Conta quantos pontos têm MÉDIA verde (dentro da zona verde)
+    - CG ≤ 75% (amarelo): Conta quantos pontos têm MÉDIA amarela
+    - CG < 100% (vermelho): Conta quantos pontos têm MÉDIA vermelha
+    - CP/CPK: mesma lógica, mas baseado nas cores de CP e CPK
+    """
 
     total = len(characteristics)
 
     if total == 0:
         return {}
 
-    cg_count = sum(1 for c in characteristics if c["cpk"] >= 1.67)
-    cg_percent = round(cg_count / total * 100, 2)
+    #conta por cor da media cg
+    cg_green = sum(1 for c in characteristics if c["mean_color"] == "green")
+    cg_yellow = sum(1 for c in characteristics if c["mean_color"] == "yellow")
+    cg_red = sum(1 for c in characteristics if c["mean_color"] == "red")
 
-    cg_75_count = sum(1 for c in characteristics if 1.33 <= c["cpk"] < 1.67)
-    cg_75_percent = round(cg_75_count / total * 100, 2)
+    # Conta por cor do cp
+    cp_green = sum(1 for c in characteristics if c["cp_color"] == "green")
+    cp_yellow = sum(1 for c in characteristics if c["cp_color"] == "yellow")
+    cp_red = sum(1 for c in characteristics if c["cp_color"] == "red")
 
+    # Conta por cor cpk
+    cpk_green = sum(1 for c in characteristics if c["cpk_color"] == "green")
+    cpk_yellow = sum(1 for c in characteristics if c["cpk_color"] == "yellow")
+    cpk_red = sum(1 for c in characteristics if c["cpk_color"] == "red")
+
+    #percentuais
+    cg_green_percent = round(cg_green / total * 100, 2)
+    cg_yellow_percent = round(cg_yellow / total * 100, 2)
+    cg_red_percent = round(cg_red / total * 100, 2)
+
+    cp_green_percent = round(cp_green / total * 100, 2)
+    cp_yellow_percent = round(cp_yellow / total * 100, 2)
+    cp_red_percent = round(cp_red / total * 100, 2)
+
+    cpk_green_percent = round(cpk_green / total * 100, 2)
+    cpk_yellow_percent = round(cpk_yellow / total * 100, 2)
+    cpk_red_percent = round(cpk_red / total * 100, 2)
+
+    #medias gerais
     avg_cp = round(np.mean([c["cp"] for c in characteristics]), 2)
     avg_cpk = round(np.mean([c["cpk"] for c in characteristics]), 2)
     avg_sigma = round(np.mean([c["sigma"] for c in characteristics]), 3)
@@ -193,14 +213,38 @@ def calculate_summary(characteristics: List[Dict]) -> Dict:
 
     return {
         "total_characteristics": total,
-        "cg_count": cg_count,
-        "cg_percent": cg_percent,
-        "cg_75_count": cg_75_count,
-        "cg_75_percent": cg_75_percent,
+        
+        #cg baseado na cor da media
+        "cg_green": cg_green,
+        "cg_green_percent": cg_green_percent,
+        "cg_yellow": cg_yellow,
+        "cg_yellow_percent": cg_yellow_percent,
+        "cg_red": cg_red,
+        "cg_red_percent": cg_red_percent,
+        
+        # cp baseado na cor do cp
+        "cp_green": cp_green,
+        "cp_green_percent": cp_green_percent,
+        "cp_yellow": cp_yellow,
+        "cp_yellow_percent": cp_yellow_percent,
+        "cp_red": cp_red,
+        "cp_red_percent": cp_red_percent,
+        
+        #cpk
+        "cpk_green": cpk_green,
+        "cpk_green_percent": cpk_green_percent,
+        "cpk_yellow": cpk_yellow,
+        "cpk_yellow_percent": cpk_yellow_percent,
+        "cpk_red": cpk_red,
+        "cpk_red_percent": cpk_red_percent,
+        
+        # Médias
         "avg_cp": avg_cp,
         "avg_cpk": avg_cpk,
         "avg_sigma": avg_sigma,
         "avg_r": avg_r,
+        
+        #totais
         "total_measurements": total_measurements,
         "total_ok": total_ok,
         "overall_ok_percent": overall_ok_percent,
