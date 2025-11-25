@@ -313,7 +313,7 @@ export default function GroupsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">LEAN SIX SIGMA</h1>
+      <h1 className="title">SIX SIGMA</h1>
 
       {msg && <p className="message">{msg}</p>}
 

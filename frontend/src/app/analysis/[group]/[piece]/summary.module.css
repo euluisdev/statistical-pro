@@ -1,9 +1,9 @@
 /* ==================== CONTAINER PRINCIPAL ==================== */
 .summaryCard {
   background: white;
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  padding: 0.8rem;
   margin-bottom: 1.5rem;
 }
 
@@ -12,6 +12,7 @@
   display: grid;
   gap: 0.25rem;
   margin-bottom: 0.5rem;
+  max-width: 50%;
 }
 
 .summaryRow:last-child {
@@ -35,21 +36,21 @@
 
 /* ==================== CÉLULAS ==================== */
 .cell {
-  padding: 0.5rem 0.75rem;
+  padding: 0.2rem 0.2rem;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 50px;
+  min-height: 40px;
 }
 
 .cellHorizontal {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.8rem;
 }
 
 /* ==================== CORES DAS LINHAS ==================== */
@@ -58,7 +59,7 @@
 }
 
 .bgOrange {
-  background: #ffccaa;
+  background: #e8e8e8;
 }
 
 .bgGreen {
@@ -75,12 +76,12 @@
 
 /* ==================== TEXTOS ==================== */
 .label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: black;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.2rem;
 }
 
 .labelSmall {
@@ -88,26 +89,26 @@
 }
 
 .value {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 700;
   color: black;
   margin: 0;
-  line-height: 1;
+  line-height: 0.8;
 }
 
 .valueMedium {
-  font-size: 1.25rem;
-}
-
-.valueSmall {
   font-size: 1rem;
 }
 
+.valueSmall {
+  font-size: 0.9rem;
+}
+
 .subvalue {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: black;
-  font-weight: 600;
-  margin-top: 0.25rem;
+  font-weight: 700;
+  margin-top: 0.2rem;
 }
 
 /* ==================== RESPONSIVO ==================== */

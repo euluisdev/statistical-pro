@@ -128,7 +128,7 @@ export default function AnalysisPage() {
           {/* FILTROS */}
           <div className={styles.filtersContainer}>
             <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Ano</label>
+              <label className={styles.filterLabel}>YEAR</label>
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(Number(e.target.value))}
@@ -141,7 +141,7 @@ export default function AnalysisPage() {
             </div>
             
             <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Semana</label>
+              <label className={styles.filterLabel}>WEEK</label>
               <input
                 type="number"
                 value={selectedWeek}
@@ -159,7 +159,7 @@ export default function AnalysisPage() {
             >
               {generating && "⏳ Gerando..."}
               {calculating && "📊 Calculando..."}
-              {!isProcessing && "Carregar Dados"}
+              {!isProcessing && "📊"}
             </button>
           </div>
 
@@ -181,7 +181,7 @@ export default function AnalysisPage() {
                         : ''
                     }`}
                   >
-                    {f.year} - S{f.week}
+                    {f.year} - W{f.week}
                   </button>
                 ))}
               </div>
@@ -254,9 +254,9 @@ export default function AnalysisPage() {
   </div>
   
   <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgGreen}`}>
-    <span className={summaryStyles.value}>{statistics.summary.cg_yellow}</span>
+    <span className={summaryStyles.value}>{statistics.summary.cg_green}</span>
     {showPercentage && (
-      <span className={summaryStyles.value}>{statistics.summary.cg_yellow_percent}%</span>
+      <span className={summaryStyles.value}>{statistics.summary.cg_green_percent}%</span>
     )}
   </div>
 
