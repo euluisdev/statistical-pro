@@ -1,0 +1,162 @@
+/* ==================== CONTAINER PRINCIPAL ==================== */
+.summaryCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ==================== LINHAS DO RESUMO ==================== */
+.summaryRow {
+  display: grid;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.summaryRow:last-child {
+  margin-bottom: 0;
+}
+
+/* LINHA 1 - TOTAL (3 colunas) */
+.totalRow {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* LINHA 2 - CG COM IMAGEM (7 colunas) */
+.cgRow {
+  grid-template-columns: 0.8fr 1.5fr 0.8fr 1.2fr 0.8fr 1.2fr;
+}
+
+/* LINHAS 3, 4, 5 - DETALHES (6 colunas) */
+.detailRow {
+  grid-template-columns: 0.8fr 1.5fr 0.8fr 1.2fr 0.8fr 1.2fr;
+}
+
+/* ==================== CÉLULAS ==================== */
+.cell {
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 50px;
+}
+
+.cellHorizontal {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+/* ==================== CORES DAS LINHAS ==================== */
+.bgGray {
+  background: #e8e8e8;
+}
+
+.bgOrange {
+  background: #ffccaa;
+}
+
+.bgGreen {
+  background: green;
+}
+
+.bgYellow {
+  background: yellow;
+}
+
+.bgRed {
+  background: RED;
+}
+
+/* ==================== TEXTOS ==================== */
+.label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.labelSmall {
+  font-size: 0.65rem;
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: black;
+  margin: 0;
+  line-height: 1;
+}
+
+.valueMedium {
+  font-size: 1.25rem;
+}
+
+.valueSmall {
+  font-size: 1rem;
+}
+
+.subvalue {
+  font-size: 0.875rem;
+  color: black;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+/* ==================== RESPONSIVO ==================== */
+@media (max-width: 1200px) {
+  .cgRow {
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+  }
+  
+  .imageCell {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .summaryRow {
+    gap: 0.5rem;
+  }
+
+  .totalRow,
+  .cgRow,
+  .detailRow {
+    grid-template-columns: 1fr;
+  }
+
+  .cell {
+    min-height: auto;
+    padding: 0.75rem;
+  }
+
+  .cellHorizontal {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .label {
+    font-size: 0.7rem;
+  }
+
+  .value {
+    font-size: 1.25rem;
+  }
+}
+
+/* ==================== ANIMAÇÕES ==================== */
+.cell {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

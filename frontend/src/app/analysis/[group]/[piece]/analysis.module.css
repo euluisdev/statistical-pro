@@ -429,3 +429,18 @@
 .tableWrapper::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
 }
+
+/*colum*/
+.green {
+  background-color: #009900; 
+  color: black;
+}
+.yellow {
+  background-color: #ffcc00e9; 
+  color: black;
+}
+.red {
+  background-color: #cc0000;
+  color: white;
+}
+

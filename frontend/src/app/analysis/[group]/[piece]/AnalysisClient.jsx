@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./analysis.module.css";
+import summaryStyles from "./summary.module.css";
 
 export default function AnalysisPage() {
   const params = useParams();
@@ -93,10 +94,20 @@ export default function AnalysisPage() {
 
   const isProcessing = generating || calculating;
 
+
+  const cpGte133 = statistics?.characteristics.filter(c => c.cp >= 1.33).length || 0;
+  const cpkGte133 = statistics?.characteristics.filter(c => c.cpk >= 1.33).length || 0;
+  const cp1to133 = statistics?.characteristics.filter(c => c.cp >= 1.0 && c.cp < 1.33).length || 0;
+  const cpk1to133 = statistics?.characteristics.filter(c => c.cpk >= 1.0 && c.cpk < 1.33).length || 0;
+  const cpLt1 = statistics?.characteristics.filter(c => c.cp < 1.0).length || 0;
+  const cpkLt1 = statistics?.characteristics.filter(c => c.cpk < 1.0).length || 0;
+  const cg76to100 = statistics?.characteristics.filter(c => c.classification === "1 ≤ CP < 1.33").length || 0;
+  const total = statistics?.summary.total_characteristics || 0;
+
   return (
     <div className={styles.pageContainer}>
       <div className={styles.contentWrapper}>
-        {/* HEADER */}
+        {/*header*/}
         <div className={styles.header}>
           <div className={styles.headerTop}>
             <h1 className={styles.title}>
@@ -123,7 +134,7 @@ export default function AnalysisPage() {
                 onChange={(e) => setSelectedYear(Number(e.target.value))}
                 className={styles.filterSelect}
               >
-                {[2023, 2024, 2025, 2026].map(y => (
+                {[2025, 2026, 2027, 2028].map(y => (
                   <option key={y} value={y}>{y}</option>
                 ))}
               </select>
@@ -148,11 +159,11 @@ export default function AnalysisPage() {
             >
               {generating && "⏳ Gerando..."}
               {calculating && "📊 Calculando..."}
-              {!isProcessing && "🚀 Carregar Dados"}
+              {!isProcessing && "Carregar Dados"}
             </button>
           </div>
 
-          {/* HISTÓRICO */}
+          {/*history*/}
           {availableFiles.length > 0 && (
             <div className={styles.historyContainer}>
               <p className={styles.historyTitle}>📂 Histórico disponível:</p>
@@ -178,47 +189,185 @@ export default function AnalysisPage() {
           )}
         </div>
 
-        {/* RESUMO */}
+                {/* RESUMO */}
         {statistics && statistics.summary && (
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryGrid}>
-              <div className={styles.summaryItem}>
-                <div className={styles.summaryLabel}>TOTAL</div>
-                <div className={styles.summaryValue}>{statistics.total_measurements}</div>
-                <div className={styles.summarySubvalue}>
-                  {showPercentage && `${statistics.summary.overall_ok_percent}%`}
-                </div>
+          <div className={summaryStyles.summaryCard}>
+            {/* LINHA 1 - TOTAL */}
+            <div className={`${summaryStyles.summaryRow} ${summaryStyles.totalRow}`}>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
+                <span className={summaryStyles.label}>TOTAL</span>
               </div>
               
-              <div className={`${styles.summaryItem} ${styles.highlight}`}>
-                <div className={styles.summaryLabel}>CG</div>
-                <div className={styles.summaryValue}>{statistics.summary.cg_count}</div>
-                <div className={styles.summarySubvalue}>{statistics.summary.cg_percent}%</div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
+                <span className={summaryStyles.value}>{statistics.total_measurements}</span>
               </div>
               
-              <div className={styles.summaryItem}>
-                <div className={styles.summaryLabel}>CP</div>
-                <div className={styles.summaryValue}>{statistics.summary.avg_cp}</div>
-              </div>
-              
-              <div className={styles.summaryItem}>
-                <div className={styles.summaryLabel}>CPK</div>
-                <div className={styles.summaryValue}>{statistics.summary.avg_cpk}</div>
-              </div>
-              
-              <div className={styles.summaryItem}>
-                <div className={styles.summaryLabel}>OH</div>
-                <div className={styles.summaryValue}>
-                  {statistics.summary.total_characteristics}
-                </div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
                 {showPercentage && (
-                  <div className={styles.summarySubvalue}>100%</div>
+                  <span className={summaryStyles.value}>100,00%</span>
                 )}
               </div>
+            </div>
+
+            {/* LINHA 2 - CG */}
+            <div className={`${summaryStyles.summaryRow} ${summaryStyles.cgRow}`}>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
+                <span className={summaryStyles.label}>CG</span>
+              </div>
               
-              <div className={styles.summaryItem}>
-                <div className={styles.summaryLabel}>PU</div>
-                <div className={styles.summaryValue}>0,30%</div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgGray}`}>
+                <span className={summaryStyles.value}>{statistics.summary.cg_count}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.value}>{statistics.summary.cg_percent}%</span>
+                )}
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
+                <span className={summaryStyles.label}>CP</span>
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
+                <span className={summaryStyles.label}>QH</span>
+                <span className={summaryStyles.valueMedium}>{total}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>100,00%</span>
+                )}
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
+                <span className={summaryStyles.label}>CPK</span>
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
+                <span className={summaryStyles.label}>QH</span>
+                <span className={summaryStyles.valueMedium}>{total}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>100,00%</span>
+                )}
+              </div>
+            </div>
+
+            {/* LINHA 3 - CG ≤ 75% */}
+            <div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+                <span className={`${summaryStyles.label} ${summaryStyles.labelSmall}`}>CG ≤ 75%</span>
+              </div>
+              
+              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgGreen}`}>
+                <span className={summaryStyles.value}>{statistics.summary.cg_75_count}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.value}>{statistics.summary.cg_75_percent}%</span>
+                )}
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+                <span className={summaryStyles.label}>CP ≥ 1,33</span>
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+                <span className={summaryStyles.valueMedium}>{cpGte133}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>
+                    {total > 0 ? ((cpGte133 / total) * 100).toFixed(2) : 0}%
+                  </span>
+                )}
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+                <span className={summaryStyles.label}>CPK ≥ 1,33</span>
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
+                <span className={summaryStyles.valueMedium}>{cpkGte133}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>
+                    {total > 0 ? ((cpkGte133 / total) * 100).toFixed(2) : 0}%
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* LINHA 4 - 75% < CG ≤ 100% */}
+            <div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+                <span className={`${summaryStyles.label} ${summaryStyles.labelSmall}`}>75% &lt; CG ≤ 100%</span>
+              </div>
+              
+              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgYellow}`}>
+                <span className={summaryStyles.value}>{cg76to100}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.value}>
+                    {total > 0 ? ((cg76to100 / total) * 100).toFixed(2) : 0}%
+                  </span>
+                )}
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+                <span className={summaryStyles.label}>1 ≤ CP &lt; 1,33</span>
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+                <span className={summaryStyles.valueMedium}>{cp1to133}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>
+                    {total > 0 ? ((cp1to133 / total) * 100).toFixed(2) : 0}%
+                  </span>
+                )}
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+                <span className={summaryStyles.label}>1 ≤ CPK &lt; 1,33</span>
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgYellow}`}>
+                <span className={summaryStyles.valueMedium}>{cpk1to133}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>
+                    {total > 0 ? ((cpk1to133 / total) * 100).toFixed(2) : 0}%
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* LINHA 5 - CG < 100% */}
+            <div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.label}>CG &lt; 100%</span>
+              </div>
+              
+              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.value}>{cpkLt1}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.value}>
+                    {total > 0 ? ((cpkLt1 / total) * 100).toFixed(2) : 0}%
+                  </span>
+                )}
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.label}>CP &lt; 1</span>
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.valueMedium}>{cpLt1}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>
+                    {total > 0 ? ((cpLt1 / total) * 100).toFixed(2) : 0}%
+                  </span>
+                )}
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.label}>CPK &lt; 1</span>
+              </div>
+
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.valueMedium}>{cpkLt1}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>
+                    {total > 0 ? ((cpkLt1 / total) * 100).toFixed(2) : 0}%
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -234,7 +383,7 @@ export default function AnalysisPage() {
                   <th>AX</th>
                   <th>CALC</th>
                   <th>LIE</th>
-                  <th>LSE</th>
+                  <th>LSE</th> 
                   <th>Média</th>
                   <th>Range</th>
                   <th>Sigma</th>
@@ -244,8 +393,6 @@ export default function AnalysisPage() {
                   <th>N</th>
                   <th>Min</th>
                   <th>Max</th>
-                  <th>Std</th>
-                  <th>Nominal</th>
                 </tr>
               </thead>
               <tbody>
@@ -257,23 +404,21 @@ export default function AnalysisPage() {
                   </tr>
                 ) : (
                   statistics.characteristics.map((char, idx) => (
-                    <tr key={idx} className={getRowClass(char.cpk, char.cp)}>
+                    <tr key={idx}>
                       <td>{char.nome_ponto}</td>
                       <td>{char.eixo}</td>
                       <td>TRUE</td>
-                      <td>{char.lsl.toFixed(2)}</td>
-                      <td>{char.usl.toFixed(2)}</td>
-                      <td className={styles.cellValue}>{char.mean.toFixed(3)}</td>
-                      <td>{char.range.toFixed(2)}</td>
-                      <td>{char.sigma.toFixed(2)}</td>
-                      <td className={styles.cellValue}>{char.cp.toFixed(2)}</td>
-                      <td className={styles.cellValue}>{char.cpk.toFixed(2)}</td>
+                      <td>{char.tol_minus.toFixed(2)}</td> 
+                      <td>{char.tol_plus.toFixed(2)}</td> 
+                      <td className={getMeanClass(char.mean, char.lsl, char.usl)}>{char.mean.toFixed(3)}</td>
+                      <td>{char.range.toFixed(3)}</td>
+                      <td>{char.sigma.toFixed(3)}</td>
+                      <td className={getCpClass(char.cp)}>{char.cp.toFixed(2)}</td>
+                      <td className={getCpkClass(char.cpk)}>{char.cpk.toFixed(2)}</td>
                       <td className={styles.riskColumn}>{char.risk_level}</td>
                       <td>{char.n}</td>
                       <td>{char.min.toFixed(3)}</td>
                       <td>{char.max.toFixed(3)}</td>
-                      <td>{char.std.toFixed(3)}</td>
-                      <td>{char.nominal.toFixed(2)}</td>
                     </tr>
                   ))
                 )}
@@ -297,10 +442,28 @@ export default function AnalysisPage() {
   );
 }
 
-function getRowClass(cpk, cp) {
-  if (cpk < 1.0) return styles.rowRed;
-  if (cpk < 1.33) return styles.rowYellow;
-  if (cp >= 1.33 && cpk >= 1.67) return styles.rowGreen;
-  if (cpk >= 1.33) return styles.rowGreenLight;
-  return styles.rowOrange;
+function getCpClass(cp) {
+  if (cp >= 1.33) return styles.green;
+  if (cp >= 1.0) return styles.yellow;
+  return styles.red;
 }
+
+function getCpkClass(cpk) {
+  if (cpk >= 1.33) return styles.green;
+  if (cpk >= 1.0) return styles.yellow;
+  return styles.red;
+}
+
+function getMeanClass(mean, lsl, usl) {
+  // 1) Fora da tolerância → VERMELHO
+  if (mean < lsl || mean > usl) return styles.red;
+
+  // 2) Percentual dentro da tolerância
+  const absMean = Math.abs(mean);
+  const maxDev = Math.min(Math.abs(lsl), Math.abs(usl)); // referência correta
+  const percent = absMean / maxDev;
+
+  if (percent >= 0.8) return styles.yellow;
+  return styles.green;
+}
+
