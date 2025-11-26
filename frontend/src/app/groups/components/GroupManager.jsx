@@ -52,12 +52,12 @@ export default function GroupManager({ groups, onGroupCreated, onGroupDeleted, o
     <>
       {/* CRIAR GRUPO */}
       <div className="card">
-        <h2>Novo Grupo</h2>
+        <h2>Novo Conjunto</h2>
         <form className="form" onSubmit={createGroup}>
           <input
             className="input-sm"
             type="text"
-            placeholder="Nome do grupo"
+            placeholder="Nome do conjunto"
             value={newGroup}
             onChange={(e) => setNewGroup(e.target.value)}
             required
@@ -70,7 +70,7 @@ export default function GroupManager({ groups, onGroupCreated, onGroupDeleted, o
 
       {/* SELECIONAR GRUPO */}
       <div className="card">
-        <h2>📁 Grupo</h2>
+        <h2>Conjunto</h2>
         <select
           className="input-sm"
           value={selectedGroup}

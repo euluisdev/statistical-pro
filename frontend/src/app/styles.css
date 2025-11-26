@@ -120,9 +120,10 @@
 
 /*bnt*/
 .btn-sm {
+  margin-top: 0.5rem;
   padding: 0.5rem;
   border: none;
-  border-radius: 2px;
+  border-radius: 1px;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -137,7 +138,6 @@
 }
 
 .btn-sm:disabled {
-  margin-top: 0.5rem;
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
@@ -160,8 +160,8 @@
 
 .btn-row {
   display: flex;
-  gap: 0.5rem;
-}
+  gap: 0.8rem;
+}  
 
 .btn-row .btn-sm {
   flex: 1;

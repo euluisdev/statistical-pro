@@ -118,81 +118,75 @@ export default function TxtManager({ selectedGroup, selectedPiece, onDataExtract
   };
 
   return (
-    <>
-      {/* UPLOAD TXT */}
-      <div className="card">
-        <h2>Importar</h2>
-        
-        <label className="file-input-sm">
-          <FileText size={14} />
-          {txtFiles.length > 0 ? `${txtFiles.length} arq` : "TXT"}
-          <input
-            type="file"
-            multiple
-            accept=".txt"
-            onChange={(e) => setTxtFiles([...e.target.files])}
-          />
-        </label>
+  <>
+    {/* UPLOAD TXT */}
+    <div className="card">
+      <h2>Importar</h2>
+
+      <label className="file-input-sm">
+        <FileText size={14} />
+        {txtFiles.length > 0 ? `${txtFiles.length} arq` : "TXT"}
+        <input
+          type="file"
+          multiple
+          accept=".txt"
+          onChange={(e) => setTxtFiles([...e.target.files])}
+        />
+      </label>
+
+      <button
+        className="btn-sm btn-primary"
+        onClick={uploadTxt}
+        disabled={!selectedGroup || !selectedPiece || txtFiles.length === 0}
+        title="Enviar"
+      >
+        <Upload size={16} />
+      </button>
+    </div>
+
+    {/* LISTAR TXT */}
+    <div className="card">
+      <h2>Arquivos</h2>
+
+      {/* A caixa SEMPRE aparece */}
+      <div className="txt-box-sm">
+        {txtList.length === 0 ? (
+          <p className="info-text-sm">No file</p>
+        ) : (
+          txtList.map((file) => (
+            <label key={file} className="txt-line-sm">
+              <input
+                type="checkbox"
+                checked={selected.includes(file)}
+                onChange={() => toggleSelect(file)}
+              />
+              <span>{file.substring(0, 12)}...</span>
+            </label>
+          ))
+        )}
+      </div>
+
+      {/* Botões SEMPRE aparecem */}
+      <div className="btn-row">
+        <button
+          className="btn-sm btn-danger"
+          onClick={deleteSelected}
+          disabled={selected.length === 0}
+          title="Apagar"
+        >
+          <Trash2 size={16} />
+        </button>
 
         <button
           className="btn-sm btn-primary"
-          onClick={uploadTxt}
-          disabled={!selectedGroup || !selectedPiece || txtFiles.length === 0}
-          title="Enviar"
+          onClick={extractData}
+          disabled={loadingExtract}
+          title="Extrair"
         >
-          <Upload size={16} />
+          {loadingExtract ? "⏳" : <RefreshCw size={16} />}
         </button>
       </div>
-
-      {/* LISTAR TXT */}
-      <div className="card">
-        <h2>Arquivos</h2>
-
-        {!selectedPiece && (
-          <p className="info-text-sm">Selecione peça</p>
-        )}
-
-        {selectedPiece && txtList.length === 0 && (
-          <p className="info-text-sm">Nenhum arquivo</p>
-        )}
-
-        {txtList.length > 0 && (
-          <>
-            <div className="txt-box-sm">
-              {txtList.map((file) => (
-                <label key={file} className="txt-line-sm">
-                  <input
-                    type="checkbox"
-                    checked={selected.includes(file)}
-                    onChange={() => toggleSelect(file)}
-                  />
-                  <span>{file.substring(0, 12)}...</span>
-                </label>
-              ))}
-            </div>
-
-            <div className="btn-row">
-              <button
-                className="btn-sm btn-danger"
-                onClick={deleteSelected}
-                disabled={selected.length === 0}
-                title="Apagar"
-              >
-                <Trash2 size={16} />
-              </button>
-
-              <button
-                className="btn-sm btn-primary"
-                onClick={extractData}
-                disabled={loadingExtract}
-                title="Extrair"
-              >
-                {loadingExtract ? "⏳" : <RefreshCw size={16} />}
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </>
-  );
-}
+    </div>
+  </>
+);
+};
