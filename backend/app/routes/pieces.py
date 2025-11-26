@@ -31,22 +31,6 @@ def get_pieces(group: str):
     return list_pieces(group)
 
 
-@router.post("", status_code=201)
-def post_piece(req: CreatePieceReq):
-    try:
-        ok, info = create_piece(
-            req.group,
-            req.part_number,
-            req.part_name,
-            req.model
-        )
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-    if not ok:
-        raise HTTPException(status_code=409, detail=info)
-
-    return {"created": info}
 
 @router.delete("/{group}/{part_number}")
 def delete_piece_route(group: str, part_number: str):
@@ -430,3 +414,76 @@ def calculate_piece_statistics(
         "year": year,
         "statistics": stats
     }
+
+
+@router.post("", status_code=201)
+async def post_piece(
+    group: str = Form(...),
+    part_number: str = Form(...),
+    part_name: str = Form(...),
+    model: str = Form(...),
+    image: UploadFile = File(None)  
+):
+    try:
+        group_safe = sanitize_piece_name(group)
+        part_safe = sanitize_piece_name(part_number)
+        
+        ok, info = create_piece(
+            group,
+            part_number,
+            part_name,
+            model
+        )
+        
+        if not ok:
+            raise HTTPException(status_code=409, detail=info)
+        
+        #if send img - save in the folder imagens/
+        if image and image.filename:
+            #se pasta existe
+            image_dir = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                "data", "groups", group_safe, "pieces", part_safe, "imagens"
+            )
+            os.makedirs(image_dir, exist_ok=True)
+            
+            #get extensão original
+            ext = os.path.splitext(image.filename)[1]
+            image_path = os.path.join(image_dir, f"peca{ext}")
+            
+            #save img
+            with open(image_path, "wb") as f:
+                shutil.copyfileobj(image.file, f)
+            
+            return {"created": info, "image": f"peca{ext}"}
+        
+        return {"created": info}
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+
+
+@router.get("/{group}/{piece}/imagens")
+def get_piece_image(group: str, piece: str):
+    """
+    Retorna a imagem da peça.
+    """
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+    
+    image_dir = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "data", "groups", group_safe, "pieces", piece_safe, "imagens"
+    )
+    
+    if not os.path.exists(image_dir):
+        raise HTTPException(404, "Pasta de imagens não encontrada")
+    
+    # Procura por qualquer arquivo que comece com "peca"
+    for file in os.listdir(image_dir):
+        if file.startswith("peca"):
+            image_path = os.path.join(image_dir, file)
+            return FileResponse(image_path)
+    
+    raise HTTPException(404, "Imagem não encontrada")

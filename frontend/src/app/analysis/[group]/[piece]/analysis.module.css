@@ -1,7 +1,7 @@
-/* ==================== LAYOUT GERAL ==================== */
+/*layout general*/
 .pageContainer {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #444;
   padding: 1.5rem;
 }
 
@@ -10,7 +10,7 @@
   margin: 0 auto;
 }
 
-/* ==================== HEADER ==================== */
+/* header */
 .header {
   background: white;
   border-radius: 12px;
@@ -49,7 +49,7 @@
   cursor: pointer;
 }
 
-/* ==================== FILTROS ==================== */
+/* filts*/
 .filtersContainer {
   display: flex;
   gap: 1rem;
@@ -92,7 +92,7 @@
   text-align: center;
 }
 
-/* ==================== BOTÕES ==================== */
+/* bnts */
 .btnPrimary,
 .btnSecondary {
   padding: 0.625rem 1.25rem;
@@ -134,7 +134,7 @@
   transform: none;
 }
 
-/* ==================== HISTÓRICO ==================== */
+/*historyy*/
 .historyContainer {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
@@ -174,7 +174,7 @@
   color: white;
 }
 
-/* ==================== RESUMO ==================== */
+/*resumo*/
 .summaryCard {
   background: white;
   border-radius: 12px;
@@ -226,7 +226,7 @@
   font-weight: 500;
 }
 
-/* ==================== TABELA ==================== */
+/*table*/
 .tableCard {
   background: white;
   border-radius: 12px;
@@ -275,7 +275,7 @@
   font-family: 'Courier New', monospace;
 }
 
-/* Cores das linhas baseadas em Cp/Cpk */
+/* Cores das linhas Cp/Cpk */
 .rowGreen {
   background-color: #c6f6d5 !important;
 }
@@ -296,7 +296,7 @@
   background-color: #fed7d7 !important;
 }
 
-/* Destaque para coluna RISK */
+/* colunn risk */
 .riskColumn {
   background-color: #fef5e7 !important;
   font-weight: 700;
@@ -309,17 +309,17 @@
 }
 
 .cellDanger {
-  color: #c53030;
+  color: red;
   font-weight: 700;
 }
 
 .cellWarning {
-  color: #d69e2e;
+  color: yellow;
   font-weight: 700;
 }
 
 .cellSuccess {
-  color: #2f855a;
+  color: green;
 }
 
 /* Colunas específicas com destaque */
@@ -432,15 +432,15 @@
 
 /*colum*/
 .green {
-  background-color: #009900; 
+  background-color: green; 
   color: black;
 }
 .yellow {
-  background-color: #ffcc00e9; 
+  background-color: yellow; 
   color: black;
 }
 .red {
-  background-color: #cc0000;
+  background-color: red;
   color: white;
 }
 

@@ -20,6 +20,8 @@ export default function AnalysisPage() {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [showPercentage, setShowPercentage] = useState(true);
 
+  const [pieceImageUrl, setPieceImageUrl] = useState(null);
+
   function getCurrentWeek() {
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 1);
@@ -66,6 +68,9 @@ export default function AnalysisPage() {
 
       const json = await resCalc.json();
       setStatistics(json.statistics);
+
+      setPieceImageUrl(`http://localhost:8000/pieces/${group}/${piece}/imagens`);
+
       
       await loadAvailableFiles();
     } catch (err) {
@@ -125,7 +130,7 @@ export default function AnalysisPage() {
             </div>
           </div>
 
-          {/* FILTROS */}
+          {/* filts */}
           <div className={styles.filtersContainer}>
             <div className={styles.filterGroup}>
               <label className={styles.filterLabel}>YEAR</label>
@@ -189,10 +194,11 @@ export default function AnalysisPage() {
           )}
         </div>
 
-                {/* RESUMO */}
+                {/*resumo */}
         {statistics && statistics.summary && (
+         <div className={summaryStyles.summaryWrapper}>
           <div className={summaryStyles.summaryCard}>
-            {/* LINHA 1 - TOTAL */}
+            {/*linha 1 - total */}
             <div className={`${summaryStyles.summaryRow} ${summaryStyles.totalRow}`}>
               <div className={`${summaryStyles.cell} ${summaryStyles.bgGray}`}>
                 <span className={summaryStyles.label}>TOTAL</span>
@@ -209,45 +215,45 @@ export default function AnalysisPage() {
               </div>
             </div>
 
-{/* LINHA 2 - CG (LARANJA) */}
-<div className={`${summaryStyles.summaryRow} ${summaryStyles.cgRow}`}>
-  <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
-    <span className={summaryStyles.label}>CG</span>
-  </div>
+            {/*linha 2 - cg*/}
+            <div className={`${summaryStyles.summaryRow} ${summaryStyles.cgRow}`}>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+                <span className={summaryStyles.label}>CG</span>
+              </div>
   
-  <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgOrange}`}>
-    <span className={summaryStyles.value}>{statistics.summary.cg_green}</span>
-    {showPercentage && (
-      <span className={summaryStyles.value}>{statistics.summary.cg_green_percent}%</span>
-    )}
-  </div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgOrange}`}>
+                <span className={summaryStyles.value}>{statistics.summary.cg_green}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.value}>{statistics.summary.cg_green_percent}%</span>
+                )}
+              </div>
 
-  <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
-    <span className={summaryStyles.label}>CP</span>
-  </div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+                <span className={summaryStyles.label}>CP</span>
+              </div>
 
-  <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
-    <span className={summaryStyles.label}>QH</span>
-    <span className={summaryStyles.valueMedium}>{total}</span>
-    {showPercentage && (
-      <span className={summaryStyles.subvalue}>100,00%</span>
-    )}
-  </div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+                <span className={summaryStyles.label}>QH</span>
+                <span className={summaryStyles.valueMedium}>{total}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>100,00%</span>
+                )}
+              </div>
+            
+                <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+                  <span className={summaryStyles.label}>CPK</span>
+                </div>
+            
+                <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
+                  <span className={summaryStyles.label}>QH</span>
+                  <span className={summaryStyles.valueMedium}>{total}</span>
+                  {showPercentage && (
+                    <span className={summaryStyles.subvalue}>100,00%</span>
+                  )}
+                </div>
+              </div>
 
-    <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
-      <span className={summaryStyles.label}>CPK</span>
-    </div>
-
-    <div className={`${summaryStyles.cell} ${summaryStyles.bgOrange}`}>
-      <span className={summaryStyles.label}>QH</span>
-      <span className={summaryStyles.valueMedium}>{total}</span>
-      {showPercentage && (
-        <span className={summaryStyles.subvalue}>100,00%</span>
-      )}
-    </div>
-  </div>
-
-{/* LINHA 3 - CG ≤ 75% (VERDE) */}
+{/* linha 3 cg ≤ 75% verde */}
 <div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
   <div className={`${summaryStyles.cell} ${summaryStyles.bgGreen}`}>
     <span className={`${summaryStyles.label} ${summaryStyles.labelSmall}`}>CG ≤ 75%</span>
@@ -319,45 +325,63 @@ export default function AnalysisPage() {
   </div>
 </div>
 
-{/* LINHA 5 - CG < 100% (VERMELHO) */}
-<div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
-  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-    <span className={summaryStyles.label}>CG &lt; 100%</span>
-  </div>
+            {/* linha 5 cg < 100% red*/}
+            <div className={`${summaryStyles.summaryRow} ${summaryStyles.detailRow}`}>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.label}>CG &lt; 100%</span>
+              </div>
   
-  <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgRed}`}>
-    <span className={summaryStyles.value}>{statistics.summary.cg_red}</span>
-    {showPercentage && (
-      <span className={summaryStyles.value}>{statistics.summary.cg_red_percent}%</span>
-    )}
-  </div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.cellHorizontal} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.value}>{statistics.summary.cg_red}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.value}>{statistics.summary.cg_red_percent}%</span>
+                )}
+              </div>
 
-  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-    <span className={summaryStyles.label}>CP &lt; 1</span>
-  </div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.label}>CP &lt; 1</span>
+              </div>
 
-  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-    <span className={summaryStyles.valueMedium}>{statistics.summary.cp_red}</span>
-    {showPercentage && (
-      <span className={summaryStyles.subvalue}>{statistics.summary.cp_red_percent}%</span>
-    )}
-  </div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.valueMedium}>{statistics.summary.cp_red}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>{statistics.summary.cp_red_percent}%</span>
+                )}
+              </div>
 
-  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-    <span className={summaryStyles.label}>CPK &lt; 1</span>
-  </div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.label}>CPK &lt; 1</span>
+              </div>
 
-  <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
-    <span className={summaryStyles.valueMedium}>{statistics.summary.cpk_red}</span>
-    {showPercentage && (
-      <span className={summaryStyles.subvalue}>{statistics.summary.cpk_red_percent}%</span>
-    )}
-  </div>
-</div>
+              <div className={`${summaryStyles.cell} ${summaryStyles.bgRed}`}>
+                <span className={summaryStyles.valueMedium}>{statistics.summary.cpk_red}</span>
+                {showPercentage && (
+                  <span className={summaryStyles.subvalue}>{statistics.summary.cpk_red_percent}%</span>
+                )}
+              </div>
+            </div>
+            </div>
+
+          <div className={summaryStyles.summaryImageContainer}>
+      {pieceImageUrl ? (
+        <img 
+          src={pieceImageUrl}
+          alt="Imagem da peça"
+          className={summaryStyles.summaryImage}
+          onError={(e) => { e.target.style.display = "none"; }} 
+        />
+      ) : (
+        <div className={summaryStyles.noImage}>
+          <span style={{fontSize: '4rem'}}>🔩</span>
+          <span>Sem imagem</span>
+        </div>
+      )}
+
           </div>
+         </div>
         )}
 
-        {/* TABELA */}
+        {/*table*/}
         <div className={styles.tableCard}>
           <div className={styles.tableWrapper}>
             <table className={styles.dataTable}>

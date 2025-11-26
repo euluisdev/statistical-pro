@@ -1,40 +1,75 @@
-/* ==================== CONTAINER PRINCIPAL ==================== */
-.summaryCard {
+/* ==================== WRAPPER PARA LADO A LADO ==================== */
+.summaryWrapper {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
   background: white;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 0.8rem;
+  padding: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
-/* ==================== LINHAS DO RESUMO ==================== */
+.summaryCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 60%;
+  max-height: 20rem;
+}
+
+.summaryImageContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  max-width: 100%;
+  max-height: 20rem;
+}
+
+.summaryImage {
+  max-width: 100%;
+  max-height: 15rem;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.noImage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e0;
+  font-size: 1.2rem;
+  gap: 0.5rem;
+}
+
+/* ==================== RESTO DO CSS (SEM ALTERAÇÃO) ==================== */
 .summaryRow {
   display: grid;
-  gap: 0.25rem;
-  margin-bottom: 0.5rem;
-  max-width: 50%;
+  gap: 0.15rem;
+  margin-bottom: 0.1rem;
 }
 
 .summaryRow:last-child {
   margin-bottom: 0;
 }
 
-/* LINHA 1 - TOTAL (3 colunas) */
 .totalRow {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-/* LINHA 2 - CG COM IMAGEM (7 colunas) */
 .cgRow {
   grid-template-columns: 0.8fr 1.5fr 0.8fr 1.2fr 0.8fr 1.2fr;
 }
 
-/* LINHAS 3, 4, 5 - DETALHES (6 colunas) */
 .detailRow {
   grid-template-columns: 0.8fr 1.5fr 0.8fr 1.2fr 0.8fr 1.2fr;
 }
 
-/* ==================== CÉLULAS ==================== */
 .cell {
   padding: 0.2rem 0.2rem;
   border-radius: 4px;
@@ -43,7 +78,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 40px;
+  min-height: 30px;
 }
 
 .cellHorizontal {
@@ -53,7 +88,6 @@
   padding: 0.3rem 0.8rem;
 }
 
-/* ==================== CORES DAS LINHAS ==================== */
 .bgGray {
   background: #e8e8e8;
 }
@@ -74,7 +108,6 @@
   background: RED;
 }
 
-/* ==================== TEXTOS ==================== */
 .label {
   font-size: 0.7rem;
   font-weight: 700;
@@ -111,14 +144,15 @@
   margin-top: 0.2rem;
 }
 
-/* ==================== RESPONSIVO ==================== */
 @media (max-width: 1200px) {
-  .cgRow {
-    grid-template-columns: 1fr 2fr 1fr 2fr;
+  .summaryWrapper {
+    flex-direction: column;
   }
   
-  .imageCell {
-    display: none;
+  .summaryCard,
+  .summaryImageContainer {
+    flex: none;
+    width: 100%;
   }
 }
 
@@ -152,7 +186,6 @@
   }
 }
 
-/* ==================== ANIMAÇÕES ==================== */
 .cell {
   transition: transform 0.2s, box-shadow 0.2s;
 }
