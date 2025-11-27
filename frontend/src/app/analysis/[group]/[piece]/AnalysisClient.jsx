@@ -2,6 +2,9 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArrowBigDown, ArrowBigRight, ChartLine, House } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 import styles from "./analysis.module.css";
 import summaryStyles from "./summary.module.css";
 
@@ -9,6 +12,8 @@ export default function AnalysisPage() {
   const params = useParams();
   const group = params?.group;
   const piece = params?.piece;
+
+  const router = useRouter();
   
   const [statistics, setStatistics] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -116,7 +121,7 @@ export default function AnalysisPage() {
         <div className={styles.header}>
           <div className={styles.headerTop}>
             <h1 className={styles.title}>
-              Análise Estatística – {group} / {piece}
+              ANÁLISE ESTATÍSTICA: {group} / {piece}
             </h1>
             
             <div className={styles.checkboxContainer}>
@@ -161,17 +166,28 @@ export default function AnalysisPage() {
               onClick={generateAndCalculate}
               disabled={isProcessing}
               className={styles.btnPrimary}
-            >
+            > 
               {generating && "⏳ Gerando..."}
               {calculating && "📊 Calculando..."}
-              {!isProcessing && "📊"}
+              {!isProcessing && <ArrowBigDown />}
             </button>
+            
+            <button className={styles.btnRest}>
+              <House onClick={() => router.push("/")} />
+            </button>
+            <button className={styles.btnRest}>
+              <ChartLine />
+            </button>
+            <button className={styles.btnRest}>
+              <ArrowBigRight />
+            </button>
+            
           </div>
 
           {/*history*/}
           {availableFiles.length > 0 && (
             <div className={styles.historyContainer}>
-              <p className={styles.historyTitle}>📂 Histórico disponível:</p>
+              <p className={styles.historyTitle}>Histórico disponível:</p>
               <div className={styles.historyButtons}>
                 {availableFiles.map((f) => (
                   <button

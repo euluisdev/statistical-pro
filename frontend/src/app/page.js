@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import GroupManager from "./groups/components/GroupManager";
 import PieceManager from "./groups/components/PieceManager";
 import TxtManager from "./groups/components/TxtManager";
+import { ArrowBigRight, ChartLine, House, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked } from "lucide-react";
+
 import "./styles.css";
 
 export default function GroupsPage() {
@@ -91,9 +93,18 @@ export default function GroupsPage() {
             setMsg(`✓ ${data.length} linhas extraídas`);
           }}
         />
+
+  <div className="button-row-inside-grid">
+    <button className="btnRest"><House /></button>
+    <button className="btnRest"><ChartColumnStacked /></button>
+    <button className="btnRest"><ChartNoAxesCombined /></button>
+    <button className="btnRest"><TrendingUpDown /></button>
+    <button className="btnRest"><ChartLine /></button>
+    <button className="btnRest"><ArrowBigRight /></button>
+  </div>
       </div>
 
-      {/* TABELA DE DADOS */}
+      {/* TABELA DE DADOS */}       
       {parsedData.length > 0 && (
         <div className="table-container">
           <h2>📊 Dados Extraídos ({parsedData.length} linhas)</h2>
