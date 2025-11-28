@@ -10,7 +10,7 @@ import summaryStyles from "./summary.module.css";
 
 export default function AnalysisPage() {
   const params = useParams();
-  const group = params?.group;
+  const group = params?.group;  
   const piece = params?.piece;
 
   const router = useRouter();
