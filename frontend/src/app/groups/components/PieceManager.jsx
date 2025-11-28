@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Plus, Trash2, BarChart3, Image as ImageIcon } from "lucide-react";
 
 export default function PieceManager({ 
@@ -17,6 +18,8 @@ export default function PieceManager({
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const API = process.env.NEXT_PUBLIC_API_URL;
+
+  const router = useRouter();
 
   const createPiece = async (e) => {
     e.preventDefault();
@@ -146,7 +149,7 @@ export default function PieceManager({
             className="btn-sm btn-primary"
             onClick={() => {
               if (selectedGroup && selectedPiece) {
-                window.location.href = `/analysis/${selectedGroup}/${selectedPiece}`;
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}`);
               }
             }}
             disabled={!selectedGroup || !selectedPiece}

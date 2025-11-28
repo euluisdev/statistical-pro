@@ -487,3 +487,74 @@ def get_piece_image(group: str, piece: str):
             return FileResponse(image_path)
     
     raise HTTPException(404, "Imagem não encontrada")
+
+@router.get("/{group}/{piece}/report")
+def get_report_data(
+    group: str,
+    piece: str,
+    week: Optional[int] = Query(None),
+    year: Optional[int] = Query(None)
+):
+    """
+    Retorna dados agregados por semana para gerar o gráfico de relatório.
+    """
+    import pandas as pd
+    from datetime import datetime
+
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+
+    analysis_dir = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "data", "groups", group_safe, "pieces", piece_safe, "analysis"
+    )
+
+    if not os.path.exists(analysis_dir):
+        return {"weeks": []}
+
+    #list all file of analysis disponíveis
+    weeks_data = []
+
+    for file in sorted(os.listdir(analysis_dir)):
+        if file.startswith("analysis_") and file.endswith(".csv"):
+            try:
+                #extrai semana/ano do nome
+                parts = file.replace("analysis_", "").replace(".csv", "").split("_")
+                if len(parts) != 2:
+                    continue
+
+                file_year = int(parts[0])
+                file_week = int(parts[1].replace("W", ""))
+
+                #se semana/ano - filtra
+                if week and year:
+                    if file_week != week or file_year != year:
+                        continue
+
+                #carrega o CSV
+                csv_path = os.path.join(analysis_dir, file)
+                df = pd.read_csv(csv_path)
+
+                #calcula estatísticas
+                stats = calculate_statistics(df)
+
+                if stats and "summary" in stats:
+                    weeks_data.append({
+                        "year": file_year,
+                        "week": file_week,
+                        "green": stats["summary"]["cg_green"],
+                        "green_percent": stats["summary"]["cg_green_percent"],
+                        "yellow": stats["summary"]["cg_yellow"],
+                        "yellow_percent": stats["summary"]["cg_yellow_percent"],
+                        "red": stats["summary"]["cg_red"],
+                        "red_percent": stats["summary"]["cg_red_percent"],
+                        "total": stats["summary"]["total_characteristics"]
+                    })
+            except Exception as e:
+                print(f"Erro ao processar {file}: {e}")
+                continue
+
+    #ordena por ano/semana
+    weeks_data.sort(key=lambda x: (x["year"], x["week"]))
+
+    return {"weeks": weeks_data}

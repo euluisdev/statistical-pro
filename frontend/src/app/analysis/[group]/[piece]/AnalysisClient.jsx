@@ -179,7 +179,7 @@ export default function AnalysisPage() {
               <ChartLine />
             </button>
             <button className={styles.btnRest}>
-              <ArrowBigRight />
+              <ArrowBigRight  onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg`)} />
             </button>
             
           </div>
