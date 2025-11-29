@@ -18,6 +18,28 @@ export default function GroupsPage() {
   const [parsedData, setParsedData] = useState([]);
   const [msg, setMsg] = useState(null);
 
+  useEffect(() => {
+    const savedGroup = localStorage.getItem("selectedGroup");
+    const savedPiece = localStorage.getItem("selectedPiece");
+    const savedData = localStorage.getItem("parsedData");
+
+    if (savedGroup) setSelectedGroup(savedGroup);
+    if (savedPiece) setSelectedPiece(savedPiece);
+    if (savedData) setParsedData(JSON.parse(savedData));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("selectedGroup", selectedGroup);
+  }, [selectedGroup]);
+
+  useEffect(() => {
+    localStorage.setItem("selectedPiece", selectedPiece);
+  }, [selectedPiece]);
+
+  useEffect(() => {
+    localStorage.setItem("parsedData", JSON.stringify(parsedData));
+  }, [parsedData]);
+
   const loadGroups = async () => {
     try {
       const res = await fetch(`${API}/groups`);
@@ -95,7 +117,16 @@ export default function GroupsPage() {
         />
 
   <div className="button-row-inside-grid">
-    <button className="btnRest"><House /></button>
+    <button className="btnRest"><House onClick={() => {
+      localStorage.removeItem("selectedGroup"), 
+      localStorage.removeItem("selectedPiece"), 
+      localStorage.removeItem("inputValues"), 
+        setSelectedGroup("");
+        setSelectedPiece("");
+        setParsedData([]);
+      }} 
+    />
+    </button>
     <button className="btnRest"><ChartColumnStacked /></button>
     <button className="btnRest"><ChartNoAxesCombined /></button>
     <button className="btnRest"><TrendingUpDown /></button>

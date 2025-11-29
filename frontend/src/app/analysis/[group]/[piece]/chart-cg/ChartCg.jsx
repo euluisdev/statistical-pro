@@ -81,7 +81,7 @@ export default function ReportClient({ params }) {
         throw new Error("Erro ao calcular estatísticas");
       }
 
-      //recarrega all the reports
+      //reload alls the reports
       await loadAllReports();
       await loadAvailableWeeks();
 
@@ -103,18 +103,18 @@ export default function ReportClient({ params }) {
     <div className={styles.pageContainer}>
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CG - {piece} - {group}
+          CG - {group} - {piece}
         </h1>
 
         <div className={styles.controls}>
           <div className={styles.filterGroup}>
-            <label>Ano</label>
+            <label>YEAR</label>
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(Number(e.target.value))}
               className={styles.select}
             >
-              {[2023, 2024, 2025, 2026, 2027, 2028].map((y) => (
+              {[2024, 2025, 2026, 2027, 2028].map((y) => (
                 <option key={y} value={y}>
                   {y}
                 </option>
@@ -123,7 +123,7 @@ export default function ReportClient({ params }) {
           </div>
 
           <div className={styles.filterGroup}>
-            <label>Semana</label>
+            <label>WEEK</label>
             <select
               value={selectedWeek}
               onChange={(e) => setSelectedWeek(Number(e.target.value))}
@@ -131,7 +131,7 @@ export default function ReportClient({ params }) {
             >
               {Array.from({ length: 53 }, (_, i) => i + 1).map((w) => (
                 <option key={w} value={w}>
-                  Semana {w}
+                  W {w}
                 </option>
               ))}
             </select>
@@ -142,7 +142,7 @@ export default function ReportClient({ params }) {
             disabled={loading}
             className={styles.btnGenerate}
           >
-            {loading ? "⏳ Gerando..." : "📊 Gerar Semana"}
+            {loading ? "⏳ Gerando..." : "📊"}
           </button>
 
           <button
@@ -152,6 +152,27 @@ export default function ReportClient({ params }) {
             ← Voltar
           </button>
         </div>
+
+        {availableWeeks.length > 0 && (
+        <div className={styles.historyContainer}>
+          <h3>HISTÓRICO - {availableWeeks.length}</h3>
+          <div className={styles.historyGrid}>
+            {availableWeeks.map((file) => (
+              <div
+                key={file.filename}
+                className={styles.historyItem}
+              >
+                <span className={styles.historyWeek}>
+                  {file.year} - W{file.week}
+                </span>
+                <span className={styles.historyDate}>
+                  {new Date(file.modified).toLocaleDateString("pt-BR")}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       </div>
 
       {chartData ? (
@@ -182,27 +203,6 @@ export default function ReportClient({ params }) {
               ? "Gerando relatório..."
               : "Nenhum relatório gerado ainda. Selecione semana/ano e clique em 'Gerar Semana'"}
           </p>
-        </div>
-      )}
-
-      {availableWeeks.length > 0 && (
-        <div className={styles.historyContainer}>
-          <h3>Semanas Geradas ({availableWeeks.length})</h3>
-          <div className={styles.historyGrid}>
-            {availableWeeks.map((file) => (
-              <div
-                key={file.filename}
-                className={styles.historyItem}
-              >
-                <span className={styles.historyWeek}>
-                  {file.year} - S{file.week}
-                </span>
-                <span className={styles.historyDate}>
-                  {new Date(file.modified).toLocaleDateString("pt-BR")}
-                </span>
-              </div>
-            ))}
-          </div>
         </div>
       )}
     </div>
