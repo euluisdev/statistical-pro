@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import styles from "./chartcg.module.css";
+import styles from "./chartcpcpk.module.css";
 
-//import Plotly dinamicamente para evitar problemas de SSR
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-export default function ReportClient({ params }) {
+export default function ReportCpCpkClient({ params }) {
   const { group, piece } = params;
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -17,8 +15,6 @@ export default function ReportClient({ params }) {
   const [availableWeeks, setAvailableWeeks] = useState([]);
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const router = useRouter();
 
   function getCurrentWeek() {
     const now = new Date();
@@ -30,7 +26,7 @@ export default function ReportClient({ params }) {
 
   useEffect(() => {
     loadAvailableWeeks();
-    loadAllReports(); //all history
+    loadAllReports();
   }, [group, piece]);
 
   async function loadAvailableWeeks() {
@@ -45,8 +41,9 @@ export default function ReportClient({ params }) {
 
   async function loadAllReports() {
     try {
-      const res = await fetch(`${API}/pieces/${group}/${piece}/report`);
+      const res = await fetch(`${API}/pieces/${group}/${piece}/report/cp-cpk`);
       const json = await res.json();
+      console.log(json);
       
       if (json.weeks && json.weeks.length > 0) {
         setReportData(json.weeks);
@@ -60,7 +57,6 @@ export default function ReportClient({ params }) {
     setLoading(true);
 
     try {
-      //gerar the analysis da week selected
       const resGen = await fetch(
         `${API}/pieces/${group}/${piece}/generate_analysis?week=${selectedWeek}&year=${selectedYear}`,
         { method: "POST" }
@@ -70,7 +66,6 @@ export default function ReportClient({ params }) {
         throw new Error("Erro ao gerar análise");
       }
 
-      //calcula estatísticas of week
       const resStats = await fetch(
         `${API}/pieces/${group}/${piece}/calculate_statistics?week=${selectedWeek}&year=${selectedYear}`,
         { method: "POST" }
@@ -80,7 +75,6 @@ export default function ReportClient({ params }) {
         throw new Error("Erro ao calcular estatísticas");
       }
 
-      //reload alls the reports
       await loadAllReports();
       await loadAvailableWeeks();
 
@@ -93,16 +87,19 @@ export default function ReportClient({ params }) {
     }
   }
 
-  //prepara dados to the chart
-  const chartData = reportData && reportData.length > 0
-    ? prepareChartData(reportData, piece, group)
+  const cpChartData = reportData && reportData.length > 0
+    ? prepareChartData(reportData, "CP", piece, group)
+    : null;
+
+  const cpkChartData = reportData && reportData.length > 0
+    ? prepareChartData(reportData, "CPK", piece, group)
     : null;
 
   return (
     <div className={styles.pageContainer}>
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CG - {group} - {piece}
+          CP / CPK - {group} - {piece} 
         </h1>
 
         <div className={styles.controls}>
@@ -145,7 +142,7 @@ export default function ReportClient({ params }) {
           </button>
 
           <button
-            onClick={() => router.push(`/analysis/${group}/${piece}`)}
+            onClick={() => window.history.back()}
             className={styles.btnBack}
           >
             ← Voltar
@@ -174,26 +171,50 @@ export default function ReportClient({ params }) {
       )}
       </div>
 
-      {chartData ? (
-        <div className={styles.chartContainer}>
-          <Plot
-            data={chartData.data}
-            layout={chartData.layout}
-            config={{
-              displayModeBar: true,
-              displaylogo: false,
-              toImageButtonOptions: {
-                format: "png",
-                filename: `CG_${piece}_${selectedYear}`,
-                height: 800,
-                width: 1400,
-                scale: 2,
-              },
-              modeBarButtonsToAdd: ["toImage"],
-            }}
-            style={{ width: "100%", height: "700px" }}
-          />
-        </div>
+      {cpChartData && cpkChartData ? (
+        <>
+          {/*cp */}
+          <div className={styles.chartContainer}>
+            <Plot
+              data={cpChartData.data}
+              layout={cpChartData.layout}
+              config={{
+                displayModeBar: true,
+                displaylogo: false,
+                toImageButtonOptions: {
+                  format: "png",
+                  filename: `CP_${piece}_${selectedYear}`,
+                  height: 800,
+                  width: 1400,
+                  scale: 2,
+                },
+                modeBarButtonsToAdd: ["toImage"],
+              }}
+              style={{ width: "100%", height: "600px" }}
+            />
+          </div>
+
+          {/*cpk*/}
+          <div className={styles.chartContainer}>
+            <Plot
+              data={cpkChartData.data}
+              layout={cpkChartData.layout}
+              config={{
+                displayModeBar: true,
+                displaylogo: false,
+                toImageButtonOptions: {
+                  format: "png",
+                  filename: `CPK_${piece}_${selectedYear}`,
+                  height: 800,
+                  width: 1400,
+                  scale: 2,
+                },
+                modeBarButtonsToAdd: ["toImage"],
+              }}
+              style={{ width: "100%", height: "600px" }}
+            />
+          </div>
+        </>
       ) : (
         <div className={styles.emptyState}>
           <span style={{ fontSize: "4rem" }}>📊</span>
@@ -204,69 +225,70 @@ export default function ReportClient({ params }) {
           </p>
         </div>
       )}
+
     </div>
   );
 }
 
-function prepareChartData(weeksData, piece, group) {
+function prepareChartData(weeksData, type, piece, group) {
   if (!weeksData || weeksData.length === 0) return null;
 
-  // Cria labels das semanas (ex: "Week 45", "Week 46")
   const weekLabels = weeksData.map((w) => `Week ${w.week}`);
 
-  // Dados reais de cada cor
-  const greenData = weeksData.map((w) => w.green_percent);
-  const yellowData = weeksData.map((w) => w.yellow_percent);
-  const redData = weeksData.map((w) => w.red_percent);
+  //select data from cp or cpk
+  const prefix = type.toLowerCase();
+  
+  const greenData = weeksData.map((w) => w[`${prefix}_green_percent`]);
+  const yellowData = weeksData.map((w) => w[`${prefix}_yellow_percent`]);
+  const redData = weeksData.map((w) => w[`${prefix}_red_percent`]);
 
-  // Valores absolutos para exibir dentro das barras
-  const greenValues = weeksData.map((w) => w.green);
-  const yellowValues = weeksData.map((w) => w.yellow);
-  const redValues = weeksData.map((w) => w.red);
+  const greenValues = weeksData.map((w) => w[`${prefix}_green`]);
+  const yellowValues = weeksData.map((w) => w[`${prefix}_yellow`]);
+  const redValues = weeksData.map((w) => w[`${prefix}_red`]);
 
   return {
     data: [
       {
         x: weekLabels,
         y: greenData,
-        name: "CG ≤ 75%",
+        name: `${type} ≥ 1,33`,
         type: "bar", 
         width: 0.3, 
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
         textfont: { color: "black", size: 14, weight: "bold" },
-        hovertemplate: "<b>%{x}</b><br>Verde: %{text} (%{y:.1f}%)<extra></extra>",
+        hovertemplate: `<b>%{x}</b><br>Verde: %{text} (%{y:.1f}%)<extra></extra>`,
       },
       {
         x: weekLabels,
         y: yellowData,
-        name: "75% < CG ≤ 100%",
+        name: `1 ≤ ${type} < 1,33`,
         type: "bar", 
         width: 0.3, 
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
         textfont: { color: "black", size: 14, weight: "bold" },
-        hovertemplate: "<b>%{x}</b><br>Amarelo: %{text} (%{y:.1f}%)<extra></extra>",
+        hovertemplate: `<b>%{x}</b><br>Amarelo: %{text} (%{y:.1f}%)<extra></extra>`,
       },
       {
         x: weekLabels,
         y: redData,
-        name: "CG > 100%",
+        name: `${type} < 1`,
         type: "bar", 
-        width: 0.3, 
+        width: 0.3,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
         textfont: { color: "white", size: 14, weight: "bold" },
-        hovertemplate: "<b>%{x}</b><br>Vermelho: %{text} (%{y:.1f}%)<extra></extra>",
+        hovertemplate: `<b>%{x}</b><br>Vermelho: %{text} (%{y:.1f}%)<extra></extra>`,
       },
     ],
     layout: {
       barmode: "stack",
       title: {
-        text: `CG - ${group} - ${piece}`,
+        text: `${type} - ${group} - ${piece}`,
         font: { size: 22, weight: "bold", color: "#2d3748" },
       },
       xaxis: {
@@ -274,7 +296,7 @@ function prepareChartData(weeksData, piece, group) {
         tickangle: -45,
         tickfont: { size: 11 },
         gridcolor: "#e2e8f0", 
-        showgrid: false,
+        showgrid: false, 
       },
       yaxis: {
         title: "",
@@ -282,7 +304,7 @@ function prepareChartData(weeksData, piece, group) {
         ticksuffix: "%",
         tickfont: { size: 12 },
         gridcolor: "#e2e8f0", 
-        showgrid: false,
+        showgrid: false, 
       },
       legend: {
         x: 0.5,
@@ -297,4 +319,4 @@ function prepareChartData(weeksData, piece, group) {
       hovermode: "x unified",
     },
   };
-}
+}         
