@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { Save, Download } from "lucide-react";
 import styles from "./chartcg.module.css";
 
-//import Plotly dinamicamente para evitar problemas de SSR
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 export default function ReportClient({ params }) {
@@ -17,7 +17,11 @@ export default function ReportClient({ params }) {
   const [availableWeeks, setAvailableWeeks] = useState([]);
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [currentJobId, setCurrentJobId] = useState(null);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
 
+  const plotRef = useRef(null);
   const router = useRouter();
 
   function getCurrentWeek() {
@@ -29,8 +33,16 @@ export default function ReportClient({ params }) {
   }
 
   useEffect(() => {
+    // Carrega o job_id ativo do localStorage
+    if (typeof window !== "undefined") {
+      const storedJobId = localStorage.getItem("current_jobid");
+      setCurrentJobId(storedJobId);
+    }
+  }, []);
+
+  useEffect(() => {
     loadAvailableWeeks();
-    loadAllReports(); //all history
+    loadAllReports();
   }, [group, piece]);
 
   async function loadAvailableWeeks() {
@@ -60,7 +72,6 @@ export default function ReportClient({ params }) {
     setLoading(true);
 
     try {
-      //gerar the analysis da week selected
       const resGen = await fetch(
         `${API}/pieces/${group}/${piece}/generate_analysis?week=${selectedWeek}&year=${selectedYear}`,
         { method: "POST" }
@@ -70,7 +81,6 @@ export default function ReportClient({ params }) {
         throw new Error("Erro ao gerar análise");
       }
 
-      //calcula estatísticas of week
       const resStats = await fetch(
         `${API}/pieces/${group}/${piece}/calculate_statistics?week=${selectedWeek}&year=${selectedYear}`,
         { method: "POST" }
@@ -80,7 +90,6 @@ export default function ReportClient({ params }) {
         throw new Error("Erro ao calcular estatísticas");
       }
 
-      //reload alls the reports
       await loadAllReports();
       await loadAvailableWeeks();
 
@@ -93,13 +102,160 @@ export default function ReportClient({ params }) {
     }
   }
 
-  //prepara dados to the chart
+  async function saveChartToJob() {
+    if (!currentJobId) {
+      alert("⚠️ Nenhum Job ativo! Crie um Job na página inicial primeiro.");
+      return;
+    }
+
+    setShowSaveModal(true);
+  }
+
+  async function confirmSaveChart() {
+    setSaveLoading(true);
+
+    try {
+      // Usa o Plotly para gerar a imagem
+      const gd = plotRef.current?.el;
+      
+      if (!gd) {
+        throw new Error("Gráfico não encontrado");
+      }
+
+      // Importa Plotly dinamicamente
+      const Plotly = (await import("plotly.js-dist-min")).default;
+      
+      // Exporta como PNG usando Plotly.toImage
+      const imageData = await Plotly.toImage(gd, {
+        format: "png",
+        width: 1400,
+        height: 800,
+        scale: 2
+      });
+
+      console.log("Enviando imagem para o backend...");
+      console.log("JobID:", currentJobId);
+      console.log("Group:", group);
+      console.log("Piece:", piece);
+
+      // Envia para o backend
+      const response = await fetch(
+        `${API}/jobs/job/${currentJobId}/save-chart`,
+        {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            group: group,
+            piece: piece,
+            image_data: imageData
+          })
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Erro do servidor:", errorText);
+        throw new Error(`Erro ao salvar gráfico: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Resultado:", result);
+      
+      alert(`✓ Gráfico salvo com sucesso!\n📁 ${result.filename}`);
+      
+    } catch (err) {
+      console.error("Erro ao salvar gráfico:", err);
+      alert(`❌ Erro ao salvar gráfico: ${err.message}`);
+    } finally {
+      setSaveLoading(false);
+      setShowSaveModal(false);
+    }
+  }
+
   const chartData = reportData && reportData.length > 0
     ? prepareChartData(reportData, piece, group)
     : null;
 
   return (
     <div className={styles.pageContainer}>
+      {/* Modal de Confirmação */}
+      {showSaveModal && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            padding: "2rem",
+            borderRadius: "12px",
+            maxWidth: "500px",
+            width: "90%",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.3)"
+          }}>
+            <h3 style={{ marginBottom: "1rem", color: "#2d3748" }}>
+              💾 Salvar Gráfico no Job
+            </h3>
+            
+            <p style={{ marginBottom: "1.5rem", color: "#4a5568", lineHeight: "1.6" }}>
+              Deseja salvar este gráfico no Job atual?<br/>
+              <strong>Job ID:</strong> <code style={{ 
+                backgroundColor: "#edf2f7", 
+                padding: "2px 8px", 
+                borderRadius: "4px",
+                fontSize: "0.9em"
+              }}>{currentJobId}</code><br/>
+              <strong>Grupo:</strong> {group}<br/>
+              <strong>Peça:</strong> {piece}
+            </p>
+
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
+              <button
+                onClick={() => setShowSaveModal(false)}
+                disabled={saveLoading}
+                style={{
+                  padding: "0.5rem 1.5rem",
+                  borderRadius: "6px",
+                  border: "1px solid #cbd5e0",
+                  backgroundColor: "white",
+                  color: "#4a5568",
+                  cursor: saveLoading ? "not-allowed" : "pointer",
+                  fontSize: "0.95rem"
+                }}
+              >
+                Cancelar
+              </button>
+              
+              <button
+                onClick={confirmSaveChart}
+                disabled={saveLoading}
+                style={{
+                  padding: "0.5rem 1.5rem",
+                  borderRadius: "6px",
+                  border: "none",
+                  backgroundColor: saveLoading ? "#a0aec0" : "#48bb78",
+                  color: "white",
+                  cursor: saveLoading ? "not-allowed" : "pointer",
+                  fontSize: "0.95rem",
+                  fontWeight: "500"
+                }}
+              >
+                {saveLoading ? "⏳ Salvando..." : "✓ Confirmar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={styles.header}>
         <h1 className={styles.title}>
           CG - {group} - {piece}
@@ -140,9 +296,25 @@ export default function ReportClient({ params }) {
             onClick={generateReport}
             disabled={loading}
             className={styles.btnGenerate}
+            title="Gerar relatório da semana"
           >
             {loading ? "⏳ Gerando..." : "📊"}
           </button>
+
+          {chartData && (
+            <button
+              onClick={saveChartToJob}
+              disabled={!currentJobId || saveLoading}
+              className={styles.btnGenerate}
+              style={{
+                backgroundColor: currentJobId ? "#48bb78" : "#cbd5e0",
+                cursor: currentJobId ? "pointer" : "not-allowed"
+              }}
+              title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
+            >
+              <Save size={18} />
+            </button>
+          )}
 
           <button
             onClick={() => router.push(`/analysis/${group}/${piece}`)}
@@ -153,30 +325,31 @@ export default function ReportClient({ params }) {
         </div>
 
         {availableWeeks.length > 0 && (
-        <div className={styles.historyContainer}>
-          <h3>HISTÓRICO - {availableWeeks.length}</h3>
-          <div className={styles.historyGrid}>
-            {availableWeeks.map((file) => (
-              <div
-                key={file.filename}
-                className={styles.historyItem}
-              >
-                <span className={styles.historyWeek}>
-                  {file.year} - W{file.week}
-                </span>
-                <span className={styles.historyDate}>
-                  {new Date(file.modified).toLocaleDateString("pt-BR")}
-                </span>
-              </div>
-            ))}
+          <div className={styles.historyContainer}>
+            <h3>HISTÓRICO - {availableWeeks.length}</h3>
+            <div className={styles.historyGrid}>
+              {availableWeeks.map((file) => (
+                <div
+                  key={file.filename}
+                  className={styles.historyItem}
+                >
+                  <span className={styles.historyWeek}>
+                    {file.year} - W{file.week}
+                  </span>
+                  <span className={styles.historyDate}>
+                    {new Date(file.modified).toLocaleDateString("pt-BR")}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
 
       {chartData ? (
         <div className={styles.chartContainer}>
           <Plot
+            ref={plotRef}
             data={chartData.data}
             layout={chartData.layout}
             config={{
@@ -211,15 +384,10 @@ export default function ReportClient({ params }) {
 function prepareChartData(weeksData, piece, group) {
   if (!weeksData || weeksData.length === 0) return null;
 
-  // Cria labels das semanas (ex: "Week 45", "Week 46")
   const weekLabels = weeksData.map((w) => `Week ${w.week}`);
-
-  // Dados reais de cada cor
   const greenData = weeksData.map((w) => w.green_percent);
   const yellowData = weeksData.map((w) => w.yellow_percent);
   const redData = weeksData.map((w) => w.red_percent);
-
-  // Valores absolutos para exibir dentro das barras
   const greenValues = weeksData.map((w) => w.green);
   const yellowValues = weeksData.map((w) => w.yellow);
   const redValues = weeksData.map((w) => w.red);
@@ -230,8 +398,8 @@ function prepareChartData(weeksData, piece, group) {
         x: weekLabels,
         y: greenData,
         name: "CG ≤ 75%",
-        type: "bar", 
-        width: 0.3, 
+        type: "bar",
+        width: 0.3,
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -242,8 +410,8 @@ function prepareChartData(weeksData, piece, group) {
         x: weekLabels,
         y: yellowData,
         name: "75% < CG ≤ 100%",
-        type: "bar", 
-        width: 0.3, 
+        type: "bar",
+        width: 0.3,
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -254,8 +422,8 @@ function prepareChartData(weeksData, piece, group) {
         x: weekLabels,
         y: redData,
         name: "CG > 100%",
-        type: "bar", 
-        width: 0.3, 
+        type: "bar",
+        width: 0.3,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -273,7 +441,7 @@ function prepareChartData(weeksData, piece, group) {
         title: "",
         tickangle: -45,
         tickfont: { size: 11 },
-        gridcolor: "#e2e8f0", 
+        gridcolor: "#e2e8f0",
         showgrid: false,
       },
       yaxis: {
@@ -281,7 +449,7 @@ function prepareChartData(weeksData, piece, group) {
         range: [0, 100],
         ticksuffix: "%",
         tickfont: { size: 12 },
-        gridcolor: "#e2e8f0", 
+        gridcolor: "#e2e8f0",
         showgrid: false,
       },
       legend: {
@@ -297,4 +465,4 @@ function prepareChartData(weeksData, piece, group) {
       hovermode: "x unified",
     },
   };
-}
+} 

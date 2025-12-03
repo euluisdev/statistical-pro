@@ -256,9 +256,9 @@ export default function GroupManager({
           </p>
         )}
 
-        <div className="actions-row">
+        <div className="actions-row"> 
           <button
-            className="btnRest"
+            className="btnRow"
             disabled={!selectedGroup || currentJobId}
             onClick={() => setShowJobModal(true)}
             title={currentJobId ? "Já existe um job ativo" : "Criar Job"}
@@ -267,7 +267,7 @@ export default function GroupManager({
           </button>
 
           <button
-            className="btnRest"
+            className="btnRow"
             onClick={() => setShowFinishModal(true)}
             disabled={!currentJobId}
             title={!currentJobId ? "Nenhum job ativo" : "Encerrar Job"}
@@ -276,7 +276,7 @@ export default function GroupManager({
           </button>
 
           <button
-            className="btnRest"
+            className="btnRow"
             onClick={deleteGroup}
             disabled={!selectedGroup}
             title="Apagar conjunto"

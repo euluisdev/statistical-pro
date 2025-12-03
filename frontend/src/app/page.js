@@ -138,7 +138,7 @@ export default function GroupsPage() {
       {/* TABELA DE DADOS */}       
       {parsedData.length > 0 && (
         <div className="table-container">
-          <h2>📊 Dados Extraídos ({parsedData.length} linhas)</h2>
+          <h2>Dados Extraídos ({parsedData.length} linhas)</h2>
           <div className="table-wrapper">
             <table className="table">
               <thead>
