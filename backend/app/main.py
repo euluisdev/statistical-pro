@@ -5,9 +5,16 @@ from .routes.pieces import router as pieces_router
 from .routes.charts import router as charts_router 
 from .routes.jobid import router as jobid_router
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import os 
 
 app = FastAPI(title="Statistical Project API")
+
+JOBS_PATH = os.path.join(os.path.dirname(__file__), "data", "jobs")
+
+os.makedirs(JOBS_PATH, exist_ok=True)
+
+app.mount("/static/jobs", StaticFiles(directory=JOBS_PATH), name="static_jobs")
 
 #cors - permitir local dev do front
 app.add_middleware(
