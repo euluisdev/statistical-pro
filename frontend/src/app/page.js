@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import GroupManager from "./groups/components/GroupManager";
 import PieceManager from "./groups/components/PieceManager";
 import TxtManager from "./groups/components/TxtManager";
+import ConfirmModal from "./components/common/ConfirmModal";
 import { ArrowBigRight, ChartLine, House, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked } from "lucide-react";
 
 import "./styles.css";
@@ -17,6 +18,8 @@ export default function GroupsPage() {
   const [selectedPiece, setSelectedPiece] = useState("");
   const [parsedData, setParsedData] = useState([]);
   const [msg, setMsg] = useState(null);
+  const [showResetModal, setShowResetModal] = useState(false);
+
 
   useEffect(() => {
     const savedGroup = localStorage.getItem("selectedGroup");
@@ -117,15 +120,8 @@ export default function GroupsPage() {
         />
 
   <div className="button-row-inside-grid">
-    <button className="btnRest"><House onClick={() => {
-      localStorage.removeItem("selectedGroup"), 
-      localStorage.removeItem("selectedPiece"), 
-      localStorage.removeItem("inputValues"), 
-        setSelectedGroup("");
-        setSelectedPiece("");
-        setParsedData([]);
-      }} 
-    />
+    <button className="btnRest">
+      <House onClick={() => setShowResetModal(true)} />
     </button>
     <button className="btnRest"><ChartColumnStacked /></button>
     <button className="btnRest"><ChartNoAxesCombined /></button>
@@ -161,6 +157,25 @@ export default function GroupsPage() {
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={showResetModal}
+        title="Limpar dados?"
+        message="Isso vai apagar o grupo selecionado, peça selecionada e a tabela. Deseja continuar?"
+        onCancel={() => setShowResetModal(false)}
+        onConfirm={() => {
+          localStorage.removeItem("selectedGroup");
+          localStorage.removeItem("selectedPiece");
+          localStorage.removeItem("inputValues");
+
+          setSelectedGroup("");
+          setSelectedPiece("");
+          setParsedData([]);
+
+          setShowResetModal(false);
+        }}
+      />
+
     </div>
   );
 } 
