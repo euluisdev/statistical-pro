@@ -131,7 +131,7 @@ export default function GroupsPage() {
   </div>
       </div>
 
-      {/* TABELA DE DADOS */}       
+      {/*table data */}       
       {parsedData.length > 0 && (
         <div className="table-container">
           <h2>Dados Extraídos ({parsedData.length} linhas)</h2>
@@ -160,8 +160,8 @@ export default function GroupsPage() {
 
       <ConfirmModal
         isOpen={showResetModal}
-        title="Limpar dados?"
-        message="Isso vai apagar o grupo selecionado, peça selecionada e a tabela. Deseja continuar?"
+        title="Atualizar página?"
+        message="Isso vai limpar os dados de navegação."
         onCancel={() => setShowResetModal(false)}
         onConfirm={() => {
           localStorage.removeItem("selectedGroup");

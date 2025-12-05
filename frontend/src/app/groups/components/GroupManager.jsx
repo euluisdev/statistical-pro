@@ -3,22 +3,28 @@
 import { useState, useEffect } from "react";
 import { FolderPlus, Trash2, PlayCircle, Pause } from "lucide-react";
 
+import ConfirmModal from "@/app/components/common/ConfirmModal";
+
+
 export default function GroupManager({
   groups,
   onGroupCreated,
   onGroupDeleted,
   onGroupSelected,
   selectedGroup,
-  onJobCreated, 
+  onJobCreated,
   onJobFinished
 }) {
   const [newGroup, setNewGroup] = useState("");
-  const [loading, setLoading] = useState(false); 
-  const [showJobModal, setShowJobModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [jobLoading, setJobLoading] = useState(false);
-  const [showFinishModal, setShowFinishModal] = useState(false);
   const [finishLoading, setFinishLoading] = useState(false);
   const [currentJobId, setCurrentJobId] = useState(null);
+  const [showCreateJobModal, setShowCreateJobModal] = useState(false);
+  const [showFinishJobModal, setShowFinishJobModal] = useState(false);
+  const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
+  const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
+
 
   const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -32,7 +38,7 @@ export default function GroupManager({
 
   const createGroup = async () => {
     if (!newGroup.trim()) return;
-    
+
     setLoading(true);
 
     try {
@@ -90,19 +96,20 @@ export default function GroupManager({
         if (onJobCreated) {
           onJobCreated(data.jobid);
         }
+        alert("Job criado com sucesso!");
       }
     } catch (err) {
       console.error("Erro ao criar job:", err);
     } finally {
       setJobLoading(false);
-      setShowJobModal(false);
+      setShowCreateJobModal(false);
     }
   };
 
   const finishJob = async () => {
     if (!currentJobId) {
       alert("Nenhum job ativo para encerrar");
-      setShowFinishModal(false);
+      setShowFinishJobModal(false);
       return;
     }
 
@@ -136,80 +143,12 @@ export default function GroupManager({
       alert(`Erro ao encerrar job: ${err.message}`);
     } finally {
       setFinishLoading(false);
-      setShowFinishModal(false);
+      setShowFinishJobModal(false);
     }
   };
 
   return (
     <>
-      {/*modal create job id*/}
-      {showJobModal && (
-        <div className="modal-overlay-fixed">
-          <div className="modal-box">
-            <h3>Criar Job_id para o {selectedGroup}?</h3>
-
-            <p className="modal-text">
-              Isso criará um identificador único job_id para poder gerar o relatório final.
-            </p>
-
-            <div className="modal-buttons">
-              <button
-                className="btn-sm btn-danger"
-                onClick={() => setShowJobModal(false)}
-                disabled={jobLoading}
-              >
-                Cancelar
-              </button>
-
-              <button
-                className="btn-sm btn-success"
-                onClick={createJobId}
-                disabled={jobLoading}
-              >
-                {jobLoading ? "Criando..." : "Confirmar"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/*modal delete job*/}
-      {showFinishModal && (
-        <div className="modal-overlay-fixed">
-          <div className="modal-box">
-            <h3>Encerrar Job?</h3>
-
-            <p className="modal-text">
-              Isso apagará o job_id atual e você poderá iniciar outro.  
-              {currentJobId && (
-                <>
-                  <br />
-                  Job_id atual: <b>{currentJobId}</b>
-                </>
-              )}
-            </p>
-
-            <div className="modal-buttons">
-              <button
-                className="btn-sm btn-secondary"
-                onClick={() => setShowFinishModal(false)}
-                disabled={finishLoading}
-              >
-                Cancelar
-              </button>
-
-              <button
-                className="btn-sm btn-danger"
-                onClick={finishJob}
-                disabled={finishLoading}
-              >
-                {finishLoading ? "Encerrando..." : "Confirmar"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/*create group*/}
       <div className="card">
         <h2>Novo Conjunto</h2>
@@ -222,13 +161,13 @@ export default function GroupManager({
             onChange={(e) => setNewGroup(e.target.value)}
             onKeyPress={(e) => {
               if (e.key === 'Enter' && newGroup.trim()) {
-                createGroup();
+                setShowCreateGroupModal(true);
               }
             }}
           />
-          <button 
-            className="btn-sm btn-success" 
-            onClick={createGroup} 
+          <button
+            className="btn-sm btn-success"
+            onClick={() => setShowCreateGroupModal(true)}
             disabled={loading || !newGroup.trim()}
           >
             <FolderPlus size={16} />
@@ -256,11 +195,11 @@ export default function GroupManager({
           </p>
         )}
 
-        <div className="actions-row"> 
+        <div className="actions-row">
           <button
             className="btnRow"
             disabled={!selectedGroup || currentJobId}
-            onClick={() => setShowJobModal(true)}
+            onClick={() => setShowCreateJobModal(true)}
             title={currentJobId ? "Já existe um job ativo" : "Criar Job"}
           >
             <PlayCircle size={21} />
@@ -268,16 +207,17 @@ export default function GroupManager({
 
           <button
             className="btnRow"
-            onClick={() => setShowFinishModal(true)}
             disabled={!currentJobId}
+            onClick={() => setShowFinishJobModal(true)}
             title={!currentJobId ? "Nenhum job ativo" : "Encerrar Job"}
           >
             <Pause size={21} />
           </button>
 
+
           <button
             className="btnRow"
-            onClick={deleteGroup}
+            onClick={() => setShowDeleteGroupModal(true)}
             disabled={!selectedGroup}
             title="Apagar conjunto"
           >
@@ -285,6 +225,48 @@ export default function GroupManager({
           </button>
         </div>
       </div>
+      <ConfirmModal
+        isOpen={showCreateJobModal}
+        title={`Criar Job para ${selectedGroup}?`}
+        message="Isso criará um identificador único (job_id) para gerar o relatório final."
+        onCancel={() => setShowCreateJobModal(false)}
+        onConfirm={createJobId}
+      />
+
+      <ConfirmModal
+        isOpen={showFinishJobModal}
+        title="Encerrar Job atual?"
+        message={
+          currentJobId
+            ? `O job_id atual (${currentJobId}) será apagado. Deseja continuar?`
+            : "Nenhum job ativo no momento."
+        }
+        onCancel={() => setShowFinishJobModal(false)}
+        onConfirm={finishJob}
+      />
+
+      <ConfirmModal
+        isOpen={showDeleteGroupModal}
+        title="Apagar conjunto?"
+        message={`Tem certeza que deseja apagar o conjunto "${selectedGroup}" e tudo dentro dele?`}
+        onCancel={() => setShowDeleteGroupModal(false)}
+        onConfirm={() => {
+          deleteGroup();
+          setShowDeleteGroupModal(false);
+        }}
+      />
+
+      <ConfirmModal
+        isOpen={showCreateGroupModal}
+        title="Criar novo conjunto?"
+        message={`Deseja criar o conjunto "${newGroup}"?`}
+        onCancel={() => setShowCreateGroupModal(false)}
+        onConfirm={async () => {
+          await createGroup();
+          setShowCreateGroupModal(false);
+        }}
+      />
+
     </>
   );
 } 
