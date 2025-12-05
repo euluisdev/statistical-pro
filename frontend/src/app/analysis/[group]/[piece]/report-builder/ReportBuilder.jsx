@@ -265,7 +265,7 @@ export default function ReportBuilder() {
       {/* Sidebar Esquerda */}
       <div className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
-          <h3 className={styles.sidebarTitle}>📚 Biblioteca de Assets</h3>
+          <h3 className={styles.sidebarTitle}>Biblioteca de Assets</h3>
           <p className={styles.sidebarSubtitle}>Job: {currentJobId?.slice(0, 8)}...</p>
         </div>
 
@@ -296,7 +296,7 @@ export default function ReportBuilder() {
                   onDragStart={(e) => handleDragStart(e, chart)}
                   className={styles.chartItem}
                 >
-                  📊 {chart.filename}
+                  {chart.filename}
                 </div>
               ))}
             </div>
@@ -308,7 +308,7 @@ export default function ReportBuilder() {
       <div className={styles.mainArea}>
         {/* Toolbar */}
         <div className={styles.toolbar}>
-          <h1 className={styles.toolbarTitle}>📄 Montagem de Relatório</h1>
+          <h1 className={styles.toolbarTitle}>Montagem de Relatório</h1>
 
           {selectedElementData && selectedElementData.type === "text" && (
             <div className={styles.formatToolbar}>
