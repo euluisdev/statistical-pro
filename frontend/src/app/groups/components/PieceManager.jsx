@@ -2,21 +2,26 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, BarChart3, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Grid3x3, Image as ImageIcon } from "lucide-react";
 
-export default function PieceManager({ 
-  selectedGroup, 
-  pieces, 
+import ConfirmModal from "@/app/components/common/ConfirmModal";
+
+export default function PieceManager({
+  selectedGroup,
+  pieces,
   selectedPiece,
-  onPieceCreated, 
+  onPieceCreated,
   onPieceDeleted,
-  onPieceSelected 
+  onPieceSelected
 }) {
   const [partNumber, setPartNumber] = useState("");
   const [partName, setPartName] = useState("");
   const [model, setModel] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showCreatePieceModal, setShowCreatePieceModal] = useState(false);
+  const [showDeletePieceModal, setShowDeletePieceModal] = useState(false);
+
   const API = process.env.NEXT_PUBLIC_API_URL;
 
   const router = useRouter();
@@ -30,7 +35,7 @@ export default function PieceManager({
     formData.append("part_number", partNumber);
     formData.append("part_name", partName);
     formData.append("model", model);
-    
+
     if (image) {
       formData.append("image", image);
     }
@@ -74,10 +79,18 @@ export default function PieceManager({
 
   return (
     <>
-      {/* CADASTRAR PEÇA */}
+      {/*register part */}
       <div className="card">
         <h2>Cadastrar</h2>
-        <form className="form" onSubmit={createPiece}>
+        <form
+          className="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!partNumber || !partName || !model) return;
+            setShowCreatePieceModal(true);
+          }}
+        >
+
           <input
             className="input-sm"
             type="text"
@@ -102,7 +115,7 @@ export default function PieceManager({
             onChange={(e) => setModel(e.target.value)}
             required
           />
-          
+
           <label className="file-input-sm">
             <ImageIcon size={14} />
             {image ? image.name.substring(0, 15) : "Imagem"}
@@ -119,7 +132,7 @@ export default function PieceManager({
         </form>
       </div>
 
-      {/* LISTAR PEÇAS */}
+      {/*list parts*/}
       <div className="card">
         <h2>Peças</h2>
         <select
@@ -135,30 +148,53 @@ export default function PieceManager({
           ))}
         </select>
 
-        <div className="btn-row">
+        <div className="btn-column">
           <button
-            className="btn-sm btn-danger"
-            onClick={deletePiece}
+            className="btn-column"
+            onClick={() => setShowDeletePieceModal(true)} 
             disabled={!selectedPiece}
-            title="Apagar"
+            title="Apagar peça"
           >
-            <Trash2 size={16} />
+            <Trash2 size={21} />
           </button>
 
           <button
-            className="btn-sm btn-primary"
+            className="btn-column"
             onClick={() => {
               if (selectedGroup && selectedPiece) {
                 router.push(`/analysis/${selectedGroup}/${selectedPiece}`);
               }
             }}
             disabled={!selectedGroup || !selectedPiece}
-            title="Análise"
+            title="Go to Analysis"
           >
-            <BarChart3 size={16} />
+            <Grid3x3 size={21} />
           </button>
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={showCreatePieceModal}
+        title="Criar peça?"
+        message={`Criar peça ${partNumber}?`}
+        onCancel={() => setShowCreatePieceModal(false)}
+        onConfirm={async () => {
+          await createPiece(new Event("submit"));
+          setShowCreatePieceModal(false);
+        }}
+      />
+
+      <ConfirmModal
+        isOpen={showDeletePieceModal}
+        title="Apagar peça?"
+        message={`Deseja apagar a peça ${selectedPiece}?`}
+        onCancel={() => setShowDeletePieceModal(false)}
+        onConfirm={async () => {
+          await deletePiece();
+          setShowDeletePieceModal(false);
+        }}
+      />
+
     </>
   );
-}
+} 

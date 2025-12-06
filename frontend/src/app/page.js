@@ -1,16 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import GroupManager from "./groups/components/GroupManager";
 import PieceManager from "./groups/components/PieceManager";
 import TxtManager from "./groups/components/TxtManager";
 import ConfirmModal from "./components/common/ConfirmModal";
-import { ArrowBigRight, ChartLine, House, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked } from "lucide-react";
+import { ArrowBigRight, ChartLine, House, Grid3x3, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked } from "lucide-react";
 
 import "./styles.css";
 
 export default function GroupsPage() {
+
   const API = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
 
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("");
@@ -119,19 +123,31 @@ export default function GroupsPage() {
           }}
         />
 
-  <div className="button-row-inside-grid">
-    <button className="btnRest">
-      <House onClick={() => setShowResetModal(true)} />
-    </button>
-    <button className="btnRest"><ChartColumnStacked /></button>
-    <button className="btnRest"><ChartNoAxesCombined /></button>
-    <button className="btnRest"><TrendingUpDown /></button>
-    <button className="btnRest"><ChartLine /></button>
-    <button className="btnRest"><ArrowBigRight /></button>
-  </div>
+        <div className="button-row-inside-grid">
+          <button className="btnRest" title="Limpar dados">
+            <House onClick={() => setShowResetModal(true)} />
+          </button>
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="Go to Analysis"
+          >
+            <Grid3x3 />
+          </button>
+          <button className="btnRest"><ChartColumnStacked /></button>
+          <button className="btnRest"><ChartNoAxesCombined /></button>
+          <button className="btnRest"><TrendingUpDown /></button>
+          <button className="btnRest"><ChartLine /></button>
+          <button className="btnRest"><ArrowBigRight /></button>
+        </div>
       </div>
 
-      {/*table data */}       
+      {/*table data */}
       {parsedData.length > 0 && (
         <div className="table-container">
           <h2>Dados Extraídos ({parsedData.length} linhas)</h2>

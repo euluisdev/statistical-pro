@@ -3,11 +3,15 @@
 import { useState, useEffect } from "react";
 import { Upload, FileText, Trash2, RefreshCw } from "lucide-react";
 
+import ConfirmModal from "@/app/components/common/ConfirmModal";
+
 export default function TxtManager({ selectedGroup, selectedPiece, onDataExtracted }) {
   const [txtFiles, setTxtFiles] = useState([]);
   const [txtList, setTxtList] = useState([]);
   const [selected, setSelected] = useState([]);
   const [loadingExtract, setLoadingExtract] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const API = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -118,75 +122,88 @@ export default function TxtManager({ selectedGroup, selectedPiece, onDataExtract
   };
 
   return (
-  <>
-    {/* UPLOAD TXT */}
-    <div className="card">
-      <h2>Importar</h2>
+    <>
+      {/*UPLOAD TXT*/}
+      <div className="card">
+        <h2>Importar</h2>
 
-      <label className="file-input-sm">
-        <FileText size={14} />
-        {txtFiles.length > 0 ? `${txtFiles.length} arq` : "TXT"}
-        <input
-          type="file"
-          multiple
-          accept=".txt"
-          onChange={(e) => setTxtFiles([...e.target.files])}
-        />
-      </label>
-
-      <button
-        className="btn-sm btn-primary"
-        onClick={uploadTxt}
-        disabled={!selectedGroup || !selectedPiece || txtFiles.length === 0}
-        title="Enviar"
-      >
-        <Upload size={16} />
-      </button>
-    </div>
-
-    {/* LISTAR TXT */}
-    <div className="card">
-      <h2>Arquivos</h2>
-
-      {/* A caixa SEMPRE aparece */}
-      <div className="txt-box-sm">
-        {txtList.length === 0 ? (
-          <p className="info-text-sm">No file</p>
-        ) : (
-          txtList.map((file) => (
-            <label key={file} className="txt-line-sm">
-              <input
-                type="checkbox"
-                checked={selected.includes(file)}
-                onChange={() => toggleSelect(file)}
-              />
-              <span>{file.substring(0, 12)}...</span>
-            </label>
-          ))
-        )}
-      </div>
-
-      {/* Botões SEMPRE aparecem */}
-      <div className="btn-row">
-        <button
-          className="btn-sm btn-danger"
-          onClick={deleteSelected}
-          disabled={selected.length === 0}
-          title="Apagar"
-        >
-          <Trash2 size={16} />
-        </button>
+        <label className="file-input-sm">
+          <FileText size={14} />
+          {txtFiles.length > 0 ? `${txtFiles.length} arq` : "TXT"}
+          <input
+            type="file"
+            multiple
+            accept=".txt"
+            onChange={(e) => setTxtFiles([...e.target.files])}
+          />
+        </label>
 
         <button
           className="btn-sm btn-primary"
-          onClick={extractData}
-          disabled={loadingExtract}
-          title="Extrair"
+          onClick={uploadTxt}
+          disabled={!selectedGroup || !selectedPiece || txtFiles.length === 0}
+          title="Enviar"
         >
-          {loadingExtract ? "⏳" : <RefreshCw size={16} />}
+          <Upload size={16} />
         </button>
       </div>
-    </div>
-  </>
-);
+
+      {/*list txt */}
+      <div className="card">
+        <h2>Arquivos</h2>
+
+        {/*box txt*/}
+        <div className="txt-box-sm">
+          {txtList.length === 0 ? (
+            <p className="info-text-sm">No file</p>
+          ) : (
+            txtList.map((file) => (
+              <label key={file} className="txt-line-sm">
+                <input
+                  type="checkbox"
+                  checked={selected.includes(file)}
+                  onChange={() => toggleSelect(file)}
+                />
+                <span>{file.substring(0, 12)}...</span>
+              </label>
+            ))
+          )}
+        </div>
+
+        {/*BNT */}
+        <div className="btn-row">
+          <button
+            className="btn-sm btn-danger"
+            onClick={() => setShowDeleteModal(true)}
+            disabled={selected.length === 0}
+            title="Apagar"
+          >
+            <Trash2 size={16} />
+          </button>
+
+          <button
+            className="btn-sm btn-primary"
+            onClick={extractData}
+            disabled={loadingExtract}
+            title="Extrair"
+          >
+            {loadingExtract ? "⏳" : <RefreshCw size={16} />}
+          </button>
+        </div>
+      </div>
+
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title="Apagar arquivo txt?"
+        message={`Tem certeza que deseja apagar ${selected.length} arquivo(s)?`}
+        onCancel={() => setShowDeleteModal(false)}
+        onConfirm={async () => {
+          await deleteSelected();
+          setShowDeleteModal(false);
+        }}
+      />
+
+
+    </>
+  );
 };

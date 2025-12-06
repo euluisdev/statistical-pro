@@ -1,4 +1,4 @@
-import { ArrowBigRight, ChartLine, House, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked } from "lucide-react";
+import { Settings, House, ChartColumnStacked } from "lucide-react";
 import './NavBar.css';
 
 export default function Navbar() {
@@ -12,7 +12,7 @@ export default function Navbar() {
         <nav className="nav-links">
           <a href="/"><House /></a>
           <a href="/"><ChartColumnStacked /></a>
-          <a href="/"><ChartNoAxesCombined /></a>
+          <a href="/"><Settings /></a>
         </nav>
       </div>
     </header>
