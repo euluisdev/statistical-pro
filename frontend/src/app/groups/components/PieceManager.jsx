@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, Grid3x3, Image as ImageIcon } from "lucide-react";
 
@@ -19,12 +19,18 @@ export default function PieceManager({
   const [model, setModel] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [previewImageUrl, setPreviewImageUrl] = useState(null);
   const [showCreatePieceModal, setShowCreatePieceModal] = useState(false);
   const [showDeletePieceModal, setShowDeletePieceModal] = useState(false);
 
   const API = process.env.NEXT_PUBLIC_API_URL;
 
   const router = useRouter();
+
+  useEffect(() => {
+    setPreviewImageUrl(`${API}/pieces/${selectedGroup}/${selectedPiece}/imagens`);
+  }, [selectedGroup, selectedPiece]);
+
 
   const createPiece = async (e) => {
     e.preventDefault();
@@ -148,29 +154,43 @@ export default function PieceManager({
           ))}
         </select>
 
-        <div className="btn-column">
-          <button
-            className="btn-column"
-            onClick={() => setShowDeletePieceModal(true)} 
-            disabled={!selectedPiece}
-            title="Apagar peça"
-          >
-            <Trash2 size={21} />
-          </button>
+        <div className="piece-row">
+          <div className="btn-column">
+            <button
+              className="btn-small"
+              title="Apagar peça"
+              disabled={!selectedPiece}
+              onClick={() => setShowDeletePieceModal(true)}
+            >
+              <Trash2 size={24} />
+            </button>
 
-          <button
-            className="btn-column"
-            onClick={() => {
-              if (selectedGroup && selectedPiece) {
+            <button
+              className="btn-small"
+              title="Ir para Análise"
+              disabled={!selectedGroup || !selectedPiece}
+              onClick={() => {
                 router.push(`/analysis/${selectedGroup}/${selectedPiece}`);
-              }
-            }}
-            disabled={!selectedGroup || !selectedPiece}
-            title="Go to Analysis"
-          >
-            <Grid3x3 size={21} />
-          </button>
+              }}
+            >
+              <Grid3x3 size={24} />
+            </button>
+          </div>
+
+
+          <div className="img-wrapper">
+            {previewImageUrl ? (
+              <img src={previewImageUrl} alt="Preview" className="preview-img" />
+            ) : (
+              <div className="placeholder">
+                Selecione uma peça para visualizar a imagem
+              </div>
+            )}
+          </div>
+
         </div>
+
+
       </div>
 
       <ConfirmModal

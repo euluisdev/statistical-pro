@@ -202,7 +202,7 @@ export default function GroupManager({
             onClick={() => setShowCreateJobModal(true)}
             title={currentJobId ? "Já existe um job ativo" : "Criar Job"}
           >
-            <PlayCircle size={21} />
+            <PlayCircle size={25} />
           </button>
 
           <button
@@ -211,7 +211,7 @@ export default function GroupManager({
             onClick={() => setShowFinishJobModal(true)}
             title={!currentJobId ? "Nenhum job ativo" : "Encerrar Job"}
           >
-            <Pause size={21} />
+            <Pause size={25} />
           </button>
 
 
@@ -221,7 +221,7 @@ export default function GroupManager({
             disabled={!selectedGroup}
             title="Apagar conjunto"
           >
-            <Trash2 size={21} />
+            <Trash2 size={25} />
           </button>
         </div>
       </div>
