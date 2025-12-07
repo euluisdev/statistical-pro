@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { Save, Download } from "lucide-react";
+import { Save, Download, Grid3x3, ArrowBigDown, SaveAll } from "lucide-react";
 import styles from "./chartcg.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -59,7 +59,7 @@ export default function ReportClient({ params }) {
     try {
       const res = await fetch(`${API}/pieces/${group}/${piece}/report`);
       const json = await res.json();
-      
+
       if (json.weeks && json.weeks.length > 0) {
         setReportData(json.weeks);
       }
@@ -115,17 +115,16 @@ export default function ReportClient({ params }) {
     setSaveLoading(true);
 
     try {
-      // Usa o Plotly para gerar a imagem
       const gd = plotRef.current?.el;
-      
+
       if (!gd) {
         throw new Error("Gráfico não encontrado");
       }
 
-      // Importa Plotly dinamicamente
+      //import Plotly dinamicamente
       const Plotly = (await import("plotly.js-dist-min")).default;
-      
-      // Exporta como PNG usando Plotly.toImage
+
+      //export png usando plotly.toImage
       const imageData = await Plotly.toImage(gd, {
         format: "png",
         width: 1400,
@@ -138,12 +137,12 @@ export default function ReportClient({ params }) {
       console.log("Group:", group);
       console.log("Piece:", piece);
 
-      // Envia para o backend
+      //send to the backend
       const response = await fetch(
         `${API}/jobs/job/${currentJobId}/save-chart`,
         {
           method: "POST",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -162,9 +161,9 @@ export default function ReportClient({ params }) {
 
       const result = await response.json();
       console.log("Resultado:", result);
-      
+
       alert(`✓ Gráfico salvo com sucesso!\n📁 ${result.filename}`);
-      
+
     } catch (err) {
       console.error("Erro ao salvar gráfico:", err);
       alert(`❌ Erro ao salvar gráfico: ${err.message}`);
@@ -180,7 +179,7 @@ export default function ReportClient({ params }) {
 
   return (
     <div className={styles.pageContainer}>
-      {/* Modal de Confirmação */}
+      {/*modal*/}
       {showSaveModal && (
         <div style={{
           position: "fixed",
@@ -205,16 +204,16 @@ export default function ReportClient({ params }) {
             <h3 style={{ marginBottom: "1rem", color: "#2d3748" }}>
               💾 Salvar Gráfico no Job
             </h3>
-            
+
             <p style={{ marginBottom: "1.5rem", color: "#4a5568", lineHeight: "1.6" }}>
-              Deseja salvar este gráfico no Job atual?<br/>
-              <strong>Job ID:</strong> <code style={{ 
-                backgroundColor: "#edf2f7", 
-                padding: "2px 8px", 
+              Deseja salvar este gráfico no Job atual?<br />
+              <strong>Job ID:</strong> <code style={{
+                backgroundColor: "#edf2f7",
+                padding: "2px 8px",
                 borderRadius: "4px",
                 fontSize: "0.9em"
-              }}>{currentJobId}</code><br/>
-              <strong>Grupo:</strong> {group}<br/>
+              }}>{currentJobId}</code><br />
+              <strong>Grupo:</strong> {group}<br />
               <strong>Peça:</strong> {piece}
             </p>
 
@@ -234,7 +233,7 @@ export default function ReportClient({ params }) {
               >
                 Cancelar
               </button>
-              
+
               <button
                 onClick={confirmSaveChart}
                 disabled={saveLoading}
@@ -291,37 +290,35 @@ export default function ReportClient({ params }) {
               ))}
             </select>
           </div>
-
-          <button
-            onClick={generateReport}
-            disabled={loading}
-            className={styles.btnGenerate}
-            title="Gerar relatório da semana"
-          >
-            {loading ? "⏳ Gerando..." : "📊"}
-          </button>
-
-          {chartData && (
+          <div className={styles.menuBtn}>
             <button
-              onClick={saveChartToJob}
-              disabled={!currentJobId || saveLoading}
-              className={styles.btnGenerate}
-              style={{
-                backgroundColor: currentJobId ? "#48bb78" : "#cbd5e0",
-                cursor: currentJobId ? "pointer" : "not-allowed"
-              }}
-              title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
+              onClick={generateReport}
+              disabled={loading}
+              className={styles.btnMenu}
+              title="Gerar relatório da semana"
             >
-              <Save size={18} />
+              {loading ? "⏳ Gerando..." : <ArrowBigDown size={25} />}
             </button>
-          )}
 
-          <button
-            onClick={() => router.push(`/analysis/${group}/${piece}`)}
-            className={styles.btnBack}
-          >
-            ← Voltar
-          </button>
+            {chartData && (
+              <button
+                onClick={saveChartToJob}
+                disabled={!currentJobId || saveLoading}
+                className={styles.btnMenu}
+                title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
+              >
+                <SaveAll size={25} />
+              </button>
+            )}
+
+            <button
+              onClick={() => router.push(`/analysis/${group}/${piece}`)}
+              className={styles.btnMenu}
+              title={"Ir para analysis"}
+            >
+              <Grid3x3 size={25} />
+            </button>
+          </div>
         </div>
 
         {availableWeeks.length > 0 && (
