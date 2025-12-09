@@ -33,7 +33,7 @@
 .filterGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 1rem;
 }
 
 .filterGroup label {
@@ -54,6 +54,20 @@
 .select:focus {
   outline: none;
   border-color: #667eea;
+}
+
+.btnMenu {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #677172;
+  width: 35px;
+  height: 35px;
+  transition: 0.2s;
+  border: none;
 }
 
 .btnGenerate,

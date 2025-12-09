@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import styles from "./chartcpcpk.module.css";
+import { ArrowBigDown, ArrowBigRight, ChartColumnStacked, Grid3x3 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -15,6 +17,8 @@ export default function ReportCpCpkClient({ params }) {
   const [availableWeeks, setAvailableWeeks] = useState([]);
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   function getCurrentWeek() {
     const now = new Date();
@@ -136,17 +140,25 @@ export default function ReportCpCpkClient({ params }) {
           <button
             onClick={generateReport}
             disabled={loading}
-            className={styles.btnGenerate}
+            className={styles.btnMenu}
           >
-            {loading ? "⏳ Gerando..." : "📊"}
+            {loading ? "⏳ Gerando..." : <ArrowBigDown size={33} />}
           </button>
 
-          <button
-            onClick={() => window.history.back()}
-            className={styles.btnBack}
-          >
-            ← Voltar
-          </button>
+            <button
+              onClick={() => router.push(`/analysis/${group}/${piece}`)}
+              className={styles.btnMenu}
+              title={"Ir para analysis"}
+            >
+              <Grid3x3 size={33} />
+            </button>
+
+            <button className={styles.btnMenu} title="CG" >
+              <ChartColumnStacked size={33} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg`)} />
+            </button>
+            <button className={styles.btnMenu} title="Report" >
+              <ArrowBigRight size={33} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
+            </button>
         </div>
 
         {availableWeeks.length > 0 && (

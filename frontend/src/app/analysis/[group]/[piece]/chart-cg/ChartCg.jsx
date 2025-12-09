@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { Save, Download, Grid3x3, ArrowBigDown, SaveAll } from "lucide-react";
+import { Grid3x3, ArrowBigDown, SaveAll, ArrowBigRight, ChartColumnBig } from "lucide-react";
 import styles from "./chartcg.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -297,7 +297,7 @@ export default function ReportClient({ params }) {
               className={styles.btnMenu}
               title="Gerar relatório da semana"
             >
-              {loading ? "⏳ Gerando..." : <ArrowBigDown size={25} />}
+              {loading ? "⏳ Gerando..." : <ArrowBigDown size={33} />}
             </button>
 
             {chartData && (
@@ -307,7 +307,7 @@ export default function ReportClient({ params }) {
                 className={styles.btnMenu}
                 title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
               >
-                <SaveAll size={25} />
+                <SaveAll size={33} />
               </button>
             )}
 
@@ -316,7 +316,14 @@ export default function ReportClient({ params }) {
               className={styles.btnMenu}
               title={"Ir para analysis"}
             >
-              <Grid3x3 size={25} />
+              <Grid3x3 size={33} />
+            </button>
+            <button className={styles.btnMenu} title="Cp/Cpk" >
+              <ChartColumnBig size={33} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cp-cpk`)} />
+            </button>
+
+            <button className={styles.btnMenu} title="Report" >
+              <ArrowBigRight size={33} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
             </button>
           </div>
         </div>

@@ -1,13 +1,13 @@
 /*layout general*/
 .pageContainer {
   min-height: 100vh;
-  background: #ecf0f1;
-  padding: 2rem;
+  background: #555;
+  padding:0.5rem;
   width: 100%;
 }
 
 .contentWrapper {
-  max-width: 1000px;
+  max-width: 1500px;
   margin: 0 auto; 
 }
 
@@ -33,7 +33,7 @@
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #1a202c;
   margin: 0;
@@ -57,7 +57,7 @@
 /* filts*/
 .filtersContainer {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: flex-end;
   flex-wrap: wrap;
 }
@@ -74,12 +74,21 @@
   color: #4a5568;
 }
 
-.filterSelect,
+.filterSelect {
+  border: 1px solid #e2e8f0;
+  border-radius: 1px;
+  padding: 0.4rem 0rem;
+  font-size: 0.9rem;
+  background: white;
+  transition: all 0.2s;
+  min-width: 100px;
+}
+
 .filterInput {
   border: 1px solid #e2e8f0;
   border-radius: 1px;
-  padding: 0.2rem 0rem;
-  font-size: 0.85rem;
+  padding: 0.47rem 0rem;
+  font-size: 0.9rem;
   background: white;
   transition: all 0.2s;
   min-width: 100px;
@@ -92,15 +101,14 @@
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.filterInput {
+.filterSelect, .filterInput {
   width: 50px;
   text-align: center;
 }
 
 /* bnts */
 .btnPrimary,
-.btnSecondary, 
-.btnRest {
+.btnSecondary {
   border-radius: 1px;
   font-size: 1.5rem;
   font-weight: 600;
@@ -112,8 +120,7 @@
   gap: 0.5rem;
 }
 
-.btnPrimary, 
-.btnRest {
+.btnPrimary {
   background-color: #a0aec0;
 }
 
@@ -143,7 +150,19 @@
   transform: none;
 }
 
-
+.btnMenu {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #677172;
+  width: 35px;
+  height: 35px;
+  transition: 0.2s;
+  border: none;
+}
 
 /*historyy*/
 .historyContainer {
