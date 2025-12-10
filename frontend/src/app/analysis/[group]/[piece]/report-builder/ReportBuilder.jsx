@@ -203,21 +203,81 @@ export default function ReportBuilder() {
   function handleDrop(e) {
     e.preventDefault();
     
-    try {
-      const chartData = e.dataTransfer.getData("chart");
-      if (!chartData) return;
-      
-      const chart = JSON.parse(chartData);
-      const canvas = canvasRef.current;
-      const rect = canvas.getBoundingClientRect();
-      
-      const x = e.clientX - rect.left - 250; // 250 = metade da largura padrão
-      const y = e.clientY - rect.top - 175;  // 175 = metade da altura padrão
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    
+    const x = e.clientX - rect.left - 250;
+    const y = e.clientY - rect.top - 175;
 
+    // Tenta pegar imagem da biblioteca
+    const chartData = e.dataTransfer.getData("chart");
+    if (chartData) {
+      try {
+        const chart = JSON.parse(chartData);
+        const newElement = {
+          id: `image-${Date.now()}`,
+          type: "image",
+          chart: chart,
+          x: Math.max(0, x),
+          y: Math.max(0, y),
+          width: 500,
+          height: 350
+        };
+
+        const newPages = [...pages];
+        newPages[currentPageIndex].elements.push(newElement);
+        setPages(newPages);
+        return;
+      } catch (err) {
+        console.error("Erro ao adicionar imagem da biblioteca:", err);
+      }
+    }
+
+    // Tenta pegar arquivo do computador
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      
+      // Verifica se é imagem
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor, arraste apenas arquivos de imagem!');
+        return;
+      }
+
+      // Lê o arquivo como base64
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const newElement = {
+          id: `image-${Date.now()}`,
+          type: "external-image",
+          src: event.target.result,
+          filename: file.name,
+          x: Math.max(0, x),
+          y: Math.max(0, y),
+          width: 500,
+          height: 350
+        };
+
+        const newPages = [...pages];
+        newPages[currentPageIndex].elements.push(newElement);
+        setPages(newPages);
+      };
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    // Tenta pegar URL de imagem (drag de outra aba/site)
+    const html = e.dataTransfer.getData('text/html');
+    const urlMatch = html.match(/src="([^"]+)"/);
+    
+    if (urlMatch && urlMatch[1]) {
+      const imageUrl = urlMatch[1];
+      
       const newElement = {
         id: `image-${Date.now()}`,
-        type: "image",
-        chart: chart,
+        type: "external-image",
+        src: imageUrl,
+        filename: imageUrl.split('/').pop() || 'imagem-externa',
         x: Math.max(0, x),
         y: Math.max(0, y),
         width: 500,
@@ -227,8 +287,26 @@ export default function ReportBuilder() {
       const newPages = [...pages];
       newPages[currentPageIndex].elements.push(newElement);
       setPages(newPages);
-    } catch (err) {
-      console.error("Erro ao adicionar imagem:", err);
+      return;
+    }
+
+    // Tenta URL de texto simples
+    const url = e.dataTransfer.getData('text/plain');
+    if (url && (url.startsWith('http') || url.startsWith('data:image'))) {
+      const newElement = {
+        id: `image-${Date.now()}`,
+        type: "external-image",
+        src: url,
+        filename: url.split('/').pop() || 'imagem-externa',
+        x: Math.max(0, x),
+        y: Math.max(0, y),
+        width: 500,
+        height: 350
+      };
+
+      const newPages = [...pages];
+      newPages[currentPageIndex].elements.push(newElement);
+      setPages(newPages);
     }
   }
 
@@ -265,7 +343,7 @@ export default function ReportBuilder() {
       {/* Sidebar Esquerda */}
       <div className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
-          <h3 className={styles.sidebarTitle}>Biblioteca de Assets</h3>
+          <h3 className={styles.sidebarTitle}>📚 Biblioteca de Assets</h3>
           <p className={styles.sidebarSubtitle}>Job: {currentJobId?.slice(0, 8)}...</p>
         </div>
 
@@ -296,7 +374,7 @@ export default function ReportBuilder() {
                   onDragStart={(e) => handleDragStart(e, chart)}
                   className={styles.chartItem}
                 >
-                  {chart.filename}
+                  📊 {chart.filename}
                 </div>
               ))}
             </div>
@@ -308,7 +386,7 @@ export default function ReportBuilder() {
       <div className={styles.mainArea}>
         {/* Toolbar */}
         <div className={styles.toolbar}>
-          <h1 className={styles.toolbarTitle}>Montagem de Relatório</h1>
+          <h1 className={styles.toolbarTitle}>📄 Montagem de Relatório</h1>
 
           {selectedElementData && selectedElementData.type === "text" && (
             <div className={styles.formatToolbar}>
@@ -404,9 +482,58 @@ export default function ReportBuilder() {
                   <>
                     <img
                       src={`${API}/static/jobs/${currentJobId}/${element.chart.group}/${element.chart.filename}`}
-                      alt=""
+                      alt={element.chart.filename}
                       className={styles.image}
                       draggable={false}
+                      onError={(e) => {
+                        console.error("Erro ao carregar imagem:", element.chart);
+                        e.target.style.display = 'none';
+                        e.target.parentElement.innerHTML += `<div style="padding: 1rem; color: red; text-align: center;">❌ Erro ao carregar: ${element.chart.filename}</div>`;
+                      }}
+                    />
+                    {selectedElement === element.id && (
+                      <>
+                        <div
+                          onMouseDown={(e) => handleResizeMouseDown(e, element)}
+                          className={styles.resizeHandle}
+                        />
+                        <div className={styles.elementActions}>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              duplicateElement(element.id);
+                            }}
+                            className={`${styles.actionButton} ${styles.duplicateButton}`}
+                          >
+                            <Copy size={14} />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteElement(element.id);
+                            }}
+                            className={`${styles.actionButton} ${styles.deleteButton}`}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+
+                {element.type === "external-image" && (
+                  <>
+                    <img
+                      src={element.src}
+                      alt={element.filename}
+                      className={styles.image}
+                      draggable={false}
+                      onError={(e) => {
+                        console.error("Erro ao carregar imagem externa:", element.filename);
+                        e.target.style.display = 'none';
+                        e.target.parentElement.innerHTML += `<div style="padding: 1rem; color: red; text-align: center;">❌ Erro ao carregar: ${element.filename}</div>`;
+                      }}
                     />
                     {selectedElement === element.id && (
                       <>
@@ -532,6 +659,15 @@ export default function ReportBuilder() {
                           src={`${API}/static/jobs/${currentJobId}/${el.chart.group}/${el.chart.filename}`}
                           alt=""
                           style={{ width: "100%", height: "auto" }}
+                          onError={(e) => e.target.style.display = 'none'}
+                        />
+                      )}
+                      {el.type === "external-image" && (
+                        <img
+                          src={el.src}
+                          alt=""
+                          style={{ width: "100%", height: "auto" }}
+                          onError={(e) => e.target.style.display = 'none'}
                         />
                       )}
                     </div>
@@ -569,4 +705,4 @@ export default function ReportBuilder() {
       </div>
     </div>
   );
-}
+} 
