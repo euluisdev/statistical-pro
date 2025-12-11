@@ -6,8 +6,8 @@ export default function CanvasElement({
   isSelected,
   currentJobId,
   API,
-  onMouseDown, 
-  onDoubleClick, 
+  onMouseDown,
+  onDoubleClick,
   onResizeMouseDown,
   onUpdate,
   onDuplicate,
@@ -28,6 +28,7 @@ export default function CanvasElement({
           alt={filename}
           className={styles.image}
           draggable={false}
+          crossOrigin="anonymous"
           onError={(e) => {
             console.error("Erro ao carregar imagem:", filename);
             e.target.style.display = 'none';
@@ -89,20 +90,21 @@ export default function CanvasElement({
 
   return (
     <div
-      onMouseDown={(e) => onMouseDown(e, element)} 
-        onDoubleClick={() => onDoubleClick(element.id)}
+      onMouseDown={(e) => onMouseDown(e, element)}
+      onDoubleClick={() => onDoubleClick(element.id)}
       className={styles.canvasElement}
       style={{
         left: `${element.x}px`,
         top: `${element.y}px`,
         width: `${element.width}px`,
         height: element.type === "text" ? `${element.height}px` : "auto",
-        border: isSelected ? "2px solid #4299e1" : "1px dashed transparent",
-        cursor: "move"
+        border: isSelected ? "2px solid #4299e1" : "2px solid transparent",
+        cursor: isSelected ? "move" : "pointer",
+        boxShadow: isSelected ? "0 0 0 1px rgba(66, 153, 225, 0.3)" : "none"
       }}
     >
       {(element.type === "image" || element.type === "external-image") && renderImage()}
       {element.type === "text" && renderText()}
     </div>
   );
-} 
+}

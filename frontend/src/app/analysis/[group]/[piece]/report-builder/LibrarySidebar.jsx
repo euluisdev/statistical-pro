@@ -24,7 +24,7 @@ export default function LibrarySidebar({
 
       <div className={styles.libraryContent}>
         <h4 className={styles.libraryTitle}>
-          Imagens Salvas ({availableCharts.length})
+          Dados Salvos ({availableCharts.length})
         </h4>
 
         {loading ? (
@@ -42,7 +42,7 @@ export default function LibrarySidebar({
                 onDragStart={(e) => onDragStart(e, chart)}
                 className={styles.chartItem}
               >
-                📊 {chart.filename}
+                {chart.filename}
               </div>
             ))}
           </div>

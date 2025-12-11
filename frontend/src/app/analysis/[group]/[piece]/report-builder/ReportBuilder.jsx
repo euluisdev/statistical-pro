@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Download, FileText } from "lucide-react";
+import { Download, FileText, RotateCw, ZoomIn, ZoomOut } from "lucide-react";
 import styles from "./reportbuilder.module.css";
 
 import LibrarySidebar from "./LibrarySidebar";
@@ -16,6 +16,7 @@ export default function ReportBuilder() {
   const [pages, setPages] = useState([{ id: 1, elements: [] }]);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [pageOrientation, setPageOrientation] = useState("landscape"); // landscape ou portrait
   const canvasRef = useRef(null);
 
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -132,6 +133,56 @@ export default function ReportBuilder() {
     setPages(newPages);
   }
 
+  async function exportToPDF() {
+    try {
+      // Importa html2canvas e jsPDF dinamicamente
+      const html2canvas = (await import('html2canvas')).default;
+      const { jsPDF } = await import('jspdf');
+
+      const pdf = new jsPDF({
+        orientation: pageOrientation === "landscape" ? "l" : "p",
+        unit: "mm",
+        format: "a4"
+      });
+
+      for (let i = 0; i < pages.length; i++) {
+        // Temporariamente muda para a página
+        setCurrentPageIndex(i);
+        
+        // Aguarda um pouco para renderizar
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const canvas = canvasRef.current;
+        const canvasImage = await html2canvas(canvas, {
+          scale: 2,
+          useCORS: true,
+          logging: false
+        });
+
+        const imgData = canvasImage.toDataURL('image/png');
+        
+        if (i > 0) {
+          pdf.addPage();
+        }
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      }
+
+      pdf.save(`relatorio_${currentJobId?.slice(0, 8)}_${Date.now()}.pdf`);
+      alert('✓ PDF exportado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao exportar PDF:', error);
+      alert('❌ Erro ao exportar PDF. Verifique o console para mais detalhes.');
+    }
+  }
+
+  function toggleOrientation() {
+    setPageOrientation(prev => prev === "landscape" ? "portrait" : "landscape");
+  }
+
   function handleDragStart(e, chart) {
     e.dataTransfer.effectAllowed = "copy";
     e.dataTransfer.setData("chart", JSON.stringify(chart));
@@ -161,30 +212,44 @@ export default function ReportBuilder() {
 
       <div className={styles.mainArea}>
         <div className={styles.toolbar}>
-          <h1 className={styles.toolbarTitle}>📄 Montagem de Relatório</h1>
+          <h1 className={styles.toolbarTitle}>Montagem de Relatório</h1>
 
-          {/* Toolbar sempre visível */}
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            {selectedElementData && selectedElementData.type === "text" && (
-              <FormatToolbar 
-                element={selectedElementData}
-                onUpdate={updateElement}
-              />
-            )}
+            <FormatToolbar 
+              element={selectedElementData}
+              onUpdate={updateElement}
+            />
             
-            {!selectedElementData && (
-              <div style={{ 
-                color: "#718096", 
+            <div style={{ 
+              height: "30px", 
+              width: "1px", 
+              backgroundColor: "#e2e8f0" 
+            }} />
+
+            <button
+              onClick={toggleOrientation}
+              style={{
+                padding: "0.5rem 1rem",
+                backgroundColor: "#edf2f7",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
                 fontSize: "0.85rem",
-                fontStyle: "italic" 
-              }}>
-                Dê duplo clique em um elemento para selecioná-lo
-              </div>
-            )}
+                fontWeight: "500",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                color: "#4a5568"
+              }}
+              title={`Mudar para ${pageOrientation === "landscape" ? "retrato" : "paisagem"}`}
+            >
+              <RotateCw size={16} />
+              {pageOrientation === "landscape" ? "Paisagem" : "Retrato"}
+            </button>
           </div>
 
           <button 
-            onClick={() => alert("Exportação em desenvolvimento")} 
+            onClick={exportToPDF} 
             className={styles.exportButton}
           >
             <Download size={16} />
@@ -196,9 +261,12 @@ export default function ReportBuilder() {
           <div
             ref={canvasRef}
             className={styles.canvas}
-            style={{ cursor: isDragging ? "grabbing" : "default" }}
+            style={{ 
+              cursor: isDragging ? "grabbing" : "default",
+              width: pageOrientation === "landscape" ? "297mm" : "210mm",
+              height: pageOrientation === "landscape" ? "210mm" : "297mm"
+            }}
             onClick={(e) => {
-              // Só desseleciona se clicar no fundo do canvas
               if (e.target === e.currentTarget) {
                 setSelectedElement(null);
               }
@@ -237,6 +305,5 @@ export default function ReportBuilder() {
       />
     </div>
   );
-} 
-  
+}  
  

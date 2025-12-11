@@ -1,333 +1,263 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { Grid3x3, ArrowBigDown, SaveAll, ArrowBigRight, ChartColumnBig } from "lucide-react";
 import styles from "./chartcggroup.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-export default function GroupReport({ params }) {
+export default function ReportGroupClient({ params }) {
   const { group } = params;
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedWeek, setSelectedWeek] = useState(getCurrentWeek());
-  const [availableWeeks, setAvailableWeeks] = useState([]);
   const [reportData, setReportData] = useState(null);
+  const [piecesList, setPiecesList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentJobId, setCurrentJobId] = useState(null);
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [saveLoading, setSaveLoading] = useState(false);
-
-  const plotRef = useRef(null);
-  const router = useRouter();
 
   function getCurrentWeek() {
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 1);
     const diff = now - start;
-    return Math.ceil(diff / 604800000);
+    const oneWeek = 604800000;
+    return Math.ceil(diff / oneWeek);
   }
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setCurrentJobId(localStorage.getItem("current_jobid"));
-    }
-  }, []);
-
-  useEffect(() => {
-    loadAvailableWeeks();
     loadGroupReport();
   }, [group]);
 
-
-  //LISTA AS SEMANAS EM QUE EXISTE DADOS DO GRUPO
-  async function loadAvailableWeeks() {
-    try {
-      const res = await fetch(`${API}/groups/${group}/analysis/list`);
-      const json = await res.json();
-      setAvailableWeeks(json.files || []);
-    } catch (err) {
-      console.error("Erro ao carregar semanas:", err);
-    }
-  }
-
-
-  //CARREGA O REPORT GERAL DO GRUPO
   async function loadGroupReport() {
-    try {
-      const res = await fetch(`${API}/groups/${group}/report`);
-      const json = await res.json();
-
-      if (json.weeks && json.weeks.length > 0) {
-        setReportData(json);
-      }
-    } catch (err) {
-      console.error("Erro ao carregar relatório:", err);
-    }
-  }
-
-
-  //GERA ANÁLISE + ESTATÍSTICAS (PARA O GRUPO)
-  async function generateReport() {
     setLoading(true);
     try {
-      const resGen = await fetch(
-        `${API}/groups/${group}/generate_analysis?week=${selectedWeek}&year=${selectedYear}`,
-        { method: "POST" }
-      );
-
-      if (!resGen.ok) throw new Error("Erro ao gerar análise");
-
-      const resStats = await fetch(
-        `${API}/groups/${group}/calculate_statistics?week=${selectedWeek}&year=${selectedYear}`,
-        { method: "POST" }
-      );
-
-      if (!resStats.ok) throw new Error("Erro ao calcular estatísticas");
-
-      await loadGroupReport();
-      await loadAvailableWeeks();
-
-      alert(`✓ Relatório do GRUPO gerado!`);
+      const res = await fetch(`${API}/pieces/group/${group}/report`);
+      const json = await res.json();
+      
+      if (json.weeks && json.weeks.length > 0) {
+        setReportData(json.weeks);
+        setPiecesList(json.pieces || []);
+      }
     } catch (err) {
-      console.error(err);
-      alert("Erro ao gerar relatório: " + err.message);
+      console.error("Erro ao carregar relatório do grupo:", err);
     } finally {
       setLoading(false);
     }
   }
 
-
-  //SALVAR PNG NO JOB
-  async function saveChartToJob() {
-    if (!currentJobId) {
-      alert("⚠️ Nenhum Job ativo!");
-      return;
-    }
-    setShowSaveModal(true);
-  }
-
-  async function confirmSaveChart() {
-    setSaveLoading(true);
+  async function generateAllPiecesReports() {
+    setLoading(true);
 
     try {
-      const gd = plotRef.current?.el;
-      const Plotly = (await import("plotly.js-dist-min")).default;
+      // Pega lista de peças
+      const resPieces = await fetch(`${API}/pieces/${group}`);
+      const pieces = await resPieces.json();
 
-      const imageData = await Plotly.toImage(gd, {
-        format: "png",
-        width: 1400,
-        height: 800,
-        scale: 2
-      });
+      if (!pieces || pieces.length === 0) {
+        alert("Nenhuma peça encontrada no grupo");
+        return;
+      }
 
-      const response = await fetch(
-        `${API}/jobs/job/${currentJobId}/save-chart`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            group: group,
-            piece: null,
-            image_data: imageData
-          })
+      let generated = 0;
+      const currentWeek = getCurrentWeek();
+
+      // Para cada peça, gera análise da semana atual
+      for (const piece of pieces) {
+        try {
+          // Gera análise
+          await fetch(
+            `${API}/pieces/${group}/${piece.part_number}/generate_analysis?week=${currentWeek}&year=${selectedYear}`,
+            { method: "POST" }
+          );
+
+          // Calcula estatísticas
+          await fetch(
+            `${API}/pieces/${group}/${piece.part_number}/calculate_statistics?week=${currentWeek}&year=${selectedYear}`,
+            { method: "POST" }
+          );
+
+          generated++;
+        } catch (err) {
+          console.error(`Erro na peça ${piece.part_number}:`, err);
         }
-      );
+      }
 
-      if (!response.ok) throw new Error("Erro ao salvar no backend");
+      // Recarrega relatório do grupo
+      await loadGroupReport();
 
-      const result = await response.json();
-
-      alert(`✓ Gráfico salvo!\n📁 ${result.filename}`);
-
+      alert(`✓ ${generated} peças processadas para semana ${currentWeek}/${selectedYear}!`);
     } catch (err) {
-      console.error(err);
-      alert(`❌ Erro ao salvar gráfico: ${err.message}`);
+      console.error("Erro ao gerar relatórios:", err);
+      alert("Erro ao gerar relatórios");
     } finally {
-      setSaveLoading(false);
-      setShowSaveModal(false);
+      setLoading(false);
     }
   }
 
-  const chartData =
-    reportData && reportData.weeks.length > 0
-      ? prepareGroupChartData(reportData, group)
-      : null;
+  const chartData = reportData && reportData.length > 0
+    ? prepareChartData(reportData, group, piecesList.length)
+    : null;
 
   return (
     <div className={styles.pageContainer}>
-
-      {/* MODAL DE SALVAR */}
-      {showSaveModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h3>💾 Salvar Gráfico no Job</h3>
-
-            <p>
-              Deseja salvar o gráfico geral do grupo?<br />
-              <strong>Job ID:</strong> {currentJobId}
-            </p>
-
-            <div className={styles.modalActions}>
-              <button onClick={() => setShowSaveModal(false)}>Cancelar</button>
-              <button onClick={confirmSaveChart} disabled={saveLoading}>
-                {saveLoading ? "⏳ Salvando..." : "✓ Confirmar"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* HEADER */}
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CG Geral - {group} ({reportData?.total_pieces || 0} peças)
+          CG Geral - {group} - ({piecesList.length} Peças)
         </h1>
 
         <div className={styles.controls}>
           <div className={styles.filterGroup}>
-            <label>YEAR</label>
+            <label>Ano</label>
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(Number(e.target.value))}
               className={styles.select}
             >
-              {[2024, 2025, 2026, 2027, 2028].map((y) => (
-                <option key={y} value={y}>{y}</option>
+              {[2023, 2024, 2025, 2026, 2027, 2028].map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
               ))}
             </select>
           </div>
 
-          <div className={styles.filterGroup}>
-            <label>WEEK</label>
-            <select
-              value={selectedWeek}
-              onChange={(e) => setSelectedWeek(Number(e.target.value))}
-              className={styles.select}
-            >
-              {Array.from({ length: 53 }, (_, i) => i + 1).map((w) => (
-                <option key={w} value={w}>W {w}</option>
-              ))}
-            </select>
-          </div>
+          <button
+            onClick={generateAllPiecesReports}
+            disabled={loading}
+            className={styles.btnGenerate}
+          >
+            {loading ? "⏳ Processando..." : "📊 Gerar Semana Atual (Todas Peças)"}
+          </button>
 
-          <div className={styles.menuBtn}>
-            <button onClick={generateReport} disabled={loading} className={styles.btnMenu}>
-              {loading ? "⏳" : <ArrowBigDown size={33} />}
-            </button>
-
-            {chartData && (
-              <button
-                onClick={saveChartToJob}
-                disabled={!currentJobId || saveLoading}
-                className={styles.btnMenu}
-              >
-                <SaveAll size={33} />
-              </button>
-            )}
-
-            <button
-              onClick={() => router.push(`/analysis/${group}`)}
-              className={styles.btnMenu}
-            >
-              <Grid3x3 size={33} />
-            </button>
-          </div>
+          <button
+            onClick={() => window.history.back()}
+            className={styles.btnBack}
+          >
+            ← Voltar
+          </button>
         </div>
 
-        {availableWeeks.length > 0 && (
-          <div className={styles.historyContainer}>
-            <h3>HISTÓRICO - {availableWeeks.length}</h3>
-            <div className={styles.historyGrid}>
-              {availableWeeks.map((file) => (
-                <div key={file.filename} className={styles.historyItem}>
-                  <span>{file.year} - W{file.week}</span>
-                  <span>{new Date(file.modified).toLocaleDateString("pt-BR")}</span>
-                </div>
-              ))}
-            </div>
+        {piecesList.length > 0 && (
+          <div className={styles.piecesInfo}>
+            <p className={styles.piecesLabel}>
+              Peças: {piecesList.join(", ")}
+            </p>
           </div>
         )}
       </div>
 
-      {/* GRÁFICO */}
       {chartData ? (
         <div className={styles.chartContainer}>
           <Plot
-            ref={plotRef}
             data={chartData.data}
             layout={chartData.layout}
             config={{
               displayModeBar: true,
-              displaylogo: false
+              displaylogo: false,
+              toImageButtonOptions: {
+                format: "png",
+                filename: `CG_Geral_${group}_${selectedYear}`,
+                height: 800,
+                width: 1400,
+                scale: 2,
+              },
+              modeBarButtonsToAdd: ["toImage"],
             }}
             style={{ width: "100%", height: "700px" }}
           />
         </div>
       ) : (
-        <div className={styles.emptyState}>Nenhum relatório disponível.</div>
+        <div className={styles.emptyState}>
+          <span style={{ fontSize: "4rem" }}>📊</span>
+          <p>
+            {loading
+              ? "Processando todas as peças..."
+              : "Nenhum relatório gerado ainda. Clique em 'Gerar Semana Atual' para processar todas as peças do grupo"}
+          </p>
+        </div>
       )}
-
     </div>
   );
 }
 
+function prepareChartData(weeksData, group, piecesCount) {
+  if (!weeksData || weeksData.length === 0) return null;
 
+  const weekLabels = weeksData.map((w) => `Week ${w.week}`);
 
-function prepareGroupChartData(reportData, group) {
-  const { weeks } = reportData;
+  const greenData = weeksData.map((w) => w.green_percent);
+  const yellowData = weeksData.map((w) => w.yellow_percent);
+  const redData = weeksData.map((w) => w.red_percent);
 
-  const weekLabels = weeks.map((w) => `Week ${w.week}`);
+  const greenValues = weeksData.map((w) => w.green);
+  const yellowValues = weeksData.map((w) => w.yellow);
+  const redValues = weeksData.map((w) => w.red);
 
   return {
     data: [
       {
         x: weekLabels,
-        y: weeks.map((w) => w.green_percent),
+        y: greenData,
         name: "CG ≤ 75%",
         type: "bar",
-        marker: { color: "green" },
-        text: weeks.map((w) => w.green),
+        marker: { color: "#4ade80" },
+        text: greenValues,
         textposition: "inside",
-        insidetextanchor: "middle"
+        textfont: { color: "black", size: 14, weight: "bold" },
+        hovertemplate: "<b>%{x}</b><br>Verde: %{text} pontos (%{y:.1f}%)<extra></extra>",
       },
       {
         x: weekLabels,
-        y: weeks.map((w) => w.yellow_percent),
+        y: yellowData,
         name: "75% < CG ≤ 100%",
         type: "bar",
-        marker: { color: "yellow" },
-        text: weeks.map((w) => w.yellow),
+        marker: { color: "#fbbf24" },
+        text: yellowValues,
         textposition: "inside",
-        insidetextanchor: "middle"
+        textfont: { color: "black", size: 14, weight: "bold" },
+        hovertemplate: "<b>%{x}</b><br>Amarelo: %{text} pontos (%{y:.1f}%)<extra></extra>",
       },
       {
         x: weekLabels,
-        y: weeks.map((w) => w.red_percent),
+        y: redData,
         name: "CG > 100%",
         type: "bar",
-        marker: { color: "red" },
-        text: weeks.map((w) => w.red),
+        marker: { color: "#ef4444" },
+        text: redValues,
         textposition: "inside",
-        insidetextanchor: "middle"
-      }
+        textfont: { color: "white", size: 14, weight: "bold" },
+        hovertemplate: "<b>%{x}</b><br>Vermelho: %{text} pontos (%{y:.1f}%)<extra></extra>",
+      },
     ],
     layout: {
       barmode: "stack",
-      title: `CG Geral - ${group}`,
-      xaxis: { tickangle: -45 },
+      title: {
+        text: `CG Geral - ${group} - (${piecesCount} Peças)`,
+        font: { size: 22, weight: "bold", color: "#2d3748" },
+      },
+      xaxis: {
+        title: "",
+        tickangle: -45,
+        tickfont: { size: 11 },
+        gridcolor: "#e2e8f0",
+      },
       yaxis: {
+        title: "",
+        range: [0, 100],
         ticksuffix: "%",
-        range: [0, 100]
+        tickfont: { size: 12 },
+        gridcolor: "#e2e8f0",
       },
       legend: {
+        x: 0.5,
+        y: -0.15,
+        xanchor: "center",
         orientation: "h",
-        y: -0.15
+        font: { size: 13 },
       },
-      margin: { l: 60, r: 40, t: 60, b: 130 }
-    }
+      margin: { l: 60, r: 40, t: 80, b: 120 },
+      paper_bgcolor: "white",
+      plot_bgcolor: "#f9fafb",
+      hovermode: "x unified",
+    },
   };
 }
