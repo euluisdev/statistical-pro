@@ -95,7 +95,7 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
               <div className={styles.topFiveImage}>
                 {piece.image ? (
                   <img
-                    src={`${API}/pieces/${group}/${piece.part_number}/image`}
+                    src={`${API}/pieces/${group}/${piece.part_number}/imagens`}
                     alt={piece.part_number}
                     onError={(e) => {
                       e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='40'%3E🔩%3C/text%3E%3C/svg%3E";
@@ -149,7 +149,8 @@ function prepareChartData(piecesReport, group) {
         x: labels,
         y: greenData,
         name: "CG ≤ 75%",
-        type: "bar",
+        type: "bar", 
+        width: 0.3, 
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -160,7 +161,8 @@ function prepareChartData(piecesReport, group) {
         x: labels,
         y: yellowData,
         name: "75% < CG ≤ 100%",
-        type: "bar",
+        type: "bar", 
+        width: 0.3, 
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -171,7 +173,8 @@ function prepareChartData(piecesReport, group) {
         x: labels,
         y: redData,
         name: "CG > 100%",
-        type: "bar",
+        type: "bar", 
+        width: 0.3, 
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
