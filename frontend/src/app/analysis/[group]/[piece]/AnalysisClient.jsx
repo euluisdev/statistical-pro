@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowBigDown, ArrowBigRight, ChartColumnBig, ChartColumnStacked, ChartLine, House } from "lucide-react";
+import { ArrowBigDown, ArrowBigRight, ChartColumnBig, ChartColumnStacked, ChartColumn, House, FileChartColumn } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import styles from "./analysis.module.css";
@@ -170,21 +170,24 @@ export default function AnalysisPage() {
             >
               {generating && "⏳ Gerando..."}
               {calculating && "📊 Calculando..."}
-              {!isProcessing && <ArrowBigDown size={35} />}
+              {!isProcessing && <ArrowBigDown size={30} />}
             </button>
 
             <button className={styles.btnMenu} title="Home Page" >
-              <House size={35} onClick={() => router.push("/")} />
+              <House size={30} onClick={() => router.push("/")} />
             </button>
             <button className={styles.btnMenu} title="CG" >
-              <ChartColumnStacked size={35} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg`)} />
+              <ChartColumnStacked size={30} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg`)} />
             </button>
             <button className={styles.btnMenu} title="Cp/Cpk" >
-              <ChartColumnBig size={35} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cp-cpk`)} />
+              <ChartColumnBig size={30} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cp-cpk`)} />
+            </button>
+            <button className={styles.btnMenu} title="CG Conjunto" >
+              <FileChartColumn size={30} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg-group`)} />
             </button>
 
             <button className={styles.btnMenu} title="Report" >
-              <ArrowBigRight size={35} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
+              <ArrowBigRight size={30} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
             </button>
 
           </div>

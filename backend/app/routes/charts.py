@@ -83,15 +83,16 @@ def get_cp_cpk_report_data(
     return {"weeks": weeks_data}
 
 
-@router.get("/group/{group}/report")
-def get_group_report_data(
+#chart cg-general group
+@router.post("/group/{group}/generate-week-report")
+def generate_group_week_report(
     group: str,
-    week: Optional[int] = Query(None),
-    year: Optional[int] = Query(None)
+    week: int = Query(..., description="Semana ISO (1-53)"),
+    year: int = Query(..., description="Ano (ex: 2025)")
 ):
     """
-    Retorna dados agregados de CG de TODAS as peças do grupo.
-    Soma os pontos verdes, amarelos e vermelhos de todas as peças.
+    Gera relatório de uma semana específica para TODAS as peças do grupo.
+    Soma os pontos CG de todas as peças da mesma semana.
     """
     import pandas as pd
     from datetime import datetime
@@ -102,87 +103,234 @@ def get_group_report_data(
     pieces_list = list_pieces(group)
     
     if not pieces_list:
-        return {"weeks": [], "pieces": []}
+        raise HTTPException(404, "Nenhuma peça encontrada no grupo")
 
-    weeks_aggregate = {}  #{(year, week): {green: 0, yellow: 0, red: 0, total: 0}}
+    # Acumuladores para a semana
+    total_green = 0
+    total_yellow = 0
+    total_red = 0
+    total_points = 0
+    pieces_processed = 0
 
     # Para cada peça do grupo
     for piece_info in pieces_list:
         piece_number = piece_info["part_number"]
         piece_safe = sanitize_piece_name(piece_number)
         
-        analysis_dir = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            "data", "groups", group_safe, "pieces", piece_safe, "analysis"
-        )
+        try:
+            # 1. Gera análise da semana para esta peça
+            analysis_dir = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                "data", "groups", group_safe, "pieces", piece_safe, "analysis"
+            )
+            os.makedirs(analysis_dir, exist_ok=True)
 
-        if not os.path.exists(analysis_dir):
-            continue
+            csv_dir = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                "data", "groups", group_safe, "pieces", piece_safe, "csv"
+            )
 
-        #para cada arquivo de análise da peça
-        for file in os.listdir(analysis_dir):
-            if file.startswith("analysis_") and file.endswith(".csv"):
-                try:
-                    parts = file.replace("analysis_", "").replace(".csv", "").split("_")
-                    if len(parts) != 2:
+            if not os.path.exists(csv_dir):
+                continue
+
+            filename = f"analysis_{year}_W{week:02d}.csv"
+            analysis_path = os.path.join(analysis_dir, filename)
+
+            # Lê todos os CSVs da peça
+            dfs = []
+            for file in os.listdir(csv_dir):
+                if file.lower().endswith(".csv"):
+                    try:
+                        df = pd.read_csv(os.path.join(csv_dir, file))
+                        df["Origem"] = file
+                        dfs.append(df)
+                    except:
                         continue
 
-                    file_year = int(parts[0])
-                    file_week = int(parts[1].replace("W", ""))
+            if not dfs:
+                continue
 
-                    #se especificou filtro ele aplica
-                    if week and year:
-                        if file_week != week or file_year != year:
-                            continue
+            df_total = pd.concat(dfs, ignore_index=True)
+            df_total.to_csv(analysis_path, index=False)
 
-                    csv_path = os.path.join(analysis_dir, file)
-                    df = pd.read_csv(csv_path)
+            # 2. Calcula estatísticas desta peça
+            stats = calculate_statistics(df_total)
 
-                    stats = calculate_statistics(df)
+            if stats and "summary" in stats:
+                # Soma os valores
+                total_green += stats["summary"]["cg_green"]
+                total_yellow += stats["summary"]["cg_yellow"]
+                total_red += stats["summary"]["cg_red"]
+                total_points += stats["summary"]["total_characteristics"]
+                pieces_processed += 1
 
-                    if stats and "summary" in stats:
-                        key = (file_year, file_week)
-                        
-                        if key not in weeks_aggregate:
-                            weeks_aggregate[key] = {
-                                "year": file_year,
-                                "week": file_week,
-                                "green": 0,
-                                "yellow": 0,
-                                "red": 0,
-                                "total": 0
-                            }
-                        
-                        #soma os valores
-                        weeks_aggregate[key]["green"] += stats["summary"]["cg_green"]
-                        weeks_aggregate[key]["yellow"] += stats["summary"]["cg_yellow"]
-                        weeks_aggregate[key]["red"] += stats["summary"]["cg_red"]
-                        weeks_aggregate[key]["total"] += stats["summary"]["total_characteristics"]
-                        
-                except Exception as e:
-                    print(f"Erro ao processar {file}: {e}")
-                    continue
+        except Exception as e:
+            print(f"Erro ao processar peça {piece_number}: {e}")
+            continue
 
-    #converte para lista e calcula percentuais
+    if pieces_processed == 0:
+        raise HTTPException(404, "Nenhuma peça foi processada")
+
+    # Calcula percentuais
+    green_percent = round((total_green / total_points) * 100, 2) if total_points > 0 else 0
+    yellow_percent = round((total_yellow / total_points) * 100, 2) if total_points > 0 else 0
+    red_percent = round((total_red / total_points) * 100, 2) if total_points > 0 else 0
+
+    # Salva resultado agregado do grupo
+    group_reports_dir = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "data", "groups", group_safe, "reports"
+    )
+    os.makedirs(group_reports_dir, exist_ok=True)
+
+    report_filename = f"group_report_{year}_W{week:02d}.json"
+    report_path = os.path.join(group_reports_dir, report_filename)
+
+    import json
+    report_data = {
+        "year": year,
+        "week": week,
+        "green": total_green,
+        "green_percent": green_percent,
+        "yellow": total_yellow,
+        "yellow_percent": yellow_percent,
+        "red": total_red,
+        "red_percent": red_percent,
+        "total": total_points,
+        "pieces_processed": pieces_processed,
+        "generated_at": datetime.now().isoformat()
+    }
+
+    with open(report_path, "w") as f:
+        json.dump(report_data, f, indent=2)
+
+    return {
+        "status": "ok",
+        "week": week,
+        "year": year,
+        "pieces_processed": pieces_processed,
+        "data": report_data
+    }
+
+
+@router.get("/group/{group}/reports")
+def get_group_reports(group: str):
+    """
+    Lista todos os relatórios gerados do grupo.
+    """
+    import json
+    
+    group_safe = sanitize_piece_name(group)
+    
+    group_reports_dir = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "data", "groups", group_safe, "reports"
+    )
+
+    if not os.path.exists(group_reports_dir):
+        return {"weeks": []}
+
     weeks_data = []
-    for data in weeks_aggregate.values():
-        total = data["total"]
-        if total > 0:
-            data["green_percent"] = round((data["green"] / total) * 100, 2)
-            data["yellow_percent"] = round((data["yellow"] / total) * 100, 2)
-            data["red_percent"] = round((data["red"] / total) * 100, 2)
-        else:
-            data["green_percent"] = 0
-            data["yellow_percent"] = 0
-            data["red_percent"] = 0
-        
-        weeks_data.append(data)
+
+    for file in sorted(os.listdir(group_reports_dir)):
+        if file.startswith("group_report_") and file.endswith(".json"):
+            try:
+                with open(os.path.join(group_reports_dir, file), "r") as f:
+                    data = json.load(f)
+                    weeks_data.append(data)
+            except:
+                continue
 
     # Ordena por ano/semana
     weeks_data.sort(key=lambda x: (x["year"], x["week"]))
 
+    return {"weeks": weeks_data}
+
+#cg for piece top five
+@router.get("/group/{group}/pieces-report")
+def get_group_pieces_report(
+    group: str,
+    week: int = Query(..., description="Semana ISO (1-53)"),
+    year: int = Query(..., description="Ano (ex: 2025)")
+):
+    """
+    Retorna CG de cada peça do grupo para uma semana específica.
+    Usado para gráfico "CG Por Peça".
+    """
+    import pandas as pd
+
+    group_safe = sanitize_piece_name(group)
+    
+    # Pega todas as peças do grupo
+    pieces_list = list_pieces(group)
+    
+    if not pieces_list:
+        return {"pieces": []}
+
+    pieces_data = []
+
+    # Para cada peça do grupo
+    for piece_info in pieces_list:
+        piece_number = piece_info["part_number"]
+        piece_name = piece_info.get("part_name", piece_number)
+        piece_safe = sanitize_piece_name(piece_number)
+        
+        try:
+            # Caminho do analysis da semana
+            analysis_dir = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                "data", "groups", group_safe, "pieces", piece_safe, "analysis"
+            )
+
+            filename = f"analysis_{year}_W{week:02d}.csv"
+            analysis_path = os.path.join(analysis_dir, filename)
+
+            if not os.path.exists(analysis_path):
+                continue
+
+            # Lê e calcula estatísticas
+            df = pd.read_csv(analysis_path)
+            stats = calculate_statistics(df)
+
+            if stats and "summary" in stats:
+                # Caminho da imagem
+                image_dir = os.path.join(
+                    os.path.dirname(os.path.dirname(__file__)),
+                    "data", "groups", group_safe, "pieces", piece_safe, "imagens"
+                )
+                
+                image_filename = None
+                if os.path.exists(image_dir):
+                    for img_file in os.listdir(image_dir):
+                        if img_file.startswith("peca"):
+                            image_filename = img_file
+                            break
+
+                pieces_data.append({
+                    "part_number": piece_number,
+                    "part_name": piece_name,
+                    "green": stats["summary"]["cg_green"],
+                    "green_percent": stats["summary"]["cg_green_percent"],
+                    "yellow": stats["summary"]["cg_yellow"],
+                    "yellow_percent": stats["summary"]["cg_yellow_percent"],
+                    "red": stats["summary"]["cg_red"],
+                    "red_percent": stats["summary"]["cg_red_percent"],
+                    "total": stats["summary"]["total_characteristics"],
+                    "image": image_filename
+                })
+                
+        except Exception as e:
+            print(f"Erro ao processar peça {piece_number}: {e}")
+            continue
+
+    # Ordena por pior desempenho (mais vermelho + amarelo)
+    pieces_data.sort(key=lambda x: (x["red"], x["yellow"]), reverse=True)
+
     return {
-        "weeks": weeks_data,
-        "pieces": [p["part_number"] for p in pieces_list],
-        "total_pieces": len(pieces_list)
-    }
+        "pieces": pieces_data,
+        "week": week,
+        "year": year,
+        "total_pieces": len(pieces_data)
+    }  
+ 
+  

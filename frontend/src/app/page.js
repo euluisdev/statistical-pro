@@ -7,7 +7,7 @@ import GroupManager from "./groups/components/GroupManager";
 import PieceManager from "./groups/components/PieceManager";
 import TxtManager from "./groups/components/TxtManager";
 import ConfirmModal from "./components/common/ConfirmModal";
-import { ArrowBigRight, ChartLine, House, Grid3x3, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked } from "lucide-react";
+import { ArrowBigRight, ChartLine, House, Grid3x3, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked, ChartColumnBig, FileChartColumn } from "lucide-react";
 
 import "./styles.css";
 
@@ -139,11 +139,60 @@ export default function GroupsPage() {
           >
             <Grid3x3 />
           </button>
-          <button className="btnRest"><ChartColumnStacked /></button>
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/chart-cg`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="CG"
+          >
+            <ChartColumnStacked />
+          </button>
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/chart-cp-cpk`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="Cp/Cpk"
+          >
+            <ChartColumnBig />
+          </button>
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/chart-cg-group`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="CG Conjunto"
+          >
+            <FileChartColumn />
+          </button>
+
           <button className="btnRest"><ChartNoAxesCombined /></button>
           <button className="btnRest"><TrendingUpDown /></button>
           <button className="btnRest"><ChartLine /></button>
-          <button className="btnRest"><ArrowBigRight /></button>
+
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/report-builder`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="Montar Relatório"
+          >
+            <ArrowBigRight />
+          </button>
+
         </div>
       </div>
 

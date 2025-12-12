@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import styles from "./chartcggroup.module.css";
 
+import ChartCgPieces from "./ChartCgPieces"
+
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 export default function ReportGroupClient({ params }) {
@@ -11,6 +13,7 @@ export default function ReportGroupClient({ params }) {
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedWeek, setSelectedWeek] = useState(getCurrentWeek());
   const [reportData, setReportData] = useState(null);
   const [piecesList, setPiecesList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -24,70 +27,55 @@ export default function ReportGroupClient({ params }) {
   }
 
   useEffect(() => {
-    loadGroupReport();
+    loadPiecesList();
+    loadGroupReports();
   }, [group]);
 
-  async function loadGroupReport() {
-    setLoading(true);
+  async function loadPiecesList() {
     try {
-      const res = await fetch(`${API}/pieces/group/${group}/report`);
+      const res = await fetch(`${API}/pieces/${group}`);
       const json = await res.json();
-      
-      if (json.weeks && json.weeks.length > 0) {
-        setReportData(json.weeks);
-        setPiecesList(json.pieces || []);
-      }
+      setPiecesList(json || []);
     } catch (err) {
-      console.error("Erro ao carregar relatório do grupo:", err);
-    } finally {
-      setLoading(false);
+      console.error("Erro ao carregar peças:", err);
     }
   }
 
-  async function generateAllPiecesReports() {
+  async function loadGroupReports() {
+    try {
+      const res = await fetch(`${API}/pieces/group/${group}/reports`);
+      const json = await res.json();
+
+      if (json.weeks && json.weeks.length > 0) {
+        setReportData(json.weeks);
+      }
+    } catch (err) {
+      console.error("Erro ao carregar relatórios:", err);
+    }
+  }
+
+  async function generateWeekReport() {
     setLoading(true);
 
     try {
-      // Pega lista de peças
-      const resPieces = await fetch(`${API}/pieces/${group}`);
-      const pieces = await resPieces.json();
+      const res = await fetch(
+        `${API}/pieces/group/${group}/generate-week-report?week=${selectedWeek}&year=${selectedYear}`,
+        { method: "POST" }
+      );
 
-      if (!pieces || pieces.length === 0) {
-        alert("Nenhuma peça encontrada no grupo");
-        return;
+      const json = await res.json();
+
+      if (!res.ok) {
+        throw new Error(json.detail || "Erro ao gerar relatório");
       }
 
-      let generated = 0;
-      const currentWeek = getCurrentWeek();
+      alert(`✓ Relatório gerado!\nSemana ${selectedWeek}/${selectedYear}\nPeças processadas: ${json.pieces_processed}\n\nVerde: ${json.data.green}\nAmarelo: ${json.data.yellow}\nVermelho: ${json.data.red}`);
 
-      // Para cada peça, gera análise da semana atual
-      for (const piece of pieces) {
-        try {
-          // Gera análise
-          await fetch(
-            `${API}/pieces/${group}/${piece.part_number}/generate_analysis?week=${currentWeek}&year=${selectedYear}`,
-            { method: "POST" }
-          );
-
-          // Calcula estatísticas
-          await fetch(
-            `${API}/pieces/${group}/${piece.part_number}/calculate_statistics?week=${currentWeek}&year=${selectedYear}`,
-            { method: "POST" }
-          );
-
-          generated++;
-        } catch (err) {
-          console.error(`Erro na peça ${piece.part_number}:`, err);
-        }
-      }
-
-      // Recarrega relatório do grupo
-      await loadGroupReport();
-
-      alert(`✓ ${generated} peças processadas para semana ${currentWeek}/${selectedYear}!`);
+      // Recarrega relatórios
+      await loadGroupReports();
     } catch (err) {
-      console.error("Erro ao gerar relatórios:", err);
-      alert("Erro ao gerar relatórios");
+      console.error("Erro ao gerar relatório:", err);
+      alert("Erro ao gerar relatório: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -106,13 +94,13 @@ export default function ReportGroupClient({ params }) {
 
         <div className={styles.controls}>
           <div className={styles.filterGroup}>
-            <label>Ano</label>
+            <label>YEAR</label>
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(Number(e.target.value))}
               className={styles.select}
             >
-              {[2023, 2024, 2025, 2026, 2027, 2028].map((y) => (
+              {[2024, 2025, 2026, 2027, 2028].map((y) => (
                 <option key={y} value={y}>
                   {y}
                 </option>
@@ -120,12 +108,27 @@ export default function ReportGroupClient({ params }) {
             </select>
           </div>
 
+          <div className={styles.filterGroup}>
+            <label>WEEK</label>
+            <select
+              value={selectedWeek}
+              onChange={(e) => setSelectedWeek(Number(e.target.value))}
+              className={styles.select}
+            >
+              {Array.from({ length: 53 }, (_, i) => i + 1).map((w) => (
+                <option key={w} value={w}>
+                  W {w}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <button
-            onClick={generateAllPiecesReports}
+            onClick={generateWeekReport}
             disabled={loading}
             className={styles.btnGenerate}
           >
-            {loading ? "⏳ Processando..." : "📊 Gerar Semana Atual (Todas Peças)"}
+            {loading ? "⏳ Gerando..." : "📊 Gerar Semana"}
           </button>
 
           <button
@@ -139,7 +142,7 @@ export default function ReportGroupClient({ params }) {
         {piecesList.length > 0 && (
           <div className={styles.piecesInfo}>
             <p className={styles.piecesLabel}>
-              Peças: {piecesList.join(", ")}
+              <strong>Peças no grupo:</strong> {piecesList.map(p => p.part_number).join(", ")}
             </p>
           </div>
         )}
@@ -170,27 +173,54 @@ export default function ReportGroupClient({ params }) {
           <span style={{ fontSize: "4rem" }}>📊</span>
           <p>
             {loading
-              ? "Processando todas as peças..."
-              : "Nenhum relatório gerado ainda. Clique em 'Gerar Semana Atual' para processar todas as peças do grupo"}
+              ? "Gerando relatório da semana..."
+              : "Nenhum relatório gerado ainda. Selecione ano/semana e clique em 'Gerar Semana'"}
           </p>
         </div>
       )}
+
+      {reportData && reportData.length > 0 && (
+        <div className={styles.historyContainer}>
+          <h3>Semanas Geradas ({reportData.length})</h3>
+          <div className={styles.historyGrid}>
+            {reportData.map((report) => (
+              <div key={`${report.year}-${report.week}`} className={styles.historyItem}>
+                <span className={styles.historyWeek}>
+                  {report.year} - S{report.week}
+                </span>
+                <span className={styles.historyDetails}>
+                  Verde: {report.green} | Amarelo: {report.yellow} | Vermelho: {report.red}
+                </span>
+                <span className={styles.historyPieces}>
+                  {report.pieces_processed} peças
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <ChartCgPieces
+        group={group}
+        selectedYear={selectedYear}
+        selectedWeek={selectedWeek}
+      />
     </div>
   );
 }
 
-function prepareChartData(weeksData, group, piecesCount) {
-  if (!weeksData || weeksData.length === 0) return null;
+function prepareChartData(reportsData, group, piecesCount) {
+  if (!reportsData || reportsData.length === 0) return null;
 
-  const weekLabels = weeksData.map((w) => `Week ${w.week}`);
+  const weekLabels = reportsData.map((r) => `Week ${r.week}`);
 
-  const greenData = weeksData.map((w) => w.green_percent);
-  const yellowData = weeksData.map((w) => w.yellow_percent);
-  const redData = weeksData.map((w) => w.red_percent);
+  const greenData = reportsData.map((r) => r.green_percent);
+  const yellowData = reportsData.map((r) => r.yellow_percent);
+  const redData = reportsData.map((r) => r.red_percent);
 
-  const greenValues = weeksData.map((w) => w.green);
-  const yellowValues = weeksData.map((w) => w.yellow);
-  const redValues = weeksData.map((w) => w.red);
+  const greenValues = reportsData.map((r) => r.green);
+  const yellowValues = reportsData.map((r) => r.yellow);
+  const redValues = reportsData.map((r) => r.red);
 
   return {
     data: [
@@ -199,7 +229,7 @@ function prepareChartData(weeksData, group, piecesCount) {
         y: greenData,
         name: "CG ≤ 75%",
         type: "bar",
-        marker: { color: "#4ade80" },
+        marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
         textfont: { color: "black", size: 14, weight: "bold" },
@@ -210,7 +240,7 @@ function prepareChartData(weeksData, group, piecesCount) {
         y: yellowData,
         name: "75% < CG ≤ 100%",
         type: "bar",
-        marker: { color: "#fbbf24" },
+        marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
         textfont: { color: "black", size: 14, weight: "bold" },
@@ -221,7 +251,7 @@ function prepareChartData(weeksData, group, piecesCount) {
         y: redData,
         name: "CG > 100%",
         type: "bar",
-        marker: { color: "#ef4444" },
+        marker: { color: "red" },
         text: redValues,
         textposition: "inside",
         textfont: { color: "white", size: 14, weight: "bold" },
@@ -261,3 +291,4 @@ function prepareChartData(weeksData, group, piecesCount) {
     },
   };
 }
+
