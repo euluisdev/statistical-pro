@@ -335,7 +335,7 @@ def get_group_pieces_report(
 
 
 
-#chart cp
+#chart cp group
 @router.post("/group/{group}/generate-week-cp-report")
 def generate_group_week_cp_report(
     group: str,
@@ -455,7 +455,7 @@ def generate_group_week_cp_report(
         "data": report_data
     }
 
-
+#cp from group
 @router.get("/group/{group}/cp-reports")
 def get_group_cp_reports(group: str):
     """

@@ -6,7 +6,7 @@ import styles from "./chartcppieces.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-export default function PiecesChart({ group, selectedYear, selectedWeek }) {
+export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const [piecesData, setPiecesData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
     setLoading(true);
     try {
       const res = await fetch(
-        `${API}/pieces/group/${group}/pieces-report?week=${selectedWeek}&year=${selectedYear}`
+        `${API}/pieces/group/${group}/pieces-cp-report?week=${selectedWeek}&year=${selectedYear}`
       );
       const json = await res.json();
 
@@ -60,10 +60,10 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
   return (
     <div className={styles.container}>
       <h2 className={styles.sectionTitle}>
-        Cp Por Peça - {group} - ({piecesData.total_pieces} Peças)
+        CP Por Peça - {group} - ({piecesData.total_pieces} Peças)
       </h2>
 
-      {/*chart*/}
+      {/* GRÁFICO */}
       <div className={styles.chartContainer}>
         <Plot
           data={chartData.data}
@@ -131,8 +131,6 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
 
 function prepareChartData(piecesReport, group) {
   const pieces = piecesReport.pieces;
-
-  //labels = part number
   const labels = pieces.map((p) => p.part_number);
 
   const greenData = pieces.map((p) => p.green_percent);
@@ -148,9 +146,9 @@ function prepareChartData(piecesReport, group) {
       {
         x: labels,
         y: greenData,
-        name: "CG ≤ 75%",
+        name: "CP ≥ 1,33",
         type: "bar", 
-        width: 0.3, 
+        width: 0.2,
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -160,9 +158,9 @@ function prepareChartData(piecesReport, group) {
       {
         x: labels,
         y: yellowData,
-        name: "75% < CG ≤ 100%",
+        name: "1 ≤ CP < 1,33",
         type: "bar", 
-        width: 0.3, 
+        width: 0.2,
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -172,9 +170,9 @@ function prepareChartData(piecesReport, group) {
       {
         x: labels,
         y: redData,
-        name: "CP > 100%",
+        name: "CP < 1",
         type: "bar", 
-        width: 0.3, 
+        width: 0.2,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -185,16 +183,15 @@ function prepareChartData(piecesReport, group) {
     layout: {
       barmode: "stack",
       title: {
-        text: `Cp Por Peça - ${group} - (${pieces.length} Peças)`,
-        font: { size: 22, weight: "bold", color: "black" },
+        text: `CP Por Peça - ${group} - (${pieces.length} Peças)`,
+        font: { size: 22, weight: "bold", color: "#2d3748" },
       },
       xaxis: {
         title: "",
         tickangle: 0, 
-          type: "category", 
-        tickfont: { size: 10 },
-        gridcolor: "#e2e8f0", 
-        ticklen: 12,
+        type: "category",
+        tickfont: { size: 10 }, 
+        gridcolor: "#e2e8f0",
       },
       yaxis: {
         title: "",
@@ -205,17 +202,17 @@ function prepareChartData(piecesReport, group) {
       },
       legend: {
         x: 0.5,
-        y: -0.25,
+        y: -0.15,
         xanchor: "center",
         orientation: "h",
         font: { size: 13 },
       },
       margin: { l: 60, r: 40, t: 80, b: 150 },
-      paper_bgcolor: "#d5d6d6ff",
-      plot_bgcolor: "#d5d6d6ff",
-      hovermode: "x unified", 
+      paper_bgcolor: "white",
+      plot_bgcolor: "#f9fafb",
+      hovermode: "x unified",
     },
   };
-}  
+} 
  
  
