@@ -1,0 +1,305 @@
+#####################################################################
+ DATA: 07/11/2025
+ HORA: 20:29:53
+#####################################################################
+DIM LOC23= LOCALIZAÇÃO DE CÍRCULO 28359  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -830.08    -830.41      -0.33       0.50       0.50 -#-------
+Z       273.81     273.28      -0.53       0.50       0.50 <--------
+ 
+DIM LOC62= LOCALIZAÇÃO DE CÍRCULO 28354  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -821.91    -822.72      -0.81       0.50       0.50 <--------
+Z       648.15     647.31      -0.84       0.50       0.50 <--------
+ 
+DIM LOC63= LOCALIZAÇÃO DE CÍRCULO CÍR5  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -778.00    -777.43       0.57       1.00       1.00 -------#-
+Z       405.75     405.58      -0.16       1.00       1.00 ---#-----
+ 
+DIM LOC64= LOCALIZAÇÃO DE SLOT SLTR1  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -778.96    -778.15       0.81       1.00       1.00 --------#
+Z       361.90     361.62      -0.28       1.00       1.00 ---#-----
+ 
+DIM LOC65= LOCALIZAÇÃO DE CÍRCULO CÍR4  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -745.94    -745.79       0.15       1.00       1.00 -----#---
+Z       579.71     579.63      -0.08       1.00       1.00 ----#----
+ 
+DIM LOC66= LOCALIZAÇÃO DE CÍRCULO CÍR3  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -750.37    -749.22       1.15       1.00       1.00 -------->
+Z       427.84     427.05      -0.79       1.00       1.00 #--------
+ 
+DIM DIST1= DISTÂNCIA 2D DE CÍRCULO 28354 PARA CÍRCULO 28359 PARAL PARA   EIXOY,SEM_RAIO
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+M         8.17       7.69      -0.48       0.80       0.80 -#-------
+ 
+DIM DIST2= DISTÂNCIA 2D DE CÍRCULO 28359 PARA CÍRCULO 28354 PARAL PARA   EIXOZ,SEM_RAIO
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+M       374.34     374.03      -0.31       0.80       0.80 --#------
+ 
+DIM LOC67= LOCALIZAÇÃO DE PONTO PNT15  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.84       0.84       0.50       0.50 -------->
+ 
+DIM LOC68= LOCALIZAÇÃO DE PONTO PNT16  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       1.15       1.15       0.50       0.50 -------->
+ 
+DIM LOC69= LOCALIZAÇÃO DE PONTO PNT17  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.14       0.14       0.50       0.50 -----#---
+ 
+DIM LOC70= LOCALIZAÇÃO DE PONTO PNT18  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.25      -0.25       0.50       0.50 --#------
+ 
+DIM LOC71= LOCALIZAÇÃO DE PONTO PNT19  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.39       0.39       0.50       0.50 --------#
+ 
+DIM LOC72= LOCALIZAÇÃO DE PONTO PNT20  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.31       0.31       0.50       0.50 -------#-
+ 
+DIM LOC73= LOCALIZAÇÃO DE PONTO PNT21  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.48       0.48       0.50       0.50 --------#
+ 
+DIM LOC74= LOCALIZAÇÃO DE PONTO PNT22  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.31       0.31       0.50       0.50 -------#-
+ 
+DIM LOC75= LOCALIZAÇÃO DE PONTO PNT23  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.13      -0.13       0.50       0.50 ---#-----
+ 
+DIM LOC76= LOCALIZAÇÃO DE PONTO PNT24  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.03       0.03       0.50       0.50 ----#----
+ 
+DIM LOC77= LOCALIZAÇÃO DE PONTO PNT25  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.06      -0.06       0.50       0.50 ---#-----
+ 
+DIM LOC78= LOCALIZAÇÃO DE PONTO PNT26  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.29      -0.29       0.50       0.50 -#-------
+ 
+DIM LOC79= LOCALIZAÇÃO DE PONTO PNT27  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.55      -0.55       0.50       0.50 <--------
+ 
+DIM LOC80= LOCALIZAÇÃO DE PONTO PNT28  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.44      -0.44       0.50       0.50 #--------
+ 
+DIM LOC81= LOCALIZAÇÃO DE PONTO PNT29  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.89      -0.89       0.50       0.50 <--------
+ 
+DIM LOC82= LOCALIZAÇÃO DE PONTO PNT30  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.45      -0.45       0.50       0.50 #--------
+ 
+DIM LOC83= LOCALIZAÇÃO DE PONTO PNT31  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.88      -0.88       0.50       0.50 <--------
+ 
+DIM LOC84= LOCALIZAÇÃO DE PONTO PNT32  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.29       0.29       0.50       0.50 -------#-
+ 
+DIM LOC85= LOCALIZAÇÃO DE PONTO PNT33  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.26       0.26       0.50       0.50 ------#--
+ 
+DIM LOC86= LOCALIZAÇÃO DE PONTO PNT34  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.13       0.13       0.50       0.50 -----#---
+ 
+DIM LOC87= LOCALIZAÇÃO DE PONTO PNT35  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.48       0.48       0.50       0.50 --------#
+ 
+DIM LOC88= LOCALIZAÇÃO DE PONTO PNT36  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.09       0.09       0.50       0.50 -----#---
+ 
+DIM LOC89= LOCALIZAÇÃO DE PONTO PNT37  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.51       0.51       0.50       0.50 -------->
+ 
+DIM LOC90= LOCALIZAÇÃO DE PONTO PNT38  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.09       0.09       0.50       0.50 -----#---
+ 
+DIM LOC91= LOCALIZAÇÃO DE PONTO PNT39  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.49      -0.49       0.50       0.50 #--------
+ 
+DIM LOC92= LOCALIZAÇÃO DE PONTO PNT40  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.60       0.60       0.50       0.50 -------->
+ 
+DIM LOC93= LOCALIZAÇÃO DE PONTO PNT41  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.14      -0.14       0.50       0.50 ---#-----
+ 
+DIM LOC94= LOCALIZAÇÃO DE PONTO PNT42  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.54      -0.54       0.50       0.50 <--------
+ 
+DIM LOC95= LOCALIZAÇÃO DE PONTO PNT43  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.35      -0.35       0.50       0.50 -#-------
+ 
+DIM LOC96= LOCALIZAÇÃO DE PONTO PNT44  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       1.24       1.24       0.50       0.50 -------->
+ 
+DIM LOC97= LOCALIZAÇÃO DE PONTO PNT45  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.24       0.24       0.50       0.50 ------#--
+ 
+DIM LOC98= LOCALIZAÇÃO DE PONTO PNT46  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.08       0.08       0.50       0.50 -----#---
+ 
+DIM LOC99= LOCALIZAÇÃO DE PONTO PNT47  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.39      -0.39       0.50       0.50 #--------
+ 
+DIM LOC100= LOCALIZAÇÃO DE PONTO PNT48  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.09      -0.09       0.50       0.50 ---#-----
+ 
+DIM LOC101= LOCALIZAÇÃO DE PONTO PNT49  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.53      -0.53       0.50       0.50 <--------
+ 
+DIM LOC102= LOCALIZAÇÃO DE PONTO PNT51  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.05      -1.05       0.50       0.50 <--------
+ 
+DIM LOC103= LOCALIZAÇÃO DE PONTO PNT52  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.93      -0.93       0.50       0.50 <--------
+ 
+DIM LOC104= LOCALIZAÇÃO DE PONTO PNT53  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.37      -1.37       0.50       0.50 <--------
+ 
+DIM LOC105= LOCALIZAÇÃO DE PONTO PNT54  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.29      -1.29       0.50       0.50 <--------
+ 
+DIM LOC106= LOCALIZAÇÃO DE PONTO PNT55  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.69      -1.69       0.50       0.50 <--------
+ 
+DIM LOC107= LOCALIZAÇÃO DE PONTO PNT56  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.32      -1.32       0.50       0.50 <--------
+ 
+DIM LOC108= LOCALIZAÇÃO DE PONTO PNT57  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -2.05      -2.05       0.50       0.50 <--------
+ 
+DIM LOC109= LOCALIZAÇÃO DE PONTO PNT58  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.50      -0.50       0.50       0.50 <--------
+ 
+DIM LOC110= LOCALIZAÇÃO DE PONTO PNT59  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.48      -0.48       0.50       0.50 #--------
+ 
+DIM LOC111= LOCALIZAÇÃO DE PONTO PNT60  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.16      -0.16       0.50       0.50 ---#-----
+ 
+DIM LOC112= LOCALIZAÇÃO DE PONTO PNT9 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.42       0.42       0.50       0.50 --------#
+ 
+DIM LOC113= LOCALIZAÇÃO DE PONTO PNT8 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.24       0.24       0.50       0.50 ------#--
+ 
+DIM LOC114= LOCALIZAÇÃO DE PONTO PNT7 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.63      -0.63       0.50       0.50 <--------
+ 
+DIM LOC115= LOCALIZAÇÃO DE PONTO PNT6 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.99      -0.99       0.50       0.50 <--------
+ 
+DIM LOC116= LOCALIZAÇÃO DE PONTO PNT5 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.62      -0.62       0.50       0.50 <--------
+ 
+DIM LOC117= LOCALIZAÇÃO DE PONTO PNT4 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.67      -0.67       0.50       0.50 <--------
+ 
+DIM LOC118= LOCALIZAÇÃO DE PONTO PNT3 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.06      -1.06       0.50       0.50 <--------
+ 
+DIM LOC119= LOCALIZAÇÃO DE PONTO PNT21 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.07       0.07       0.50       0.50 -----#---
+DIM LOC120= LOCALIZAÇÃO DE PONTO PNT20 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.19      -0.19       0.50       0.50 --#------
+ 
+DIM LOC121= LOCALIZAÇÃO DE PONTO PNT2 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.39      -1.39       0.50       0.50 <--------
+ 
+DIM LOC122= LOCALIZAÇÃO DE PONTO PNT19 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.30      -0.30       0.50       0.50 -#-------
+ 
+DIM LOC123= LOCALIZAÇÃO DE PONTO PNT18 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.44      -0.44       0.50       0.50 #--------
+ 
+DIM LOC124= LOCALIZAÇÃO DE PONTO PNT17 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.85      -0.85       0.50       0.50 <--------
+ 
+DIM LOC125= LOCALIZAÇÃO DE PONTO PNT16 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.32      -1.32       0.50       0.50 <--------
+ 
+DIM LOC126= LOCALIZAÇÃO DE PONTO PNT15 BPRDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -1.98      -1.98       0.50       0.50 <--------
+ 
+DIM LOC127= LOCALIZAÇÃO DE PONTO PNT14 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       1.04       1.04       0.50       0.50 -------->
+ 
+DIM LOC128= LOCALIZAÇÃO DE PONTO PNT13 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.39       0.39       0.50       0.50 -------#-
+ 
+DIM LOC129= LOCALIZAÇÃO DE PONTO PNT12 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.16       0.16       0.50       0.50 -----#---
+ 
+DIM LOC130= LOCALIZAÇÃO DE PONTO PNT11 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.07      -0.07       0.50       0.50 ---#-----
+ 
+DIM LOC131= LOCALIZAÇÃO DE PONTO PNT10 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       1.08       1.08       0.50       0.50 -------->
+ 
+DIM LOC132= LOCALIZAÇÃO DE PONTO PNT1 BORDA  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -2.27      -2.27       0.50       0.50 <--------
+ 

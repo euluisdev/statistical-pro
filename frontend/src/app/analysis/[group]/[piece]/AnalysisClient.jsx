@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowBigDown, ArrowBigRight, ChartColumnBig, ChartColumnStacked, ChartColumn, House, FileChartColumn } from "lucide-react";
+import { ArrowBigDown, ArrowBigRight, ChartColumnBig, ChartColumnStacked, ChartColumn, House, FileChartColumn, FileChartColumnIncreasing, FileChartLine } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import styles from "./analysis.module.css";
@@ -184,6 +184,12 @@ export default function AnalysisPage() {
             </button>
             <button className={styles.btnMenu} title="CG Conjunto" >
               <FileChartColumn size={30} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg-group`)} />
+            </button>
+            <button className={styles.btnMenu} title="Cp Conjunto" >
+              <FileChartColumnIncreasing size={30} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cp-group`)} />
+            </button>
+            <button className={styles.btnMenu} title="Cpk Conjunto" >
+              <FileChartLine size={30} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cpk-group`)} />
             </button>
 
             <button className={styles.btnMenu} title="Report" >

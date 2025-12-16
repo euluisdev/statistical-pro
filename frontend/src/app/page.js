@@ -7,7 +7,7 @@ import GroupManager from "./groups/components/GroupManager";
 import PieceManager from "./groups/components/PieceManager";
 import TxtManager from "./groups/components/TxtManager";
 import ConfirmModal from "./components/common/ConfirmModal";
-import { ArrowBigRight, ChartLine, House, Grid3x3, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked, ChartColumnBig, FileChartColumn } from "lucide-react";
+import { ArrowBigRight, ChartLine, House, Grid3x3, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked, ChartColumnBig, FileChartColumn, FileChartColumnIncreasing, FileChartLine } from "lucide-react";
 
 import "./styles.css";
 
@@ -175,7 +175,30 @@ export default function GroupsPage() {
           >
             <FileChartColumn />
           </button>
-
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/chart-cp-group`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="Cp Conjunto"
+          >
+            <FileChartColumnIncreasing />
+          </button>
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/chart-cpk-group`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="Cpk Conjunto"
+          >
+            <FileChartLine />
+          </button>
           <button className="btnRest"><ChartNoAxesCombined /></button>
           <button className="btnRest"><TrendingUpDown /></button>
           <button className="btnRest"><ChartLine /></button>
