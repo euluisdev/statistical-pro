@@ -1,5 +1,6 @@
 "use client";
 
+import { Grid3x3, House } from "lucide-react";
 import "./documentation-help.css";
 
 export default function DocumentationHomePage() {
@@ -23,7 +24,7 @@ export default function DocumentationHomePage() {
           <li>Criar e gerenciar peças</li>
           <li>Importar arquivos TXT de medição</li>
           <li>Visualizar dados extraídos</li>
-          <li>Avançar para a página de Análise</li>
+          <li>Avançar para qualquer página do sistema</li>
         </ul>
       </section>
 
@@ -34,11 +35,11 @@ export default function DocumentationHomePage() {
         <ol>
           <li><strong>Gerenciador de Grupos</strong></li>
           <li><strong>Gerenciador de Peças</strong></li>
-          <li><strong>Importação de Arquivos TXT</strong></li>
+          <li><strong>Gerenciador de Arquivos TXT</strong></li>
         </ol>
 
         <p>
-          Abaixo desses módulos existe uma barra de ações
+          Abaixo desses módulos existe uma barra de ações com botões para navegação
           e, ao final da página, a tabela de dados extraídos.
         </p>
       </section>
@@ -47,8 +48,8 @@ export default function DocumentationHomePage() {
         <h2>Gerenciador de Grupos</h2>
 
         <p>
-          Um <strong>Grupo</strong> representa um conjunto lógico de peças,
-          como um produto, projeto ou família de componentes.
+          Um <strong>Conjunto</strong> representa um template lógico de peças,
+          como um produto, projeto ou família de componentes do carro.
         </p>
 
         <h3>Funcionalidades</h3>
@@ -152,11 +153,11 @@ export default function DocumentationHomePage() {
           </thead>
           <tbody>
             <tr>
-              <td>🏠</td>
+              <td><House /></td>
               <td>Reseta todo o fluxo da página</td>
             </tr>
             <tr>
-              <td>🔲</td>
+              <td><Grid3x3 /></td>
               <td>Avança para a página de Análise</td>
             </tr>
             <tr>

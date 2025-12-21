@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { SaveAll } from "lucide-react";
+import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
+import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import ChartCpPieces from "./ChartCpPieces"
 import styles from "./chartcpgroup.module.css";
 
@@ -16,6 +19,18 @@ export default function ReportGroupCpClient({ params }) {
   const [reportData, setReportData] = useState(null);
   const [piecesList, setPiecesList] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const plotRef = useRef(null);
+
+  //hook to save chart in the job-id
+  const {
+    currentJobId,
+    showSaveModal,
+    saveLoading,
+    openSaveModal,
+    saveChart,
+    closeSaveModal
+  } = useSaveChartToJob();
 
   function getCurrentWeek() {
     const now = new Date();
@@ -44,7 +59,7 @@ export default function ReportGroupCpClient({ params }) {
     try {
       const res = await fetch(`${API}/pieces/group/${group}/cp-reports`);
       const json = await res.json();
-      
+
       if (json.weeks && json.weeks.length > 0) {
         setReportData(json.weeks);
       }
@@ -79,12 +94,28 @@ export default function ReportGroupCpClient({ params }) {
     }
   }
 
+  const handleSaveChart = async () => {
+    await saveChart(plotRef, group, "GROUP", "CPC");
+  };
+
   const chartData = reportData && reportData.length > 0
     ? prepareChartData(reportData, group, piecesList.length)
     : null;
 
   return (
     <div className={styles.pageContainer}>
+      {/*modal save */}
+      <SaveChartModal
+        show={showSaveModal}
+        onClose={closeSaveModal}
+        onConfirm={handleSaveChart}
+        loading={saveLoading}
+        jobId={currentJobId}
+        group={group}
+        piece={"GROUP"}
+        chartType="CPC"
+      />
+
       <div className={styles.header}>
         <h1 className={styles.title}>
           CP Geral - {group} - ({piecesList.length} Peças)
@@ -129,6 +160,17 @@ export default function ReportGroupCpClient({ params }) {
             {loading ? "⏳ Gerando..." : "📊 Gerar Semana"}
           </button>
 
+          {chartData && (
+            <button
+              onClick={openSaveModal}
+              disabled={!currentJobId || saveLoading}
+              className={styles.btnMenu}
+              title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
+            >
+              <SaveAll size={33} />
+            </button>
+          )}
+
           <button
             onClick={() => window.history.back()}
             className={styles.btnBack}
@@ -149,6 +191,7 @@ export default function ReportGroupCpClient({ params }) {
       {chartData ? (
         <div className={styles.chartContainer}>
           <Plot
+            ref={plotRef}
             data={chartData.data}
             layout={chartData.layout}
             config={{
@@ -157,9 +200,9 @@ export default function ReportGroupCpClient({ params }) {
               toImageButtonOptions: {
                 format: "png",
                 filename: `CP_Geral_${group}_${selectedYear}`,
-                height: 800,
-                width: 1400,
-                scale: 4,
+                height: 1000,
+                width: 1600,
+                scale: 6,
               },
               modeBarButtonsToAdd: ["toImage"],
             }}
@@ -198,12 +241,12 @@ export default function ReportGroupCpClient({ params }) {
         </div>
       )}
 
-      {/*chart cp por peça */}
-       <ChartCpPieces
-        group={group} 
-        selectedYear={selectedYear} 
+      {/*chart cp for piece */}
+      <ChartCpPieces
+        group={group}
+        selectedYear={selectedYear}
         selectedWeek={selectedWeek}
-      /> 
+      />
     </div>
   );
 }
@@ -227,8 +270,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: greenData,
         name: "CP ≥ 1,33",
-        type: "bar", 
-        width: 0.2, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -239,8 +282,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: yellowData,
         name: "1 ≤ CP < 1,33",
-        type: "bar", 
-        width: 0.2, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -251,8 +294,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: redData,
         name: "CP < 1",
-        type: "bar", 
-        width: 0.2, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -264,11 +307,11 @@ function prepareChartData(reportsData, group, piecesCount) {
       barmode: "stack",
       title: {
         text: `CP Geral - ${group} - (${piecesCount} Peças)`,
-        font: { size: 22, weight: "bold", color: "#2d3748" },
+        font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
         title: "",
-        tickangle: -45, 
+        tickangle: -45,
         tickfont: { size: 11 },
         gridcolor: "#e2e8f0",
       },

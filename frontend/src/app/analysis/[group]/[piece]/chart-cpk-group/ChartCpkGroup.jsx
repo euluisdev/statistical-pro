@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import ChartCpkPieces from "./ChartCpkPieces"
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic"; 
+import { SaveAll } from "lucide-react";
+import ChartCpkPieces from "./ChartCpkPieces";
+import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
+import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcpkgroup.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -16,6 +19,19 @@ export default function ReportGroupCpkClient({ params }) {
   const [reportData, setReportData] = useState(null);
   const [piecesList, setPiecesList] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const plotRef = useRef(null);
+  const piecesPlotRef = useRef(null);
+
+  //hook to save chart in the job-id
+  const {
+    currentJobId,
+    showSaveModal,
+    saveLoading,
+    openSaveModal,
+    saveChart,
+    closeSaveModal
+  } = useSaveChartToJob();
 
   function getCurrentWeek() {
     const now = new Date();
@@ -44,7 +60,7 @@ export default function ReportGroupCpkClient({ params }) {
     try {
       const res = await fetch(`${API}/pieces/group/${group}/cpk-reports`);
       const json = await res.json();
-      
+
       if (json.weeks && json.weeks.length > 0) {
         setReportData(json.weeks);
       }
@@ -78,12 +94,29 @@ export default function ReportGroupCpkClient({ params }) {
     }
   }
 
+  const handleSaveChart = async () => {
+    await saveChart(plotRef, group, "GROUP", "CPKC");
+      await saveChart(piecesPlotRef, group, "GROUP", "CPKC_PIECES");
+  };
+
   const chartData = reportData && reportData.length > 0
     ? prepareChartData(reportData, group, piecesList.length)
     : null;
 
   return (
     <div className={styles.pageContainer}>
+      {/*modal save */}
+      <SaveChartModal
+        show={showSaveModal}
+        onClose={closeSaveModal}
+        onConfirm={handleSaveChart}
+        loading={saveLoading}
+        jobId={currentJobId}
+        group={group}
+        piece={"GROUP"}
+        chartType="CPKC"
+      />
+
       <div className={styles.header}>
         <h1 className={styles.title}>
           CPK Geral - {group} - ({piecesList.length} Peças)
@@ -128,6 +161,17 @@ export default function ReportGroupCpkClient({ params }) {
             {loading ? "⏳ Gerando..." : "📊 Gerar Semana"}
           </button>
 
+          {chartData && (
+            <button
+              onClick={openSaveModal}
+              disabled={!currentJobId || saveLoading}
+              className={styles.btnMenu}
+              title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
+            >
+              <SaveAll size={33} />
+            </button>
+          )}
+
           <button
             onClick={() => window.history.back()}
             className={styles.btnBack}
@@ -148,6 +192,7 @@ export default function ReportGroupCpkClient({ params }) {
       {chartData ? (
         <div className={styles.chartContainer}>
           <Plot
+            ref={plotRef}
             data={chartData.data}
             layout={chartData.layout}
             config={{
@@ -156,8 +201,8 @@ export default function ReportGroupCpkClient({ params }) {
               toImageButtonOptions: {
                 format: "png",
                 filename: `CPK_Geral_${group}_${selectedYear}`,
-                height: 800,
-                width: 1400,
+                height: 1000,
+                width: 1600,
                 scale: 4,
               },
               modeBarButtonsToAdd: ["toImage"],
@@ -199,10 +244,11 @@ export default function ReportGroupCpkClient({ params }) {
 
       {/* chart cpk por peça */}
       <ChartCpkPieces
-        group={group} 
-        selectedYear={selectedYear} 
+        ref={piecesPlotRef}
+        group={group}
+        selectedYear={selectedYear}
         selectedWeek={selectedWeek}
-      />  
+      />
     </div>
   );
 }
@@ -226,8 +272,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: greenData,
         name: "CPK ≥ 1,33",
-        type: "bar", 
-        width: 0.2, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -238,8 +284,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: yellowData,
         name: "1 ≤ CPK < 1,33",
-        type: "bar", 
-        width: 0.2, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -250,8 +296,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: redData,
         name: "CPK < 1",
-        type: "bar", 
-        width: 0.2, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -263,7 +309,7 @@ function prepareChartData(reportsData, group, piecesCount) {
       barmode: "stack",
       title: {
         text: `CPK Geral - ${group} - (${piecesCount} Peças)`,
-        font: { size: 22, weight: "bold", color: "#2d3748" },
+        font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
         title: "",
@@ -291,6 +337,6 @@ function prepareChartData(reportsData, group, piecesCount) {
       hovermode: "x unified",
     },
   };
-}  
- 
- 
+}
+
+

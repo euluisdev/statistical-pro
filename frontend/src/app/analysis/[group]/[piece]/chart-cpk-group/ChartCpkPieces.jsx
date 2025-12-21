@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef  } from "react";
 import dynamic from "next/dynamic";
 import styles from "./chartcpkpieces.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
+const PiecesChartCp = forwardRef(function PiecesChartCp(
+  { group, selectedYear, selectedWeek },
+  plotRef
+) {
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const [piecesData, setPiecesData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -66,6 +69,7 @@ export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
       {/* GRÁFICO */}
       <div className={styles.chartContainer}>
         <Plot
+          ref={plotRef}
           data={chartData.data}
           layout={chartData.layout}
           config={{
@@ -127,7 +131,7 @@ export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
       </div>
     </div>
   );
-}
+});
 
 function prepareChartData(piecesReport, group) {
   const pieces = piecesReport.pieces;
@@ -213,6 +217,8 @@ function prepareChartData(piecesReport, group) {
       hovermode: "x unified",
     },
   };
-} 
+}
+
+export default PiecesChartCp;
  
  

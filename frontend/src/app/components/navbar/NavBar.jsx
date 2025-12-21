@@ -1,4 +1,4 @@
-import { Settings, House, ChartColumnStacked, MessageSquareWarning } from "lucide-react";
+import { Settings, House, MessageSquareWarning } from "lucide-react";
 import './NavBar.css';
 
 export default function Navbar() {

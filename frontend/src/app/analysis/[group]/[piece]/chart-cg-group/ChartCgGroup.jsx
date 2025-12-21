@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { SaveAll } from "lucide-react";
+import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
+import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcggroup.module.css";
-
 import ChartCgPieces from "./ChartCgPieces"
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -17,6 +19,18 @@ export default function ReportGroupClient({ params }) {
   const [reportData, setReportData] = useState(null);
   const [piecesList, setPiecesList] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const plotRef = useRef(null);
+
+  //hook to save chart in the job-id
+  const {
+    currentJobId,
+    showSaveModal,
+    saveLoading,
+    openSaveModal,
+    saveChart,
+    closeSaveModal
+  } = useSaveChartToJob();
 
   function getCurrentWeek() {
     const now = new Date();
@@ -81,12 +95,28 @@ export default function ReportGroupClient({ params }) {
     }
   }
 
+  const handleSaveChart = async () => {
+    await saveChart(plotRef, group, "GROUP", "CGC");
+  };
+
   const chartData = reportData && reportData.length > 0
     ? prepareChartData(reportData, group, piecesList.length)
     : null;
 
   return (
     <div className={styles.pageContainer}>
+      {/*modal save */}
+      <SaveChartModal
+        show={showSaveModal}
+        onClose={closeSaveModal}
+        onConfirm={handleSaveChart}
+        loading={saveLoading}
+        jobId={currentJobId}
+        group={group}
+        piece={"GROUP"}
+        chartType="CGC"
+      />
+
       <div className={styles.header}>
         <h1 className={styles.title}>
           CG Geral - {group} - ({piecesList.length} Peças)
@@ -131,6 +161,17 @@ export default function ReportGroupClient({ params }) {
             {loading ? "⏳ Gerando..." : "📊 Gerar Semana"}
           </button>
 
+          {chartData && (
+            <button
+              onClick={openSaveModal}
+              disabled={!currentJobId || saveLoading}
+              className={styles.btnMenu}
+              title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
+            >
+              <SaveAll size={33} />
+            </button>
+          )}
+
           <button
             onClick={() => window.history.back()}
             className={styles.btnBack}
@@ -151,6 +192,7 @@ export default function ReportGroupClient({ params }) {
       {chartData ? (
         <div className={styles.chartContainer}>
           <Plot
+            ref={plotRef}
             data={chartData.data}
             layout={chartData.layout}
             config={{
@@ -159,9 +201,9 @@ export default function ReportGroupClient({ params }) {
               toImageButtonOptions: {
                 format: "png",
                 filename: `CG_Geral_${group}_${selectedYear}`,
-                height: 800,
-                width: 1400,
-                scale: 2,
+                height: 1000,
+                width: 1600,
+                scale: 4,
               },
               modeBarButtonsToAdd: ["toImage"],
             }}
@@ -228,8 +270,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: greenData,
         name: "CG ≤ 75%",
-        type: "bar", 
-        width: 0.4, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -240,8 +282,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: yellowData,
         name: "75% < CG ≤ 100%",
-        type: "bar", 
-        width: 0.4, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -252,8 +294,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         x: weekLabels,
         y: redData,
         name: "CG > 100%",
-        type: "bar", 
-        width: 0.4, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -265,7 +307,7 @@ function prepareChartData(reportsData, group, piecesCount) {
       barmode: "stack",
       title: {
         text: `CG Geral - ${group} - (${piecesCount} Peças)`,
-        font: { size: 22, weight: "bold", color: "#2d3748" },
+        font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
         title: "",

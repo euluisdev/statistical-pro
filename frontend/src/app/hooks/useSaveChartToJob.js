@@ -38,9 +38,9 @@ export function useSaveChartToJob() {
       // Export PNG use Plotly.toImage
       const imageData = await Plotly.toImage(gd, {
         format: "png",
-        width: 1400,
-        height: 800,
-        scale: 4
+        width: 1600,
+        height: 1000,
+        scale: 6
       });
 
       console.log("Enviando imagem para o backend...");

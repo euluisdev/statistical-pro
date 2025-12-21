@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Grid3x3, ArrowBigDown, SaveAll, ArrowBigRight, ChartColumnBig } from "lucide-react";
+import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
+import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcg.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -17,12 +19,19 @@ export default function ReportClient({ params }) {
   const [availableWeeks, setAvailableWeeks] = useState([]);
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [currentJobId, setCurrentJobId] = useState(null);
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [saveLoading, setSaveLoading] = useState(false);
 
   const plotRef = useRef(null);
   const router = useRouter();
+
+  //hook to save chart in the job-id
+  const {
+    currentJobId,
+    showSaveModal,
+    saveLoading,
+    openSaveModal,
+    saveChart,
+    closeSaveModal
+  } = useSaveChartToJob();
 
   function getCurrentWeek() {
     const now = new Date();
@@ -31,14 +40,6 @@ export default function ReportClient({ params }) {
     const oneWeek = 604800000;
     return Math.ceil(diff / oneWeek);
   }
-
-  useEffect(() => {
-    // Carrega o job_id ativo do localStorage
-    if (typeof window !== "undefined") {
-      const storedJobId = localStorage.getItem("current_jobid");
-      setCurrentJobId(storedJobId);
-    }
-  }, []);
 
   useEffect(() => {
     loadAvailableWeeks();
@@ -102,76 +103,9 @@ export default function ReportClient({ params }) {
     }
   }
 
-  async function saveChartToJob() {
-    if (!currentJobId) {
-      alert("⚠️ Nenhum Job ativo! Crie um Job na página inicial primeiro.");
-      return;
-    }
-
-    setShowSaveModal(true);
-  }
-
-  async function confirmSaveChart() {
-    setSaveLoading(true);
-
-    try {
-      const gd = plotRef.current?.el;
-
-      if (!gd) {
-        throw new Error("Gráfico não encontrado");
-      }
-
-      //import Plotly dinamicamente
-      const Plotly = (await import("plotly.js-dist-min")).default;
-
-      //export png usando plotly.toImage
-      const imageData = await Plotly.toImage(gd, {
-        format: "png",
-        width: 1400,
-        height: 800,
-        scale: 2
-      });
-
-      console.log("Enviando imagem para o backend...");
-      console.log("JobID:", currentJobId);
-      console.log("Group:", group);
-      console.log("Piece:", piece);
-
-      //send to the backend
-      const response = await fetch(
-        `${API}/jobs/job/${currentJobId}/save-chart`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            group: group,
-            piece: piece,
-            image_data: imageData
-          })
-        }
-      );
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Erro do servidor:", errorText);
-        throw new Error(`Erro ao salvar gráfico: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log("Resultado:", result);
-
-      alert(`✓ Gráfico salvo com sucesso!\n📁 ${result.filename}`);
-
-    } catch (err) {
-      console.error("Erro ao salvar gráfico:", err);
-      alert(`❌ Erro ao salvar gráfico: ${err.message}`);
-    } finally {
-      setSaveLoading(false);
-      setShowSaveModal(false);
-    }
-  }
+  const handleSaveChart = async () => {
+    await saveChart(plotRef, group, piece, "CG");
+  };
 
   const chartData = reportData && reportData.length > 0
     ? prepareChartData(reportData, piece, group)
@@ -179,81 +113,17 @@ export default function ReportClient({ params }) {
 
   return (
     <div className={styles.pageContainer}>
-      {/*modal*/}
-      {showSaveModal && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "rgba(0,0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 9999
-        }}>
-          <div style={{
-            backgroundColor: "white",
-            padding: "2rem",
-            borderRadius: "12px",
-            maxWidth: "500px",
-            width: "90%",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.3)"
-          }}>
-            <h3 style={{ marginBottom: "1rem", color: "#2d3748" }}>
-              💾 Salvar Gráfico no Job
-            </h3>
-
-            <p style={{ marginBottom: "1.5rem", color: "#4a5568", lineHeight: "1.6" }}>
-              Deseja salvar este gráfico no Job atual?<br />
-              <strong>Job ID:</strong> <code style={{
-                backgroundColor: "#edf2f7",
-                padding: "2px 8px",
-                borderRadius: "4px",
-                fontSize: "0.9em"
-              }}>{currentJobId}</code><br />
-              <strong>Grupo:</strong> {group}<br />
-              <strong>Peça:</strong> {piece}
-            </p>
-
-            <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
-              <button
-                onClick={() => setShowSaveModal(false)}
-                disabled={saveLoading}
-                style={{
-                  padding: "0.5rem 1.5rem",
-                  borderRadius: "6px",
-                  border: "1px solid #cbd5e0",
-                  backgroundColor: "white",
-                  color: "#4a5568",
-                  cursor: saveLoading ? "not-allowed" : "pointer",
-                  fontSize: "0.95rem"
-                }}
-              >
-                Cancelar
-              </button>
-
-              <button
-                onClick={confirmSaveChart}
-                disabled={saveLoading}
-                style={{
-                  padding: "0.5rem 1.5rem",
-                  borderRadius: "6px",
-                  border: "none",
-                  backgroundColor: saveLoading ? "#a0aec0" : "#48bb78",
-                  color: "white",
-                  cursor: saveLoading ? "not-allowed" : "pointer",
-                  fontSize: "0.95rem",
-                  fontWeight: "500"
-                }}
-              >
-                {saveLoading ? "⏳ Salvando..." : "✓ Confirmar"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/*modal save */}
+      <SaveChartModal
+        show={showSaveModal}
+        onClose={closeSaveModal}
+        onConfirm={handleSaveChart}
+        loading={saveLoading}
+        jobId={currentJobId}
+        group={group}
+        piece={piece}
+        chartType="CG"
+      />
 
       <div className={styles.header}>
         <h1 className={styles.title}>
@@ -302,7 +172,7 @@ export default function ReportClient({ params }) {
 
             {chartData && (
               <button
-                onClick={saveChartToJob}
+                onClick={openSaveModal}
                 disabled={!currentJobId || saveLoading}
                 className={styles.btnMenu}
                 title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
@@ -362,9 +232,9 @@ export default function ReportClient({ params }) {
               toImageButtonOptions: {
                 format: "png",
                 filename: `CG_${piece}_${selectedYear}`,
-                height: 800,
-                width: 1400,
-                scale: 2,
+                height: 1000,
+                width: 1600,
+                scale: 6,
               },
               modeBarButtonsToAdd: ["toImage"],
             }}
@@ -439,7 +309,7 @@ function prepareChartData(weeksData, piece, group) {
       barmode: "stack",
       title: {
         text: `CG - ${group} - ${piece}`,
-        font: { size: 22, weight: "bold", color: "#2d3748" },
+        font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
         title: "",
@@ -470,3 +340,5 @@ function prepareChartData(weeksData, piece, group) {
     },
   };
 } 
+ 
+

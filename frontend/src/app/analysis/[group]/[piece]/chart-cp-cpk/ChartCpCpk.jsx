@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import styles from "./chartcpcpk.module.css";
-import { ArrowBigDown, ArrowBigRight, ChartColumnStacked, Grid3x3 } from "lucide-react";
+import { ArrowBigDown, ArrowBigRight, ChartColumnStacked, Grid3x3, SaveAll } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
+import { SaveChartModal } from "@/app/components/common/SaveChartModal";
+import styles from "./chartcpcpk.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -19,6 +21,18 @@ export default function ReportCpCpkClient({ params }) {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const cpPlotRef = useRef(null);
+  const cpkPlotRef = useRef(null);
+
+  //hook to save chart in the job-id
+  const {
+    currentJobId,
+    showSaveModal,
+    saveLoading,
+    openSaveModal,
+    saveChart,
+    closeSaveModal
+  } = useSaveChartToJob();
 
   function getCurrentWeek() {
     const now = new Date();
@@ -48,7 +62,7 @@ export default function ReportCpCpkClient({ params }) {
       const res = await fetch(`${API}/pieces/${group}/${piece}/report/cp-cpk`);
       const json = await res.json();
       console.log(json);
-      
+
       if (json.weeks && json.weeks.length > 0) {
         setReportData(json.weeks);
       }
@@ -91,6 +105,11 @@ export default function ReportCpCpkClient({ params }) {
     }
   }
 
+  const handleSaveChart = async () => {
+    await saveChart(cpPlotRef, group, piece, "CP");
+    await saveChart(cpkPlotRef, group, piece, "CPK");
+  };
+
   const cpChartData = reportData && reportData.length > 0
     ? prepareChartData(reportData, "CP", piece, group)
     : null;
@@ -101,9 +120,21 @@ export default function ReportCpCpkClient({ params }) {
 
   return (
     <div className={styles.pageContainer}>
+      {/*modal save */}
+      <SaveChartModal
+        show={showSaveModal}
+        onClose={closeSaveModal}
+        onConfirm={handleSaveChart}
+        loading={saveLoading}
+        jobId={currentJobId}
+        group={group}
+        piece={piece}
+        chartType="CP/CPK"
+      />
+
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CP / CPK - {group} - {piece} 
+          CP / CPK - {group} - {piece}
         </h1>
 
         <div className={styles.controls}>
@@ -145,42 +176,53 @@ export default function ReportCpCpkClient({ params }) {
             {loading ? "⏳ Gerando..." : <ArrowBigDown size={33} />}
           </button>
 
+          {cpChartData && cpkChartData && (
             <button
-              onClick={() => router.push(`/analysis/${group}/${piece}`)}
+              onClick={openSaveModal}
+              disabled={!currentJobId || saveLoading}
               className={styles.btnMenu}
-              title={"Ir para analysis"}
+              title={currentJobId ? "Salvar gráfico no Job" : "Nenhum Job ativo"}
             >
-              <Grid3x3 size={33} />
+              <SaveAll size={33} />
             </button>
+          )}
 
-            <button className={styles.btnMenu} title="CG" >
-              <ChartColumnStacked size={33} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg`)} />
-            </button>
-            <button className={styles.btnMenu} title="Report" >
-              <ArrowBigRight size={33} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
-            </button>
+          <button
+            onClick={() => router.push(`/analysis/${group}/${piece}`)}
+            className={styles.btnMenu}
+            title={"Ir para analysis"}
+          >
+            <Grid3x3 size={33} />
+          </button>
+
+          <button className={styles.btnMenu} title="CG" >
+            <ChartColumnStacked size={33} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg`)} />
+          </button>
+          <button className={styles.btnMenu} title="Report" >
+            <ArrowBigRight size={33} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
+          </button>
         </div>
 
         {availableWeeks.length > 0 && (
-        <div className={styles.historyContainer}>
-          <h3>HISTÓRICO - {availableWeeks.length}</h3>
-          <div className={styles.historyGrid}>
-            {availableWeeks.map((file) => (
-              <div
-                key={file.filename}
-                className={styles.historyItem}
-              >
-                <span className={styles.historyWeek}>
-                  {file.year} - W{file.week}
-                </span>
-                <span className={styles.historyDate}>
-                  {new Date(file.modified).toLocaleDateString("pt-BR")}
-                </span>
-              </div>
-            ))}
+          <div className={styles.historyContainer}>
+            <h3>HISTÓRICO - {availableWeeks.length}</h3>
+            <div className={styles.historyGrid}>
+              {availableWeeks.map((file) => (
+                <div
+                  key={file.filename}
+                  className={styles.historyItem}
+                >
+                  <span className={styles.historyWeek}>
+                    {file.year} - W{file.week}
+                  </span>
+                  <span className={styles.historyDate}>
+                    {new Date(file.modified).toLocaleDateString("pt-BR")}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
 
       {cpChartData && cpkChartData ? (
@@ -188,6 +230,7 @@ export default function ReportCpCpkClient({ params }) {
           {/*cp */}
           <div className={styles.chartContainer}>
             <Plot
+              ref={cpPlotRef}
               data={cpChartData.data}
               layout={cpChartData.layout}
               config={{
@@ -196,9 +239,9 @@ export default function ReportCpCpkClient({ params }) {
                 toImageButtonOptions: {
                   format: "png",
                   filename: `CP_${piece}_${selectedYear}`,
-                  height: 800,
-                  width: 1400,
-                  scale: 2,
+                  height: 1000,
+                  width: 1600,
+                  scale: 6,
                 },
                 modeBarButtonsToAdd: ["toImage"],
               }}
@@ -209,6 +252,7 @@ export default function ReportCpCpkClient({ params }) {
           {/*cpk*/}
           <div className={styles.chartContainer}>
             <Plot
+              ref={cpkPlotRef}
               data={cpkChartData.data}
               layout={cpkChartData.layout}
               config={{
@@ -219,7 +263,7 @@ export default function ReportCpCpkClient({ params }) {
                   filename: `CPK_${piece}_${selectedYear}`,
                   height: 800,
                   width: 1400,
-                  scale: 2,
+                  scale: 4,
                 },
                 modeBarButtonsToAdd: ["toImage"],
               }}
@@ -249,7 +293,7 @@ function prepareChartData(weeksData, type, piece, group) {
 
   //select data from cp or cpk
   const prefix = type.toLowerCase();
-  
+
   const greenData = weeksData.map((w) => w[`${prefix}_green_percent`]);
   const yellowData = weeksData.map((w) => w[`${prefix}_yellow_percent`]);
   const redData = weeksData.map((w) => w[`${prefix}_red_percent`]);
@@ -264,8 +308,8 @@ function prepareChartData(weeksData, type, piece, group) {
         x: weekLabels,
         y: greenData,
         name: `${type} ≥ 1,33`,
-        type: "bar", 
-        width: 0.3, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -276,8 +320,8 @@ function prepareChartData(weeksData, type, piece, group) {
         x: weekLabels,
         y: yellowData,
         name: `1 ≤ ${type} < 1,33`,
-        type: "bar", 
-        width: 0.3, 
+        type: "bar",
+        width: 0.2,
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -288,8 +332,8 @@ function prepareChartData(weeksData, type, piece, group) {
         x: weekLabels,
         y: redData,
         name: `${type} < 1`,
-        type: "bar", 
-        width: 0.3,
+        type: "bar",
+        width: 0.2,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -307,16 +351,16 @@ function prepareChartData(weeksData, type, piece, group) {
         title: "",
         tickangle: -45,
         tickfont: { size: 11 },
-        gridcolor: "#e2e8f0", 
-        showgrid: false, 
+        gridcolor: "#e2e8f0",
+        showgrid: false,
       },
       yaxis: {
         title: "",
         range: [0, 100],
         ticksuffix: "%",
         tickfont: { size: 12 },
-        gridcolor: "#e2e8f0", 
-        showgrid: false, 
+        gridcolor: "#e2e8f0",
+        showgrid: false,
       },
       legend: {
         x: 0.5,
