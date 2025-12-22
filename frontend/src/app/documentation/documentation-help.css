@@ -15,11 +15,13 @@
   font-size: 2.6rem;
   margin-bottom: 4px;
   color: #111827;
+  text-align: center;
 }
 
 .doc-header p {
   color: #6b7280;
   font-size: 1rem;
+    text-align: center;
 }
 
 .doc-section {

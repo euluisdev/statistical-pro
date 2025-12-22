@@ -1,14 +1,13 @@
 .container {
-  margin-top: 2rem;
+  margin-top: 0rem;
 }
 
 .sectionTitle {
   font-size: 1.75rem;
   font-weight: 700;
   color: black;
-  margin-bottom: 1rem;
+  margin-bottom: 0.1rem;
   text-align: center;
-  padding: 1rem;
   background: white;
   border-radius: 1px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -37,12 +36,12 @@
   color: #718096;
 }
 
-/* TOP FIVE */
+/*top five*/
 .topFiveContainer {
   background: white;
   border-radius: 1px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  padding: 1rem 4rem;
 }
 
 .topFiveTitle {
@@ -50,9 +49,8 @@
   font-weight: 700;
   color: black;
   text-align: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid blue;
+  padding: 0.5rem 0rem;
+  border-top: 1px solid black;
 }
 
 .topFiveGrid {

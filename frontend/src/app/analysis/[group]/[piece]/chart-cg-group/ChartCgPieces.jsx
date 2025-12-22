@@ -59,11 +59,7 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.sectionTitle}>
-        CG Por Peça - {group} - ({piecesData.total_pieces} Peças)
-      </h2>
-
-      {/* GRÁFICO */}
+      {/*chart */}
       <div className={styles.chartContainer}>
         <Plot
           data={chartData.data}
@@ -74,9 +70,9 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
             toImageButtonOptions: {
               format: "png",
               filename: `CG_Por_Peca_${group}_${selectedYear}_W${selectedWeek}`,
-              height: 800,
-              width: 1400,
-              scale: 2,
+              height: 1000,
+              width: 1600,
+              scale: 4,
             },
             modeBarButtonsToAdd: ["toImage"],
           }}
@@ -84,7 +80,7 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
         />
       </div>
 
-      {/* TOP FIVE */}
+      {/*top five*/}
       <div className={styles.topFiveContainer}>
         <h3 className={styles.topFiveTitle}>TOP FIVE - 5 PIORES ITENS</h3>
         <div className={styles.topFiveGrid}>
@@ -150,7 +146,7 @@ function prepareChartData(piecesReport, group) {
         y: greenData,
         name: "CG ≤ 75%",
         type: "bar", 
-        width: 0.3, 
+        width: 0.2, 
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -162,7 +158,7 @@ function prepareChartData(piecesReport, group) {
         y: yellowData,
         name: "75% < CG ≤ 100%",
         type: "bar", 
-        width: 0.3, 
+        width: 0.2, 
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -174,7 +170,7 @@ function prepareChartData(piecesReport, group) {
         y: redData,
         name: "CG > 100%",
         type: "bar", 
-        width: 0.3, 
+        width: 0.2, 
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -186,35 +182,36 @@ function prepareChartData(piecesReport, group) {
       barmode: "stack",
       title: {
         text: `CG Por Peça - ${group} - (${pieces.length} Peças)`,
-        font: { size: 22, weight: "bold", color: "#2d3748" },
+        font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
         title: "",
-        tickangle: -45, 
-          type: "category", 
-        tickfont: { size: 10 },
+        tickangle: 0, 
+        type: "category",
+        tickfont: { size: 14, color: "black", weight: "bold" }, 
         gridcolor: "#e2e8f0",
       },
       yaxis: {
         title: "",
         range: [0, 100],
         ticksuffix: "%",
-        tickfont: { size: 12 },
+        tickfont: { size: 14, color: "black", weight: "bold" }, 
+        dtick: 10,
         gridcolor: "#e2e8f0",
       },
       legend: {
         x: 0.5,
-        y: -0.25,
+        y: -0.15,
         xanchor: "center",
         orientation: "h",
-        font: { size: 13 },
+        font: { size: 15, color: "black" },
       },
-      margin: { l: 60, r: 40, t: 80, b: 150 },
+      margin: { l: 60, r: 40, t: 80, b: 100 },
       paper_bgcolor: "white",
-      plot_bgcolor: "#f9fafb",
+      plot_bgcolor: "#d5d6d6ff",
       hovermode: "x unified",
     },
   };
-}  
+}
  
  

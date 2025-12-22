@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { SaveAll } from "lucide-react";
+import { ArrowBigDown, SaveAll, Undo2 } from "lucide-react";
 import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
 import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcggroup.module.css";
@@ -156,9 +156,10 @@ export default function ReportGroupClient({ params }) {
           <button
             onClick={generateWeekReport}
             disabled={loading}
-            className={styles.btnGenerate}
+            className={styles.btnMenu} 
+            title={"Gerar Análise"}
           >
-            {loading ? "⏳ Gerando..." : "📊 Gerar Semana"}
+            {loading ? "⏳ Gerando..." : <ArrowBigDown size={33} />}
           </button>
 
           {chartData && (
@@ -174,17 +175,25 @@ export default function ReportGroupClient({ params }) {
 
           <button
             onClick={() => window.history.back()}
-            className={styles.btnBack}
+            className={styles.btnMenu}
+            title={"Voltar"}
           >
-            ← Voltar
+            <Undo2 size={33} />
           </button>
         </div>
 
-        {piecesList.length > 0 && (
-          <div className={styles.piecesInfo}>
-            <p className={styles.piecesLabel}>
-              <strong>Peças no grupo:</strong> {piecesList.map(p => p.part_number).join(", ")}
-            </p>
+        {reportData && reportData.length > 0 && (
+          <div className={styles.historyContainer}>
+            <h3>HISTÓRICO ({reportData.length})</h3>
+            <div className={styles.historyGrid}>
+              {reportData.map((report) => (
+                <div key={`${report.year}-${report.week}`} className={styles.historyItem}>
+                  <span className={styles.historyWeek}>
+                    {report.year} - W{report.week}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -218,27 +227,6 @@ export default function ReportGroupClient({ params }) {
               ? "Gerando relatório da semana..."
               : "Nenhum relatório gerado ainda. Selecione ano/semana e clique em 'Gerar Semana'"}
           </p>
-        </div>
-      )}
-
-      {reportData && reportData.length > 0 && (
-        <div className={styles.historyContainer}>
-          <h3>Semanas Geradas ({reportData.length})</h3>
-          <div className={styles.historyGrid}>
-            {reportData.map((report) => (
-              <div key={`${report.year}-${report.week}`} className={styles.historyItem}>
-                <span className={styles.historyWeek}>
-                  {report.year} - S{report.week}
-                </span>
-                <span className={styles.historyDetails}>
-                  Verde: {report.green} | Amarelo: {report.yellow} | Vermelho: {report.red}
-                </span>
-                <span className={styles.historyPieces}>
-                  {report.pieces_processed} peças
-                </span>
-              </div>
-            ))}
-          </div>
         </div>
       )}
 
@@ -312,14 +300,15 @@ function prepareChartData(reportsData, group, piecesCount) {
       xaxis: {
         title: "",
         tickangle: -45,
-        tickfont: { size: 11 },
+        tickfont: { size: 13, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
       },
       yaxis: {
         title: "",
         range: [0, 100],
         ticksuffix: "%",
-        tickfont: { size: 12 },
+        tickfont: { size: 14, color: "black", weight: "bold" },
+        dtick: 10,
         gridcolor: "#e2e8f0",
       },
       legend: {
@@ -327,13 +316,12 @@ function prepareChartData(reportsData, group, piecesCount) {
         y: -0.15,
         xanchor: "center",
         orientation: "h",
-        font: { size: 13 },
+        font: { size: 14, color: "black" },
       },
-      margin: { l: 60, r: 40, t: 80, b: 120 },
+      margin: { l: 60, r: 40, t: 80, b: 100 },
       paper_bgcolor: "white",
-      plot_bgcolor: "#f9fafb",
+      plot_bgcolor: "#d5d6d6ff",
       hovermode: "x unified",
     },
   };
 }
-

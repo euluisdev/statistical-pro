@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: #555;
   padding: 1rem;
+  margin-top: 1rem;
 }
 
 .header {
@@ -165,54 +166,4 @@
 .historyDate {
   font-size: 0.5rem;
   color: #718096;
-}
-
-/*history*/
-.historyContainer {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.historyContainer h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 1rem;
-}
-
-.historyGrid {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.historyItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.75rem;
-  border-radius: 8px;
-  background: #f7fafc;
-  border: 2px solid #e2e8f0;
-  min-width: 200px;
-}
-
-.historyWeek {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #2d3748;
-}
-
-.historyDetails {
-  font-size: 0.75rem;
-  color: #4a5568;
-}
-
-.historyPieces {
-  font-size: 0.7rem;
-  color: #718096;
-  font-style: italic;
 }
