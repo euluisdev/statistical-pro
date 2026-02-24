@@ -13,7 +13,7 @@ export default function ConfirmModal({
 
   return (
     <div className="modal-overlay">
-      <div className="modal-box">
+      <div className="modal-box"> 
         <h2 className="modal-title">{title}</h2>
         <p className="modal-message">{message}</p>
 
@@ -27,10 +27,6 @@ export default function ConfirmModal({
           </button>
         </div>
       </div>
-
-      <style jsx>{`
-
-      `}</style>
     </div>
   );
 }
