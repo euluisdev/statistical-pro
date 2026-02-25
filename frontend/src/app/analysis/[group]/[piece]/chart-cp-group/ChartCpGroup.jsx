@@ -146,7 +146,7 @@ export default function ReportGroupCpClient({ params }) {
             >
               {Array.from({ length: 53 }, (_, i) => i + 1).map((w) => (
                 <option key={w} value={w}>
-                  W {w}
+                  W{w}
                 </option>
               ))}
             </select>

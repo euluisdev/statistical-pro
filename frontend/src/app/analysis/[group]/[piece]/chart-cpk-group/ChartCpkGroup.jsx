@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { ArrowBigDown, ArrowBigRight, Grid3x3, SaveAll } from "lucide-react";
+import { ArrowBigDown, ArrowBigRight, Grid3x3, SaveAll, Undo2 } from "lucide-react";
 import ChartCpkPieces from "./ChartCpkPieces";
 import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
 import { SaveChartModal } from "@/app/components/common/SaveChartModal";
@@ -149,7 +149,7 @@ export default function ReportGroupCpkClient({ params }) {
             >
               {Array.from({ length: 53 }, (_, i) => i + 1).map((w) => (
                 <option key={w} value={w}>
-                  W {w}
+                  W{w}
                 </option>
               ))}
             </select>

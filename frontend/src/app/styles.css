@@ -2,6 +2,7 @@
 .page-container {
   min-height: 100vh;
   background: #555;
+  color: black;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
