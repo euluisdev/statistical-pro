@@ -1,8 +1,8 @@
-import ChatCgt from "./ChartCg";
+import ChartCg from "./ChartCg";
 
 export default async function Page({ params }) {
 
   const resolvedParams = await params;
   
-  return <ChatCgt params={resolvedParams} />;
+  return <ChartCg params={resolvedParams} />;
 }
