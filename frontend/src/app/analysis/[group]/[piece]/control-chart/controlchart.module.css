@@ -1,0 +1,130 @@
+.pageBackground {
+  background: #777;
+  min-height: 100vh;
+  padding: 10px;
+  margin-top: 1rem;
+}
+
+.container {
+  width: 1400px;
+  margin: 0 auto;
+  background: #dcdcdc;
+  border: 2px solid #8f8f8f;
+  padding: 15px 20px 25px 20px;
+  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.backBtn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #9a9a9a;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.openBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #6f6f6f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+}
+
+.header h2 {
+  margin: 5px 0 10px 0;
+  font-size: 14px;
+    color: black;
+}
+
+.divider {
+  height: 1px;
+  background: black;
+  margin-bottom: 20px;
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.leftBox {
+  width: 320px;
+  height: 190px;
+  border: 2px solid black;
+  background: #efefef;
+}
+
+.centerBox {
+  width: 320px;
+  height: 190px;
+  border: 2px solid black;
+  background: #efefef;
+}
+
+/*rigth */
+.rightPanel {
+  width: 300px;
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  row-gap: 5px;
+  column-gap: 4rem;
+  align-content: start;
+  margin-bottom: 1rem;
+}
+
+.infoRow span {
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+}
+
+.infoRow div {
+  height: 35px;
+  border: 1px solid black;
+  background: #efefef;
+}
+
+/* Gráfico */
+.bottomChart {
+  width: 100%;
+  height: 300px;
+  border: 2px solid black;
+  background: #efefef;
+}
+
+/* Modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  width: 400px;
+}
+
+
