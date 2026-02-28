@@ -5,6 +5,7 @@ from .routes.pieces import router as pieces_router
 from .routes.charts import router as charts_router 
 from .routes.jobid import router as jobid_router
 from .routes.cpkgroup import router as cpkgroup_router
+from .routes.control_chart import router as control_chart_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os 
@@ -31,6 +32,7 @@ app.include_router(pieces_router)
 app.include_router(charts_router) 
 app.include_router(jobid_router) 
 app.include_router(cpkgroup_router)
+app.include_router(control_chart_router)
 
 @app.get("/")
 def ping():

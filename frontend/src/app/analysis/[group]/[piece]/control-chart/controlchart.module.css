@@ -3,128 +3,461 @@
   min-height: 100vh;
   padding: 10px;
   margin-top: 1rem;
-}
-
-.container {
-  width: 1400px;
-  margin: 0 auto;
-  background: #dcdcdc;
-  border: 2px solid #8f8f8f;
-  padding: 15px 20px 25px 20px;
-  position: relative;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.backBtn {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: #9a9a9a;
-  border: none;
-  padding: 6px 10px;
-  cursor: pointer;
+/* ── Container ──────────────────────────────────────── */
+.container {
+  width: 1100px;
+  margin: 0 auto;
+  background: #dcdcdc;
+  border: 2px solid #8f8f8f;
+  padding: 10px 20px 30px 20px;
+  position: relative;
 }
 
-.openBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #6f6f6f;
-  color: white;
+/* ── Toolbar ────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.backBtn {
+  background: #9a9a9a;
   border: none;
   padding: 6px 12px;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: #222;
 }
+.backBtn:hover { background: #888; }
 
-/* Header */
-.header {
-  text-align: center;
-  margin-top: 20px;
+.openBtn {
+  background: #3a5a8a;
+  color: white;
+  border: none;
+  padding: 7px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
+.openBtn:hover { background: #2d4a78; }
 
+/* ── Header ─────────────────────────────────────────── */
+.header { text-align: center; margin-bottom: 4px; }
 .header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   color: black;
+  letter-spacing: 2px;
 }
-
 .header h2 {
-  margin: 5px 0 10px 0;
-  font-size: 14px;
-    color: black;
+  margin: 4px 0 2px;
+  font-size: 13px;
+  color: black;
+  font-weight: normal;
+}
+.subtitle {
+  margin: 0;
+  font-size: 11px;
+  color: #444;
+  text-align: right;
+  padding-right: 4px;
 }
 
 .divider {
-  height: 1px;
+  height: 1.5px;
   background: black;
-  margin-bottom: 20px;
+  margin: 6px 0 10px;
 }
 
-.topSection {
+/* ── Placeholder ────────────────────────────────────── */
+.placeholderArea {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  min-height: 520px;
 }
-
-.leftBox {
-  width: 320px;
-  height: 190px;
-  border: 2px solid black;
-  background: #efefef;
-}
-
-.centerBox {
-  width: 320px;
-  height: 190px;
-  border: 2px solid black;
-  background: #efefef;
-}
-
-/*rigth */
-.rightPanel {
-  width: 300px;
-  display: grid;
-  grid-template-columns: 1fr 120px;
-  row-gap: 5px;
-  column-gap: 4rem;
-  align-content: start;
-  margin-bottom: 1rem;
-}
-
-.infoRow span {
-  font-size: 14px;
-  font-weight: bold;
-  color: black;
-}
-
-.infoRow div {
-  height: 35px;
-  border: 1px solid black;
-  background: #efefef;
-}
-
-/* Gráfico */
-.bottomChart {
+.placeholderChart {
   width: 100%;
-  height: 300px;
-  border: 2px solid black;
-  background: #efefef;
+  height: 160px;
+  background: #e8e8e8;
+  border: 1.5px solid #bbb;
+  opacity: 0.55;
+}
+.placeholderHint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #555;
+  background: rgba(220,220,220,0.5);
 }
 
-/* Modal */
+/* ── Loading ────────────────────────────────────────── */
+.loadingCharts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  gap: 16px;
+  color: #555;
+  font-size: 14px;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #bbb;
+  border-top-color: #3a5a8a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Error states ───────────────────────────────────── */
+.errorFull {
+  text-align: center;
+  padding: 60px 20px;
+  color: #aa2222;
+  font-size: 14px;
+}
+.errorFull button {
+  margin-top: 12px;
+  padding: 6px 16px;
+  background: #3a5a8a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.chartError {
+  padding: 12px;
+  background: #fde;
+  border: 1px solid #eaa;
+  color: #900;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+/* ── Legend ─────────────────────────────────────────── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-bottom: 10px;
+  padding: 4px 8px;
+  background: #e8e8e8;
+  border: 1px solid #bbb;
+  align-items: center;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* ── Charts ─────────────────────────────────────────── */
+.chartsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chartRow {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid #999;
+  background: #f5f5f5;
+}
+
+.svgWrapper {
+  flex: 1;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+/* ── Stats panel ────────────────────────────────────── */
+.statsPanel {
+  width: 220px;
+  flex-shrink: 0;
+  border-left: 1.5px solid #999;
+  padding: 8px 10px;
+  background: #ececec;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.statsHeader {
+  font-size: 11px;
+  color: #222;
+  line-height: 1.6;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 5px;
+  margin-bottom: 2px;
+}
+.statsHeader strong {
+  font-size: 12px;
+  display: block;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 5px;
+  margin-top: 4px;
+}
+
+.statCell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border: 1px solid #bbb;
+  padding: 2px 5px;
+  min-height: 22px;
+}
+
+.statLabel {
+  font-size: 9px;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+}
+.tiny { font-size: 8px; color: #00aa00; }
+
+.statVal {
+  font-size: 11px;
+  font-weight: bold;
+  color: #222;
+  padding: 1px 4px;
+}
+
+/* ── Color variants ─────────────────────────────────── */
+.green    { background: #22aa44 !important; color: white !important; }
+.red      { background: #cc2222 !important; color: white !important; }
+.redText  { color: #cc2222 !important; }
+.blueText { color: #3355bb !important; }
+
+/* ── Modal ──────────────────────────────────────────── */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.55);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal {
-  background: white;
-  padding: 30px;
-  width: 400px;
+  background: #f0f0f0;
+  width: 720px;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #555;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
 }
 
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: #3a5a8a;
+  color: white;
+  flex-shrink: 0;
+}
+.modalHeader h3 { margin: 0; font-size: 16px; letter-spacing: 1px; }
 
+.closeBtn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+}
+.closeBtn:hover { color: #ffd; }
+
+.modalBody {
+  display: flex;
+  gap: 0;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.modalCol {
+  flex: 1;
+  padding: 14px 16px;
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+}
+.modalCol:last-child { border-right: none; }
+
+.modalColTitle {
+  font-size: 11px;
+  font-weight: bold;
+  color: #3a5a8a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #3a5a8a;
+  padding-bottom: 4px;
+}
+
+/* Loading/Error inside modal */
+.loadingMsg {
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  padding: 30px 0;
+}
+.errorMsg {
+  font-size: 13px;
+  color: #aa2222;
+  padding: 10px;
+  background: #fde;
+  border: 1px solid #eaa;
+}
+
+/* ── Point list ─────────────────────────────────────── */
+.pointList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pointItem {
+  border: 1px solid #bbb;
+  background: white;
+}
+.pointSelected {
+  border-color: #3a5a8a;
+  background: #eef3fb;
+}
+
+.pointHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.pointHeader:hover { background: #e0e8f5; }
+
+.pointCheck { font-size: 10px; color: #3a5a8a; width: 12px; }
+.pointLabel { font-size: 12px; font-weight: bold; color: #222; }
+.pointType  { font-size: 10px; color: #888; margin-left: auto; }
+
+.axisRow {
+  display: flex;
+  gap: 6px;
+  padding: 6px 28px 8px;
+  border-top: 1px solid #dde;
+  background: #f5f8ff;
+}
+
+.axisBtn {
+  padding: 4px 14px;
+  border: 1.5px solid #aaa;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: #444;
+  transition: all 0.12s;
+}
+.axisBtn:hover { border-color: #3a5a8a; color: #3a5a8a; }
+.axisBtnActive {
+  background: #3a5a8a;
+  border-color: #3a5a8a;
+  color: white;
+}
+
+/* ── Summary ────────────────────────────────────────── */
+.selectionSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.summaryRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  background: white;
+  border: 1px solid #ccc;
+}
+.summaryPoint {
+  font-size: 12px;
+  font-weight: bold;
+  color: #222;
+  min-width: 80px;
+}
+.summaryAxes { display: flex; gap: 5px; }
+.axisTag {
+  background: #3a5a8a;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.emptyMsg {
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+  margin-top: 24px;
+  font-style: italic;
+}
+
+/* ── Modal footer ───────────────────────────────────── */
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 13px 20px;
+  border-top: 1px solid #ccc;
+  background: #e8e8e8;
+  flex-shrink: 0;
+}
+
+.cancelBtn {
+  padding: 8px 20px;
+  background: #999;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+}
+.cancelBtn:hover { background: #888; }
+
+.generateBtn {
+  padding: 8px 24px;
+  background: #2a7a2a;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.5px;
+}
+.generateBtn:hover { background: #226022; }
+ 
+ 
