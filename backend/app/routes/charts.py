@@ -554,7 +554,7 @@ def get_group_pieces_cp_report(
                     "red_percent": stats["summary"]["cp_red_percent"],
                     "total": stats["summary"]["total_characteristics"],
                     "image": image_filename
-                })
+                }) 
                 
         except Exception as e:
             print(f"Erro ao processar peça {piece_number}: {e}")

@@ -1,9 +1,3 @@
-"""
-router.py  –  Control Chart API
-Prefix sugerido: /api/control-chart
-Inclua no main.py: app.include_router(control_chart_router, prefix="/api/control-chart")
-"""
-
 from fastapi import APIRouter, HTTPException, Query
 from pathlib import Path
 import json
@@ -11,16 +5,12 @@ import csv
 from collections import defaultdict
 from typing import Optional
 
-router = APIRouter(tags=["control-chart"])
+router = APIRouter(tags=["pieces"])
 
-# ── Caminho base dos dados ────────────────────────────────────────────────────
-BASE_DATA = Path(__file__).parent / "data" / "groups"
+# path data base
+BASE_DATA = Path(__file__).resolve().parent.parent / "data" / "groups"
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # HELPERS
-# ═════════════════════════════════════════════════════════════════════════════
-
 def _piece_analysis_dir(group: str, piece: str) -> Path:
     path = BASE_DATA / group / "pieces" / piece / "analysis"
     if not path.exists():
@@ -54,13 +44,10 @@ def _stem_to_week(filename: str) -> str:
         return f"{parts[1]}-{parts[2]}"
     return filename
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # ENDPOINT 1 – Listar pontos disponíveis (para o modal)
-# GET /api/control-chart/{group}/{piece}/points
-# ═════════════════════════════════════════════════════════════════════════════
 
-@router.get("/{group}/{piece}/points")
+@router.get("/pieces/{group}/{piece}/points")
+
 def get_available_points(group: str, piece: str):
     """
     Retorna todos os pontos e eixos disponíveis para a peça,
@@ -78,6 +65,7 @@ def get_available_points(group: str, piece: str):
     """
     analysis_dir = _piece_analysis_dir(group, piece)
     stats_file = _latest_stats_file(analysis_dir)
+    
 
     with open(stats_file, encoding="utf-8") as f:
         stats_data = json.load(f)
@@ -109,13 +97,9 @@ def get_available_points(group: str, piece: str):
         "points": list(points_map.values()),
     }
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # ENDPOINT 2 – Dados do gráfico para um ponto+eixo
-# GET /api/control-chart/{group}/{piece}/chart?point=CÍRCULO_7&axis=X
-# ═════════════════════════════════════════════════════════════════════════════
 
-@router.get("/{group}/{piece}/chart")
+@router.get("/pieces/{group}/{piece}/chart")
 def get_chart_data(
     group: str,
     piece: str,
@@ -171,7 +155,7 @@ def get_chart_data(
             detail=f"Nenhuma medição encontrada para ponto='{point}', eixo='{axis}'"
         )
 
-    # ── Busca stats do JSON mais recente ───────────────────────────────────
+    # ── Busca stats do JSON mais recente 
     stats_file = _latest_stats_file(analysis_dir)
     with open(stats_file, encoding="utf-8") as f:
         stats_data = json.load(f)
@@ -219,10 +203,8 @@ def get_chart_data(
 
 # ═════════════════════════════════════════════════════════════════════════════
 # ENDPOINT 3 – Listar semanas disponíveis (opcional, útil para filtros futuros)
-# GET /api/control-chart/{group}/{piece}/weeks
-# ═════════════════════════════════════════════════════════════════════════════
 
-@router.get("/{group}/{piece}/weeks")
+@router.get("/pieces/{group}/{piece}/weeks")
 def get_available_weeks(group: str, piece: str):
     analysis_dir = _piece_analysis_dir(group, piece)
     stats_files  = sorted(analysis_dir.glob("*_stats.json"))
@@ -232,7 +214,6 @@ def get_available_weeks(group: str, piece: str):
 
 # ═════════════════════════════════════════════════════════════════════════════
 # ENDPOINT 4 – Múltiplos gráficos de uma vez (chamada em batch do modal)
-# POST /api/control-chart/{group}/{piece}/charts
 # Body: { "selections": [{"point": "CÍRCULO_7", "axis": "X"}, ...] }
 # ═════════════════════════════════════════════════════════════════════════════
 
@@ -246,7 +227,7 @@ class ChartsRequest(BaseModel):
     selections: list[ChartSelection]
 
 
-@router.post("/{group}/{piece}/charts")
+@router.post("/pieces/{group}/{piece}/charts")
 def get_multiple_charts(group: str, piece: str, body: ChartsRequest):
     """
     Retorna dados de múltiplos gráficos em uma única requisição.
@@ -266,7 +247,7 @@ def get_multiple_charts(group: str, piece: str, body: ChartsRequest):
     return {"charts": results}
 
 
-# ── Util ──────────────────────────────────────────────────────────────────────
+#Util
 def _safe_float(value):
     try:
         return float(value)

@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./controlchart.module.css";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-// ── Mini sparkline SVG ────────────────────────────────────────────────────────
+//mini sparkline SVG 
 function Sparkline({ values }) {
   if (!values?.length) return null;
   const w = 120, h = 46;
@@ -26,7 +26,7 @@ function Sparkline({ values }) {
   );
 }
 
-// ── Single Control Chart ──────────────────────────────────────────────────────
+//Single Control Chart
 function SingleChart({ chartData }) {
   const { point, axis, stats, measurements } = chartData;
 
@@ -200,7 +200,7 @@ function SingleChart({ chartData }) {
   );
 }
 
-// ── Legend ────────────────────────────────────────────────────────────────────
+//legend
 function Legend() {
   const items = [
     { label: "CONTROL POINTS", color: "#111", dot: true },
@@ -231,16 +231,16 @@ function Legend() {
   );
 }
 
-// ── Modal ─────────────────────────────────────────────────────────────────────
+//modal
 function ConfigModal({ group, piece, onClose, onGenerate }) {
   const [points, setPoints]   = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState(null);
   const [selected, setSelected] = useState({});
 
-  useEffect(() => {
+  useEffect(() => {console.log(`${API}/pieces/${group}/${piece}/charts`);
     setLoading(true);
-    fetch(`${API_BASE}/api/control-chart/${group}/${piece}/points`)
+    fetch(`${API}/pieces/${group}/${piece}/points`)
       .then((r) => {
         if (!r.ok) throw new Error(`Erro ${r.status}`);
         return r.json();
@@ -357,7 +357,7 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
   );
 }
 
-// ── Placeholder estático ──────────────────────────────────────────────────────
+//Placeholder estático
 function StaticPlaceholder({ group, piece }) {
   return (
     <>
@@ -379,7 +379,7 @@ function StaticPlaceholder({ group, piece }) {
   );
 }
 
-// ── Loading state ─────────────────────────────────────────────────────────────
+//Loading state
 function LoadingCharts() {
   return (
     <div className={styles.loadingCharts}>
@@ -389,10 +389,14 @@ function LoadingCharts() {
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────────────────────────
+//Main Page
 export default function ControlChart({ params }) {
   const { group, piece } = params;
   const router = useRouter();
+
+  console.log("PARAMS:", params);
+console.log("group:", group);
+console.log("piece:", piece);
 
   const [modalOpen,    setModalOpen]    = useState(false);
   const [chartsData,   setChartsData]   = useState(null);   // null = placeholder
@@ -406,7 +410,7 @@ export default function ControlChart({ params }) {
 
     try {
       const res = await fetch(
-        `${API_BASE}/api/control-chart/${group}/${piece}/charts`,
+        `${API}/pieces/${group}/${piece}/charts`,
         {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
