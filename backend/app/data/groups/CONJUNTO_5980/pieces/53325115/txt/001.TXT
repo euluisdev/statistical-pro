@@ -2,536 +2,536 @@
  DATA: 17/11/2025
  HORA: 10:35:11
 #####################################################################
-DIM D1= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_7  DP=0.00
+DIM D1= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_7  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
-X      2240.01    2239.81      -0.21       1.00       1.00 ---#-----
+X      2240.01    2238.81      -1.21       1.00       1.00 ---#-----
 Z        49.78      49.52      -0.26       1.00       1.00 ---#-----
-DIM D4= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_20  DP=0.00
+DIM D4= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_20  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
-X      1956.20    1956.07      -0.13       0.80       0.80 ---#-----
+X      1956.20    1955.07      -1.13       0.80       0.80 ---#-----
 Y      -731.25    -732.19      -0.94       0.80       0.80 <--------
-DIM D6= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_6  DP=0.00
+DIM D6= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_6  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1826.21    1825.85      -0.36       0.80       0.80 --#------
 Y      -727.31    -728.15      -0.83       0.80       0.80 <--------
-DIM D2= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_19  DP=0.00
+DIM D2= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_19  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      2076.34    2076.24      -0.10       0.80       0.80 ---#-----
 Y      -735.68    -736.33      -0.64       0.80       0.80 #--------
-DIM D11= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_18  DP=0.00
+DIM D11= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_18  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       968.73     968.23      -0.50       1.00       1.00 --#------
 Y      -712.09    -712.46      -0.36       1.00       1.00 --#------
-DIM D401= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_16  DP=0.00
+DIM D401= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_16  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       748.55     747.96      -0.59       0.80       0.80 -#-------
 Y      -712.58    -713.08      -0.50       0.80       0.80 -#-------
-DIM D403= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_8  DP=0.00
+DIM D403= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_8  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1439.37    1438.62      -0.75       0.70       0.70 <--------
 Z         4.51       4.13      -0.38       0.70       0.70 --#------
-DIM D405= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_9  DP=0.00
+DIM D405= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_9  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       795.00     794.54      -0.46       0.80       0.80 -#-------
 Z        -4.60      -4.57       0.03       0.80       0.80 ----#----
-DIM D407= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_10  DP=0.00
+DIM D407= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_10  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       705.00     704.51      -0.49       1.00       1.00 --#------
 Z        19.81      19.42      -0.39       1.00       1.00 --#------
-DIM D409= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_11  DP=0.00
+DIM D409= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_11  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       610.00     609.82      -0.18       1.00       1.00 ---#-----
 Z        -4.32      -4.66      -0.33       1.00       1.00 --#------
-DIM D411= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_13  DP=0.00
+DIM D411= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_13  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       445.00     444.58      -0.42       1.00       1.00 --#------
 Z        10.81      10.86       0.05       1.00       1.00 ----#----
-DIM D561= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_14  DP=0.00
+DIM D561= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_14  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       558.68     558.17      -0.51       1.00       1.00 --#------
 Y      -648.91    -649.17      -0.26       1.00       1.00 ---#-----
-DIM D417= LOCALIZAÇÃO DE SLOT RETÂNGULO_1  DP=0.00
+DIM D417= LOCALIZAï¿½ï¿½O DE SLOT RETï¿½NGULO_1  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1560.25    1559.33      -0.92       1.00       1.00 #--------
 Y      -711.90    -711.94      -0.04       1.00       1.00 ----#----
-DIM D416= LOCALIZAÇÃO DE SLOT RETÂNGULO_2  DP=0.00
+DIM D416= LOCALIZAï¿½ï¿½O DE SLOT RETï¿½NGULO_2  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1560.01    1559.42      -0.59       1.00       1.00 -#-------
 Y      -670.85    -671.09      -0.24       1.00       1.00 ---#-----
-DIM D420= LOCALIZAÇÃO DE SLOT RETÂNGULO_3  DP=0.00
+DIM D420= LOCALIZAï¿½ï¿½O DE SLOT RETï¿½NGULO_3  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1442.32    1441.06      -1.26       1.00       1.00 <--------
 Z       -17.53     -17.65      -0.12       1.00       1.00 ---#-----
-DIM D13= LOCALIZAÇÃO DE SLOT RETÂNGULO_4  DP=0.00
+DIM D13= LOCALIZAï¿½ï¿½O DE SLOT RETï¿½NGULO_4  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1125.08    1124.23      -0.85       1.00       1.00 #--------
 Y      -670.50    -670.76      -0.26       1.00       1.00 ---#-----
-DIM D422= LOCALIZAÇÃO DE SLOT RETÂNGULO_5  DP=0.00
+DIM D422= LOCALIZAï¿½ï¿½O DE SLOT RETï¿½NGULO_5  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       925.00     924.35      -0.65       1.00       1.00 -#-------
 Y      -711.03    -710.92       0.11       1.00       1.00 ----#----
-DIM D423= LOCALIZAÇÃO DE SLOT RETÂNGULO_6  DP=0.00
+DIM D423= LOCALIZAï¿½ï¿½O DE SLOT RETï¿½NGULO_6  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       925.08     924.33      -0.75       1.00       1.00 -#-------
 Y      -670.50    -670.48       0.02       1.00       1.00 ----#----
-DIM D424= LOCALIZAÇÃO DE SLOT RETÂNGULO_7  DP=0.00
+DIM D424= LOCALIZAï¿½ï¿½O DE SLOT RETï¿½NGULO_7  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X       725.00     724.31      -0.69       1.00       1.00 -#-------
 Y      -711.87    -711.79       0.09       1.00       1.00 ----#----
-DIM D427= LOCALIZAÇÃO DE SLOT OBLONGO_1  DP=0.00
+DIM D427= LOCALIZAï¿½ï¿½O DE SLOT OBLONGO_1  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1613.28    1612.77      -0.51       0.80       0.80 -#-------
 Y      -645.94    -646.39      -0.45       1.00       1.00 --#------
 Z        19.15      19.26       0.11       0.80       0.80 -----#---
-DIM D430= LOCALIZAÇÃO DE PONTO PTO_SUPERF_108  DP=0.00
+DIM D430= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_108  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -696.42    -696.29       0.14       0.00       1.00 -------->
-DIM D428= LOCALIZAÇÃO DE PONTO PTO_SUPERF_109  DP=0.00
+DIM D428= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_109  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -696.42    -696.31       0.11       0.00       1.00 -------->
-DIM D429= LOCALIZAÇÃO DE PONTO PTO_SUPERF_110  DP=0.00
+DIM D429= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_110  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -696.42    -696.26       0.16       0.00       1.00 -------->
-DIM D431= LOCALIZAÇÃO DE PONTO PTO_SUPERF_111  DP=0.00
+DIM D431= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_111  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -696.42    -696.39       0.03       0.00       1.00 -------->
-DIM D432= LOCALIZAÇÃO DE PONTO PTO_SUPERF_113  DP=0.00
+DIM D432= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_113  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -731.74    -732.12      -0.38       0.00       1.00 -----#---
-DIM D434= LOCALIZAÇÃO DE PONTO PTO_SUPERF_114  DP=0.00
+DIM D434= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_114  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -731.77    -732.29      -0.51       0.00       1.00 ----#----
-DIM D433= LOCALIZAÇÃO DE PONTO PTO_SUPERF_115  DP=0.00
+DIM D433= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_115  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -731.76    -732.21      -0.44       0.00       1.00 ----#----
-DIM D435= LOCALIZAÇÃO DE PONTO PTO_SUPERF_116  DP=0.00
+DIM D435= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_116  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -736.91    -737.46      -0.55       0.00       1.00 ----#----
-DIM D436= LOCALIZAÇÃO DE PONTO PTO_SUPERF_117  DP=0.00
+DIM D436= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_117  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -736.91    -737.40      -0.49       0.00       1.00 ----#----
-DIM D437= LOCALIZAÇÃO DE PONTO PTO_SUPERF_118  DP=0.00
+DIM D437= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_118  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -739.41    -740.30      -0.88       0.00       1.00 -#-------
-DIM D438= LOCALIZAÇÃO DE PONTO PTO_SUPERF_120  DP=0.00
+DIM D438= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_120  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -742.21    -742.97      -0.76       0.00       1.00 --#------
-DIM D439= LOCALIZAÇÃO DE PONTO PTO_SUPERF_121  DP=0.00
+DIM D439= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_121  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -742.22    -742.75      -0.53       0.00       1.00 ----#----
-DIM D440= LOCALIZAÇÃO DE PONTO PTO_SUPERF_122  DP=0.00
+DIM D440= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_122  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -744.27    -744.52      -0.24       0.00       1.00 ------#--
-DIM D441= LOCALIZAÇÃO DE PONTO PTO_SUPERF_124  DP=0.00
+DIM D441= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_124  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -744.67    -744.79      -0.11       0.00       1.00 -------#-
-DIM D442= LOCALIZAÇÃO DE PONTO PTO_SUPERF_125  DP=0.00
+DIM D442= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_125  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -747.45    -747.27       0.19       0.00       1.00 -------->
-DIM D443= LOCALIZAÇÃO DE PONTO PTO_SUPERF_126  DP=0.00
+DIM D443= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_126  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -747.45    -747.62      -0.17       0.00       1.00 -------#-
-DIM D444= LOCALIZAÇÃO DE PONTO PTO_SUPERF_127  DP=0.00
+DIM D444= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_127  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -750.08    -750.17      -0.09       0.00       1.00 --------#
-DIM D445= LOCALIZAÇÃO DE PONTO PTO_SUPERF_128  DP=0.00
+DIM D445= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_128  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -750.10    -750.20      -0.10       0.00       1.00 --------#
-DIM D446= LOCALIZAÇÃO DE PONTO PTO_SUPERF_30  DP=0.00
+DIM D446= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_30  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -744.16    -744.28      -0.13       0.00       1.00 -------#-
-DIM D447= LOCALIZAÇÃO DE PONTO PTO_SUPERF_129  DP=0.00
+DIM D447= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_129  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -751.51    -751.60      -0.10       0.00       1.00 --------#
-DIM D448= LOCALIZAÇÃO DE PONTO PTO_SUPERF_130  DP=0.00
+DIM D448= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_130  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -751.58    -751.71      -0.13       0.00       1.00 -------#-
-DIM D449= LOCALIZAÇÃO DE PONTO PTO_SUPERF_131  DP=0.00
+DIM D449= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_131  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -751.58    -751.19       0.39       0.00       1.00 -------->
-DIM D450= LOCALIZAÇÃO DE PONTO PTO_SUPERF_132  DP=0.00
+DIM D450= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_132  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -751.58    -750.93       0.64       0.00       1.00 -------->
-DIM D451= LOCALIZAÇÃO DE PONTO PTO_SUPERF_19  DP=0.00
+DIM D451= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_19  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -739.81    -740.61      -0.79       0.00       1.00 -#-------
-DIM D452= LOCALIZAÇÃO DE PONTO PTO_SUPERF_133  DP=0.00
+DIM D452= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_133  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -751.58    -751.86      -0.29       0.00       1.00 ------#--
-DIM D453= LOCALIZAÇÃO DE PONTO PTO_SUPERF_134  DP=0.00
+DIM D453= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_134  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -750.11    -750.86      -0.75       0.00       1.00 --#------
-DIM D454= LOCALIZAÇÃO DE PONTO PTO_SUPERF_135  DP=0.00
+DIM D454= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_135  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -731.43    -731.94      -0.51       0.01       1.00 ----#----
-DIM D455= LOCALIZAÇÃO DE PONTO PTO_SUPERF_136  DP=0.00
+DIM D455= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_136  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -716.07    -716.17      -0.10       0.00       1.00 --------#
-DIM D456= LOCALIZAÇÃO DE PONTO PTO_SUPERF_137  DP=0.00
+DIM D456= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_137  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -715.92    -715.31       0.61       0.00       1.00 -------->
-DIM D457= LOCALIZAÇÃO DE PONTO PTO_SUPERF_138  DP=0.00
+DIM D457= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_138  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -712.69    -712.03       0.66       0.00       1.00 -------->
-DIM D458= LOCALIZAÇÃO DE PONTO PTO_SUPERF_139  DP=0.00
+DIM D458= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_139  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -713.34    -713.79      -0.45       0.00       1.00 ----#----
-DIM D459= LOCALIZAÇÃO DE PONTO PTO_SUPERF_140  DP=0.00
+DIM D459= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_140  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -713.04    -713.48      -0.45       0.00       1.00 ----#----
-DIM D460= LOCALIZAÇÃO DE PONTO PTO_SUPERF_141  DP=0.00
+DIM D460= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_141  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -710.19    -710.30      -0.11       0.00       1.00 --------#
-DIM D461= LOCALIZAÇÃO DE PONTO PTO_SUPERF_31  DP=0.00
+DIM D461= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_31  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -706.15    -706.21      -0.06       0.00       1.00 --------#
-DIM D462= LOCALIZAÇÃO DE PONTO PTO_SUPERF_142  DP=0.00
+DIM D462= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_142  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -707.68    -707.55       0.13       0.00       1.00 -------->
-DIM D463= LOCALIZAÇÃO DE PONTO PTO_SUPERF_143  DP=0.00
+DIM D463= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_143  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -706.83    -706.92      -0.09       0.00       1.00 --------#
-DIM D464= LOCALIZAÇÃO DE PONTO PTO_SUPERF_145  DP=0.00
+DIM D464= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_145  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -703.30    -703.68      -0.39       0.00       1.00 -----#---
-DIM D465= LOCALIZAÇÃO DE PONTO PTO_SUPERF_146  DP=0.00
+DIM D465= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_146  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -700.49    -699.97       0.53       0.00       1.00 -------->
-DIM D466= LOCALIZAÇÃO DE PONTO PTO_SUPERF_147  DP=0.00
+DIM D466= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_147  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -699.27    -698.82       0.44       0.00       1.00 -------->
-DIM D467= LOCALIZAÇÃO DE PONTO PNT_BORDA_19  DP=0.00
+DIM D467= LOCALIZAï¿½ï¿½O DE PONTO PNT_BORDA_19  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -731.74    -732.15      -0.41       0.00       1.00 -----#---
-DIM D468= LOCALIZAÇÃO DE PONTO PTO_SUPERF_148  DP=0.00
+DIM D468= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_148  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -697.90    -697.47       0.43       0.00       1.00 -------->
-DIM D469= LOCALIZAÇÃO DE PONTO PTO_SUPERF_149  DP=0.00
+DIM D469= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_149  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -696.42    -695.78       0.64       0.00       1.00 -------->
-DIM D470= LOCALIZAÇÃO DE PONTO PTO_SUPERF_150  DP=0.00
+DIM D470= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_150  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -696.42    -696.59      -0.17       0.00       1.00 -------#-
-DIM D473= LOCALIZAÇÃO DE PONTO PTO_SUPERF_36  DP=0.00
+DIM D473= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_36  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -690.64    -691.21      -0.57       0.70       0.70 #--------
-DIM D471= LOCALIZAÇÃO DE PONTO PTO_SUPERF_37  DP=0.00
+DIM D471= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_37  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -689.56    -689.65      -0.09       0.70       0.70 ---#-----
-DIM D472= LOCALIZAÇÃO DE PONTO PTO_SUPERF_38  DP=0.00
+DIM D472= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_38  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -682.92    -683.51      -0.59       0.70       0.70 #--------
-DIM D474= LOCALIZAÇÃO DE PONTO PTO_SUPERF_39  DP=0.00
+DIM D474= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_39  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -678.58    -679.16      -0.58       0.70       0.70 #--------
-DIM D475= LOCALIZAÇÃO DE PONTO PTO_SUPERF_40  DP=0.00
+DIM D475= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_40  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -677.90    -677.97      -0.07       0.70       0.70 ----#----
-DIM D476= LOCALIZAÇÃO DE PONTO PTO_SUPERF_41  DP=0.00
+DIM D476= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_41  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -671.80    -672.24      -0.44       0.70       0.70 -#-------
-DIM D477= LOCALIZAÇÃO DE PONTO PTO_SUPERF_42  DP=0.00
+DIM D477= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_42  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -655.76    -656.56      -0.80       0.70       0.70 <--------
-DIM D478= LOCALIZAÇÃO DE PONTO PTO_SUPERF_43  DP=0.00
+DIM D478= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_43  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -652.61    -653.74      -1.13       0.70       0.70 <--------
-DIM D479= LOCALIZAÇÃO DE PONTO PTO_SUPERF_44  DP=0.00
+DIM D479= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_44  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -640.96    -641.73      -0.77       0.70       0.70 <--------
-DIM D480= LOCALIZAÇÃO DE PONTO PTO_SUPERF_45  DP=0.00
+DIM D480= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_45  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -635.83    -636.66      -0.83       0.70       0.70 <--------
-DIM D481= LOCALIZAÇÃO DE PONTO PTO_SUPERF_46  DP=0.00
+DIM D481= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_46  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -641.32    -642.08      -0.77       0.70       0.70 <--------
-DIM D482= LOCALIZAÇÃO DE PONTO PTO_SUPERF_47  DP=0.00
+DIM D482= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_47  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -636.07    -636.74      -0.67       0.70       0.70 #--------
-DIM D483= LOCALIZAÇÃO DE PONTO PTO_SUPERF_48  DP=0.00
+DIM D483= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_48  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -641.18    -642.03      -0.85       0.70       0.70 <--------
-DIM D484= LOCALIZAÇÃO DE PONTO PTO_SUPERF_49  DP=0.00
+DIM D484= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_49  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -636.24    -637.46      -1.21       0.70       0.70 <--------
-DIM D485= LOCALIZAÇÃO DE PONTO PTO_SUPERF_50  DP=0.00
+DIM D485= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_50  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -642.92    -643.54      -0.62       0.70       0.70 #--------
-DIM D486= LOCALIZAÇÃO DE PONTO PTO_SUPERF_51  DP=0.00
+DIM D486= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_51  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -638.57    -639.04      -0.47       0.70       0.70 -#-------
-DIM D487= LOCALIZAÇÃO DE PONTO PTO_SUPERF_77  DP=0.00
+DIM D487= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_77  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -639.74    -639.90      -0.16       0.70       0.70 ---#-----
-DIM D488= LOCALIZAÇÃO DE PONTO PTO_SUPERF_78  DP=0.00
+DIM D488= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_78  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -634.34    -634.34       0.00       0.70       0.70 ----#----
-DIM D489= LOCALIZAÇÃO DE PONTO PTO_SUPERF_79  DP=0.00
+DIM D489= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_79  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -639.27    -639.47      -0.20       0.70       0.70 ---#-----
-DIM D490= LOCALIZAÇÃO DE PONTO PTO_SUPERF_80  DP=0.00
+DIM D490= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_80  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -636.24    -636.53      -0.29       0.70       0.70 --#------
-DIM D491= LOCALIZAÇÃO DE PONTO PTO_SUPERF_81  DP=0.00
+DIM D491= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_81  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -640.63    -640.93      -0.30       0.70       0.70 --#------
-DIM D492= LOCALIZAÇÃO DE PONTO PTO_SUPERF_82  DP=0.00
+DIM D492= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_82  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -640.21    -640.49      -0.29       0.70       0.70 --#------
-DIM D493= LOCALIZAÇÃO DE PONTO PTO_SUPERF_83  DP=0.00
+DIM D493= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_83  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -637.40    -637.65      -0.25       0.70       0.70 --#------
-DIM D494= LOCALIZAÇÃO DE PONTO PTO_SUPERF_84  DP=0.00
+DIM D494= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_84  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -634.34    -634.56      -0.22       0.70       0.70 ---#-----
-DIM D495= LOCALIZAÇÃO DE PONTO PTO_SUPERF_85  DP=0.00
+DIM D495= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_85  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -634.98    -635.54      -0.56       0.70       0.70 #--------
-DIM D496= LOCALIZAÇÃO DE PONTO PTO_SUPERF_86  DP=0.00
+DIM D496= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_86  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -636.78    -637.29      -0.51       0.70       0.70 -#-------
-DIM D497= LOCALIZAÇÃO DE PONTO PTO_SUPERF_87  DP=0.00
+DIM D497= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_87  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -636.78    -637.90      -1.11       0.70       0.70 <--------
-DIM D498= LOCALIZAÇÃO DE PONTO PTO_SUPERF_73  DP=0.00
+DIM D498= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_73  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -635.17    -635.14       0.02       0.70       0.70 ----#----
-DIM D499= LOCALIZAÇÃO DE PONTO PTO_SUPERF_154  DP=0.00
+DIM D499= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_154  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -639.72    -639.84      -0.12       0.70       0.70 ---#-----
-DIM D500= LOCALIZAÇÃO DE PONTO PTO_SUPERF_155  DP=0.00
+DIM D500= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_155  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -634.52    -634.49       0.03       0.70       0.70 ----#----
-DIM D501= LOCALIZAÇÃO DE PONTO PTO_SUPERF_74  DP=0.00
+DIM D501= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_74  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -639.82    -639.92      -0.11       0.70       0.70 ---#-----
-DIM D502= LOCALIZAÇÃO DE PONTO PTO_SUPERF_156  DP=0.00
+DIM D502= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_156  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -639.53    -639.70      -0.18       0.70       0.70 ---#-----
-DIM D503= LOCALIZAÇÃO DE PONTO PTO_SUPERF_157  DP=0.00
+DIM D503= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_157  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -634.61    -634.74      -0.12       0.70       0.70 ---#-----
-DIM D504= LOCALIZAÇÃO DE PONTO PTO_SUPERF_159  DP=0.00
+DIM D504= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_159  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Y      -640.42    -640.81      -0.38       0.70       0.70 --#------
-DIM D505= LOCALIZAÇÃO DE PONTO PTO_SUPERF_54  DP=0.00
+DIM D505= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_54  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        68.52      68.57       0.05       0.70       0.70 ----#----
-DIM D506= LOCALIZAÇÃO DE PONTO PTO_SUPERF_55  DP=0.00
+DIM D506= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_55  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        65.28      65.47       0.18       0.70       0.70 -----#---
-DIM D507= LOCALIZAÇÃO DE PONTO PTO_SUPERF_56  DP=0.00
+DIM D507= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_56  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        54.29      54.11      -0.18       0.70       0.70 ---#-----
-DIM D508= LOCALIZAÇÃO DE PONTO PTO_SUPERF_57  DP=0.00
+DIM D508= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_57  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        51.45      51.38      -0.07       0.70       0.70 ----#----
-DIM D509= LOCALIZAÇÃO DE PONTO PTO_SUPERF_58  DP=0.00
+DIM D509= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_58  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        50.24      49.62      -0.61       0.70       0.70 #--------
-DIM D510= LOCALIZAÇÃO DE PONTO PTO_SUPERF_59  DP=0.00
+DIM D510= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_59  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        47.33      46.86      -0.47       0.70       0.70 -#-------
-DIM D511= LOCALIZAÇÃO DE PONTO PTO_SUPERF_60  DP=0.00
+DIM D511= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_60  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        45.80      45.26      -0.54       0.70       0.70 -#-------
-DIM D512= LOCALIZAÇÃO DE PONTO PTO_SUPERF_161  DP=0.00
+DIM D512= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_161  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        52.68      52.15      -0.53       0.70       0.70 -#-------
-DIM D513= LOCALIZAÇÃO DE PONTO PTO_SUPERF_53  DP=0.00
+DIM D513= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_53  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       113.49     113.63       0.14       0.70       0.70 -----#---
-DIM D516= LOCALIZAÇÃO DE PONTO PTO_SUPERF_61  DP=0.00
+DIM D516= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_61  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        42.75      42.43      -0.31       0.70       0.70 --#------
-DIM D514= LOCALIZAÇÃO DE PONTO PTO_SUPERF_151  DP=0.00
+DIM D514= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_151  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        43.44      43.45       0.02       0.70       0.70 ----#----
-DIM D515= LOCALIZAÇÃO DE PONTO PTO_SUPERF_152  DP=0.00
+DIM D515= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_152  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        61.83      61.33      -0.51       0.70       0.70 -#-------
-DIM D517= LOCALIZAÇÃO DE PONTO PTO_SUPERF_153  DP=0.00
+DIM D517= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_153  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        67.73      66.97      -0.76       0.70       0.70 <--------
-DIM D518= LOCALIZAÇÃO DE PONTO PTO_SUPERF_158  DP=0.00
+DIM D518= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_158  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        65.24      65.16      -0.08       0.70       0.70 ---#-----
-DIM D519= LOCALIZAÇÃO DE PONTO PTO_SUPERF_160  DP=0.00
+DIM D519= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_160  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        61.86      61.63      -0.23       0.70       0.70 ---#-----
-DIM D520= LOCALIZAÇÃO DE PONTO PTO_SUPERF_63  DP=0.00
+DIM D520= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_63  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -40.73     -40.79      -0.06       0.70       0.70 ----#----
-DIM D521= LOCALIZAÇÃO DE PONTO PTO_SUPERF_65  DP=0.00
+DIM D521= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_65  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -41.79     -41.90      -0.11       0.70       0.70 ---#-----
-DIM D522= LOCALIZAÇÃO DE PONTO PTO_SUPERF_66  DP=0.00
+DIM D522= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_66  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -45.50     -45.55      -0.05       0.70       0.70 ----#----
-DIM D523= LOCALIZAÇÃO DE PONTO PTO_SUPERF_64  DP=0.00
+DIM D523= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_64  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -45.82     -45.49       0.33       0.70       0.70 ------#--
-DIM D524= LOCALIZAÇÃO DE PONTO PTO_SUPERF_67  DP=0.00
+DIM D524= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_67  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -41.63     -41.85      -0.22       0.70       0.70 ---#-----
-DIM D525= LOCALIZAÇÃO DE PONTO PTO_SUPERF_68  DP=0.00
+DIM D525= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_68  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -46.16     -46.62      -0.46       0.70       0.70 -#-------
-DIM D526= LOCALIZAÇÃO DE PONTO PTO_SUPERF_90  DP=0.00
+DIM D526= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_90  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -41.15     -41.40      -0.25       0.70       0.70 --#------
-DIM D527= LOCALIZAÇÃO DE PONTO PTO_SUPERF_91  DP=0.00
+DIM D527= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_91  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -50.17     -50.12       0.05       0.70       0.70 ----#----
-DIM D528= LOCALIZAÇÃO DE PONTO PTO_SUPERF_92  DP=0.00
+DIM D528= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_92  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -40.49     -41.06      -0.57       0.70       0.70 #--------
-DIM D529= LOCALIZAÇÃO DE PONTO PTO_SUPERF_93  DP=0.00
+DIM D529= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_93  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -43.50     -43.83      -0.33       0.70       0.70 --#------
-DIM D530= LOCALIZAÇÃO DE PONTO PTO_SUPERF_94  DP=0.00
+DIM D530= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_94  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -40.75     -41.15      -0.40       0.70       0.70 -#-------
-DIM D531= LOCALIZAÇÃO DE PONTO PTO_SUPERF_95  DP=0.00
+DIM D531= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_95  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -43.74     -44.14      -0.40       0.70       0.70 -#-------
-DIM D532= LOCALIZAÇÃO DE PONTO PTO_SUPERF_96  DP=0.00
+DIM D532= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_96  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -40.76     -41.02      -0.26       0.70       0.70 --#------
-DIM D533= LOCALIZAÇÃO DE PONTO PTO_SUPERF_97  DP=0.00
+DIM D533= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_97  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -44.00     -44.25      -0.25       0.70       0.70 --#------
-DIM D534= LOCALIZAÇÃO DE PONTO PTO_SUPERF_69  DP=0.00
+DIM D534= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_69  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -37.52     -38.03      -0.51       0.70       0.70 -#-------
-DIM D535= LOCALIZAÇÃO DE PONTO PTO_SUPERF_70  DP=0.00
+DIM D535= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_70  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -41.25     -41.45      -0.20       0.70       0.70 ---#-----
-DIM D536= LOCALIZAÇÃO DE PONTO PTO_SUPERF_102  DP=0.00
+DIM D536= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_102  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -40.75     -40.95      -0.20       0.70       0.70 ---#-----
-DIM D537= LOCALIZAÇÃO DE PONTO PTO_SUPERF_103  DP=0.00
+DIM D537= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_103  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -43.48     -43.57      -0.09       0.70       0.70 ---#-----
-DIM D538= LOCALIZAÇÃO DE PONTO PTO_SUPERF_169  DP=0.00
+DIM D538= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_169  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -50.65     -51.11      -0.47       0.70       0.70 -#-------
-DIM D539= LOCALIZAÇÃO DE PONTO PTO_SUPERF_170  DP=0.00
+DIM D539= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_170  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -48.01     -48.66      -0.65       0.70       0.70 #--------
-DIM D540= LOCALIZAÇÃO DE PONTO PTO_SUPERF_107  DP=0.00
+DIM D540= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_107  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -40.20     -40.07       0.12       0.70       0.70 -----#---
-DIM D541= LOCALIZAÇÃO DE PONTO PTO_SUPERF_106  DP=0.00
+DIM D541= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_106  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -46.06     -46.23      -0.17       0.70       0.70 ---#-----
-DIM D542= LOCALIZAÇÃO DE PONTO PTO_SUPERF_104  DP=0.00
+DIM D542= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_104  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -42.47     -42.26       0.21       0.70       0.70 -----#---
-DIM D543= LOCALIZAÇÃO DE PONTO PTO_SUPERF_105  DP=0.00
+DIM D543= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_105  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -42.60     -42.24       0.37       0.70       0.70 ------#--
-DIM D544= LOCALIZAÇÃO DE PONTO PTO_SUPERF_98  DP=0.00
+DIM D544= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_98  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -40.26     -40.38      -0.12       0.70       0.70 ---#-----
-DIM D545= LOCALIZAÇÃO DE PONTO PTO_SUPERF_99  DP=0.00
+DIM D545= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_99  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -43.20     -43.10       0.10       0.70       0.70 -----#---
-DIM D546= LOCALIZAÇÃO DE PONTO PTO_SUPERF_100  DP=0.00
+DIM D546= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_100  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -40.26     -40.35      -0.09       0.70       0.70 ---#-----
-DIM D547= LOCALIZAÇÃO DE PONTO PTO_SUPERF_101  DP=0.00
+DIM D547= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_101  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -43.04     -43.11      -0.07       0.70       0.70 ----#----
-DIM D548= LOCALIZAÇÃO DE PONTO PTO_SUPERF_167  DP=0.00
+DIM D548= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_167  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -49.30     -49.52      -0.22       0.70       0.70 ---#-----
-DIM D549= LOCALIZAÇÃO DE PONTO PTO_SUPERF_168  DP=0.00
+DIM D549= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_168  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -50.62     -50.91      -0.29       0.70       0.70 --#------
-DIM D550= LOCALIZAÇÃO DE PONTO PTO_SUPERF_166  DP=0.00
+DIM D550= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_166  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -48.24     -48.83      -0.59       0.70       0.70 #--------
-DIM D551= LOCALIZAÇÃO DE PONTO PTO_SUPERF_165  DP=0.00
+DIM D551= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_165  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -48.77     -48.53       0.25       0.70       0.70 ------#--
-DIM D552= LOCALIZAÇÃO DE PONTO PTO_SUPERF_28  DP=0.00
+DIM D552= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_28  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -46.91     -47.78      -0.87       0.70       0.70 <--------
-DIM D553= LOCALIZAÇÃO DE PONTO PTO_SUPERF_88  DP=0.00
+DIM D553= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_88  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -42.32     -42.23       0.09       0.70       0.70 -----#---
-DIM D554= LOCALIZAÇÃO DE PONTO PTO_SUPERF_89  DP=0.00
+DIM D554= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_89  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -50.38     -50.08       0.29       0.70       0.70 ------#--
-DIM D555= LOCALIZAÇÃO DE PONTO PTO_SUPERF_171  DP=0.00
+DIM D555= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_171  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -51.44     -51.37       0.07       0.70       0.70 ----#----
-DIM D556= LOCALIZAÇÃO DE PONTO PTO_SUPERF_172  DP=0.00
+DIM D556= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_172  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -52.68     -52.59       0.09       0.70       0.70 -----#---
-DIM D557= LOCALIZAÇÃO DE PONTO PTO_SUPERF_173  DP=0.00
+DIM D557= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_173  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -53.43     -52.93       0.50       0.70       0.70 -------#-
-DIM D558= LOCALIZAÇÃO DE PONTO PTO_SUPERF_174  DP=0.00
+DIM D558= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_174  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -31.08     -31.31      -0.23       0.70       0.70 ---#-----
-DIM D559= LOCALIZAÇÃO DE PONTO PTO_SUPERF_175  DP=0.00
+DIM D559= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_175  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -15.25     -15.42      -0.17       0.70       0.70 ---#-----
-DIM D560= LOCALIZAÇÃO DE PONTO PTO_SUPERF_29  DP=0.00
+DIM D560= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_29  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       -46.91     -46.67       0.24       0.70       0.70 ------#--
-DIM D562= LOCALIZAÇÃO DE PONTO PTO_SUPERF_32  DP=0.00
+DIM D562= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_32  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       144.16     144.74       0.58       0.70       0.70 --------#
-DIM D563= LOCALIZAÇÃO DE PONTO PTO_SUPERF_33  DP=0.00
+DIM D563= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_33  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       143.98     144.40       0.42       0.70       0.70 -------#-
-DIM D564= LOCALIZAÇÃO DE PONTO PTO_SUPERF_34  DP=0.00
+DIM D564= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_34  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       134.26     134.30       0.03       0.70       0.70 ----#----
-DIM D565= LOCALIZAÇÃO DE PONTO PTO_SUPERF_35  DP=0.00
+DIM D565= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_35  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       133.83     134.06       0.23       0.70       0.70 -----#---
-DIM D566= LOCALIZAÇÃO DE PONTO PTO_SUPERF_162  DP=0.00
+DIM D566= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_162  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        46.80      47.20       0.40       0.70       0.70 -------#-
-DIM D567= LOCALIZAÇÃO DE PONTO PTO_SUPERF_52  DP=0.00
+DIM D567= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_52  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z       118.42     118.88       0.46       0.70       0.70 -------#-
-DIM D570= LOCALIZAÇÃO DE PONTO PTO_SUPERF_72  DP=0.00
+DIM D570= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_72  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        56.03      54.36      -1.67       0.70       0.70 <--------
-DIM D568= LOCALIZAÇÃO DE PONTO PTO_SUPERF_23  DP=0.00
+DIM D568= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_23  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        45.70      45.12      -0.57       0.70       0.70 #--------
-DIM D569= LOCALIZAÇÃO DE PONTO PTO_SUPERF_75  DP=0.00
+DIM D569= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_75  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        42.79      42.50      -0.29       0.70       0.70 --#------
-DIM D571= LOCALIZAÇÃO DE PONTO PTO_SUPERF_76  DP=0.00
+DIM D571= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_76  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        42.26      42.11      -0.15       0.70       0.70 ---#-----
-DIM D572= LOCALIZAÇÃO DE PONTO PTO_SUPERF_20  DP=0.00
+DIM D572= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_20  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 Z        60.68      60.41      -0.27       0.70       0.70 --#------
-DIM D573= LOCALIZAÇÃO DE PONTO PTO_SUPERF_163  DP=0.00
+DIM D573= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_163  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      2300.97    2301.02       0.04       0.70       0.70 ----#----
-DIM D574= LOCALIZAÇÃO DE PONTO PTO_SUPERF_164  DP=0.00
+DIM D574= LOCALIZAï¿½ï¿½O DE PONTO PTO_SUPERF_164  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      2297.53    2297.67       0.14       0.70       0.70 -----#---
-DIM D5= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_35  DP=0.00
+DIM D5= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_35  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1275.20    1272.45      -2.75       1.50       1.50 <--------
 Y      -653.10    -654.54      -1.44       1.50       1.50 #--------
 Z        42.89      43.08       0.19       1.50       1.50 -----#---
-DIM D586= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_33  DP=0.00
+DIM D586= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_33  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1522.73    1522.07      -0.66       1.50       1.50 --#------
 Y      -664.93    -665.75      -0.82       1.50       1.50 --#------
 Z        47.55      46.56      -0.99       1.50       1.50 -#-------
-DIM D587= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_32  DP=0.00
+DIM D587= LOCALIZAï¿½ï¿½O DE Cï¿½RCULO Cï¿½RCULO_32  DP=0.00
 AX    NOMINAL        MED       DESV       TOL+       TOL-
 X      1328.66    1326.01      -2.65       1.50       1.50 <--------
 Y      -673.25    -673.70      -0.45       1.50       1.50 ---#-----

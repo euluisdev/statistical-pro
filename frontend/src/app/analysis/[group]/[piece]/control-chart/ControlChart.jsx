@@ -31,16 +31,16 @@ function SingleChart({ chartData }) {
   const { point, axis, stats, measurements } = chartData;
 
   const W = 820, H = 185;
-  const PAD = { top: 18, right: 10, bottom: 52, left: 46 };
+  const PAD = { top: 18, right: 10, bottom: 60, left: 46 }; // bottom maior para 2 linhas de label
   const innerW = W - PAD.left - PAD.right;
   const innerH = H - PAD.top - PAD.bottom;
 
   const deviations = measurements.map((m) => m.deviation ?? 0);
-  const usl    = stats.usl    ?? 1;
-  const lsl    = stats.lsl    ?? -1;
-  const ucl    = stats.ucl    ?? 0;
-  const lcl    = stats.lcl    ?? 0;
-  const avg    = stats.mean   ?? 0;
+  const usl = stats.usl ?? 1;
+  const lsl = stats.lsl ?? -1;
+  const ucl = stats.ucl ?? 0;
+  const lcl = stats.lcl ?? 0;
+  const avg = stats.mean ?? 0;
 
   const allY = [...deviations, usl, lsl, ucl, lcl, avg];
   const yMin = Math.min(...allY) - 0.12;
@@ -62,18 +62,16 @@ function SingleChart({ chartData }) {
     />
   );
 
-  // Y-axis ticks automáticos
   const step = parseFloat(((yMax - yMin) / 6).toFixed(2));
   const yTicks = [];
   for (let i = 0; i <= 6; i++) {
     yTicks.push(parseFloat((yMin + i * step).toFixed(2)));
   }
 
-  // X labels (a cada N pontos para não sobrepor)
-  const step_x = Math.max(1, Math.floor(deviations.length / 12));
+  // Mostra todos os labels pois cada ponto = 1 controle = 1 arquivo
+  // Mas se forem muitos, espaça para não sobrepor
+  const step_x = Math.max(1, Math.floor(deviations.length / 14));
 
-  const cpkNum  = parseFloat(stats.cpk  ?? 0);
-  const cpNum   = parseFloat(stats.cp   ?? 0);
   const cpColor  = stats.cp_color  === "green" ? styles.green : styles.red;
   const cpkColor = stats.cpk_color === "green" ? styles.green : styles.red;
 
@@ -95,7 +93,7 @@ function SingleChart({ chartData }) {
           {/* Linha de dados */}
           <path d={linePath} fill="none" stroke="#111" strokeWidth="1.8" />
 
-          {/* Pontos */}
+          {/* Pontos de controle */}
           {deviations.map((v, i) => {
             const outSpec = v > usl || v < lsl;
             return (
@@ -111,7 +109,7 @@ function SingleChart({ chartData }) {
             );
           })}
 
-          {/* Y-axis */}
+          {/* Y-axis ticks */}
           {yTicks.map((t) => (
             <g key={t}>
               <line x1={PAD.left - 4} y1={yScale(t)} x2={PAD.left} y2={yScale(t)} stroke="#666" />
@@ -121,18 +119,36 @@ function SingleChart({ chartData }) {
             </g>
           ))}
 
-          {/* X-axis labels */}
+          {/*
+            X-axis labels: cada ponto tem Data e Hora vindas do arquivo CSV.
+            O backend envia datetime como "DD/MM/YYYY\nHH:MM:SS".
+            Renderizamos em duas linhas separadas abaixo de cada ponto.
+          */}
           {measurements.map((m, i) => {
             if (i % step_x !== 0) return null;
+            const cx = xScale(i);
+            const baseY = PAD.top + innerH; // topo do espaço de label
+            // Separa data e hora pelo "\n" que o backend envia
+            const [datePart, timePart] = m.datetime.split("\n");
             return (
-              <text
-                key={i}
-                x={xScale(i)} y={H - 4}
-                textAnchor="end" fontSize="7.5" fill="#333"
-                transform={`rotate(-65, ${xScale(i)}, ${H - 4})`}
-              >
-                {m.datetime}
-              </text>
+              <g key={i}>
+                {/* Data — primeira linha */}
+                <text
+                  x={cx} y={baseY + 10}
+                  textAnchor="middle" fontSize="7" fill="#333"
+                >
+                  {datePart}
+                </text>
+                {/* Hora — segunda linha */}
+                {timePart && (
+                  <text
+                    x={cx} y={baseY + 20}
+                    textAnchor="middle" fontSize="7" fill="#555"
+                  >
+                    {timePart}
+                  </text>
+                )}
+              </g>
             );
           })}
 
@@ -150,7 +166,12 @@ function SingleChart({ chartData }) {
         <div className={styles.statsHeader}>
           <strong>{point} {axis}</strong>
           <div>SPECIFIED: {fmt(stats.nominal)}</div>
-          <div>- {stats.n ?? "?"} Controle(s) -</div>
+          {/*
+            CORREÇÃO: stats.n agora vem do backend como a contagem real
+            de arquivos CSV que têm dados deste ponto+eixo.
+            Cada arquivo = 1 controle = 1 ponto no gráfico.
+          */}
+          <div>- {stats.n ?? measurements.length} Controle(s) -</div>
           <div>Tamanho Amostral: {measurements.length}</div>
         </div>
 
@@ -238,7 +259,7 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
   const [error, setError]     = useState(null);
   const [selected, setSelected] = useState({});
 
-  useEffect(() => {console.log(`${API}/pieces/${group}/${piece}/charts`);
+  useEffect(() => {
     setLoading(true);
     fetch(`${API}/pieces/${group}/${piece}/points`)
       .then((r) => {
@@ -281,7 +302,6 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
         </div>
 
         <div className={styles.modalBody}>
-          {/* Coluna esquerda – pontos da API */}
           <div className={styles.modalCol}>
             <div className={styles.modalColTitle}>Pontos de Medição</div>
             {loading && <div className={styles.loadingMsg}>Carregando pontos…</div>}
@@ -323,7 +343,6 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
             )}
           </div>
 
-          {/* Coluna direita – seleção atual */}
           <div className={styles.modalCol}>
             <div className={styles.modalColTitle}>Seleção Atual</div>
             <div className={styles.selectionSummary}>
@@ -393,15 +412,10 @@ function LoadingCharts() {
 export default function ControlChart({ params }) {
   const { group, piece } = params;
   const router = useRouter();
-
-  console.log("PARAMS:", params);
-console.log("group:", group);
-console.log("piece:", piece);
-
-  const [modalOpen,    setModalOpen]    = useState(false);
-  const [chartsData,   setChartsData]   = useState(null);   // null = placeholder
+  const [modalOpen,     setModalOpen]     = useState(false);
+  const [chartsData,    setChartsData]    = useState(null);
   const [loadingCharts, setLoadingCharts] = useState(false);
-  const [chartError,   setChartError]   = useState(null);
+  const [chartError,    setChartError]    = useState(null);
 
   const handleGenerate = useCallback(async (selections) => {
     setLoadingCharts(true);
@@ -430,7 +444,6 @@ console.log("piece:", piece);
   return (
     <div className={styles.pageBackground}>
       <div className={styles.container}>
-        {/* Toolbar */}
         <div className={styles.toolbar}>
           <button className={styles.backBtn} onClick={() => router.push("/")}>
             ← Voltar
@@ -440,7 +453,6 @@ console.log("piece:", piece);
           </button>
         </div>
 
-        {/* Conteúdo principal */}
         {loadingCharts ? (
           <LoadingCharts />
         ) : chartError ? (
@@ -474,7 +486,6 @@ console.log("piece:", piece);
         )}
       </div>
 
-      {/* Modal */}
       {modalOpen && (
         <ConfigModal
           group={group}
