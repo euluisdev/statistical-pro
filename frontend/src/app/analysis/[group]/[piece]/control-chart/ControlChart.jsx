@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./controlchart.module.css";
+import { useSaveControlChartToJob } from "@/app/hooks/useSaveControlChartToJob";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-//mini sparkline SVG 
+// ── Mini sparkline SVG ────────────────────────────────────────────────────────
 function Sparkline({ values }) {
   if (!values?.length) return null;
   const w = 120, h = 46;
@@ -26,20 +27,30 @@ function Sparkline({ values }) {
   );
 }
 
-//Single Control Chart
-function SingleChart({ chartData }) {
+// ── Single Control Chart ──────────────────────────────────────────────────────
+// Recebe onRef para registrar o elemento no hook de captura.
+function SingleChart({ chartData, onRef }) {
   const { point, axis, stats, measurements } = chartData;
+  const rowRef = useRef(null);
+
+  // Registra/desregistra a ref no hook pai
+  useEffect(() => {
+    if (onRef) onRef(point, axis, rowRef.current);
+    return () => {
+      if (onRef) onRef(point, axis, null);
+    };
+  }, [point, axis, onRef]);
 
   const W = 820, H = 185;
-  const PAD = { top: 18, right: 10, bottom: 60, left: 46 }; // bottom maior para 2 linhas de label
+  const PAD = { top: 18, right: 10, bottom: 60, left: 46 };
   const innerW = W - PAD.left - PAD.right;
   const innerH = H - PAD.top - PAD.bottom;
 
   const deviations = measurements.map((m) => m.deviation ?? 0);
-  const usl = stats.usl ?? 1;
-  const lsl = stats.lsl ?? -1;
-  const ucl = stats.ucl ?? 0;
-  const lcl = stats.lcl ?? 0;
+  const usl = stats.usl  ?? 1;
+  const lsl = stats.lsl  ?? -1;
+  const ucl = stats.ucl  ?? 0;
+  const lcl = stats.lcl  ?? 0;
   const avg = stats.mean ?? 0;
 
   const allY = [...deviations, usl, lsl, ucl, lcl, avg];
@@ -55,21 +66,17 @@ function SingleChart({ chartData }) {
 
   const hLine = (val, color, dash = "") => (
     <line
-      x1={PAD.left} y1={yScale(val).toFixed(1)}
-      x2={W - PAD.right} y2={yScale(val).toFixed(1)}
-      stroke={color} strokeWidth="1.5"
-      strokeDasharray={dash}
+      x1={PAD.left}       y1={yScale(val).toFixed(1)}
+      x2={W - PAD.right}  y2={yScale(val).toFixed(1)}
+      stroke={color} strokeWidth="1.5" strokeDasharray={dash}
     />
   );
 
   const step = parseFloat(((yMax - yMin) / 6).toFixed(2));
-  const yTicks = [];
-  for (let i = 0; i <= 6; i++) {
-    yTicks.push(parseFloat((yMin + i * step).toFixed(2)));
-  }
+  const yTicks = Array.from({ length: 7 }, (_, i) =>
+    parseFloat((yMin + i * step).toFixed(2))
+  );
 
-  // Mostra todos os labels pois cada ponto = 1 controle = 1 arquivo
-  // Mas se forem muitos, espaça para não sobrepor
   const step_x = Math.max(1, Math.floor(deviations.length / 14));
 
   const cpColor  = stats.cp_color  === "green" ? styles.green : styles.red;
@@ -79,72 +86,52 @@ function SingleChart({ chartData }) {
     v == null ? "—" : parseFloat(v).toFixed(2).replace(".", ",");
 
   return (
-    <div className={styles.chartRow}>
+    <div className={styles.chartRow} ref={rowRef}>
       <div className={styles.svgWrapper}>
         <svg width={W} height={H}>
-          {/* Linhas horizontais */}
-          {hLine(avg,  "#00aa00")}
-          {hLine(usl,  "#cc2222", "4,3")}
-          {hLine(lsl,  "#cc2222", "4,3")}
+          {hLine(avg,  "green")}
+          {hLine(usl,  "red", "4,3")}
+          {hLine(lsl,  "red", "4,3")}
           {hLine(ucl,  "#4466cc", "6,3")}
           {hLine(lcl,  "#4466cc", "6,3")}
           {hLine(0,    "#aaaaaa", "2,2")}
 
-          {/* Linha de dados */}
           <path d={linePath} fill="none" stroke="#111" strokeWidth="1.8" />
 
-          {/* Pontos de controle */}
           {deviations.map((v, i) => {
             const outSpec = v > usl || v < lsl;
             return (
               <circle
                 key={i}
-                cx={xScale(i).toFixed(1)}
-                cy={yScale(v).toFixed(1)}
+                cx={xScale(i).toFixed(1)} cy={yScale(v).toFixed(1)}
                 r="4"
                 fill={outSpec ? "#cc2222" : "black"}
-                stroke="white"
-                strokeWidth="1"
+                stroke="white" strokeWidth="1"
               />
             );
           })}
 
-          {/* Y-axis ticks */}
           {yTicks.map((t) => (
             <g key={t}>
               <line x1={PAD.left - 4} y1={yScale(t)} x2={PAD.left} y2={yScale(t)} stroke="#666" />
-              <text x={PAD.left - 6} y={yScale(t) + 4} textAnchor="end" fontSize="9" fill="#333">
+              <text x={PAD.left - 6} y={yScale(t) + 4} textAnchor="end" fontSize="9" fill="black">
                 {t.toFixed(2).replace(".", ",")}
               </text>
             </g>
           ))}
 
-          {/*
-            X-axis labels: cada ponto tem Data e Hora vindas do arquivo CSV.
-            O backend envia datetime como "DD/MM/YYYY\nHH:MM:SS".
-            Renderizamos em duas linhas separadas abaixo de cada ponto.
-          */}
           {measurements.map((m, i) => {
             if (i % step_x !== 0) return null;
             const cx = xScale(i);
-            const baseY = PAD.top + innerH; // topo do espaço de label
-            // Separa data e hora pelo "\n" que o backend envia
+            const baseY = PAD.top + innerH;
             const [datePart, timePart] = m.datetime.split("\n");
             return (
               <g key={i}>
-                {/* Data — primeira linha */}
-                <text
-                  x={cx} y={baseY + 10}
-                  textAnchor="middle" fontSize="7" fill="#333"
-                >
+                <text x={cx} y={baseY + 10} textAnchor="middle" fontSize="7" fill="black">
                   {datePart}
                 </text>
-                {/* Hora — segunda linha */}
                 {timePart && (
-                  <text
-                    x={cx} y={baseY + 20}
-                    textAnchor="middle" fontSize="7" fill="#555"
-                  >
+                  <text x={cx} y={baseY + 20} textAnchor="middle" fontSize="7" fill="black">
                     {timePart}
                   </text>
                 )}
@@ -152,25 +139,17 @@ function SingleChart({ chartData }) {
             );
           })}
 
-          {/* Border */}
           <rect
-            x={PAD.left} y={PAD.top}
-            width={innerW} height={innerH}
+            x={PAD.left} y={PAD.top} width={innerW} height={innerH}
             fill="none" stroke="#bbb" strokeWidth="0.5"
           />
         </svg>
       </div>
 
-      {/* Painel de stats */}
       <div className={styles.statsPanel}>
         <div className={styles.statsHeader}>
           <strong>{point} {axis}</strong>
           <div>SPECIFIED: {fmt(stats.nominal)}</div>
-          {/*
-            CORREÇÃO: stats.n agora vem do backend como a contagem real
-            de arquivos CSV que têm dados deste ponto+eixo.
-            Cada arquivo = 1 controle = 1 ponto no gráfico.
-          */}
           <div>- {stats.n ?? measurements.length} Controle(s) -</div>
           <div>Tamanho Amostral: {measurements.length}</div>
         </div>
@@ -186,7 +165,6 @@ function SingleChart({ chartData }) {
             <span className={styles.statLabel}>CPK</span>
             <span className={`${styles.statVal} ${cpkColor}`}>{fmt(stats.cpk)}</span>
           </div>
-
           <div className={styles.statCell}>
             <span className={styles.statLabel}>
               AVERAGE <span className={styles.tiny}>D</span>
@@ -197,7 +175,6 @@ function SingleChart({ chartData }) {
             <span className={styles.statLabel}>RANGE</span>
             <span className={styles.statVal}>{fmt(stats.range)}</span>
           </div>
-
           <div className={styles.statCell}>
             <span className={styles.statLabel}>LIE</span>
             <span className={`${styles.statVal} ${styles.redText}`}>{fmt(stats.lsl)}</span>
@@ -206,7 +183,6 @@ function SingleChart({ chartData }) {
             <span className={styles.statLabel}>LSE</span>
             <span className={`${styles.statVal} ${styles.redText}`}>{fmt(stats.usl)}</span>
           </div>
-
           <div className={styles.statCell}>
             <span className={styles.statLabel}>LIC</span>
             <span className={`${styles.statVal} ${styles.blueText}`}>{fmt(stats.lcl)}</span>
@@ -224,10 +200,10 @@ function SingleChart({ chartData }) {
 //legend
 function Legend() {
   const items = [
-    { label: "CONTROL POINTS", color: "#111", dot: true },
-    { label: "AVERAGE",        color: "#00aa00" },
-    { label: "LIE / LSE",      color: "#cc2222", dash: "4,3" },
-    { label: "LIC / LSC",      color: "#4466cc", dash: "6,3" },
+    { label: "CONTROL POINTS", color: "#111",    dot: true },
+    { label: "AVERAGE",        color: "green" },
+    { label: "LIE / LSE",      color: "red", dash: "4,3" },
+    { label: "LIC / LSC",      color: "blue", dash: "6,3" },
     { label: "Desvio D",       color: "#00aa00", textOnly: true },
     { label: "Medido M",       color: "#228822", textOnly: true },
   ];
@@ -235,39 +211,34 @@ function Legend() {
     <div className={styles.legend}>
       {items.map((it) => (
         <div key={it.label} className={styles.legendItem}>
-          {it.textOnly ? null : (
+          {!it.textOnly && (
             <svg width="30" height="12">
-              <line
-                x1="0" y1="6" x2="30" y2="6"
+              <line x1="0" y1="6" x2="30" y2="6"
                 stroke={it.color} strokeWidth="1.5"
-                strokeDasharray={it.dash ?? ""}
-              />
+                strokeDasharray={it.dash ?? ""} />
               {it.dot && <circle cx="15" cy="6" r="4" fill={it.color} />}
             </svg>
           )}
-          <span style={{ color: it.textOnly ? it.color : "#333" }}>{it.label}</span>
+          <span style={{ color: it.textOnly ? it.color : "black" }}>{it.label}</span>
         </div>
       ))}
     </div>
   );
 }
 
-//modal
+//modal de configuração
 function ConfigModal({ group, piece, onClose, onGenerate }) {
-  const [points, setPoints]   = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [points,   setPoints]   = useState([]);
+  const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [selected, setSelected] = useState({});
 
   useEffect(() => {
     setLoading(true);
     fetch(`${API}/pieces/${group}/${piece}/points`)
-      .then((r) => {
-        if (!r.ok) throw new Error(`Erro ${r.status}`);
-        return r.json();
-      })
-      .then((data) => { setPoints(data.points); setLoading(false); })
-      .catch((e)   => { setError(e.message);   setLoading(false); });
+      .then((r) => { if (!r.ok) throw new Error(`Erro ${r.status}`); return r.json(); })
+      .then((d) => { setPoints(d.points); setLoading(false); })
+      .catch((e) => { setError(e.message); setLoading(false); });
   }, [group, piece]);
 
   const togglePoint = (id) =>
@@ -311,10 +282,8 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
                 {points.map((pt) => {
                   const isOpen = !!selected[pt.id];
                   return (
-                    <div
-                      key={pt.id}
-                      className={`${styles.pointItem} ${isOpen ? styles.pointSelected : ""}`}
-                    >
+                    <div key={pt.id}
+                      className={`${styles.pointItem} ${isOpen ? styles.pointSelected : ""}`}>
                       <div className={styles.pointHeader} onClick={() => togglePoint(pt.id)}>
                         <span className={styles.pointCheck}>{isOpen ? "▼" : "▶"}</span>
                         <span className={styles.pointLabel}>{pt.label}</span>
@@ -325,11 +294,9 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
                           {pt.axes.map((ax) => {
                             const active = selected[pt.id]?.axes.includes(ax);
                             return (
-                              <button
-                                key={ax}
+                              <button key={ax}
                                 className={`${styles.axisBtn} ${active ? styles.axisBtnActive : ""}`}
-                                onClick={() => toggleAxis(pt.id, ax)}
-                              >
+                                onClick={() => toggleAxis(pt.id, ax)}>
                                 {ax}
                               </button>
                             );
@@ -346,18 +313,14 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
           <div className={styles.modalCol}>
             <div className={styles.modalColTitle}>Seleção Atual</div>
             <div className={styles.selectionSummary}>
-              {!hasSelection && (
-                <div className={styles.emptyMsg}>Nenhum eixo selecionado ainda</div>
-              )}
+              {!hasSelection && <div className={styles.emptyMsg}>Nenhum eixo selecionado ainda</div>}
               {Object.entries(selected)
                 .filter(([, v]) => v?.axes?.length > 0)
                 .map(([id, v]) => (
                   <div key={id} className={styles.summaryRow}>
                     <span className={styles.summaryPoint}>{id}</span>
                     <span className={styles.summaryAxes}>
-                      {v.axes.map((a) => (
-                        <span key={a} className={styles.axisTag}>{a}</span>
-                      ))}
+                      {v.axes.map((a) => <span key={a} className={styles.axisTag}>{a}</span>)}
                     </span>
                   </div>
                 ))}
@@ -366,17 +329,15 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
         </div>
 
         <div className={styles.modalFooter}>
-          <button className={styles.cancelBtn} onClick={onClose}>Cancelar</button>
-          <button className={styles.generateBtn} onClick={handleGenerate}>
-            Gerar Gráfico
-          </button>
+          <button className={styles.cancelBtn}   onClick={onClose}>Cancelar</button>
+          <button className={styles.generateBtn} onClick={handleGenerate}>Gerar Gráfico</button>
         </div>
       </div>
     </div>
   );
 }
 
-//Placeholder estático
+//placeholder estático
 function StaticPlaceholder({ group, piece }) {
   return (
     <>
@@ -398,7 +359,6 @@ function StaticPlaceholder({ group, piece }) {
   );
 }
 
-//Loading state
 function LoadingCharts() {
   return (
     <div className={styles.loadingCharts}>
@@ -408,29 +368,30 @@ function LoadingCharts() {
   );
 }
 
-//Main Page
+//main Page
 export default function ControlChart({ params }) {
   const { group, piece } = params;
   const router = useRouter();
+
   const [modalOpen,     setModalOpen]     = useState(false);
   const [chartsData,    setChartsData]    = useState(null);
   const [loadingCharts, setLoadingCharts] = useState(false);
   const [chartError,    setChartError]    = useState(null);
 
+  //hook print
+  const { saveLoading, registerChartRef, triggerSave, currentJobId } =
+    useSaveControlChartToJob();
+
   const handleGenerate = useCallback(async (selections) => {
     setLoadingCharts(true);
     setChartsData(null);
     setChartError(null);
-
     try {
-      const res = await fetch(
-        `${API}/pieces/${group}/${piece}/charts`,
-        {
-          method:  "POST",
-          headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({ selections }),
-        }
-      );
+      const res = await fetch(`${API}/pieces/${group}/${piece}/charts`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ selections }),
+      });
       if (!res.ok) throw new Error(`Erro ${res.status}`);
       const data = await res.json();
       setChartsData(data.charts);
@@ -441,18 +402,47 @@ export default function ControlChart({ params }) {
     }
   }, [group, piece]);
 
+  //agrupa os charts por ponto para saber quantos pontos únicos existem
+  const uniquePoints = chartsData
+    ? [...new Set(chartsData.filter((c) => !c.error).map((c) => c.point))]
+    : [];
+
   return (
     <div className={styles.pageBackground}>
       <div className={styles.container}>
+
+        {/*toolbar */}
         <div className={styles.toolbar}>
           <button className={styles.backBtn} onClick={() => router.push("/")}>
             ← Voltar
           </button>
-          <button className={styles.openBtn} onClick={() => setModalOpen(true)}>
-            ⚙ Configurar
-          </button>
+
+          <div className={styles.toolbarRight}>
+            {/* Botão de captura — só aparece quando há gráficos */}
+            {chartsData && uniquePoints.length > 0 && (
+              <button
+                className={styles.captureBtn}
+                onClick={() => triggerSave(group, piece)}
+                disabled={saveLoading}
+                title={
+                  currentJobId
+                    ? `Salvar ${uniquePoints.length} PNG(s) no Job ${currentJobId}`
+                    : "Nenhum Job ativo"
+                }
+              >
+                {saveLoading
+                  ? "⏳ Salvando…"
+                  : `📷 Capturar (${uniquePoints.length} PNG${uniquePoints.length > 1 ? "s" : ""})`}
+              </button>
+            )}
+
+            <button className={styles.openBtn} onClick={() => setModalOpen(true)}>
+              ⚙ Configurar
+            </button>
+          </div>
         </div>
 
+        {/*conteúdo principal */}
         {loadingCharts ? (
           <LoadingCharts />
         ) : chartError ? (
@@ -478,7 +468,12 @@ export default function ControlChart({ params }) {
                     {cd.point} {cd.axis}: {cd.error}
                   </div>
                 ) : (
-                  <SingleChart key={i} chartData={cd} />
+                  <SingleChart
+                    key={i}
+                    chartData={cd}
+                    //passa registerChartRef para cada gráfico se registrar pelo ponto+eixo
+                    onRef={registerChartRef}
+                  />
                 )
               )}
             </div>
@@ -496,4 +491,6 @@ export default function ControlChart({ params }) {
       )}
     </div>
   );
-}
+}  
+ 
+ 

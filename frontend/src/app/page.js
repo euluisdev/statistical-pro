@@ -199,7 +199,18 @@ export default function GroupsPage() {
           >
             <FileChartLine />
           </button>
-          <button className="btnRest"><ChartNoAxesCombined /></button>
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/control-chart`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="CONTROL CHART"
+          >
+            <ChartNoAxesCombined />
+          </button>
           <button className="btnRest"><TrendingUpDown /></button>
           <button className="btnRest"><ChartLine /></button>
 

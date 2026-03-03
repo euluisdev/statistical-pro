@@ -16,7 +16,7 @@
   position: relative;
 }
 
-/* ── Toolbar ────────────────────────────────────────── */
+/*toolbar */
 .toolbar {
   display: flex;
   justify-content: space-between;
@@ -31,7 +31,7 @@
   cursor: pointer;
   font-size: 13px;
   font-weight: bold;
-  color: #222;
+  color: black;
 }
 .backBtn:hover { background: #888; }
 
@@ -142,7 +142,7 @@
   padding: 12px;
   background: #fde;
   border: 1px solid #eaa;
-  color: #900;
+  color: red;
   font-size: 13px;
   margin-bottom: 4px;
 }
@@ -201,7 +201,7 @@
 
 .statsHeader {
   font-size: 11px;
-  color: #222;
+  color: black;
   line-height: 1.6;
   border-bottom: 1px solid #bbb;
   padding-bottom: 5px;
@@ -232,25 +232,24 @@
 .statLabel {
   font-size: 9px;
   font-weight: bold;
-  color: #333;
+  color: black;
   white-space: nowrap;
 }
-.tiny { font-size: 8px; color: #00aa00; }
+.tiny { font-size: 8px; color: green; }
 
 .statVal {
   font-size: 11px;
   font-weight: bold;
-  color: #222;
+  color: black;
   padding: 1px 4px;
 }
 
-/* ── Color variants ─────────────────────────────────── */
-.green    { background: #22aa44 !important; color: white !important; }
-.red      { background: #cc2222 !important; color: white !important; }
-.redText  { color: #cc2222 !important; }
-.blueText { color: #3355bb !important; }
+.green    { background: green !important; color: white !important; }
+.red      { background: red !important; color: white !important; }
+.redText  { color: red !important; }
+.blueText { color: blue !important; }
 
-/* ── Modal ──────────────────────────────────────────── */
+/*modal */
 .overlay {
   position: fixed;
   inset: 0;
@@ -361,7 +360,7 @@
 .pointHeader:hover { background: #e0e8f5; }
 
 .pointCheck { font-size: 10px; color: #3a5a8a; width: 12px; }
-.pointLabel { font-size: 12px; font-weight: bold; color: #222; }
+.pointLabel { font-size: 12px; font-weight: bold; color: black; }
 .pointType  { font-size: 10px; color: #888; margin-left: auto; }
 
 .axisRow {
@@ -389,7 +388,7 @@
   color: white;
 }
 
-/* ── Summary ────────────────────────────────────────── */
+/*Summary*/
 .selectionSummary {
   display: flex;
   flex-direction: column;
@@ -406,7 +405,7 @@
 .summaryPoint {
   font-size: 12px;
   font-weight: bold;
-  color: #222;
+  color: black;
   min-width: 80px;
 }
 .summaryAxes { display: flex; gap: 5px; }
@@ -426,7 +425,7 @@
   font-style: italic;
 }
 
-/* ── Modal footer ───────────────────────────────────── */
+/*modal footer */
 .modalFooter {
   display: flex;
   justify-content: flex-end;
@@ -450,7 +449,7 @@
 
 .generateBtn {
   padding: 8px 24px;
-  background: #2a7a2a;
+  background: green;
   border: none;
   cursor: pointer;
   font-size: 13px;
@@ -460,4 +459,29 @@
 }
 .generateBtn:hover { background: #226022; }
  
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botão de captura PNG */
+.captureBtn {
+  background: #5a3a8a;
+  color: white;
+  border: none;
+  padding: 7px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  transition: background 0.15s;
+}
+.captureBtn:hover:not(:disabled) { background: #4a2a7a; }
+.captureBtn:disabled {
+  background: #999;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
  
