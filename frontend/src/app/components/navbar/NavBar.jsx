@@ -11,7 +11,6 @@ export default function Navbar() {
         </div>
         <nav className="nav-links">
           <a href="/"><House /></a>
-          <a href="/"><Settings /></a>
           <a href="/documentation"><MessageSquareWarning /></a>
         </nav>
       </div>

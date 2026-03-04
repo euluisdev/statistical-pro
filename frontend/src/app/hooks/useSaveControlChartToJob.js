@@ -106,7 +106,8 @@ export function useSaveControlChartToJob() {
         const imageData = canvas.toDataURL("image/png", 1.0);
 
         //nome do gráfico para o back
-        const chartType = `CC_${pointId.replace(/\s+/g, "_")}`;
+        const safePoint = pointId.replace(/[^a-zA-Z0-9]/g, "_");
+        const chartType = `CC_${group}_${piece}_${safePoint}`;
 
         //send to the backend
         const response = await fetch(

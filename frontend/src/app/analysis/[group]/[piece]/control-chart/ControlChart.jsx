@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./controlchart.module.css";
 import { useSaveControlChartToJob } from "@/app/hooks/useSaveControlChartToJob";
+import { ArrowBigRight, Grid3x3, SaveAll, Settings } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -47,10 +48,10 @@ function SingleChart({ chartData, onRef }) {
   const innerH = H - PAD.top - PAD.bottom;
 
   const deviations = measurements.map((m) => m.deviation ?? 0);
-  const usl = stats.usl  ?? 1;
-  const lsl = stats.lsl  ?? -1;
-  const ucl = stats.ucl  ?? 0;
-  const lcl = stats.lcl  ?? 0;
+  const usl = stats.usl ?? 1;
+  const lsl = stats.lsl ?? -1;
+  const ucl = stats.ucl ?? 0;
+  const lcl = stats.lcl ?? 0;
   const avg = stats.mean ?? 0;
 
   const allY = [...deviations, usl, lsl, ucl, lcl, avg];
@@ -66,8 +67,8 @@ function SingleChart({ chartData, onRef }) {
 
   const hLine = (val, color, dash = "") => (
     <line
-      x1={PAD.left}       y1={yScale(val).toFixed(1)}
-      x2={W - PAD.right}  y2={yScale(val).toFixed(1)}
+      x1={PAD.left} y1={yScale(val).toFixed(1)}
+      x2={W - PAD.right} y2={yScale(val).toFixed(1)}
       stroke={color} strokeWidth="1.5" strokeDasharray={dash}
     />
   );
@@ -79,7 +80,7 @@ function SingleChart({ chartData, onRef }) {
 
   const step_x = Math.max(1, Math.floor(deviations.length / 14));
 
-  const cpColor  = stats.cp_color  === "green" ? styles.green : styles.red;
+  const cpColor = stats.cp_color === "green" ? styles.green : styles.red;
   const cpkColor = stats.cpk_color === "green" ? styles.green : styles.red;
 
   const fmt = (v) =>
@@ -89,12 +90,12 @@ function SingleChart({ chartData, onRef }) {
     <div className={styles.chartRow} ref={rowRef}>
       <div className={styles.svgWrapper}>
         <svg width={W} height={H}>
-          {hLine(avg,  "green")}
-          {hLine(usl,  "red", "4,3")}
-          {hLine(lsl,  "red", "4,3")}
-          {hLine(ucl,  "#4466cc", "6,3")}
-          {hLine(lcl,  "#4466cc", "6,3")}
-          {hLine(0,    "#aaaaaa", "2,2")}
+          {hLine(avg, "green")}
+          {hLine(usl, "red", "4,3")}
+          {hLine(lsl, "red", "4,3")}
+          {hLine(ucl, "#4466cc", "6,3")}
+          {hLine(lcl, "#4466cc", "6,3")}
+          {hLine(0, "#aaaaaa", "2,2")}
 
           <path d={linePath} fill="none" stroke="#111" strokeWidth="1.8" />
 
@@ -200,12 +201,12 @@ function SingleChart({ chartData, onRef }) {
 //legend
 function Legend() {
   const items = [
-    { label: "CONTROL POINTS", color: "#111",    dot: true },
-    { label: "AVERAGE",        color: "green" },
-    { label: "LIE / LSE",      color: "red", dash: "4,3" },
-    { label: "LIC / LSC",      color: "blue", dash: "6,3" },
-    { label: "Desvio D",       color: "#00aa00", textOnly: true },
-    { label: "Medido M",       color: "#228822", textOnly: true },
+    { label: "CONTROL POINTS", color: "#111", dot: true },
+    { label: "AVERAGE", color: "green" },
+    { label: "LIE / LSE", color: "red", dash: "4,3" },
+    { label: "LIC / LSC", color: "blue", dash: "6,3" },
+    { label: "Desvio D", color: "#00aa00", textOnly: true },
+    { label: "Medido M", color: "#228822", textOnly: true },
   ];
   return (
     <div className={styles.legend}>
@@ -228,9 +229,9 @@ function Legend() {
 
 //modal de configuração
 function ConfigModal({ group, piece, onClose, onGenerate }) {
-  const [points,   setPoints]   = useState([]);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState(null);
+  const [points, setPoints] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selected, setSelected] = useState({});
 
   useEffect(() => {
@@ -276,7 +277,7 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
           <div className={styles.modalCol}>
             <div className={styles.modalColTitle}>Pontos de Medição</div>
             {loading && <div className={styles.loadingMsg}>Carregando pontos…</div>}
-            {error   && <div className={styles.errorMsg}>Erro: {error}</div>}
+            {error && <div className={styles.errorMsg}>Erro: {error}</div>}
             {!loading && !error && (
               <div className={styles.pointList}>
                 {points.map((pt) => {
@@ -329,7 +330,7 @@ function ConfigModal({ group, piece, onClose, onGenerate }) {
         </div>
 
         <div className={styles.modalFooter}>
-          <button className={styles.cancelBtn}   onClick={onClose}>Cancelar</button>
+          <button className={styles.cancelBtn} onClick={onClose}>Cancelar</button>
           <button className={styles.generateBtn} onClick={handleGenerate}>Gerar Gráfico</button>
         </div>
       </div>
@@ -373,10 +374,10 @@ export default function ControlChart({ params }) {
   const { group, piece } = params;
   const router = useRouter();
 
-  const [modalOpen,     setModalOpen]     = useState(false);
-  const [chartsData,    setChartsData]    = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [chartsData, setChartsData] = useState(null);
   const [loadingCharts, setLoadingCharts] = useState(false);
-  const [chartError,    setChartError]    = useState(null);
+  const [chartError, setChartError] = useState(null);
 
   //hook print
   const { saveLoading, registerChartRef, triggerSave, currentJobId } =
@@ -388,9 +389,9 @@ export default function ControlChart({ params }) {
     setChartError(null);
     try {
       const res = await fetch(`${API}/pieces/${group}/${piece}/charts`, {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ selections }),
+        body: JSON.stringify({ selections }),
       });
       if (!res.ok) throw new Error(`Erro ${res.status}`);
       const data = await res.json();
@@ -413,15 +414,19 @@ export default function ControlChart({ params }) {
 
         {/*toolbar */}
         <div className={styles.toolbar}>
-          <button className={styles.backBtn} onClick={() => router.push("/")}>
-            ← Voltar
+          <button
+            onClick={() => router.push(`/analysis/${group}/${piece}`)}
+            className={styles.btnMenu}
+            title={"Ir para analysis"}
+          >
+            <Grid3x3 size={30} />
           </button>
 
           <div className={styles.toolbarRight}>
             {/* Botão de captura — só aparece quando há gráficos */}
             {chartsData && uniquePoints.length > 0 && (
               <button
-                className={styles.captureBtn}
+                className={styles.btnMenu}
                 onClick={() => triggerSave(group, piece)}
                 disabled={saveLoading}
                 title={
@@ -432,12 +437,15 @@ export default function ControlChart({ params }) {
               >
                 {saveLoading
                   ? "⏳ Salvando…"
-                  : `📷 Capturar (${uniquePoints.length} PNG${uniquePoints.length > 1 ? "s" : ""})`}
+                  : <SaveAll size={30} className={styles.btnMenu} />}
               </button>
             )}
 
-            <button className={styles.openBtn} onClick={() => setModalOpen(true)}>
-              ⚙ Configurar
+            <button className={styles.btnMenu} title="Create Chart" onClick={() => setModalOpen(true)}>
+              <Settings size={30} />
+            </button>
+            <button className={styles.btnMenu} title="Report" >
+              <ArrowBigRight size={33} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
             </button>
           </div>
         </div>
@@ -491,6 +499,5 @@ export default function ControlChart({ params }) {
       )}
     </div>
   );
-}  
- 
- 
+}
+

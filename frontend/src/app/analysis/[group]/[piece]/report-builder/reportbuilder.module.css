@@ -193,12 +193,37 @@
   position: absolute;
   bottom: -5px;
   right: -5px;
-  width: 10px;
-  height: 10px;
-  background-color: #4299e1;
+  width: 8px;
+  height: 8px;
+  background-color: #ffffff;
   cursor: nwse-resize;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 1.5px solid black;
+}
+
+/* CANTOS */
+.nw {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.ne {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.se {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
 }
 
 .elementActions {

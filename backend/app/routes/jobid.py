@@ -14,11 +14,10 @@ BASE_PATH = os.path.join(
     "data", "jobs"
 )
 
-# Garante que a pasta /data/jobs/ existe
+#garante que a pasta /data/jobs/ existe
 os.makedirs(BASE_PATH, exist_ok=True)
 
-
-# Modelo para receber os dados do gráfico
+#modelo para receber os dados do gráfico
 class ChartData(BaseModel):
     group: str
     piece: str
@@ -81,25 +80,25 @@ async def save_chart_to_job(job_id: str, data: ChartData):
     
     group_path = os.path.join(job_path, data.group)
     
-    # Cria a pasta do grupo se não existir
+    #create the folder of the group if not existir
     if not os.path.exists(group_path):
         os.makedirs(group_path)
     
     try:
-        # Remove o prefixo "data:image/png;base64," se existir
+        #remove o prefixo "data:image/png;base64," se existir
         image_data_clean = data.image_data
         if "base64," in image_data_clean:
             image_data_clean = image_data_clean.split("base64,")[1]
         
-        # Decodifica a imagem
+        #decodifica a imagem
         image_bytes = base64.b64decode(image_data_clean)
         
-        # Gera nome do arquivo com timestamp
+        # gera nome do arquivo com timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"CG_{data.piece}_{timestamp}.png"
+        filename = f"file_{data.piece}_{timestamp}.png"
         filepath = os.path.join(group_path, filename)
         
-        # Salva a imagem
+        #save the img
         with open(filepath, "wb") as f:
             f.write(image_bytes)
         

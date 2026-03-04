@@ -13,12 +13,12 @@ export default function CanvasElement({
   onDuplicate,
   onDelete
 }) {
-  
+
   const renderImage = () => {
-    const src = element.type === "image" 
+    const src = element.type === "image"
       ? `${API}/static/jobs/${currentJobId}/${element.chart.group}/${element.chart.filename}`
       : element.src;
-    
+
     const filename = element.type === "image" ? element.chart.filename : element.filename;
 
     return (
@@ -62,8 +62,20 @@ export default function CanvasElement({
   const renderActions = () => (
     <>
       <div
-        onMouseDown={(e) => onResizeMouseDown(e, element)}
-        className={styles.resizeHandle}
+        onMouseDown={(e) => onResizeMouseDown(e, element, "nw")}
+        className={`${styles.resizeHandle} ${styles.nw}`}
+      />
+      <div
+        onMouseDown={(e) => onResizeMouseDown(e, element, "ne")}
+        className={`${styles.resizeHandle} ${styles.ne}`}
+      />
+      <div
+        onMouseDown={(e) => onResizeMouseDown(e, element, "sw")}
+        className={`${styles.resizeHandle} ${styles.sw}`}
+      />
+      <div
+        onMouseDown={(e) => onResizeMouseDown(e, element, "se")}
+        className={`${styles.resizeHandle} ${styles.se}`}
       />
       <div className={styles.elementActions}>
         <button
@@ -98,9 +110,9 @@ export default function CanvasElement({
         top: `${element.y}px`,
         width: `${element.width}px`,
         height: element.type === "text" ? `${element.height}px` : "auto",
-        border: isSelected ? "2px solid #4299e1" : "2px solid transparent",
+        border: isSelected ? "1.5px dashed #000" : "1.5px solid transparent",
         cursor: isSelected ? "move" : "pointer",
-        boxShadow: isSelected ? "0 0 0 1px rgba(66, 153, 225, 0.3)" : "none"
+        boxShadow: isSelected ? "0 0 0 1px rgba(66, 153, 225, 0.02)" : "none"
       }}
     >
       {(element.type === "image" || element.type === "external-image") && renderImage()}
