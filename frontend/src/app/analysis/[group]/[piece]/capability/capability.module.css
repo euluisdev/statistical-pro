@@ -264,9 +264,9 @@
 .tolCell { font-size: 9.5px; white-space: nowrap; }
 
 /* Cell colours */
-.cellGreen  { background: #22bb44; color: white; font-weight: bold; }
-.cellYellow { background: #f0b800; color: #222;  font-weight: bold; }
-.cellRed    { background: #cc2222; color: white; font-weight: bold; }
+.cellGreen  { background: green; color: white; font-weight: bold; }
+.cellYellow { background: yellow; color: #222;  font-weight: bold; }
+.cellRed    { background: red; color: white; font-weight: bold; }
 
 /* ── Empty state ─────────────────────────────────────── */
 .emptyState {

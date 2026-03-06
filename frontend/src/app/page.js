@@ -211,7 +211,18 @@ export default function GroupsPage() {
           >
             <ChartNoAxesCombined />
           </button>
-          <button className="btnRest"><TrendingUpDown /></button>
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/capability`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="CAPABILITY"
+          >
+            <TrendingUpDown />
+          </button>
           <button className="btnRest"><ChartLine /></button>
 
           <button

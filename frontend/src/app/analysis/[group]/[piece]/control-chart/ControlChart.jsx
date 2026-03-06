@@ -369,7 +369,7 @@ function LoadingCharts() {
   );
 }
 
-//main Page
+//main Page __________________________________________________________________________________________#
 export default function ControlChart({ params }) {
   const { group, piece } = params;
   const router = useRouter();
