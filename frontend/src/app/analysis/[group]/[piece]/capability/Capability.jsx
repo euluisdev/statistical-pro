@@ -7,6 +7,7 @@ import styles from "./capability.module.css";
 import { uid, clamp } from "./Helpers";
 import CanvasPage, { CANVAS_W, CANVAS_H } from "./CanvasPage";
 import ConfigModal from "./ConfigModal";
+import { ArrowBigRight, Camera, Grid3x3, LockKeyhole, LockKeyholeOpen, Settings } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -14,10 +15,10 @@ function CapabilityPage() {
   const { group, piece } = useParams();
   const router = useRouter();
 
-  const [modalOpen,    setModalOpen]    = useState(false);
-  const [locked,       setLocked]       = useState(false);
-  const [pages,        setPages]        = useState([]);
-  const [activePage,   setActivePage]   = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [locked, setLocked] = useState(false);
+  const [pages, setPages] = useState([]);
+  const [activePage, setActivePage] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
 
   //carrega layout salvo do backend ao montar
@@ -27,7 +28,7 @@ function CapabilityPage() {
       .then((d) => {
         if (d?.pages) { setPages(d.pages); setLocked(d.locked ?? false); }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [group, piece]);
 
   //persiste layout in the backend (debounced 800ms)
@@ -36,10 +37,10 @@ function CapabilityPage() {
     clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
       fetch(`${API}/pieces/${group}/${piece}/capability-layout`, {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ pages: newPages, locked: newLocked }),
-      }).catch(() => {});
+        body: JSON.stringify({ pages: newPages, locked: newLocked }),
+      }).catch(() => { });
     }, 800);
   }, [group, piece]);
 
@@ -51,16 +52,16 @@ function CapabilityPage() {
         .filter((s) => s.axes.some((a) => a.pageIdx === pi))
         .map((s) => {
           const existing = existingPage.cards?.find((c) => c.point === s.pointId);
-          const spreadX  = 40 + (selections.indexOf(s) % 4) * 270;
-          const spreadY  = 40 + Math.floor(selections.indexOf(s) / 4) * 140;
+          const spreadX = 40 + (selections.indexOf(s) % 4) * 270;
+          const spreadY = 40 + Math.floor(selections.indexOf(s) / 4) * 140;
           return {
-            id:         existing?.id          ?? uid(),
-            point:      s.pointId,
-            axes:       s.axes.filter((a) => a.pageIdx === pi),
-            x:          existing?.x           ?? spreadX,
-            y:          existing?.y           ?? spreadY,
-            connectorX: existing?.connectorX  ?? (spreadX + 130),
-            connectorY: existing?.connectorY  ?? (spreadY - 40),
+            id: existing?.id ?? uid(),
+            point: s.pointId,
+            axes: s.axes.filter((a) => a.pageIdx === pi),
+            x: existing?.x ?? spreadX,
+            y: existing?.y ?? spreadY,
+            connectorX: existing?.connectorX ?? (spreadX + 130),
+            connectorY: existing?.connectorY ?? (spreadY - 40),
           };
         });
       return { cards, bgImage: existingPage.bgImage ?? null };
@@ -131,7 +132,13 @@ function CapabilityPage() {
 
         {/*toolbar */}
         <div className={styles.toolbar}>
-          <button className={styles.backBtn} onClick={() => router.push("/")}>← Voltar</button>
+          <button
+            onClick={() => router.push(`/analysis/${group}/${piece}`)}
+            className={styles.settings}
+            title={"Ir para analysis"}
+          >
+            <Grid3x3 size={30} />
+          </button>
 
           <div className={styles.toolbarCenter}>
             <span className={styles.toolbarTitle}>CAPABILITY REPORT</span>
@@ -140,17 +147,17 @@ function CapabilityPage() {
 
           <div className={styles.toolbarRight}>
             <button
-              className={`${styles.lockBtn} ${locked ? styles.lockBtnLocked : styles.lockBtnOpen}`}
+              className={`${styles.btnMenu} ${locked ? styles.lockBtnLocked : styles.lockBtnOpen}`}
               onClick={toggleLock}
               title={locked
                 ? "Relatório travado — clique para editar"
                 : "Clique para travar o relatório"}
             >
-              {locked ? "🔒 Travado" : "🔓 Editando"}
+              {locked ? <LockKeyhole size={30} /> : <LockKeyholeOpen size={30} />}
             </button>
 
-            <button className={styles.openBtn} onClick={() => setModalOpen(true)}>
-              ⚙ Configurar
+            <button className={styles.settings} title="CRIAR" onClick={() => setModalOpen(true)}>
+              <Settings size={30} />
             </button>
           </div>
         </div>
@@ -179,9 +186,9 @@ function CapabilityPage() {
         ) : currentPage ? (
           <div className={styles.canvasWrapper}>
             {!locked && (
-              <label className={styles.imgUploadBtn}
-                title="Ou arraste uma imagem direto no canvas">
-                🖼 Importar Imagem
+              <label className={styles.settings}
+                title="Import Image">
+                <Camera size={30} />
                 <input type="file" accept="image/*" style={{ display: "none" }}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
@@ -231,5 +238,4 @@ function CapabilityPage() {
 }
 
 export default memo(CapabilityPage);
- 
- 
+

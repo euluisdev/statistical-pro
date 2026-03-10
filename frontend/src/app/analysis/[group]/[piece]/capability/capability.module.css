@@ -69,25 +69,25 @@
 .openBtn:hover { background: #2d4a78; }
 
 /* Lock button */
-.lockBtn {
+.settings {
+  background: none;
   border: none;
-  padding: 7px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: bold;
-  white-space: nowrap;
-  transition: background 0.15s;
+    color: #677172;
+  width: 35px;
+  height: 35px;
+  transition: 0.2s;
+  border: none;
 }
 .lockBtnOpen {
-  background: #2a8a2a;
-  color: white;
+    color: #677172;
 }
-.lockBtnOpen:hover { background: #227022; }
 .lockBtnLocked {
-  background: #8a2a2a;
-  color: white;
+  color: red;
 }
-.lockBtnLocked:hover { background: #721e1e; }
 
 /* ── Page tabs ───────────────────────────────────────── */
 .pageTabs {
@@ -353,7 +353,7 @@
 .pointLabel { font-size: 12px; font-weight: bold; color: #222; flex: 1; }
 .pointType  { font-size: 10px; color: #888; }
 
-/* Axis + page selector row */
+/*axis + page selector row */
 .axisPageGrid {
   display: flex;
   flex-direction: column;
@@ -393,7 +393,7 @@
   white-space: nowrap;
 }
 
-/* Config block */
+/*config block */
 .configBlock {
   margin-bottom: 18px;
 }
@@ -425,7 +425,7 @@
   text-align: center;
 }
 
-/* Summary */
+/*summary */
 .summaryRow {
   display: flex; align-items: center; gap: 6px;
   padding: 5px 8px; background: white;
@@ -449,7 +449,7 @@
   padding: 8px; background: #fde; border: 1px solid #eaa;
 }
 
-/* Modal footer */
+/*modal footer */
 .modalFooter {
   display: flex; justify-content: flex-end; gap: 10px;
   padding: 13px 20px; border-top: 1px solid #ccc;
@@ -466,3 +466,18 @@
   color: white; letter-spacing: 0.5px;
 }
 .generateBtn:hover { background: #226022; }
+
+
+.btnMenu {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  width: 35px;
+  height: 35px;
+  transition: 0.2s;
+  border: none;
+}
