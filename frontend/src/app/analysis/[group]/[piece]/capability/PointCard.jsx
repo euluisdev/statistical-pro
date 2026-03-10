@@ -1,49 +1,102 @@
 "use client";
 
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import styles from "./capability.module.css";
 import { cellColor, xmedColor } from "./CellColor";
 
 const fmt = (v) => v == null ? "—" : parseFloat(v).toFixed(2).replace(".", ",");
 
-export default function PointCard({ card, locked, onDrag, onConnectorDrag, selected, onSelect }) {
+function PointCard({ card, locked, onDrag, onConnectorDrag, selected, onSelect }) {
   const { id, point, axes, x, y, connectorX, connectorY } = card;
-  const dragStart     = useRef(null);
+
+  const dragStart = useRef(null);
   const connDragStart = useRef(null);
 
-  // ── card drag ──────────────────────────────────────────────────────────────
+  const dragFrame = useRef(null);
+  const connFrame = useRef(null);
+
+  //card drag
   const handleMouseDown = (e) => {
     if (locked) return;
+
     e.stopPropagation();
     onSelect(id);
+
     dragStart.current = { mx: e.clientX, my: e.clientY, ox: x, oy: y };
+
     const move = (ev) => {
-      const dx = ev.clientX - dragStart.current.mx;
-      const dy = ev.clientY - dragStart.current.my;
-      onDrag(id, dragStart.current.ox + dx, dragStart.current.oy + dy);
+
+      if (dragFrame.current) {
+        cancelAnimationFrame(dragFrame.current);
+      }
+
+      dragFrame.current = requestAnimationFrame(() => {
+        const dx = ev.clientX - dragStart.current.mx;
+        const dy = ev.clientY - dragStart.current.my;
+
+        onDrag(
+          id,
+          dragStart.current.ox + dx,
+          dragStart.current.oy + dy
+        );
+      });
+
     };
+
     const up = () => {
+      if (dragFrame.current) {
+        cancelAnimationFrame(dragFrame.current);
+      }
+
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseup", up);
     };
+
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
   };
 
-  // ── connector dot drag ─────────────────────────────────────────────────────
+  //connector dot drag
   const handleConnMouseDown = (e) => {
     if (locked) return;
+
     e.stopPropagation();
-    connDragStart.current = { mx: e.clientX, my: e.clientY, ox: connectorX, oy: connectorY };
-    const move = (ev) => {
-      const dx = ev.clientX - connDragStart.current.mx;
-      const dy = ev.clientY - connDragStart.current.my;
-      onConnectorDrag(id, connDragStart.current.ox + dx, connDragStart.current.oy + dy);
+
+    connDragStart.current = {
+      mx: e.clientX,
+      my: e.clientY,
+      ox: connectorX,
+      oy: connectorY
     };
+
+    const move = (ev) => {
+
+      if (connFrame.current) {
+        cancelAnimationFrame(connFrame.current);
+      }
+
+      connFrame.current = requestAnimationFrame(() => {
+        const dx = ev.clientX - connDragStart.current.mx;
+        const dy = ev.clientY - connDragStart.current.my;
+
+        onConnectorDrag(
+          id,
+          connDragStart.current.ox + dx,
+          connDragStart.current.oy + dy
+        );
+      });
+
+    };
+
     const up = () => {
+      if (connFrame.current) {
+        cancelAnimationFrame(connFrame.current);
+      }
+
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseup", up);
     };
+
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
   };
@@ -54,21 +107,21 @@ export default function PointCard({ card, locked, onDrag, onConnectorDrag, selec
       style={{ left: x, top: y }}
       onMouseDown={handleMouseDown}
     >
-      {/* Connector anchor dot */}
+      {/*connector anchor dot*/}
       <div
         className={`${styles.connDot} ${locked ? styles.connDotLocked : ""}`}
         onMouseDown={handleConnMouseDown}
         title="Arraste para mover o ponto de conexão"
       />
 
-      {/* Header */}
+      {/*header */}
       <div className={styles.cardHeader}>
         <span className={styles.cardIcon}>⊕</span>
         <span className={styles.cardTitle}>{point}</span>
         <span className={styles.cardSubtitle}>AUTOSIGMA</span>
       </div>
 
-      {/* Table */}
+      {/*table */}
       <table className={styles.cardTable}>
         <thead>
           <tr>
@@ -90,7 +143,8 @@ export default function PointCard({ card, locked, onDrag, onConnectorDrag, selec
       </table>
     </div>
   );
-}  
- 
- 
- 
+}
+
+export default memo(PointCard);
+
+

@@ -1,8 +1,9 @@
 "use client";
 
+import { memo } from "react";
 import styles from "./capability.module.css";
 
-export default function ConnectorOverlay({ cards, canvasW, canvasH }) {
+function ConnectorOverlay({ cards, canvasW, canvasH }) {
   return (
     <svg className={styles.connectorSvg} width={canvasW} height={canvasH}>
       {cards.map((c) => {
@@ -28,6 +29,8 @@ export default function ConnectorOverlay({ cards, canvasW, canvasH }) {
     </svg>
   );
 }  
+
+export default memo(ConnectorOverlay);
  
  
  

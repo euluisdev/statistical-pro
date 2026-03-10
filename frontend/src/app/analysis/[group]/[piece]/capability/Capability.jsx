@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import styles from "./capability.module.css";
@@ -10,7 +10,7 @@ import ConfigModal from "./ConfigModal";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export default function CapabilityPage() {
+function CapabilityPage() {
   const { group, piece } = useParams();
   const router = useRouter();
 
@@ -71,7 +71,7 @@ export default function CapabilityPage() {
   };
 
   //drag handlers
-  const handleCardDrag = (cardId, nx, ny) => {
+  const handleCardDrag = useCallback((cardId, nx, ny) => {
     if (locked) return;
     setPages((prev) => {
       const next = prev.map((pg, pi) => {
@@ -87,9 +87,9 @@ export default function CapabilityPage() {
       persistLayout(next, locked);
       return next;
     });
-  };
+  });
 
-  const handleConnectorDrag = (cardId, nx, ny) => {
+  const handleConnectorDrag = useCallback((cardId, nx, ny) => {
     if (locked) return;
     setPages((prev) => {
       const next = prev.map((pg, pi) => {
@@ -105,18 +105,18 @@ export default function CapabilityPage() {
       persistLayout(next, locked);
       return next;
     });
-  };
+  });
 
-  const handleImageDrop = (pageIdx, dataUrl) => {
+  const handleImageDrop = useCallback((pageIdx, dataUrl) => {
     if (locked) return;
     setPages((prev) => {
       const next = prev.map((pg, i) => i === pageIdx ? { ...pg, bgImage: dataUrl } : pg);
       persistLayout(next, locked);
       return next;
     });
-  };
+  });
 
-  //cadeado ────────────────────────────────────────────────────────────────#
+  //cadeado    #
   const toggleLock = () => {
     const next = !locked;
     setLocked(next);
@@ -208,8 +208,8 @@ export default function CapabilityPage() {
 
             {!locked && (
               <div className={styles.canvasHint}>
-                💡 Arraste as tabelinhas e os pontos de conexão (•) para posicioná-los.
-                Arraste uma imagem da peça para o canvas.
+                💡 Arraste as tabelas e os pontos de conexão (•) para posicioná-los.
+                Arraste uma imagem da peça para o sistema.
               </div>
             )}
           </div>
@@ -229,5 +229,7 @@ export default function CapabilityPage() {
     </div>
   );
 }
+
+export default memo(CapabilityPage);
  
  

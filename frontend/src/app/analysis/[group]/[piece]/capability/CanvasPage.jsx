@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import styles from "./capability.module.css";
 import PointCard from "./PointCard";
 import ConnectorOverlay from "./ConnectorOverlay";
@@ -8,7 +8,7 @@ import ConnectorOverlay from "./ConnectorOverlay";
 export const CANVAS_W = 960;
 export const CANVAS_H = 660;
 
-export default function CanvasPage({
+function CanvasPage({
   pageIndex,
   cards,
   locked,
@@ -73,5 +73,6 @@ export default function CanvasPage({
   );
 }   
  
+export default memo(CanvasPage);
  
  

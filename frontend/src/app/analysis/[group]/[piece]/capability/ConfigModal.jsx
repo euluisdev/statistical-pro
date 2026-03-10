@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import styles from "./capability.module.css";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export default function ConfigModal({ group, piece, totalPages, onClose, onApply }) {
+function ConfigModal({ group, piece, totalPages, onClose, onApply }) {
   const [points,     setPoints]     = useState([]);
   const [loading,    setLoading]    = useState(true);
   const [error,      setError]      = useState(null);
@@ -180,5 +180,7 @@ export default function ConfigModal({ group, piece, totalPages, onClose, onApply
     </div>
   );
 }  
+
+export default memo(ConfigModal); 
  
  
