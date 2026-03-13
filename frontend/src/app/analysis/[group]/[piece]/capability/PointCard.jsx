@@ -1,127 +1,96 @@
 "use client";
-
-import { memo, useRef } from "react";
+ 
+import { useRef, useCallback, memo } from "react";
 import styles from "./capability.module.css";
 import { cellColor, xmedColor } from "./CellColor";
-
+ 
 const fmt = (v) => v == null ? "—" : parseFloat(v).toFixed(2).replace(".", ",");
-
-function PointCard({ card, locked, onDrag, onConnectorDrag, selected, onSelect }) {
+ 
+const PointCard = memo(function PointCard({
+  card, locked, onDrag, onConnectorDrag, selected, onSelect,
+}) {
   const { id, point, axes, x, y, connectorX, connectorY } = card;
-
-  const dragStart = useRef(null);
-  const connDragStart = useRef(null);
-
-  const dragFrame = useRef(null);
-  const connFrame = useRef(null);
-
-  //card drag
-  const handleMouseDown = (e) => {
+ 
+  //card drag with requestAnimationFrame 
+  const dragState = useRef(null);
+  const rafId     = useRef(null);
+ 
+  const handleMouseDown = useCallback((e) => {
     if (locked) return;
-
     e.stopPropagation();
     onSelect(id);
-
-    dragStart.current = { mx: e.clientX, my: e.clientY, ox: x, oy: y };
-
+    dragState.current = { mx: e.clientX, my: e.clientY, ox: x, oy: y };
+ 
     const move = (ev) => {
-
-      if (dragFrame.current) {
-        cancelAnimationFrame(dragFrame.current);
-      }
-
-      dragFrame.current = requestAnimationFrame(() => {
-        const dx = ev.clientX - dragStart.current.mx;
-        const dy = ev.clientY - dragStart.current.my;
-
-        onDrag(
-          id,
-          dragStart.current.ox + dx,
-          dragStart.current.oy + dy
-        );
+      if (!dragState.current) return;
+      //here I cancelo frame anterior para não acumular chamadas
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+      rafId.current = requestAnimationFrame(() => {
+        const dx = ev.clientX - dragState.current.mx;
+        const dy = ev.clientY - dragState.current.my;
+        onDrag(id, dragState.current.ox + dx, dragState.current.oy + dy);
       });
-
     };
-
+ 
     const up = () => {
-      if (dragFrame.current) {
-        cancelAnimationFrame(dragFrame.current);
-      }
-
+      dragState.current = null;
+      if (rafId.current) cancelAnimationFrame(rafId.current);
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseup", up);
     };
-
+ 
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
-  };
-
-  //connector dot drag
-  const handleConnMouseDown = (e) => {
+  }, [locked, id, x, y, onDrag, onSelect]);
+ 
+  //connector dot drag with rAF
+  const connState  = useRef(null);
+  const connRafId  = useRef(null);
+ 
+  const handleConnMouseDown = useCallback((e) => {
     if (locked) return;
-
     e.stopPropagation();
-
-    connDragStart.current = {
-      mx: e.clientX,
-      my: e.clientY,
-      ox: connectorX,
-      oy: connectorY
-    };
-
+    connState.current = { mx: e.clientX, my: e.clientY, ox: connectorX, oy: connectorY };
+ 
     const move = (ev) => {
-
-      if (connFrame.current) {
-        cancelAnimationFrame(connFrame.current);
-      }
-
-      connFrame.current = requestAnimationFrame(() => {
-        const dx = ev.clientX - connDragStart.current.mx;
-        const dy = ev.clientY - connDragStart.current.my;
-
-        onConnectorDrag(
-          id,
-          connDragStart.current.ox + dx,
-          connDragStart.current.oy + dy
-        );
+      if (!connState.current) return;
+      if (connRafId.current) cancelAnimationFrame(connRafId.current);
+      connRafId.current = requestAnimationFrame(() => {
+        const dx = ev.clientX - connState.current.mx;
+        const dy = ev.clientY - connState.current.my;
+        onConnectorDrag(id, connState.current.ox + dx, connState.current.oy + dy);
       });
-
     };
-
+ 
     const up = () => {
-      if (connFrame.current) {
-        cancelAnimationFrame(connFrame.current);
-      }
-
+      connState.current = null;
+      if (connRafId.current) cancelAnimationFrame(connRafId.current);
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseup", up);
     };
-
+ 
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
-  };
-
+  }, [locked, id, connectorX, connectorY, onConnectorDrag]);
+ 
   return (
     <div
       className={`${styles.card} ${selected && !locked ? styles.cardSelected : ""}`}
       style={{ left: x, top: y }}
       onMouseDown={handleMouseDown}
     >
-      {/*connector anchor dot*/}
       <div
         className={`${styles.connDot} ${locked ? styles.connDotLocked : ""}`}
         onMouseDown={handleConnMouseDown}
         title="Arraste para mover o ponto de conexão"
       />
-
-      {/*header */}
+ 
       <div className={styles.cardHeader}>
         <span className={styles.cardIcon}>⊕</span>
         <span className={styles.cardTitle}>{point}</span>
         <span className={styles.cardSubtitle}>AUTOSIGMA</span>
       </div>
-
-      {/*table */}
+ 
       <table className={styles.cardTable}>
         <thead>
           <tr>
@@ -143,8 +112,7 @@ function PointCard({ card, locked, onDrag, onConnectorDrag, selected, onSelect }
       </table>
     </div>
   );
-}
-
-export default memo(PointCard);
-
+});
+ 
+export default PointCard;
 

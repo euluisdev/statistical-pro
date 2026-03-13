@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, memo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import styles from "./capability.module.css";
 import { uid, clamp } from "./Helpers";
 import CanvasPage, { CANVAS_W, CANVAS_H } from "./CanvasPage";
 import ConfigModal from "./ConfigModal";
-import { ArrowBigRight, Camera, Grid3x3, LockKeyhole, LockKeyholeOpen, Settings } from "lucide-react";
+import { Grid3x3, LockKeyhole, LockKeyholeOpen, Settings } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-function CapabilityPage() {
+export default function CapabilityPage() {
   const { group, piece } = useParams();
   const router = useRouter();
 
@@ -21,74 +21,125 @@ function CapabilityPage() {
   const [activePage, setActivePage] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
 
-  //carrega layout salvo do backend ao montar
+  //num pages
+  const [savedModalSelections, setSavedModalSelections] = useState(null);
+  const [savedModalNumPages, setSavedModalNumPages] = useState(null);
+
+  //here eu carrego layout salvo do backend ao montar
   useEffect(() => {
     fetch(`${API}/pieces/${group}/${piece}/capability-layout`)
       .then((r) => r.ok ? r.json() : null)
       .then((d) => {
-        if (d?.pages) { setPages(d.pages); setLocked(d.locked ?? false); }
+        if (!d) return;
+        if (d.pages) setPages(d.pages);
+        if (d.locked != null) setLocked(d.locked);
+        //restaura estado do modal se foi salvo com o layout
+        if (d.modalSelections) setSavedModalSelections(d.modalSelections);
+        if (d.modalNumPages) setSavedModalNumPages(d.modalNumPages);
       })
       .catch(() => { });
   }, [group, piece]);
 
-  //persiste layout in the backend (debounced 800ms)
+  //here persisto layout + estado do modal no backend -debounced 800ms
   const saveTimer = useRef(null);
-  const persistLayout = useCallback((newPages, newLocked) => {
+  const persistLayout = useCallback((newPages, newLocked, modalSelections, modalNumPages) => {
     clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
       fetch(`${API}/pieces/${group}/${piece}/capability-layout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pages: newPages, locked: newLocked }),
+        body: JSON.stringify({
+          pages: newPages,
+          locked: newLocked,
+          modalSelections,  // estado bruto do modal para restaurar depois
+          modalNumPages,
+        }),
       }).catch(() => { });
     }, 800);
   }, [group, piece]);
 
-  //gera o relatório a partir das seleções do modal
-  const handleApply = ({ numPages, selections }) => {
-    const newPages = Array.from({ length: numPages }, (_, pi) => {
-      const existingPage = pages[pi] ?? {};
-      const cards = selections
-        .filter((s) => s.axes.some((a) => a.pageIdx === pi))
-        .map((s) => {
-          const existing = existingPage.cards?.find((c) => c.point === s.pointId);
-          const spreadX = 40 + (selections.indexOf(s) % 4) * 270;
-          const spreadY = 40 + Math.floor(selections.indexOf(s) / 4) * 140;
-          return {
-            id: existing?.id ?? uid(),
-            point: s.pointId,
-            axes: s.axes.filter((a) => a.pageIdx === pi),
-            x: existing?.x ?? spreadX,
-            y: existing?.y ?? spreadY,
-            connectorX: existing?.connectorX ?? (spreadX + 130),
-            connectorY: existing?.connectorY ?? (spreadY - 40),
-          };
-        });
-      return { cards, bgImage: existingPage.bgImage ?? null };
-    });
-    setPages(newPages);
-    setActivePage(0);
-    persistLayout(newPages, locked);
-  };
+  //diff inteligente ao aplicar o modal 
+  //ponto/eixo que já existia na same page - preserva posição - x, y, connector X/Y
+  //ponto/eixo moved of page - remove da antiga and adiciona in the new -position default
+  //ponto/eixo new - add with position default
+  //ponto/eixo removed -some do canvas
+  //page new - canvas vazio sem img
+  //page removida - descarta
+  //img das pages sempre preservadas
+  const handleApply = useCallback(({ numPages, selections, rawSelections }) => {
+    //save estate bruto do modal
+    setSavedModalSelections(rawSelections);
+    setSavedModalNumPages(numPages);
 
-  //drag handlers
+    setPages((prevPages) => {
+      const newPages = Array.from({ length: numPages }, (_, pi) => {
+        const existingPage = prevPages[pi] ?? {};
+
+        const cards = selections
+          .filter((s) => s.axes.some((a) => a.pageIdx === pi))
+          .map((s) => {
+            const axesForThisPage = s.axes.filter((a) => a.pageIdx === pi);
+
+            //procura card existente nesta page com o mesmo ponto
+            const existingCard = existingPage.cards?.find((c) => c.point === s.pointId);
+
+            //se o card já estava aqui, verifica se os eixos são os mesmos
+            //se mudou de page, existingCard será undefined - position default
+            const sameAxes = existingCard
+              ? axesForThisPage.every((a) =>
+                existingCard.axes.some((ea) => ea.axis === a.axis)
+              )
+              : false;
+
+            const spreadX = 40 + (selections.indexOf(s) % 4) * 270;
+            const spreadY = 40 + Math.floor(selections.indexOf(s) / 4) * 140;
+
+            return {
+              //here eu reservo o id se já existia
+              id: existingCard?.id ?? uid(),
+              point: s.pointId,
+              axes: axesForThisPage,
+              //here I reservo posição apenas se o card já estava nesta page
+              x: (existingCard && sameAxes) ? existingCard.x : spreadX,
+              y: (existingCard && sameAxes) ? existingCard.y : spreadY,
+              connectorX: (existingCard && sameAxes) ? existingCard.connectorX : (spreadX + 130),
+              connectorY: (existingCard && sameAxes) ? existingCard.connectorY : (spreadY - 40),
+            };
+          });
+
+        return {
+          cards,
+          //sempre preservo a imagem de fundo da page se já existia
+          bgImage: existingPage.bgImage ?? null,
+        };
+      });
+
+      persistLayout(newPages, locked, rawSelections, numPages);
+      return newPages;
+    });
+
+    setActivePage(0);
+  }, [locked, persistLayout]);
+
+  //drag handlers com useCallback
   const handleCardDrag = useCallback((cardId, nx, ny) => {
     if (locked) return;
     setPages((prev) => {
       const next = prev.map((pg, pi) => {
         if (pi !== activePage) return pg;
         return {
-          ...pg, cards: pg.cards.map((c) =>
+          ...pg,
+          cards: pg.cards.map((c) =>
             c.id === cardId
               ? { ...c, x: clamp(nx, 0, CANVAS_W - 260), y: clamp(ny, 0, CANVAS_H - 80) }
               : c
           ),
         };
       });
-      persistLayout(next, locked);
+      persistLayout(next, locked, savedModalSelections, savedModalNumPages);
       return next;
     });
-  });
+  }, [locked, activePage, persistLayout, savedModalSelections, savedModalNumPages]);
 
   const handleConnectorDrag = useCallback((cardId, nx, ny) => {
     if (locked) return;
@@ -96,33 +147,39 @@ function CapabilityPage() {
       const next = prev.map((pg, pi) => {
         if (pi !== activePage) return pg;
         return {
-          ...pg, cards: pg.cards.map((c) =>
+          ...pg,
+          cards: pg.cards.map((c) =>
             c.id === cardId
               ? { ...c, connectorX: clamp(nx, 0, CANVAS_W), connectorY: clamp(ny, 0, CANVAS_H) }
               : c
           ),
         };
       });
-      persistLayout(next, locked);
+      persistLayout(next, locked, savedModalSelections, savedModalNumPages);
       return next;
     });
-  });
+  }, [locked, activePage, persistLayout, savedModalSelections, savedModalNumPages]);
 
   const handleImageDrop = useCallback((pageIdx, dataUrl) => {
     if (locked) return;
     setPages((prev) => {
-      const next = prev.map((pg, i) => i === pageIdx ? { ...pg, bgImage: dataUrl } : pg);
-      persistLayout(next, locked);
+      const next = prev.map((pg, i) =>
+        i === pageIdx ? { ...pg, bgImage: dataUrl } : pg
+      );
+      persistLayout(next, locked, savedModalSelections, savedModalNumPages);
       return next;
     });
-  });
+  }, [locked, persistLayout, savedModalSelections, savedModalNumPages]);
 
-  //cadeado    #
-  const toggleLock = () => {
+  //cadeado
+  const toggleLock = useCallback(() => {
     const next = !locked;
     setLocked(next);
-    persistLayout(pages, next);
-  };
+    persistLayout(pages, next, savedModalSelections, savedModalNumPages);
+  }, [locked, pages, persistLayout, savedModalSelections, savedModalNumPages]);
+
+  //select card
+  const handleSelectCard = useCallback((id) => setSelectedCard(id), []);
 
   const currentPage = pages[activePage];
 
@@ -134,7 +191,7 @@ function CapabilityPage() {
         <div className={styles.toolbar}>
           <button
             onClick={() => router.push(`/analysis/${group}/${piece}`)}
-            className={styles.settings}
+            className={styles.btnMenu}
             title={"Ir para analysis"}
           >
             <Grid3x3 size={30} />
@@ -156,13 +213,13 @@ function CapabilityPage() {
               {locked ? <LockKeyhole size={30} /> : <LockKeyholeOpen size={30} />}
             </button>
 
-            <button className={styles.settings} title="CRIAR" onClick={() => setModalOpen(true)}>
+            <button className={styles.btnMenu} onClick={() => setModalOpen(true)}>
               <Settings size={30} />
             </button>
           </div>
         </div>
 
-        {/*páginas */}
+        {/*abas da page*/}
         {pages.length > 0 && (
           <div className={styles.pageTabs}>
             {pages.map((_, i) => (
@@ -186,9 +243,9 @@ function CapabilityPage() {
         ) : currentPage ? (
           <div className={styles.canvasWrapper}>
             {!locked && (
-              <label className={styles.settings}
-                title="Import Image">
-                <Camera size={30} />
+              <label className={styles.imgUploadBtn}
+                title="Ou arraste uma imagem direto na página">
+                🖼 Importar Imagem
                 <input type="file" accept="image/*" style={{ display: "none" }}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
@@ -210,25 +267,27 @@ function CapabilityPage() {
               onCardDrag={handleCardDrag}
               onConnectorDrag={handleConnectorDrag}
               selectedCardId={selectedCard}
-              onSelectCard={setSelectedCard}
+              onSelectCard={handleSelectCard}
             />
 
             {!locked && (
               <div className={styles.canvasHint}>
                 💡 Arraste as tabelas e os pontos de conexão (•) para posicioná-los.
-                Arraste uma imagem da peça para o sistema.
+                Arraste uma imagem da peça para a página.
               </div>
             )}
           </div>
         ) : null}
       </div>
 
-      {/*modal*/}
+      {/*modal — recebe estado anterior para restaurar*/}
       {modalOpen && (
         <ConfigModal
           group={group}
           piece={piece}
           totalPages={pages.length || 1}
+          previousSelections={savedModalSelections}
+          previousNumPages={savedModalNumPages}
           onClose={() => setModalOpen(false)}
           onApply={handleApply}
         />
@@ -236,6 +295,4 @@ function CapabilityPage() {
     </div>
   );
 }
-
-export default memo(CapabilityPage);
 

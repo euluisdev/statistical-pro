@@ -1,14 +1,14 @@
 "use client";
-
-import { memo, useRef } from "react";
+ 
+import { useRef, memo } from "react";
 import styles from "./capability.module.css";
 import PointCard from "./PointCard";
 import ConnectorOverlay from "./ConnectorOverlay";
-
+ 
 export const CANVAS_W = 960;
 export const CANVAS_H = 660;
-
-function CanvasPage({
+ 
+const CanvasPage = memo(function CanvasPage({
   pageIndex,
   cards,
   locked,
@@ -20,9 +20,9 @@ function CanvasPage({
   onSelectCard,
 }) {
   const canvasRef = useRef(null);
-
+ 
   const handleDragOver = (e) => { if (!locked) e.preventDefault(); };
-
+ 
   const handleDrop = (e) => {
     if (locked) return;
     e.preventDefault();
@@ -33,7 +33,7 @@ function CanvasPage({
       reader.readAsDataURL(file);
     }
   };
-
+ 
   return (
     <div
       ref={canvasRef}
@@ -42,7 +42,6 @@ function CanvasPage({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      {/* Background image */}
       {bgImage ? (
         <img src={bgImage} className={styles.canvasBg} alt="peça" draggable={false} />
       ) : (
@@ -50,11 +49,9 @@ function CanvasPage({
           {locked ? "Sem imagem" : "⬇ Arraste a imagem da peça aqui"}
         </div>
       )}
-
-      {/* SVG connector lines */}
+ 
       <ConnectorOverlay cards={cards} canvasW={CANVAS_W} canvasH={CANVAS_H} />
-
-      {/* Draggable cards */}
+ 
       {cards.map((card) => (
         <PointCard
           key={card.id}
@@ -66,13 +63,12 @@ function CanvasPage({
           onSelect={onSelectCard}
         />
       ))}
-
-      {/* Page number watermark */}
+ 
       <div className={styles.pageNum}>Pág. {pageIndex + 1}</div>
     </div>
   );
-}   
+});
  
-export default memo(CanvasPage);
+export default CanvasPage;  
  
  
