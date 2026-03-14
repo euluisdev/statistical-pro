@@ -68,27 +68,14 @@
 .openBtn:hover { background: #2d4a78; }
 
 /* Lock button */
-.settings {
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-    color: #677172;
-  width: 35px;
-  height: 35px;
-  transition: 0.2s;
-  border: none;
-}
 .lockBtn {
   background-color: none;
 }
 .lockBtnOpen {
-    color: green;
+    color: green !important;
 }
 .lockBtnLocked {
-  color: red;
+  color: red !important;
 }
 
 /*page tabs */
@@ -111,6 +98,11 @@
 .pageTab:hover { background: #bbb; }
 .pageTabActive {
   background: #3a5a8a;
+  color: white;
+  border-color: #3a5a8a;
+}
+.pageTabActive:hover {
+  background: #57729a;
   color: white;
   border-color: #3a5a8a;
 }

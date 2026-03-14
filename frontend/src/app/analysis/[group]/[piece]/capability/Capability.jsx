@@ -7,7 +7,7 @@ import styles from "./capability.module.css";
 import { uid, clamp } from "./Helpers";
 import CanvasPage, { CANVAS_W, CANVAS_H } from "./CanvasPage";
 import ConfigModal from "./ConfigModal";
-import { Grid3x3, LockKeyhole, LockKeyholeOpen, Settings } from "lucide-react";
+import { Camera, Grid3x3, LockKeyhole, LockKeyholeOpen, Settings } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -192,7 +192,7 @@ export default function CapabilityPage() {
           <button
             onClick={() => router.push(`/analysis/${group}/${piece}`)}
             className={styles.btnMenu}
-            title={"Ir para analysis"}
+            title={"Go to analysis"}
           >
             <Grid3x3 size={30} />
           </button>
@@ -213,7 +213,7 @@ export default function CapabilityPage() {
               {locked ? <LockKeyhole size={30} /> : <LockKeyholeOpen size={30} />}
             </button>
 
-            <button className={styles.btnMenu} onClick={() => setModalOpen(true)}>
+            <button className={styles.btnMenu} title="Create Report" onClick={() => setModalOpen(true)}>
               <Settings size={30} />
             </button>
           </div>
@@ -243,9 +243,9 @@ export default function CapabilityPage() {
         ) : currentPage ? (
           <div className={styles.canvasWrapper}>
             {!locked && (
-              <label className={styles.imgUploadBtn}
-                title="Ou arraste uma imagem direto na página">
-                🖼 Importar Imagem
+              <label className={styles.btnMenu}
+                title="Import Image">
+                <Camera size={30} />
                 <input type="file" accept="image/*" style={{ display: "none" }}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
