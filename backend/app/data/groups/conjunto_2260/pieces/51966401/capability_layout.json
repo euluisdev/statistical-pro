@@ -9,23 +9,23 @@
             {
               "axis": "Y",
               "pageIdx": 0,
-              "cp": 1.92,
-              "cpk": 0.58,
-              "xmed": -0.349,
-              "range": 0.52,
+              "cp": 4.17,
+              "cpk": 2.03,
+              "xmed": -0.257,
+              "range": 0.24,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
               "tolerance": "-0,50|+0,50",
               "nominal": -830.08,
               "cp_color": "green",
-              "cpk_color": "red"
+              "cpk_color": "green"
             },
             {
               "axis": "Z",
               "pageIdx": 0,
               "cp": 1.28,
-              "cpk": 0.21,
-              "xmed": -0.417,
+              "cpk": 0.04,
+              "xmed": -0.483,
               "range": 0.78,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
@@ -47,10 +47,10 @@
             {
               "axis": "Y",
               "pageIdx": 0,
-              "cp": 4.26,
-              "cpk": 1.61,
-              "xmed": 0.621,
-              "range": 0.47,
+              "cp": 8.33,
+              "cpk": 2.83,
+              "xmed": 0.66,
+              "range": 0.24,
               "tol_plus": 1,
               "tol_minus": -1,
               "tolerance": "-1,00|+1,00",
@@ -72,8 +72,8 @@
               "axis": "T",
               "pageIdx": 0,
               "cp": 2.94,
-              "cpk": 2.27,
-              "xmed": 0.114,
+              "cpk": 2.12,
+              "xmed": 0.14,
               "range": 0.34,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
@@ -95,10 +95,10 @@
             {
               "axis": "T",
               "pageIdx": 0,
-              "cp": 3.57,
-              "cpk": 1.76,
-              "xmed": -0.253,
-              "range": 0.28,
+              "cp": 6.25,
+              "cpk": 3.92,
+              "xmed": -0.187,
+              "range": 0.16,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
               "tolerance": "-0,50|+0,50",
@@ -120,8 +120,8 @@
               "axis": "T",
               "pageIdx": 0,
               "cp": 1,
-              "cpk": -0.07,
-              "xmed": 0.536,
+              "cpk": -0.05,
+              "xmed": 0.523,
               "range": 1,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
@@ -148,10 +148,10 @@
             {
               "axis": "Y",
               "pageIdx": 1,
-              "cp": 0.88,
-              "cpk": 0.8,
-              "xmed": 0.049,
-              "range": 1.13,
+              "cp": 0.92,
+              "cpk": 0.83,
+              "xmed": -0.05,
+              "range": 1.09,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
               "tolerance": "-0,50|+0,50",
@@ -163,8 +163,8 @@
               "axis": "Z",
               "pageIdx": 1,
               "cp": 2.38,
-              "cpk": -0.66,
-              "xmed": -0.638,
+              "cpk": -0.56,
+              "xmed": -0.617,
               "range": 0.42,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
@@ -186,10 +186,10 @@
             {
               "axis": "Y",
               "pageIdx": 1,
-              "cp": 6.25,
-              "cpk": 1.85,
-              "xmed": 0.703,
-              "range": 0.32,
+              "cp": 9.09,
+              "cpk": 2.61,
+              "xmed": 0.713,
+              "range": 0.22,
               "tol_plus": 1,
               "tol_minus": -1,
               "tolerance": "-1,00|+1,00",
@@ -200,10 +200,10 @@
             {
               "axis": "Z",
               "pageIdx": 1,
-              "cp": 6.25,
-              "cpk": 5.93,
-              "xmed": 0.051,
-              "range": 0.32,
+              "cp": 6.9,
+              "cpk": 6.71,
+              "xmed": 0.027,
+              "range": 0.29,
               "tol_plus": 1,
               "tol_minus": -1,
               "tolerance": "-1,00|+1,00",
@@ -230,8 +230,8 @@
               "axis": "T",
               "pageIdx": 2,
               "cp": 3.85,
-              "cpk": 0.62,
-              "xmed": 0.419,
+              "cpk": 0.79,
+              "xmed": 0.397,
               "range": 0.26,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
@@ -254,8 +254,8 @@
               "axis": "Y",
               "pageIdx": 2,
               "cp": 2,
-              "cpk": 0.89,
-              "xmed": 0.553,
+              "cpk": 0.91,
+              "xmed": 0.543,
               "range": 1,
               "tol_plus": 1,
               "tol_minus": -1,
@@ -267,10 +267,10 @@
             {
               "axis": "Z",
               "pageIdx": 2,
-              "cp": 5.71,
-              "cpk": 1.42,
-              "xmed": -0.752,
-              "range": 0.35,
+              "cp": 11.76,
+              "cpk": 3.73,
+              "xmed": -0.683,
+              "range": 0.17,
               "tol_plus": 1,
               "tol_minus": -1,
               "tolerance": "-1,00|+1,00",
@@ -292,8 +292,8 @@
               "axis": "T",
               "pageIdx": 2,
               "cp": 1.05,
-              "cpk": 0.72,
-              "xmed": 0.157,
+              "cpk": 0.6,
+              "xmed": 0.217,
               "range": 0.95,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
@@ -315,10 +315,10 @@
             {
               "axis": "T",
               "pageIdx": 2,
-              "cp": 0.86,
-              "cpk": 0.48,
-              "xmed": 0.22,
-              "range": 1.16,
+              "cp": 0.94,
+              "cpk": 0.4,
+              "xmed": 0.287,
+              "range": 1.06,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
               "tolerance": "-0,50|+0,50",
@@ -340,8 +340,8 @@
               "axis": "T",
               "pageIdx": 2,
               "cp": 1.61,
-              "cpk": 0.73,
-              "xmed": -0.273,
+              "cpk": 0.86,
+              "xmed": -0.233,
               "range": 0.62,
               "tol_plus": 0.5,
               "tol_minus": -0.5,
@@ -421,21 +421,6 @@
         "T": 0
       }
     },
-    "PNT19": {
-      "axes": {
-        "T": 3
-      }
-    },
-    "PNT20": {
-      "axes": {
-        "T": 3
-      }
-    },
-    "PNT21": {
-      "axes": {
-        "T": 3
-      }
-    },
     "PNT4 BORDA": {
       "axes": {
         "T": 3
@@ -449,6 +434,11 @@
     "PNT14 BORDA": {
       "axes": {
         "T": 0
+      }
+    },
+    "N/D": {
+      "axes": {
+        "M": 4
       }
     }
   },
