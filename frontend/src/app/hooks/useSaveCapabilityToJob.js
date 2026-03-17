@@ -1,31 +1,10 @@
-// useSaveCapabilityToJob.js
-// Corrige captura de páginas com display:none tornando-as visíveis fora da tela
+import { useState, useEffect } from "react";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+export function useSaveCapabilityToJob(pages, CanvasPage) {
 
-const PAGE_NAME = "Capability";
-
-// Aguarda todas as <img> dentro do elemento carregarem
-async function waitForImages(el) {
-  const imgs = Array.from(el.querySelectorAll("img"));
-  if (imgs.length === 0) return;
-  await Promise.all(
-    imgs.map(
-      (img) =>
-        new Promise((resolve) => {
-          if (img.complete && img.naturalWidth > 0) { resolve(); return; }
-          img.addEventListener("load", resolve, { once: true });
-          img.addEventListener("error", resolve, { once: true });
-          setTimeout(resolve, 5000);
-        })
-    )
-  );
-}
-
-export function useSaveCapabilityToJob() {
   const [currentJobId, setCurrentJobId] = useState(null);
-  const [saveLoading, setSaveLoading] = useState(false);
-  const pageRefsMap = useRef({});
+  const [saveLoading, setSaveLoading]   = useState(false);
+
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   useEffect(() => {
@@ -34,26 +13,21 @@ export function useSaveCapabilityToJob() {
     }
   }, []);
 
-  const registerPageRef = useCallback((pageIndex, el) => {
-    if (el) {
-      pageRefsMap.current[pageIndex] = el;
-    } else {
-      delete pageRefsMap.current[pageIndex];
-    }
-  }, []);
+  const triggerSave = async (group, piece) => {
 
-  const triggerSave = useCallback(async (group, piece) => {
-    if (!currentJobId) {
-      alert("⚠️ Nenhum Job ativo! Crie um Job na página inicial primeiro.");
+    if (!CanvasPage) {
+      console.error("CanvasPage está undefined. Verifique o import.");
+      alert("Erro interno: CanvasPage não encontrado.");
       return;
     }
 
-    const indices = Object.keys(pageRefsMap.current)
-      .map(Number)
-      .sort((a, b) => a - b);
+    if (!currentJobId) {
+      alert("⚠️ Nenhum Job ativo!");
+      return;
+    }
 
-    if (indices.length === 0) {
-      alert("⚠️ Nenhuma página disponível para capturar.");
+    if (!pages || pages.length === 0) {
+      alert("⚠️ Nenhuma página para capturar.");
       return;
     }
 
@@ -62,8 +36,9 @@ export function useSaveCapabilityToJob() {
     let html2canvas;
     try {
       html2canvas = (await import("html2canvas")).default;
-    } catch {
-      alert("❌ Dependência html2canvas não encontrada.\nnpm install html2canvas");
+    } catch (err) {
+      console.error(err);
+      alert("❌ html2canvas não encontrado.");
       setSaveLoading(false);
       return;
     }
@@ -71,62 +46,61 @@ export function useSaveCapabilityToJob() {
     const results = [];
     const failures = [];
 
-    for (const pageIndex of indices) {
-      const el = pageRefsMap.current[pageIndex];
-      if (!el) continue;
-
-      // Guarda o wrapper pai (div com display:none para páginas inativas)
-      const wrapper = el.parentElement;
-      const wasHidden = wrapper && wrapper.style.display === "none";
+    for (let i = 0; i < pages.length; i++) {
 
       try {
-        // ── Torna a página visível fora da tela para o html2canvas capturar ──
-        if (wasHidden) {
-          wrapper.style.display = "block";
-          wrapper.style.position = "fixed";
-          wrapper.style.top = "-99999px";
-          wrapper.style.left = "-99999px";
-          wrapper.style.visibility = "hidden"; // visível para o layout, invisível ao user
-          wrapper.style.zIndex = "-1";
-        }
 
-        // Aguarda imagens carregarem
-        await waitForImages(el);
+        // container invisível
+        const wrapper = document.createElement("div");
+        wrapper.style.cssText = `
+          position: fixed;
+          top: -9999px;
+          left: -9999px;
+          width: 1600px;
+          background: white;
+        `;
 
-        // Dois frames para layout estabilizar com a visibilidade restaurada
-        await new Promise((r) => {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              setTimeout(r, 80);
-            });
-          });
-        });
+        document.body.appendChild(wrapper);
 
-        // Captura
-        const canvas = await html2canvas(el, {
-          scale: 3,
+        // root para render React
+        const rootEl = document.createElement("div");
+        wrapper.appendChild(rootEl);
+
+        const { createRoot } = await import("react-dom/client");
+        const React = await import("react");
+
+        const rootReact = createRoot(rootEl);
+
+        // renderiza a página
+        rootReact.render(
+          React.createElement(CanvasPage, {
+            pageIndex: i,
+            cards: pages[i].cards ?? [],
+            locked: true,
+            bgImage: pages[i].bgImage
+          })
+        );
+
+        // aguarda render
+        await new Promise((r) => setTimeout(r, 200));
+
+        // captura imagem
+        const canvas = await html2canvas(wrapper, {
+          scale: 4,
+          backgroundColor: "white",
           useCORS: true,
-          allowTaint: true,
-          backgroundColor: "#e8e8e4",
-          logging: false,
-          imageTimeout: 15000,
-          scrollX: 0,
-          scrollY: 0,
-          onclone: (clonedDoc) => {
-            clonedDoc.querySelectorAll("[class*='canvasBgHint']").forEach(n => n.remove());
-            clonedDoc.querySelectorAll("[class*='connDot']").forEach(n => n.remove());
-            clonedDoc.querySelectorAll("[class*='pageNum']").forEach(n => n.remove());
-          }
+          logging: false
         });
 
-        // Verifica dimensões antes de tentar getImageData
-        if (canvas.width === 0 || canvas.height === 0) {
-          throw new Error(`Canvas com dimensão zero (${canvas.width}×${canvas.height}) — página pode estar oculta`);
-        }
+        // limpa DOM
+        rootReact.unmount();
+        document.body.removeChild(wrapper);
 
         const imageData = canvas.toDataURL("image/png", 1.0);
-        const chartType = `CAP_page${pageIndex + 1}`;
 
+        const chartType = `CAP_${group}_${piece}_page${String(i + 1).padStart(2, "0")}_${Date.now()}`;
+
+        // envia pro backend
         const response = await fetch(
           `${API}/jobs/job/${currentJobId}/save-chart`,
           {
@@ -135,10 +109,9 @@ export function useSaveCapabilityToJob() {
             body: JSON.stringify({
               group,
               piece,
-              page_name: PAGE_NAME,
               chart_type: chartType,
-              image_data: imageData,
-            }),
+              image_data: imageData
+            })
           }
         );
 
@@ -148,36 +121,31 @@ export function useSaveCapabilityToJob() {
         }
 
         const result = await response.json();
-        results.push({ pageIndex, filename: result.filename, structure: result.structure });
+
+        results.push({
+          page: i + 1,
+          filename: result.filename
+        });
 
       } catch (err) {
-        console.error(`Erro ao salvar página ${pageIndex + 1}:`, err);
-        failures.push({ pageIndex, error: err.message });
-
-      } finally {
-        // ── Sempre restaura o estado original do wrapper ─────────────────────
-        if (wasHidden) {
-          wrapper.style.display = "block";
-          wrapper.style.position = "fixed";
-          wrapper.style.top = "-99999px";
-          wrapper.style.left = "-99999px";
-          wrapper.style.visibility = "hidden";
-          wrapper.style.zIndex = "-1";
-
-          // força recalculo do layout
-          wrapper.offsetHeight;
-        }
+        console.error(`Erro capturando página ${i + 1}:`, err);
+        failures.push({
+          page: i + 1,
+          error: err.message
+        });
       }
     }
 
     setSaveLoading(false);
 
+    // feedback final
     if (failures.length === 0) {
-      const fileList = results.map((r) => `  • ${r.structure}`).join("\n");
+      const fileList = results.map(r => `  • ${r.filename}`).join("\n");
       alert(`✅ ${results.length} página(s) salva(s)!\n\n${fileList}`);
     } else {
-      const okList = results.map((r) => `  ✓ Pág. ${r.pageIndex + 1}`).join("\n");
-      const failList = failures.map((f) => `  ✗ Pág. ${f.pageIndex + 1}: ${f.error}`).join("\n");
+      const okList   = results.map(r => `  ✓ Página ${r.page}`).join("\n");
+      const failList = failures.map(f => `  ✗ Página ${f.page}: ${f.error}`).join("\n");
+
       alert(
         `Salvas (${results.length}):\n${okList || "  nenhuma"}\n\n` +
         `Falhas (${failures.length}):\n${failList}`
@@ -185,12 +153,11 @@ export function useSaveCapabilityToJob() {
     }
 
     return { results, failures };
-  }, [currentJobId, API]);
+  };
 
   return {
-    currentJobId,
-    saveLoading,
-    registerPageRef,
     triggerSave,
+    saveLoading,
+    currentJobId
   };
 }

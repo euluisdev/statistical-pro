@@ -94,7 +94,7 @@ async def save_chart_to_job(job_id: str, data: ChartData):
         image_bytes = base64.b64decode(image_data_clean)
         
         # gera nome do arquivo com timestamp
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
         filename = f"file_{data.piece}_{timestamp}.png"
         filepath = os.path.join(group_path, filename)
         
