@@ -30,7 +30,7 @@ export default function ReportGroupCpClient({ params }) {
     openSaveModal,
     saveChart,
     closeSaveModal
-  } = useSaveChartToJob();
+  } = useSaveChartToJob("cp_conjunto");
 
   function getCurrentWeek() {
     const now = new Date();

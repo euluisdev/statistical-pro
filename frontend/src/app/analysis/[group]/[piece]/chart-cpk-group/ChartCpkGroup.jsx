@@ -33,7 +33,7 @@ export default function ReportGroupCpkClient({ params }) {
     openSaveModal,
     saveChart,
     closeSaveModal
-  } = useSaveChartToJob();
+  } = useSaveChartToJob("cpk_conjunto");
 
   function getCurrentWeek() {
     const now = new Date();

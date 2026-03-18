@@ -32,7 +32,7 @@ export default function ReportCpCpkClient({ params }) {
     openSaveModal,
     saveChart,
     closeSaveModal
-  } = useSaveChartToJob();
+  } = useSaveChartToJob("cp_cpk");
 
   function getCurrentWeek() {
     const now = new Date();

@@ -30,7 +30,7 @@ export default function ReportGroupClient({ params }) {
     openSaveModal,
     saveChart,
     closeSaveModal
-  } = useSaveChartToJob();
+  } = useSaveChartToJob("cg_group");
 
   function getCurrentWeek() {
     const now = new Date();
