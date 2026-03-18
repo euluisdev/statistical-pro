@@ -31,7 +31,7 @@ export default function ReportClient({ params }) {
     openSaveModal,
     saveChart,
     closeSaveModal
-  } = useSaveChartToJob();
+  } = useSaveChartToJob("cg");
 
   function getCurrentWeek() {
     const now = new Date();

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function useSaveChartToJob() {
+export function useSaveChartToJob(pageType = "general") {
   const [currentJobId, setCurrentJobId] = useState(null);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
@@ -22,7 +22,7 @@ export function useSaveChartToJob() {
     setShowSaveModal(true);
   };
 
-  const saveChart = async (plotRef, group, piece, chartType = "CG") => {
+  const saveChart = async (plotRef, group, piece, chartName = "CG") => {
     setSaveLoading(true);
 
     try {
@@ -32,10 +32,8 @@ export function useSaveChartToJob() {
         throw new Error("Gráfico não encontrado");
       }
 
-      //import Plotly dinamicamente
       const Plotly = (await import("plotly.js-dist-min")).default;
 
-      // Export PNG use Plotly.toImage
       const imageData = await Plotly.toImage(gd, {
         format: "png",
         width: 1600,
@@ -47,10 +45,10 @@ export function useSaveChartToJob() {
       console.log("JobID:", currentJobId);
       console.log("Group:", group);
       console.log("Piece:", piece);
-      console.log("Chart Type:", chartType);
+      console.log("Page Type:", pageType);
+      console.log("Chart Name:", chartName);
 
-      //send to backend
-      const response = await fetch( 
+      const response = await fetch(
         `${API}/jobs/job/${currentJobId}/save-chart`,
         {
           method: "POST",
@@ -58,9 +56,10 @@ export function useSaveChartToJob() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            group: group, 
-            piece: piece,
-            chart_type: chartType,
+            group,
+            piece,
+            page_type: pageType,
+            chart_name: chartName,
             image_data: imageData
           })
         }
@@ -69,14 +68,13 @@ export function useSaveChartToJob() {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Erro do servidor:", errorText);
-        throw new Error(`Erro ao salvar gráfico: ${response.status}`); 
+        throw new Error(`Erro ao salvar gráfico: ${response.status}`);
       }
- 
-      const result = await response.json();
-      console.log("Resultado:", result);
 
-      alert(`✓ Gráfico ${chartType} salvo com sucesso!\n📁 ${result.filename}`);
-       
+      const result = await response.json();
+
+      alert(`✓ Gráfico salvo com sucesso!\n📁 ${result.filename}`);
+
       setShowSaveModal(false);
       return result;
 
@@ -85,7 +83,7 @@ export function useSaveChartToJob() {
       alert(`❌ Erro ao salvar gráfico: ${err.message}`);
       throw err;
     } finally {
-      setSaveLoading(false); 
+      setSaveLoading(false);
     }
   };
 
@@ -96,7 +94,5 @@ export function useSaveChartToJob() {
     openSaveModal,
     saveChart,
     closeSaveModal: () => setShowSaveModal(false)
-  }; 
-}  
- 
- 
+  };
+}

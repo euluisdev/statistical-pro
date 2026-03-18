@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 export function useSaveControlChartToJob() {
   const [currentJobId, setCurrentJobId] = useState(null);
-  const [saveLoading, setSaveLoading]   = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   const chartRefsMap = useRef({});
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -51,12 +51,12 @@ export function useSaveControlChartToJob() {
       return;
     }
 
-    const results  = [];
+    const results = [];
     const failures = [];
 
     for (const pointId of points) {
-      const axesMap = chartRefsMap.current[pointId]; 
-      const axisEls = Object.entries(axesMap);     
+      const axesMap = chartRefsMap.current[pointId];
+      const axisEls = Object.entries(axesMap);
 
       if (axisEls.length === 0) continue;
 
@@ -91,13 +91,13 @@ export function useSaveControlChartToJob() {
 
         //print alta qualidade
         const canvas = await html2canvas(wrapper, {
-          scale:              4,     
-          useCORS:            true,
-          allowTaint:         true,
-          backgroundColor:    "white",
-          logging:            false,
-          imageTimeout:       0,
-          removeContainer:    true,
+          scale: 4,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: "white",
+          logging: false,
+          imageTimeout: 0,
+          removeContainer: true,
         });
 
         document.body.removeChild(wrapper);
@@ -113,12 +113,13 @@ export function useSaveControlChartToJob() {
         const response = await fetch(
           `${API}/jobs/job/${currentJobId}/save-chart`,
           {
-            method:  "POST",
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               group,
               piece,
-              chart_type: chartType,
+              page_type: "controlchart",
+              chart_name: chartType,
               image_data: imageData,
             }),
           }
@@ -145,8 +146,8 @@ export function useSaveControlChartToJob() {
       const fileList = results.map((r) => `  • ${r.filename}`).join("\n");
       alert(`✅ ${results.length} gráfico(s) salvo(s) com sucesso!\n\n${fileList}`);
     } else {
-      const okList   = results.map((r)   => `  ✓ ${r.pointId}`).join("\n");
-      const failList = failures.map((f)  => `  ✗ ${f.pointId}: ${f.error}`).join("\n");
+      const okList = results.map((r) => `  ✓ ${r.pointId}`).join("\n");
+      const failList = failures.map((f) => `  ✗ ${f.pointId}: ${f.error}`).join("\n");
       alert(
         `Salvos (${results.length}):\n${okList || "  nenhum"}\n\n` +
         `Falhas (${failures.length}):\n${failList}`
@@ -162,7 +163,6 @@ export function useSaveControlChartToJob() {
     registerChartRef,
     triggerSave,
   };
-}  
- 
- 
- 
+}
+
+
