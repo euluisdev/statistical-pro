@@ -110,6 +110,7 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
               group,
               piece,
               chart_type: chartType,
+              page_type: "capability",
               image_data: imageData
             })
           }

@@ -7,8 +7,8 @@ import styles from "./capability.module.css";
 import { uid, clamp } from "./Helpers";
 import CanvasPage, { CANVAS_W, CANVAS_H } from "./CanvasPage";
 import ConfigModal from "./ConfigModal";
-import { Camera, Grid3x3, LockKeyhole, LockKeyholeOpen, Settings } from "lucide-react";
-/* import { useSaveCapabilityToJob } from "@/app/hooks/useSaveCapabilityToJob"; */
+import { Camera, Grid3x3, LockKeyhole, LockKeyholeOpen, SaveAll, Settings } from "lucide-react";
+import { useSaveCapabilityToJob } from "@/app/hooks/useSaveCapabilityToJob"; 
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -26,7 +26,7 @@ export default function CapabilityPage() {
   const [savedModalSelections, setSavedModalSelections] = useState(null);
   const [savedModalNumPages, setSavedModalNumPages] = useState(null);
 
-/* const { triggerSave } = useSaveCapabilityToJob(pages, CanvasPage); */
+  const { triggerSave } = useSaveCapabilityToJob(pages, CanvasPage); 
 
   //here eu carrego layout salvo do backend ao montar
   useEffect(() => {
@@ -205,9 +205,9 @@ export default function CapabilityPage() {
             <span className={styles.toolbarSub}>{group} / {piece}</span>
           </div>
 
-{/*           <button onClick={() => triggerSave(group, piece)}>
-            Salvar Capability
-          </button> */}
+          <button className={styles.btnMenu} onClick={() => triggerSave(group, piece)}>
+            <SaveAll size={30} />
+          </button> 
 
           <div className={styles.toolbarRight}>
             <button

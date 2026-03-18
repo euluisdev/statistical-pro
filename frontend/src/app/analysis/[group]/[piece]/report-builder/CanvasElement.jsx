@@ -15,9 +15,10 @@ export default function CanvasElement({
 }) {
 
   const renderImage = () => {
-    const src = element.type === "image"
-      ? `${API}/static/jobs/${currentJobId}/${element.chart.group}/${element.chart.filename}`
-      : element.src;
+    const src =
+      element.type === "image"
+        ? `${API}${element.chart.url}`
+        : element.src;
 
     const filename = element.type === "image" ? element.chart.filename : element.filename;
 

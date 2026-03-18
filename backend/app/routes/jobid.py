@@ -22,6 +22,7 @@ class ChartData(BaseModel):
     group: str
     piece: str
     image_data: str
+    page_type: str
 
 
 @router.post("/create")
@@ -79,10 +80,10 @@ async def save_chart_to_job(job_id: str, data: ChartData):
         raise HTTPException(status_code=404, detail="JobID não encontrado")
     
     group_path = os.path.join(job_path, data.group)
-    
-    #create the folder of the group if not existir
-    if not os.path.exists(group_path):
-        os.makedirs(group_path)
+    piece_path = os.path.join(group_path, data.piece)
+    page_path = os.path.join(piece_path, data.page_type)
+
+    os.makedirs(page_path, exist_ok=True)
     
     try:
         #remove o prefixo "data:image/png;base64," se existir
@@ -96,7 +97,7 @@ async def save_chart_to_job(job_id: str, data: ChartData):
         # gera nome do arquivo com timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
         filename = f"file_{data.piece}_{timestamp}.png"
-        filepath = os.path.join(group_path, filename)
+        filepath = os.path.join(page_path, filename)
         
         #save the img
         with open(filepath, "wb") as f:
@@ -120,46 +121,60 @@ async def save_chart_to_job(job_id: str, data: ChartData):
 def list_charts_in_job(job_id: str, group: str = None):
     """
     Lista todos os gráficos salvos em um job.
-    Opcionalmente filtra por grupo.
+    Estrutura atual:
+    jobid/group/piece/page_type/files.png
     """
+
     job_path = os.path.join(BASE_PATH, job_id)
-    
+
     if not os.path.exists(job_path):
         raise HTTPException(status_code=404, detail="JobID não encontrado")
-    
+
     charts = []
-    
+
     try:
-        if group:
-            # Lista apenas do grupo específico
-            group_path = os.path.join(job_path, group)
-            if os.path.exists(group_path):
-                for file in os.listdir(group_path):
-                    if file.endswith(".png"):
-                        charts.append({
-                            "group": group,
-                            "filename": file,
-                            "path": os.path.join(group_path, file)
-                        })
-        else:
-            # Lista de todos os grupos
-            for group_name in os.listdir(job_path):
-                group_path = os.path.join(job_path, group_name)
-                if os.path.isdir(group_path):
-                    for file in os.listdir(group_path):
+
+        groups = [group] if group else os.listdir(job_path)
+
+        for group_name in groups:
+
+            group_path = os.path.join(job_path, group_name)
+
+            if not os.path.isdir(group_path):
+                continue
+
+            for piece_name in os.listdir(group_path):
+
+                piece_path = os.path.join(group_path, piece_name)
+
+                if not os.path.isdir(piece_path):
+                    continue
+
+                for page_type in os.listdir(piece_path):
+
+                    page_path = os.path.join(piece_path, page_type)
+
+                    if not os.path.isdir(page_path):
+                        continue
+
+                    for file in os.listdir(page_path):
+
                         if file.endswith(".png"):
+
                             charts.append({
                                 "group": group_name,
+                                "piece": piece_name,
+                                "page_type": page_type,
                                 "filename": file,
-                                "path": os.path.join(group_path, file)
+                                "url": f"/static/jobs/{job_id}/{group_name}/{piece_name}/{page_type}/{file}"
                             })
-        
+
         return {
             "job_id": job_id,
             "charts": charts,
             "total": len(charts)
         }
-        
+
     except Exception as e:
         raise HTTPException(
             status_code=500,

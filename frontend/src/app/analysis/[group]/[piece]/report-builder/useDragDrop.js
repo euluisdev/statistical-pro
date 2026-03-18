@@ -24,19 +24,19 @@ export function useDragDrop(canvasRef, pages, currentPageIndex, setPages) {
 
   function handleMouseDown(e, element) {
     if (e.target.tagName === "TEXTAREA") return;
-    
+
     e.stopPropagation();
-    
+
     // Não muda seleção ao arrastar
     if (!selectedElement || selectedElement !== element.id) {
       return; // Só permite arrastar se já estiver selecionado
     }
-    
+
     setIsDragging(true);
-    
+
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    
+
     setDragOffset({
       x: e.clientX - rect.left - element.x,
       y: e.clientY - rect.top - element.y
@@ -58,7 +58,7 @@ export function useDragDrop(canvasRef, pages, currentPageIndex, setPages) {
 
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    
+
     const x = e.clientX - rect.left - dragOffset.x;
     const y = e.clientY - rect.top - dragOffset.y;
 
@@ -84,7 +84,7 @@ export function useDragDrop(canvasRef, pages, currentPageIndex, setPages) {
 
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    
+
     const width = Math.max(100, e.clientX - rect.left - element.x);
     const height = Math.max(50, e.clientY - rect.top - element.y);
 
@@ -98,10 +98,10 @@ export function useDragDrop(canvasRef, pages, currentPageIndex, setPages) {
 
   function handleDrop(e) {
     e.preventDefault();
-    
+
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    
+
     const x = e.clientX - rect.left - 250;
     const y = e.clientY - rect.top - 175;
 
@@ -133,7 +133,7 @@ export function useDragDrop(canvasRef, pages, currentPageIndex, setPages) {
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
       const file = files[0];
-      
+
       if (!file.type.startsWith('image/')) {
         alert('Por favor, arraste apenas arquivos de imagem!');
         return;
@@ -163,10 +163,10 @@ export function useDragDrop(canvasRef, pages, currentPageIndex, setPages) {
     // Tenta pegar URL de imagem
     const html = e.dataTransfer.getData('text/html');
     const urlMatch = html.match(/src="([^"]+)"/);
-    
+
     if (urlMatch && urlMatch[1]) {
       const imageUrl = urlMatch[1];
-      
+
       const newElement = {
         id: `image-${Date.now()}`,
         type: "external-image",
@@ -231,6 +231,6 @@ export function useDragDrop(canvasRef, pages, currentPageIndex, setPages) {
     handleDragOver,
     handleDrop
   };
-} 
-   
- 
+}
+
+
