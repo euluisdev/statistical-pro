@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export function useSaveCapabilityToJob(pages, CanvasPage) {
 
   const [currentJobId, setCurrentJobId] = useState(null);
-  const [saveLoading, setSaveLoading]   = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -56,8 +56,10 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
           position: fixed;
           top: -9999px;
           left: -9999px;
-          width: 1600px;
           background: white;
+          display: inline-block;
+          width: fit-content;
+          height: fit-content;
         `;
 
         document.body.appendChild(wrapper);
@@ -82,14 +84,16 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
         );
 
         // aguarda render
-        await new Promise((r) => setTimeout(r, 200));
+        await new Promise((r) => setTimeout(r, 350));
 
         // captura imagem
         const canvas = await html2canvas(wrapper, {
           scale: 4,
           backgroundColor: "white",
           useCORS: true,
-          logging: false
+          logging: false,
+          width: wrapper.scrollWidth,
+          height: wrapper.scrollHeight
         });
 
         // limpa DOM
@@ -144,7 +148,7 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
       const fileList = results.map(r => `  • ${r.filename}`).join("\n");
       alert(`✅ ${results.length} página(s) salva(s)!\n\n${fileList}`);
     } else {
-      const okList   = results.map(r => `  ✓ Página ${r.page}`).join("\n");
+      const okList = results.map(r => `  ✓ Página ${r.page}`).join("\n");
       const failList = failures.map(f => `  ✗ Página ${f.page}: ${f.error}`).join("\n");
 
       alert(

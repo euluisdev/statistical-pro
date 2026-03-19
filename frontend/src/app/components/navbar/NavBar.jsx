@@ -7,7 +7,7 @@ export default function Navbar() {
       <div className="navbar-container">
         <div className="logo">
           <img src="/logo-ieb.png" alt="Logo" className="logo-icon" />
-          <span>IEB-PE</span>
+          <span>ITAESBRA-PE</span>
         </div>
         <nav className="nav-links">
           <a href="/"><House /></a>

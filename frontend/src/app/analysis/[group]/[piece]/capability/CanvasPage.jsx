@@ -5,7 +5,7 @@ import styles from "./capability.module.css";
 import PointCard from "./PointCard";
 import ConnectorOverlay from "./ConnectorOverlay";
  
-export const CANVAS_W = 960;
+export const CANVAS_W = 1165;
 export const CANVAS_H = 660;
  
 const CanvasPage = memo(function CanvasPage({
