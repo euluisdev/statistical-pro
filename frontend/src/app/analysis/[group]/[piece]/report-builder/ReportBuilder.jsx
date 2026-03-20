@@ -89,13 +89,13 @@ export default function ReportBuilder() {
     [group, piece, API]
   );
 
-  // dispara auto-save sempre que pages ou orientação mudar
+  //dispara auto-save sempre que pages ou orientação mudar
   useEffect(() => {
     if (!group || !piece) return;
     persistLayout(pages, pageOrientation, reportName);
   }, [pages, pageOrientation]);
 
-  // ── charts do job ─────────────────────────────────────────────────────────
+  //charts do job
   async function loadJobCharts(jobId) {
     setLoading(true);
     try {
@@ -111,7 +111,7 @@ export default function ReportBuilder() {
     }
   }
 
-  // ── carregar snapshot da lista ────────────────────────────────────────────
+  //carregar snapshot da lista
   function handleLoadSnapshot(data) {
     if (!data) return;
     if (data.pages) setPages(data.pages);
@@ -121,7 +121,7 @@ export default function ReportBuilder() {
     setSelectedElement(null);
   }
 
-  // ── páginas ───────────────────────────────────────────────────────────────
+  // ── páginas
   function addNewPage() {
     const newPages = [...pages, { id: Date.now(), elements: [] }];
     setPages(newPages);
@@ -147,7 +147,7 @@ export default function ReportBuilder() {
     setPages(newPages);
   }
 
-  // ── elementos ─────────────────────────────────────────────────────────────
+  //elementos
   function addTextBox() {
     const el = {
       id: `text-${Date.now()}`, type: "text",
@@ -183,7 +183,7 @@ export default function ReportBuilder() {
     setPages(newPages);
   }
 
-  // ── export PDF ────────────────────────────────────────────────────────────
+  // ── export PDF
   async function exportToPDF() {
     try {
       const html2canvas = (await import("html2canvas")).default;

@@ -96,7 +96,7 @@ async def save_chart_to_job(job_id: str, data: ChartData):
         
         # gera nome do arquivo com timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        filename = f"file_{data.piece}_{timestamp}.png"
+        filename = f"f{data.piece}_{timestamp}.png"
         filepath = os.path.join(page_path, filename)
         
         #save the img

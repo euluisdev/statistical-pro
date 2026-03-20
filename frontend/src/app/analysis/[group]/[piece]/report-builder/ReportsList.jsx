@@ -1,12 +1,8 @@
-/**
- * ReportsList
- * Modal para listar, carregar, salvar e excluir snapshots nomeados.
- */
-
 "use client";
 
 import { useEffect, useState } from "react";
 import { FileText, Trash2, FolderOpen, X, Clock, Save } from "lucide-react";
+import { useParams } from "next/navigation";
 
 function fmt(iso) {
   if (!iso) return "—";
@@ -17,10 +13,8 @@ function fmt(iso) {
 }
 
 export default function ReportsList({
-  group,
-  conjunto,
   API,
-  currentState,       // { pages, pageOrientation, reportName } para salvar snapshot
+  currentState,       // { pages, pageOrientation, reportName } para salvar 
   onLoad,             // (data) => void — chamado ao abrir um snapshot
   onClose,
 }) {
@@ -29,6 +23,10 @@ export default function ReportsList({
   const [savingName, setSavingName] = useState("");
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(null);
+
+  const params = useParams();
+  const group = params.group;
+  const conjunto = params.piece;
 
   async function fetchList() {
     setLoading(true);
