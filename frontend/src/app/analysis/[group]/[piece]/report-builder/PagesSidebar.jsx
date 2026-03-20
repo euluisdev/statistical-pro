@@ -69,7 +69,7 @@ export default function PagesSidebar({
                     onDuplicatePage(index);
                   }}
                   className={styles.pageActionButton}
-                  style={{ backgroundColor: "#edf2f7" }}
+                  style={{ backgroundColor: "#4299e1" }}
                 >
                   <Copy size={12} />
                 </button>
@@ -79,7 +79,7 @@ export default function PagesSidebar({
                     onDeletePage(index);
                   }}
                   className={styles.pageActionButton}
-                  style={{ backgroundColor: "#fed7d7" }}
+                  style={{ backgroundColor: "red" }}
                 >
                   <Trash2 size={12} />
                 </button>

@@ -52,7 +52,7 @@ export default function ReportBuilder() {
         if (d.pageOrientation) setPageOrientation(d.pageOrientation);
         if (d.reportName) setReportName(d.reportName);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [group, piece]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function ReportBuilder() {
               setTimeout(() => setSaveStatus(null), 3000);
             }
           })
-          .catch(() => {});
+          .catch(() => { });
       }, 800);
     },
     [group, piece, API]
@@ -310,6 +310,11 @@ export default function ReportBuilder() {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
+            {/* HEADER DA CAPA */}
+            {currentPageIndex === 0 && (
+              <div className={styles.coverHeader} />
+            )}
+            
             {currentPage.elements.map((element) => (
               <CanvasElement
                 key={element.id}
