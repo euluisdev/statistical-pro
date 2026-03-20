@@ -314,12 +314,13 @@
   border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
-}
+    background-color: white;
+} 
 
 .pagePreview {
   width: 100%;
   height: 120px;
-  background-color: #f7fafc;
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;

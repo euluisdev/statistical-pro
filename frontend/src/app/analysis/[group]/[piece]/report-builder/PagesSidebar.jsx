@@ -1,15 +1,15 @@
 import { Plus, Layers, Copy, Trash2 } from "lucide-react";
 import styles from "./reportbuilder.module.css";
 
-export default function PagesSidebar({ 
-  pages, 
-  currentPageIndex, 
+export default function PagesSidebar({
+  pages,
+  currentPageIndex,
   currentJobId,
   API,
   onPageSelect,
   onAddPage,
   onDuplicatePage,
-  onDeletePage 
+  onDeletePage
 }) {
   return (
     <div className={styles.pagesSidebar}>
@@ -45,23 +45,15 @@ export default function PagesSidebar({
                       top: `${el.y}px`,
                       width: `${el.width}px`,
                       height: el.type === "text" ? `${el.height}px` : "auto",
-                      backgroundColor: el.type === "text" ? "#e2e8f0" : "transparent"
+                      backgroundColor: el.type === "text" ? "#e2e8f0" : "transparent",
                     }}
                   >
-                    {el.type === "image" && (
+                    {(el.type === "image" || el.type === "external-image") && (
                       <img
-                        src={`${API}/static/jobs/${currentJobId}/${el.chart.group}/${el.chart.filename}`}
+                        src={el.type === "image" ? `${API}${el.chart.url}` : el.src}
                         alt=""
-                        style={{ width: "100%", height: "auto" }}
-                        onError={(e) => e.target.style.display = 'none'}
-                      />
-                    )}
-                    {el.type === "external-image" && (
-                      <img
-                        src={el.src}
-                        alt=""
-                        style={{ width: "100%", height: "auto" }}
-                        onError={(e) => e.target.style.display = 'none'}
+                        style={{ width: "100%", height: "auto", display: "block" }}
+                        onError={(e) => (e.target.style.display = "none")}
                       />
                     )}
                   </div>

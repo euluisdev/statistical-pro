@@ -1,0 +1,47 @@
+{
+  "pages": [
+    {
+      "id": 1,
+      "elements": [
+        {
+          "id": "image-1773970607717",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "cg",
+            "filename": "file_53327786_20260319_193705_692707.png",
+            "url": "/static/jobs/721f11ae-1983-4ebb-b760-8f013ac7c12a/CONJUNTO_5980/53327786/cg/file_53327786_20260319_193705_692707.png"
+          },
+          "x": 33,
+          "y": 39,
+          "width": 768,
+          "height": 448
+        }
+      ]
+    },
+    {
+      "id": 1773970646753,
+      "elements": [
+        {
+          "id": "image-1773970649021",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "cp_cpk",
+            "filename": "file_53327786_20260319_193734_174790.png",
+            "url": "/static/jobs/721f11ae-1983-4ebb-b760-8f013ac7c12a/CONJUNTO_5980/53327786/cp_cpk/file_53327786_20260319_193734_174790.png"
+          },
+          "x": 51,
+          "y": 61,
+          "width": 968.8194274902344,
+          "height": 50
+        }
+      ]
+    }
+  ],
+  "pageOrientation": "landscape",
+  "reportName": "WEEK01",
+  "updated_at": "2026-03-20T02:38:19.216817"
+}

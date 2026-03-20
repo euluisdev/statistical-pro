@@ -1,0 +1,67 @@
+{
+  "pages": [
+    {
+      "id": 1,
+      "elements": [
+        {
+          "id": "image-1773964698202",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "cg",
+            "filename": "file_53327786_20260319_193705_692707.png",
+            "url": "/static/jobs/721f11ae-1983-4ebb-b760-8f013ac7c12a/CONJUNTO_5980/53327786/cg/file_53327786_20260319_193705_692707.png"
+          },
+          "x": 243,
+          "y": 75,
+          "width": 500,
+          "height": 350
+        }
+      ]
+    },
+    {
+      "id": 1773964778304,
+      "elements": [
+        {
+          "id": "image-1773964780820",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "cp_cpk",
+            "filename": "file_53327786_20260319_193734_174790.png",
+            "url": "/static/jobs/721f11ae-1983-4ebb-b760-8f013ac7c12a/CONJUNTO_5980/53327786/cp_cpk/file_53327786_20260319_193734_174790.png"
+          },
+          "x": 115,
+          "y": 65,
+          "width": 500,
+          "height": 350
+        }
+      ]
+    },
+    {
+      "id": 1773964785392,
+      "elements": [
+        {
+          "id": "image-1773964787156",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "cp_cpk",
+            "filename": "file_53327786_20260319_193736_250172.png",
+            "url": "/static/jobs/721f11ae-1983-4ebb-b760-8f013ac7c12a/CONJUNTO_5980/53327786/cp_cpk/file_53327786_20260319_193736_250172.png"
+          },
+          "x": 119,
+          "y": 81,
+          "width": 670,
+          "height": 50
+        }
+      ]
+    }
+  ],
+  "pageOrientation": "landscape",
+  "reportName": "week 02",
+  "updated_at": "2026-03-20T00:00:18.179210"
+}

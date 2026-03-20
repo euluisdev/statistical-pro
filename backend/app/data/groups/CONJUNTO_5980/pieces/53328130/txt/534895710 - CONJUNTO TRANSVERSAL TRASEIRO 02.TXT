@@ -1,0 +1,462 @@
+#####################################################################
+ DATA: 26/11/2025
+ HORA: 15:19:11
+#####################################################################
+DIM LOC22= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_2  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2552.39    2552.38       0.00       0.70       0.70 ----#----
+Y      -220.26    -219.93       0.33       0.70       0.70 ------#--
+ 
+DIM LOC23= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_1  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2552.39    2551.97      -0.42       0.70       0.70 -#-------
+Y       220.26     220.48       0.22       0.70       0.70 -----#---
+ 
+DIM LOC24= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_5  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2698.73    2698.67      -0.06       1.00       1.00 ----#----
+Y       -34.28     -34.30      -0.02       1.00       1.00 ----#----
+ 
+DIM LOC25= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_6  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2698.73    2698.74       0.01       1.00       1.00 ----#----
+Y         0.00      -0.02      -0.02       1.00       1.00 ----#----
+ 
+DIM LOC26= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_7  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2698.73    2698.80       0.07       1.00       1.00 ----#----
+Y        34.29      34.25      -0.04       1.00       1.00 ----#----
+ 
+DIM LOC27= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_13  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2633.89    2632.33      -1.55       0.70       0.70 <--------
+Y      -137.00    -136.74       0.26       0.70       0.70 ------#--
+ 
+DIM LOC28= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_12  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2633.89    2633.01      -0.88       0.70       0.70 <--------
+Y       137.00     136.72      -0.28       0.70       0.70 --#------
+ 
+DIM LOC29= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_10  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -141.23    -141.09       0.14       1.00       1.00 -----#---
+Z       150.61     150.38      -0.23       1.00       1.00 ---#-----
+ 
+DIM LOC30= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_11  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -212.30    -212.14       0.16       1.00       1.00 -----#---
+Z       145.38     145.38       0.00       1.00       1.00 ----#----
+ 
+DIM LOC31= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_9  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y       -23.30     -23.27       0.03       1.00       1.00 ----#----
+Z       145.38     145.25      -0.13       1.00       1.00 ---#-----
+ 
+DIM LOC32= LOCALIZAÇÃO DE CÍRCULO CÍRCULO_8  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y       141.23     141.19      -0.03       1.00       1.00 ----#----
+Z       150.61     150.45      -0.16       1.00       1.00 ---#-----
+ 
+DIM LOC33= LOCALIZAÇÃO DE SLOT OBLONGO_2  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2472.16    2471.93      -0.23       0.60       0.60 --#------
+Y      -215.26    -215.16       0.09       0.60       0.60 -----#---
+ 
+DIM LOC34= LOCALIZAÇÃO DE SLOT OBLONGO_1  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2472.16    2471.47      -0.69       0.60       0.60 <--------
+Y       215.26     215.34       0.09       0.60       0.60 -----#---
+ 
+DIM LOC1= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_11  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.50      -0.40       0.70       0.70 -#-------
+ 
+DIM LOC37= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_12  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.48      -0.42       0.70       0.70 -#-------
+ 
+DIM LOC38= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_13  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       135.40     136.48       1.08       0.70       0.70 -------->
+ 
+DIM LOC39= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_14  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.90       0.00       0.70       0.70 ----#----
+ 
+DIM LOC35= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_19  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.50      -0.40       0.70       0.70 -#-------
+ 
+DIM LOC36= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_20  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.58      -0.32       0.70       0.70 --#------
+ 
+DIM LOC64= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_45  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.44      -0.46       0.70       0.70 -#-------
+ 
+DIM LOC65= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_46  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.47      -0.43       0.70       0.70 -#-------
+ 
+DIM LOC62= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_39  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       135.40     136.47       1.07       0.70       0.70 -------->
+ 
+DIM LOC63= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_40  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.53      -0.37       0.70       0.70 --#------
+ 
+DIM LOC60= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_37  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     137.10       0.20       0.70       0.70 -----#---
+ 
+DIM LOC61= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_38  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       136.90     136.90       0.00       0.70       0.70 ----#----
+ 
+DIM LOC42= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_15  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.21       0.78       0.70       0.70 -------->
+ 
+DIM LOC41= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_16  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     117.99       0.56       0.70       0.70 --------#
+ 
+DIM LOC40= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_17  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.90       1.47       0.70       0.70 -------->
+ 
+DIM LOC57= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_18  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.74       1.31       0.70       0.70 -------->
+ 
+DIM LOC43= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_21  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.07       0.64       0.70       0.70 --------#
+ 
+DIM LOC44= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_22  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     117.66       0.23       0.70       0.70 -----#---
+ 
+DIM LOC58= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_35  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.17       0.74       0.70       0.70 -------->
+ 
+DIM LOC59= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_36  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.19       0.76       0.70       0.70 -------->
+ 
+DIM LOC76= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_64  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.21       0.78       0.70       0.70 -------->
+ 
+DIM LOC77= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_65  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     117.73       0.30       0.70       0.70 ------#--
+ 
+DIM LOC74= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_66  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     117.65       0.22       0.70       0.70 -----#---
+ 
+DIM LOC73= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_67  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.24       0.81       0.70       0.70 -------->
+ 
+DIM LOC71= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_68  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     117.78       0.35       0.70       0.70 ------#--
+ 
+DIM LOC70= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_69  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.38       0.95       0.70       0.70 -------->
+ 
+DIM LOC72= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_70  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     118.20       0.77       0.70       0.70 -------->
+ 
+DIM LOC75= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_71  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       117.43     117.68       0.25       0.70       0.70 ------#--
+ 
+DIM LOC45= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_23  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     177.16       0.26       0.70       0.70 ------#--
+ 
+DIM LOC46= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_24  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     176.85      -0.05       0.70       0.70 ----#----
+ 
+DIM LOC47= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_25  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     176.84      -0.06       0.70       0.70 ----#----
+ 
+DIM LOC48= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_26  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     177.08       0.18       0.70       0.70 -----#---
+ 
+DIM LOC49= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_27  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     176.67      -0.23       0.70       0.70 ---#-----
+ 
+DIM LOC50= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_28  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     177.02       0.12       0.70       0.70 -----#---
+ 
+DIM LOC51= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_29  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     176.69      -0.21       0.70       0.70 ---#-----
+ 
+DIM LOC52= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_30  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     177.02       0.12       0.70       0.70 -----#---
+ 
+DIM LOC53= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_31  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     177.13       0.23       0.70       0.70 -----#---
+ 
+DIM LOC54= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_32  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     176.76      -0.14       0.70       0.70 ---#-----
+ 
+DIM LOC55= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_33  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     176.77      -0.13       0.70       0.70 ---#-----
+ 
+DIM LOC56= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_34  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     177.09       0.19       0.70       0.70 -----#---
+ 
+DIM LOC66= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_41  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     176.14      -0.76       0.70       0.70 <--------
+ 
+DIM LOC67= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_42  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.14       0.14       0.70       0.70 -----#---
+ 
+DIM LOC68= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_43  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Z       176.90     176.70      -0.20       0.70       0.70 ---#-----
+ 
+DIM LOC69= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_44  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00      -0.67      -0.67       0.70       0.70 #--------
+ 
+DIM LOC78= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_73  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2660.74    2660.81       0.06       0.70       0.70 ----#----
+ 
+DIM LOC79= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_60  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2661.20    2661.12      -0.08       0.70       0.70 ---#-----
+ 
+DIM LOC80= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_59  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2666.72    2667.03       0.31       0.70       0.70 ------#--
+ 
+DIM LOC81= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_61  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2667.78    2668.13       0.35       0.70       0.70 ------#--
+ 
+DIM LOC82= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_62  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2660.99    2660.41      -0.57       0.70       0.70 #--------
+ 
+DIM LOC83= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_63  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2667.57    2667.87       0.30       0.70       0.70 ------#--
+ 
+DIM LOC84= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_56  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2778.52    2778.12      -0.40       0.70       0.70 -#-------
+ 
+DIM LOC85= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_57  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2785.31    2786.26       0.94       0.70       0.70 -------->
+ 
+DIM LOC86= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_55  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2784.90    2785.55       0.65       0.70       0.70 --------#
+ 
+DIM LOC87= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_54  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2778.52    2778.48      -0.04       0.70       0.70 ----#----
+ 
+DIM LOC88= LOCALIZAÇÃO DE PONTO PTO DE_SUPERFICIE_52  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2778.73    2778.48      -0.25       0.70       0.70 --#------
+ 
+DIM LOC89= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_53  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2784.68    2785.41       0.73       0.70       0.70 -------->
+ 
+DIM LOC90= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_51  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2785.33    2786.12       0.80       0.70       0.70 -------->
+ 
+DIM LOC91= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_50  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2778.73    2778.37      -0.36       0.70       0.70 --#------
+ 
+DIM LOC92= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_48  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2778.73    2778.51      -0.22       0.70       0.70 ---#-----
+ 
+DIM LOC93= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_49  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2785.11    2785.88       0.77       0.70       0.70 -------->
+ 
+DIM LOC94= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_47  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2785.06    2785.83       0.76       0.70       0.70 -------->
+ 
+DIM LOC95= LOCALIZAÇÃO DE PONTO PTO_DE_SUPERFICIE_72  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2778.82    2778.62      -0.20       0.70       0.70 ---#-----
+DIM LOC96= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_1  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2630.59    2629.24      -1.35       1.20       1.20 <--------
+ 
+DIM LOC97= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_8  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2815.29    2817.43       2.14       1.20       1.20 -------->
+ 
+DIM LOC98= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_9  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2815.29    2817.63       2.33       1.20       1.20 -------->
+ 
+DIM LOC99= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_10  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2815.29    2817.48       2.19       1.20       1.20 -------->
+ 
+DIM LOC100= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_11  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2815.29    2817.82       2.53       1.20       1.20 -------->
+ 
+DIM LOC101= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_12  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2815.29    2818.15       2.86       1.20       1.20 -------->
+ 
+DIM LOC102= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_13  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2815.29    2818.24       2.95       1.20       1.20 -------->
+ 
+DIM LOC103= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_20  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2630.59    2629.04      -1.55       1.20       1.20 <--------
+ 
+DIM LOC104= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_21  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2604.70    2603.24      -1.46       1.20       1.20 <--------
+ 
+DIM LOC111= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_36  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2630.59    2629.15      -1.44       1.20       1.20 <--------
+ 
+DIM LOC138= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_37  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       1.97       1.97       1.20       1.20 -------->
+ 
+DIM LOC132= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_2  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.02       0.02       1.20       1.20 ----#----
+ 
+DIM LOC133= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_3  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.07       0.07       1.20       1.20 ----#----
+ 
+DIM LOC134= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_4  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.07       0.07       1.20       1.20 ----#----
+ 
+DIM LOC135= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_5  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.23       0.23       1.20       1.20 -----#---
+ 
+DIM LOC136= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_6  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.30       0.30       1.20       1.20 -----#---
+DIM LOC137= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_7  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+T         0.00       0.35       0.35       1.20       1.20 -----#---
+ 
+DIM LOC112= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_14  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -306.51    -306.27       0.24       1.00       1.00 -----#---
+ 
+DIM LOC113= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_15  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -306.51    -306.31       0.21       1.00       1.00 -----#---
+ 
+DIM LOC114= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_16  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -306.51    -306.37       0.14       1.00       1.00 -----#---
+ 
+DIM LOC115= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_17  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -306.51    -306.40       0.12       1.00       1.00 -----#---
+ 
+DIM LOC116= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_18  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -306.51    -306.47       0.04       1.00       1.00 ----#----
+ 
+DIM LOC117= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_19  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -306.51    -306.48       0.04       1.00       1.00 ----#----
+ 
+DIM LOC108= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_33  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2432.95    2432.66      -0.29       1.20       1.20 ---#-----
+ 
+DIM LOC109= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_31  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2432.95    2432.43      -0.52       1.20       1.20 --#------
+ 
+DIM LOC110= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_32  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2432.95    2432.76      -0.19       1.20       1.20 ---#-----
+ 
+DIM LOC118= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_29  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -159.81    -160.88      -1.07       1.20       1.20 #--------
+ 
+DIM LOC119= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_30  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -159.81    -161.04      -1.23       1.20       1.20 <--------
+ 
+DIM LOC120= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_34  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -280.71    -279.95       0.76       1.20       1.20 -------#-
+ 
+DIM LOC121= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_35  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y      -280.71    -279.98       0.72       1.20       1.20 -------#-
+ 
+DIM LOC122= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_22  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y       159.81     161.07       1.26       1.20       1.20 -------->
+ 
+DIM LOC123= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_23  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y       159.81     161.53       1.73       1.20       1.20 -------->
+DIM LOC107= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_24  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2432.95    2432.53      -0.42       1.20       1.20 --#------
+ 
+DIM LOC105= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_25  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2432.95    2432.39      -0.56       1.20       1.20 --#------
+ 
+DIM LOC106= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_26  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+X      2432.95    2432.85      -0.10       1.20       1.20 ----#----
+ 
+DIM LOC124= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_27  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y       280.71     280.01      -0.70       1.20       1.20 -#-------
+ 
+DIM LOC125= LOCALIZAÇÃO DE PONTO PTO_DE_BORDA_APARADA_28  DP=0.00
+AX    NOMINAL        MED       DESV       TOL+       TOL-
+Y       280.71     280.09      -0.61       1.20       1.20 --#------
+ 
