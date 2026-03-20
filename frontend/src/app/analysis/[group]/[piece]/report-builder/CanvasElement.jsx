@@ -41,8 +41,9 @@ export default function CanvasElement({
     );
   };
 
-  const renderText = () => (
-    <>
+const renderText = () => (
+  <>
+    {isSelected ? (
       <textarea
         value={element.content}
         onChange={(e) => onUpdate(element.id, { content: e.target.value })}
@@ -53,12 +54,32 @@ export default function CanvasElement({
           fontWeight: element.fontWeight,
           fontStyle: element.fontStyle,
           textDecoration: element.textDecoration,
-          color: element.color
+          color: element.color,
+          lineHeight: "1.2"
         }}
       />
-      {isSelected && renderActions()}
-    </>
-  );
+    ) : (
+      <div
+        className={styles.textRender}
+        style={{
+          fontSize: `${element.fontSize}px`,
+          fontWeight: element.fontWeight,
+          fontStyle: element.fontStyle,
+          textDecoration: element.textDecoration,
+          color: element.color,
+          lineHeight: "1.2",
+          whiteSpace: "pre-wrap",
+          width: "100%",
+          height: "100%"
+        }}
+      >
+        {element.content}
+      </div>
+    )}
+
+    {isSelected && renderActions()}
+  </>
+);
 
   const renderActions = () => (
     <>

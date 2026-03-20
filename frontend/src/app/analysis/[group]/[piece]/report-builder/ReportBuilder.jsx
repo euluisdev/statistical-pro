@@ -314,7 +314,7 @@ export default function ReportBuilder() {
             {currentPageIndex === 0 && (
               <div className={styles.coverHeader} />
             )}
-            
+
             {currentPage.elements.map((element) => (
               <CanvasElement
                 key={element.id}

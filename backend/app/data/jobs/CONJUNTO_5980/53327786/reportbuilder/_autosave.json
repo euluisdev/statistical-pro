@@ -28,13 +28,13 @@
           "color": "#000000"
         },
         {
-          "id": "text-1774021097389",
+          "id": "text-1774024685667",
           "type": "text",
           "content": "GEOMETRIA - WEEK 05",
-          "x": 302,
-          "y": 518,
-          "width": 536.265625,
-          "height": 84,
+          "x": 299,
+          "y": 560,
+          "width": 534.265625,
+          "height": 69,
           "fontSize": 48,
           "fontWeight": "normal",
           "fontStyle": "normal",
@@ -180,5 +180,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "LAYOUT-DEFAULT",
-  "updated_at": "2026-03-20T16:21:12.256578"
+  "updated_at": "2026-03-20T16:43:11.677253"
 }
