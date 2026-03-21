@@ -309,7 +309,7 @@ function prepareChartData(reportsData, group, piecesCount) {
         ticksuffix: "%",
         tickfont: { size: 14, color: "black", weight: "bold" }, 
         dtick: 10,
-        gridcolor: "#e2e8f0",
+        gridcolor: "#e2e8f0", 
       },
       legend: {
         x: 0.5,
