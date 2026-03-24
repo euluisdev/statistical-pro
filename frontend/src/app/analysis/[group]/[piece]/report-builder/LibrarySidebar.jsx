@@ -11,8 +11,8 @@ export default function LibrarySidebar({
   return (
     <div className={styles.sidebar}>
       <div className={styles.sidebarHeader}>
-        <h3 className={styles.sidebarTitle}>📚 Biblioteca de Assets</h3>
-        <p className={styles.sidebarSubtitle}>Job: {currentJobId?.slice(0, 8)}...</p>
+        <h3 className={styles.sidebarTitle}>📚 Biblioteca de Imagens</h3>
+        <p className={styles.sidebarSubtitle}>Job: {currentJobId?.slice(0, 30)}...</p>
       </div>
 
       <div className={styles.librarySection}>

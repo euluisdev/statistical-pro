@@ -152,7 +152,7 @@ export default function ReportsList({
   );
 }
 
-// ── styles ────────────────────────────────────────────────────────────────────
+//styles
 const overlay = {
   position: "fixed", inset: 0,
   background: "rgba(0,0,0,0.45)",

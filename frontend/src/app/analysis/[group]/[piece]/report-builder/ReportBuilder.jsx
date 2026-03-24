@@ -41,7 +41,7 @@ export default function ReportBuilder() {
     handleDrop,
   } = useDragDrop(canvasRef, pages, currentPageIndex, setPages);
 
-  // ── 1. carrega layout ao montar — mesmo padrão do useEffect das outras pages
+  // ── 1. carrega layout ao montar
   useEffect(() => {
     if (!group || !piece) return;
     fetch(`${API}/reportbuilder/${group}/${piece}/layout`)
@@ -63,7 +63,7 @@ export default function ReportBuilder() {
     }
   }, []);
 
-  // ── 2. auto-save com debounce — exatamente como persistLayout das outras pages
+  //2 auto-save com debounce
   const persistLayout = useCallback(
     (newPages, newOrientation, newName) => {
       clearTimeout(saveTimer.current);
@@ -154,7 +154,7 @@ export default function ReportBuilder() {
       content: "Digite aqui...",
       x: 100, y: 100, width: 300, height: 100,
       fontSize: 16, fontWeight: "normal", fontStyle: "normal",
-      textDecoration: "none", color: "#000000",
+      textDecoration: "none", color: "#000000", textAlign: "left",
     };
     const newPages = [...pages];
     newPages[currentPageIndex].elements.push(el);
@@ -183,7 +183,7 @@ export default function ReportBuilder() {
     setPages(newPages);
   }
 
-  // ── export PDF
+  //export PDF
   async function exportToPDF() {
     try {
       const html2canvas = (await import("html2canvas")).default;
@@ -293,7 +293,7 @@ export default function ReportBuilder() {
 
           <button onClick={exportToPDF} className={styles.exportButton}>
             <Download size={16} />
-            Exportar PDF
+            PDF
           </button>
         </div>
 

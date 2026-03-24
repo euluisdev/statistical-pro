@@ -40,6 +40,21 @@
           "fontStyle": "normal",
           "textDecoration": "none",
           "color": "#000000"
+        },
+        {
+          "id": "text-1774317778559",
+          "type": "text",
+          "content": "",
+          "x": 100,
+          "y": 100,
+          "width": 300,
+          "height": 100,
+          "fontSize": 16,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#000000",
+          "textAlign": "center"
         }
       ]
     },
@@ -180,5 +195,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "LAYOUT-DEFAULT-show",
-  "updated_at": "2026-03-21T02:35:55.198699"
+  "updated_at": "2026-03-24T02:19:29.058957"
 }

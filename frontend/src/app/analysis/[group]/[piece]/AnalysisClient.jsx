@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowBigDown, ArrowBigRight, ChartColumnBig, ChartColumnStacked, ChartColumn, House, FileChartColumn, FileChartColumnIncreasing, FileChartLine, ChartNoAxesCombined } from "lucide-react";
+import { ArrowBigDown, ArrowBigRight, ChartColumnBig, ChartColumnStacked, ChartColumn, House, FileChartColumn, FileChartColumnIncreasing, FileChartLine, ChartNoAxesCombined, TrendingUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import styles from "./analysis.module.css";
@@ -165,7 +165,7 @@ export default function AnalysisPage() {
             <button
               onClick={generateAndCalculate}
               disabled={isProcessing}
-              className={styles.btnMenu} 
+              className={styles.btnMenu}
               title="Calcular dados"
             >
               {generating && "⏳ Gerando..."}
@@ -179,7 +179,7 @@ export default function AnalysisPage() {
             <button className={styles.btnMenu} title="CG" >
               <ChartColumnStacked size={30} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cg`)} />
             </button>
-            <button className={styles.btnMenu} title="Cp/Cpk" >
+            <button className={styles.btnMenu} title="Cp | Cpk" >
               <ChartColumnBig size={30} onClick={() => router.push(`/analysis/${group}/${piece}/chart-cp-cpk`)} />
             </button>
             <button className={styles.btnMenu} title="CG Conjunto" >
@@ -193,6 +193,9 @@ export default function AnalysisPage() {
             </button>
             <button className={styles.btnMenu} title="Control Chart" >
               <ChartNoAxesCombined size={30} onClick={() => router.push(`/analysis/${group}/${piece}/control-chart`)} />
+            </button>
+            <button className={styles.btnMenu} title="Capability" >
+              <TrendingUpDown size={30} onClick={() => router.push(`/analysis/${group}/${piece}/capability`)} />
             </button>
 
             <button className={styles.btnMenu} title="Report" >
@@ -214,8 +217,8 @@ export default function AnalysisPage() {
                       setSelectedWeek(f.week);
                     }}
                     className={`${styles.historyBtn} ${f.year === selectedYear && f.week === selectedWeek
-                        ? styles.active
-                        : ''
+                      ? styles.active
+                      : ''
                       }`}
                   >
                     {f.year} - W{f.week}
