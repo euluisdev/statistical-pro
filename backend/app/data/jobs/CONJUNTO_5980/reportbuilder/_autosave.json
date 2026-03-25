@@ -1,0 +1,87 @@
+{
+  "pages": [
+    {
+      "id": 1,
+      "elements": [
+        {
+          "id": "text-1774405673644",
+          "type": "text",
+          "content": "GEOMETRIA - WEEK 05",
+          "x": 276,
+          "y": 517,
+          "width": 572.8194274902344,
+          "height": 94,
+          "fontSize": 48,
+          "fontWeight": "bold",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#000000",
+          "textAlign": "left"
+        }
+      ]
+    },
+    {
+      "id": 1774405741321,
+      "elements": [
+        {
+          "id": "image-1774405743251",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "capability",
+            "filename": "f53327786_20260324_151343_209859.png",
+            "url": "/static/jobs/a8152f14-7b52-4f29-8d05-e85ae53599d3/CONJUNTO_5980/53327786/capability/f53327786_20260324_151343_209859.png"
+          },
+          "x": 82.81942749023438,
+          "y": 226,
+          "width": 970,
+          "height": 394
+        }
+      ]
+    },
+    {
+      "id": 1774405905837,
+      "elements": [
+        {
+          "id": "image-1774405926125",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53328130",
+            "page_type": "controlchart",
+            "filename": "f53328130_20260324_233131_921174.png",
+            "url": "/static/jobs/a8152f14-7b52-4f29-8d05-e85ae53599d3/CONJUNTO_5980/53328130/controlchart/f53328130_20260324_233131_921174.png"
+          },
+          "x": 31.819427490234375,
+          "y": 159,
+          "width": 979,
+          "height": 358
+        }
+      ]
+    },
+    {
+      "id": 1774405937597,
+      "elements": [
+        {
+          "id": "image-1774405947213",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "controlchart",
+            "filename": "f53327786_20260324_151322_093231.png",
+            "url": "/static/jobs/a8152f14-7b52-4f29-8d05-e85ae53599d3/CONJUNTO_5980/53327786/controlchart/f53327786_20260324_151322_093231.png"
+          },
+          "x": 175.81942749023438,
+          "y": 185,
+          "width": 751,
+          "height": 529
+        }
+      ]
+    }
+  ],
+  "pageOrientation": "landscape",
+  "reportName": "WEEK-05",
+  "updated_at": "2026-03-25T02:32:32.334387"
+}

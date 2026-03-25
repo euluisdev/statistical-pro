@@ -1,0 +1,57 @@
+{
+  "pages": [
+    {
+      "cards": [
+        {
+          "id": "gs6uc0x",
+          "point": "CÍRCULO_2",
+          "axes": [
+            {
+              "axis": "X",
+              "pageIdx": 0,
+              "cp": 2.19,
+              "cpk": 2.12,
+              "xmed": -0.023,
+              "range": 0.64,
+              "tol_plus": 0.7,
+              "tol_minus": -0.7,
+              "tolerance": "-0,70|+0,70",
+              "nominal": 2552.39,
+              "cp_color": "green",
+              "cpk_color": "green"
+            },
+            {
+              "axis": "Y",
+              "pageIdx": 0,
+              "cp": 2.06,
+              "cpk": 1.8,
+              "xmed": 0.089,
+              "range": 0.68,
+              "tol_plus": 0.7,
+              "tol_minus": -0.7,
+              "tolerance": "-0,70|+0,70",
+              "nominal": -220.26,
+              "cp_color": "green",
+              "cpk_color": "green"
+            }
+          ],
+          "x": 40,
+          "y": 40,
+          "connectorX": 170,
+          "connectorY": 0
+        }
+      ],
+      "bgImage": null
+    }
+  ],
+  "locked": false,
+  "modalSelections": {
+    "CÍRCULO_2": {
+      "axes": {
+        "X": 0,
+        "Y": 0
+      }
+    }
+  },
+  "modalNumPages": 1
+}

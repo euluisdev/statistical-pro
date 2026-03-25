@@ -44,7 +44,7 @@ export default function ReportBuilder() {
   // ── 1. carrega layout ao montar
   useEffect(() => {
     if (!group || !piece) return;
-    fetch(`${API}/reportbuilder/${group}/${piece}/layout`)
+    fetch(`${API}/reportbuilder/${group}/layout`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
         if (!d || !d.pages) return; // {} = canvas vazio, ignora
@@ -68,7 +68,7 @@ export default function ReportBuilder() {
     (newPages, newOrientation, newName) => {
       clearTimeout(saveTimer.current);
       saveTimer.current = setTimeout(() => {
-        fetch(`${API}/reportbuilder/${group}/${piece}/layout`, {
+        fetch(`${API}/reportbuilder/${group}/layout`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

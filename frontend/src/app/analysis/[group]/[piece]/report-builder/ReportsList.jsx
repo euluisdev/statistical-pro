@@ -12,26 +12,20 @@ function fmt(iso) {
   });
 }
 
-export default function ReportsList({
-  API,
-  currentState,       // { pages, pageOrientation, reportName } para salvar 
-  onLoad,             // (data) => void — chamado ao abrir um snapshot
-  onClose,
-}) {
+export default function ReportsList({ API, currentState, onLoad, onClose }) {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [savingName, setSavingName] = useState("");
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(null);
 
-  const params = useParams();
-  const group = params.group;
-  const conjunto = params.piece;
+  const { group } = useParams(); // [group] da rota analysis/[group]/[piece]
+  // piece é ignorado aqui — o relatório pertence ao conjunto inteiro
 
   async function fetchList() {
     setLoading(true);
     try {
-      const r = await fetch(`${API}/reportbuilder/${group}/${conjunto}/list`);
+      const r = await fetch(`${API}/reportbuilder/${group}/list`);
       if (r.ok) setReports(await r.json());
     } finally {
       setLoading(false);
@@ -46,7 +40,7 @@ export default function ReportsList({
     setSaving(true);
     try {
       await fetch(
-        `${API}/reportbuilder/${group}/${conjunto}/list/${encodeURIComponent(name)}`,
+        `${API}/reportbuilder/${group}/list/${encodeURIComponent(name)}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -64,7 +58,7 @@ export default function ReportsList({
     if (!confirm(`Excluir "${name}"?`)) return;
     setDeleting(name);
     await fetch(
-      `${API}/reportbuilder/${group}/${conjunto}/list/${encodeURIComponent(name)}`,
+      `${API}/reportbuilder/${group}/list/${encodeURIComponent(name)}`,
       { method: "DELETE" }
     );
     setDeleting(null);
@@ -73,7 +67,7 @@ export default function ReportsList({
 
   async function handleLoad(name) {
     const r = await fetch(
-      `${API}/reportbuilder/${group}/${conjunto}/list/${encodeURIComponent(name)}`
+      `${API}/reportbuilder/${group}/list/${encodeURIComponent(name)}`
     );
     if (!r.ok) return alert("Erro ao carregar.");
     const data = await r.json();
@@ -84,7 +78,6 @@ export default function ReportsList({
   return (
     <div style={overlay}>
       <div style={modal}>
-        {/* header */}
         <div style={header}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
             <FileText size={20} color="#4f6ef7" />
@@ -95,7 +88,6 @@ export default function ReportsList({
           <button onClick={onClose} style={iconBtn}><X size={18} /></button>
         </div>
 
-        {/* salvar novo snapshot */}
         <div style={saveRow}>
           <input
             value={savingName}
@@ -114,7 +106,6 @@ export default function ReportsList({
           </button>
         </div>
 
-        {/* lista */}
         <div style={body}>
           {loading && <p style={hint}>Carregando…</p>}
           {!loading && reports.length === 0 && (
@@ -152,7 +143,6 @@ export default function ReportsList({
   );
 }
 
-//styles
 const overlay = {
   position: "fixed", inset: 0,
   background: "rgba(0,0,0,0.45)",

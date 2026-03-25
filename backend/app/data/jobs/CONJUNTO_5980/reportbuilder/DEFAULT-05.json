@@ -1,0 +1,47 @@
+{
+  "pages": [
+    {
+      "id": 1,
+      "elements": [
+        {
+          "id": "text-1774405673644",
+          "type": "text",
+          "content": "GEOMETRIA - WEEK 05",
+          "x": 276,
+          "y": 517,
+          "width": 572.8194274902344,
+          "height": 94,
+          "fontSize": 48,
+          "fontWeight": "bold",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#000000",
+          "textAlign": "left"
+        }
+      ]
+    },
+    {
+      "id": 1774405741321,
+      "elements": [
+        {
+          "id": "image-1774405743251",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "capability",
+            "filename": "f53327786_20260324_151343_209859.png",
+            "url": "/static/jobs/a8152f14-7b52-4f29-8d05-e85ae53599d3/CONJUNTO_5980/53327786/capability/f53327786_20260324_151343_209859.png"
+          },
+          "x": 82.81942749023438,
+          "y": 226,
+          "width": 970,
+          "height": 394
+        }
+      ]
+    }
+  ],
+  "pageOrientation": "landscape",
+  "reportName": "WEEK-05",
+  "updated_at": "2026-03-25T02:29:43.562282"
+}
