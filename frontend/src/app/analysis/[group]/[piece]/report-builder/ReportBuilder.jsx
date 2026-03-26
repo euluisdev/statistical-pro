@@ -12,6 +12,9 @@ import CanvasElement from "./CanvasElement";
 import ReportsList from "./ReportsList";
 import { useDragDrop } from "./useDragDrop";
 
+import GridSelector from "./GridSelector";
+import GridOverlay from "./GridOverlay";
+
 export default function ReportBuilder() {
   const [currentJobId, setCurrentJobId] = useState(null);
   const [availableCharts, setAvailableCharts] = useState([]);
@@ -21,9 +24,13 @@ export default function ReportBuilder() {
   const [pageOrientation, setPageOrientation] = useState("landscape");
   const [reportName, setReportName] = useState("Relatório sem título");
   const [showReportsList, setShowReportsList] = useState(false);
-  const [saveStatus, setSaveStatus] = useState(null); // null | 'saved' | 'error'
+  const [saveStatus, setSaveStatus] = useState(null); //null | saved | error
+
+  const [gridLayout, setGridLayout]   = useState("2x2");   //layout default
+  const [isDragOver, setIsDragOver]   = useState(false);
+
   const canvasRef = useRef(null);
-  const saveTimer = useRef(null); // mesmo padrão das outras pages
+  const saveTimer = useRef(null); //same default of all pages
 
   const { group, piece } = useParams();
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -39,9 +46,9 @@ export default function ReportBuilder() {
     handleResizeMouseDown,
     handleDragOver,
     handleDrop,
-  } = useDragDrop(canvasRef, pages, currentPageIndex, setPages);
+  } = useDragDrop(canvasRef, pages, currentPageIndex, setPages, gridLayout, pageOrientation);
 
-  // ── 1. carrega layout ao montar
+  //carrega layout ao montar
   useEffect(() => {
     if (!group || !piece) return;
     fetch(`${API}/reportbuilder/${group}/layout`)
@@ -63,7 +70,7 @@ export default function ReportBuilder() {
     }
   }, []);
 
-  //2 auto-save com debounce
+  //auto-save com debounce
   const persistLayout = useCallback(
     (newPages, newOrientation, newName) => {
       clearTimeout(saveTimer.current);
@@ -121,7 +128,7 @@ export default function ReportBuilder() {
     setSelectedElement(null);
   }
 
-  // ── páginas
+  //pages
   function addNewPage() {
     const newPages = [...pages, { id: Date.now(), elements: [] }];
     setPages(newPages);
@@ -278,6 +285,8 @@ export default function ReportBuilder() {
               {pageOrientation === "landscape" ? "Paisagem" : "Retrato"}
             </button>
 
+            <GridSelector value={gridLayout} onChange={setGridLayout} />
+
             <button onClick={() => setShowReportsList(true)} style={btnSecondary}>
               <FolderOpen size={16} />
               Versões
@@ -307,9 +316,17 @@ export default function ReportBuilder() {
               height: pageOrientation === "landscape" ? "210mm" : "297mm",
             }}
             onClick={(e) => { if (e.target === e.currentTarget) setSelectedElement(null); }}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
+            onDragOver={(e) => { handleDragOver(e); setIsDragOver(true); }}
+            onDragLeave={() => setIsDragOver(false)}
+            onDrop={(e) => { setIsDragOver(false); handleDrop(e); }}
           >
+            {/*grade visual — aparece só enquanto arrasta */}
+            <GridOverlay
+              gridLayout={gridLayout}
+              pageOrientation={pageOrientation}
+              visible={isDragOver}
+            />
+
             {/* HEADER DA CAPA */}
             {currentPageIndex === 0 && (
               <div className={styles.coverHeader} />
