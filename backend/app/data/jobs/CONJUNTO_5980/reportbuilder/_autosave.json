@@ -4,32 +4,84 @@
       "id": 1,
       "elements": [
         {
-          "id": "text-1774405673644",
-          "type": "text",
-          "content": "GEOMETRIA - WEEK 05",
-          "x": 276,
-          "y": 517,
-          "width": 572.8194274902344,
-          "height": 94,
-          "fontSize": 48,
-          "fontWeight": "bold",
-          "fontStyle": "normal",
-          "textDecoration": "none",
-          "color": "#000000",
-          "textAlign": "left"
+          "id": "image-1774577956817",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "capability",
+            "filename": "f53327786_20260326_201905_821413.png",
+            "url": "/static/jobs/bb1adb9e-c374-4970-a6eb-22e3304d6404/CONJUNTO_5980/53327786/capability/f53327786_20260326_201905_821413.png"
+          },
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
         }
       ]
     },
     {
-      "id": 1774405741321,
-      "elements": []
+      "id": 1774573721081,
+      "elements": [
+        {
+          "id": "image-1774573726377",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "cp_cpk",
+            "filename": "f53327786_20260326_195658_590965.png",
+            "url": "/static/jobs/bb1adb9e-c374-4970-a6eb-22e3304d6404/CONJUNTO_5980/53327786/cp_cpk/f53327786_20260326_195658_590965.png"
+          },
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
+        }
+      ]
     },
     {
-      "id": 1774490791504,
-      "elements": []
+      "id": 1774573768655,
+      "elements": [
+        {
+          "id": "image-1774578108938",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "capability",
+            "filename": "f53327786_20260326_201907_313919.png",
+            "url": "/static/jobs/bb1adb9e-c374-4970-a6eb-22e3304d6404/CONJUNTO_5980/53327786/capability/f53327786_20260326_201907_313919.png"
+          },
+          "x": 24,
+          "y": 119,
+          "width": 1074,
+          "height": 650
+        }
+      ]
+    },
+    {
+      "id": 1774578187770,
+      "elements": [
+        {
+          "id": "image-1774578191674",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "controlchart",
+            "filename": "f53327786_20260326_195904_143494.png",
+            "url": "/static/jobs/bb1adb9e-c374-4970-a6eb-22e3304d6404/CONJUNTO_5980/53327786/controlchart/f53327786_20260326_195904_143494.png"
+          },
+          "x": 24,
+          "y": 155,
+          "width": 1074,
+          "height": 650
+        }
+      ]
     }
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-05",
-  "updated_at": "2026-03-26T02:14:24.983872"
+  "updated_at": "2026-03-27T02:23:16.894660"
 }

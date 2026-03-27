@@ -18,21 +18,20 @@ export default function GridOverlay({ gridLayout, pageOrientation, visible }) {
           key={i}
           style={{
             position: "absolute",
-            left: cell.x,
-            top: cell.y,
-            width: cell.width,
+            left:   cell.x,
+            top:    cell.y,
+            width:  cell.width,
             height: cell.height,
             border: "2px dashed #4299e1",
             borderRadius: "4px",
-            backgroundColor: "rgba(66, 153, 225, 0.06)",
+            backgroundColor: "rgba(66,153,225,0.06)",
             pointerEvents: "none",
             boxSizing: "border-box",
-            transition: "opacity 0.15s",
           }}
         />
       ))}
     </>
   );
-}  
+}     
  
  

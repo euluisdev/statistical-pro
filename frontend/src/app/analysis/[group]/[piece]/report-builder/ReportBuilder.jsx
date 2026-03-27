@@ -14,6 +14,7 @@ import { useDragDrop } from "./useDragDrop";
 
 import GridSelector from "./GridSelector";
 import GridOverlay from "./GridOverlay";
+import AlignmentGuides from "./AlignmentGuides";
 
 export default function ReportBuilder() {
   const [currentJobId, setCurrentJobId] = useState(null);
@@ -26,8 +27,8 @@ export default function ReportBuilder() {
   const [showReportsList, setShowReportsList] = useState(false);
   const [saveStatus, setSaveStatus] = useState(null); //null | saved | error
 
-  const [gridLayout, setGridLayout]   = useState("2x2");   //layout default
-  const [isDragOver, setIsDragOver]   = useState(false);
+  const [gridLayout, setGridLayout] = useState("2x2");   //layout default
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const canvasRef = useRef(null);
   const saveTimer = useRef(null); //same default of all pages
@@ -40,6 +41,7 @@ export default function ReportBuilder() {
     selectedElement,
     setSelectedElement,
     isDragging,
+    alignGuides,
     updateElement,
     handleMouseDown,
     handleDoubleClick,
@@ -314,24 +316,23 @@ export default function ReportBuilder() {
               cursor: isDragging ? "grabbing" : "default",
               width: pageOrientation === "landscape" ? "297mm" : "210mm",
               height: pageOrientation === "landscape" ? "210mm" : "297mm",
+              position: "relative",
             }}
             onClick={(e) => { if (e.target === e.currentTarget) setSelectedElement(null); }}
             onDragOver={(e) => { handleDragOver(e); setIsDragOver(true); }}
             onDragLeave={() => setIsDragOver(false)}
             onDrop={(e) => { setIsDragOver(false); handleDrop(e); }}
           >
-            {/*grade visual — aparece só enquanto arrasta */}
             <GridOverlay
               gridLayout={gridLayout}
               pageOrientation={pageOrientation}
               visible={isDragOver}
             />
-
-            {/* HEADER DA CAPA */}
-            {currentPageIndex === 0 && (
-              <div className={styles.coverHeader} />
-            )}
-
+            <AlignmentGuides
+              guides={alignGuides}
+              canvasW={pageOrientation === "landscape" ? 1122 : 794}
+              canvasH={pageOrientation === "landscape" ? 794 : 1122}
+            />
             {currentPage.elements.map((element) => (
               <CanvasElement
                 key={element.id}
@@ -371,3 +372,4 @@ const btnSecondary = {
   fontSize: "0.85rem", fontWeight: 500,
   display: "flex", alignItems: "center", gap: "0.4rem", color: "#4a5568",
 };
+
