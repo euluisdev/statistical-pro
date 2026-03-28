@@ -37,7 +37,7 @@ export function useSaveChartToJob(pageType = "general") {
       const imageData = await Plotly.toImage(gd, {
         format: "png",
         width: 1600,
-        height: 1000,
+        height: 970,
         scale: 6
       });
 

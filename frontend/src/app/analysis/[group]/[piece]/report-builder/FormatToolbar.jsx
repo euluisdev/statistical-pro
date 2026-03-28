@@ -1,4 +1,4 @@
-import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Underline } from "lucide-react";
+import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Square, Underline } from "lucide-react";
 import styles from "./reportbuilder.module.css";
 
 export default function FormatToolbar({ element, onUpdate }) {
@@ -107,6 +107,56 @@ export default function FormatToolbar({ element, onUpdate }) {
       >
         <AlignRight size={13} />
       </button>
+
+      {/*background color*/}
+      <div style={{ position: "relative", display: "inline-block" }}>
+        <button
+          onClick={() => { }} //visual, o input fica embaixo
+          className={styles.formatButton}
+          disabled={!isTextSelected}
+          style={{
+            backgroundColor: isTextSelected && element.backgroundColor && element.backgroundColor !== "transparent"
+              ? element.backgroundColor
+              : "#edf2f7",
+            color: isTextSelected && element.backgroundColor && element.backgroundColor !== "transparent"
+              ? "#fff"
+              : "#4a5568",
+            opacity: isTextSelected ? 1 : 0.5,
+            cursor: isTextSelected ? "pointer" : "not-allowed",
+            border: "1px solid #cbd5e0",
+          }}
+          title="Cor de fundo"
+        >
+          <Square size={13} />
+        </button>
+
+        {/*color picker invisível por cima do botão*/}
+        <input
+          type="color"
+          value={isTextSelected && element.backgroundColor && element.backgroundColor !== "transparent"
+            ? element.backgroundColor
+            : "#ffffff"}
+          onChange={(e) => {
+            if (isTextSelected) {
+              const newColor = e.target.value;
+              onUpdate(element.id, {
+                backgroundColor: newColor === "#ffffff" ? "transparent" : newColor
+              });
+            }
+          }}
+          className={styles.colorPicker}
+          disabled={!isTextSelected}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            opacity: 0,
+            cursor: isTextSelected ? "pointer" : "not-allowed",
+          }}
+        />
+      </div>
 
       <input
         type="color"

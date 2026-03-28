@@ -1,45 +1,40 @@
-import { useState, useRef, memo } from "react";
+import { useState, useRef, memo, useCallback } from "react";
 import { Copy, Trash2 } from "lucide-react";
+import { useReportStore } from "./useReportStore";
 import styles from "./reportbuilder.module.css";
 
-function CanvasElement({
-  element,
-  isSelected,
-  currentJobId,
-  API,
-  onMouseDown,
-  onDoubleClick,
-  onResizeMouseDown,
-  onUpdate,
-  onDuplicate,
-  onDelete
-}) {
-  // ── modo de edição de texto (duplo clique = edita, clique fora = move) ────
+function CanvasElement({ elementId, isSelected, API }) {
+  //subscreve s´ó ao elemento específico selector preciso
+  const element = useReportStore(
+    (s) => s.pages[s.currentPageIndex]?.elements.find((el) => el.id === elementId)
+  );
+
+  //actions do store
+  const updateElement = useReportStore((s) => s.updateElement);
+  const deleteElement = useReportStore((s) => s.deleteElement);
+  const duplicateElement = useReportStore((s) => s.duplicateElement);
+  const handleMouseDown = useReportStore((s) => s._handleMouseDown); //injetado pelo useDragDrop via store
+  const handleDoubleClick = useReportStore((s) => s._handleDoubleClick);
+  const handleResizeMouseDown = useReportStore((s) => s._handleResizeMouseDown);
+
   const [isEditing, setIsEditing] = useState(false);
   const textareaRef = useRef(null);
 
+  //sem element
+  if (!element) return null;
+
   function handleElementMouseDown(e) {
-    if (isEditing) {
-      // dentro do modo de edição, não propaga para o drag
-      e.stopPropagation();
-      return;
-    }
-    onMouseDown(e, element);
+    if (isEditing) { e.stopPropagation(); return; }
+    handleMouseDown(e, element);
   }
 
   function handleElementDoubleClick(e) {
     if (element.type !== "text") return;
     e.stopPropagation();
     setIsEditing(true);
-    // foca no textarea após render
-    setTimeout(() => textareaRef.current?.focus(), 0);
+    requestAnimationFrame(() => textareaRef.current?.focus());
   }
 
-  function handleTextareaBlur() {
-    setIsEditing(false);
-  }
-
-  // ── estilos de texto compartilhados entre div e textarea ─────────────────
   const textStyle = {
     fontSize: `${element.fontSize}px`,
     fontWeight: element.fontWeight,
@@ -49,36 +44,29 @@ function CanvasElement({
     textAlign: element.textAlign || "left",
     lineHeight: "1.4",
     fontFamily: "inherit",
-    // garante que div e textarea ocupam exatamente o mesmo espaço
-    width: "100%",
-    height: "100%",
-    padding: "8px",
-    margin: 0,
+    width: "100%", height: "100%",
+    padding: "8px", margin: 0,
     boxSizing: "border-box",
     whiteSpace: "pre-wrap",
     wordBreak: "break-word",
+    backgroundColor: element.backgroundColor || "transparent",
+    transition: "background-color 0.1s ease",
   };
 
   const renderImage = () => {
-    const src =
-      element.type === "image"
-        ? `${API}${element.chart.url}`
-        : element.src;
-
+    const src = element.type === "image" ? `${API}${element.chart.url}` : element.src;
     const filename = element.type === "image" ? element.chart.filename : element.filename;
-
     return (
       <>
         <img
-          src={src}
-          alt={filename}
+          src={src} alt={filename}
           className={styles.image}
           draggable={false}
           crossOrigin="anonymous"
           onError={(e) => {
-            console.error("Erro ao carregar imagem:", filename);
             e.target.style.display = "none";
-            e.target.parentElement.innerHTML += `<div style="padding:1rem;color:red;text-align:center;">❌ Erro ao carregar: ${filename}</div>`;
+            e.target.parentElement.innerHTML +=
+              `<div style="padding:1rem;color:red;text-align:center;">❌ ${filename}</div>`;
           }}
         />
         {isSelected && renderActions()}
@@ -89,56 +77,44 @@ function CanvasElement({
   const renderText = () => (
     <>
       {isEditing ? (
-        // ── modo edição: textarea transparente, mesmos estilos do div ──────
         <textarea
           ref={textareaRef}
           value={element.content}
-          onChange={(e) => onUpdate(element.id, { content: e.target.value })}
-          onBlur={handleTextareaBlur}
+          onChange={(e) => updateElement(element.id, { content: e.target.value })}
+          onBlur={() => setIsEditing(false)}
           onClick={(e) => e.stopPropagation()}
           onMouseDown={(e) => e.stopPropagation()}
-          style={{
-            ...textStyle,
-            border: "none",
-            outline: "none",
-            background: "transparent",
-            resize: "none",
-            display: "block",
-            overflow: "hidden",
-          }}
+          style={{ ...textStyle, border: "none", outline: "none", backgroundColor: element.backgroundColor || "transparent", resize: "none", display: "block", overflow: "hidden" }}
         />
       ) : (
-        // ── modo visualização: div com mesmos estilos exatos ─────────────
         <div style={{ ...textStyle, overflow: "hidden", display: "block" }}>
           {element.content}
         </div>
       )}
-
-      {/* handles e botões só aparecem quando selecionado (não depende de isEditing) */}
       {isSelected && renderActions()}
     </>
   );
 
   const renderActions = () => (
     <>
-      {/* resize handles nos 4 cantos */}
-      <div onMouseDown={(e) => { e.stopPropagation(); onResizeMouseDown(e, element, "nw"); }} className={`${styles.resizeHandle} ${styles.nw}`} />
-      <div onMouseDown={(e) => { e.stopPropagation(); onResizeMouseDown(e, element, "ne"); }} className={`${styles.resizeHandle} ${styles.ne}`} />
-      <div onMouseDown={(e) => { e.stopPropagation(); onResizeMouseDown(e, element, "sw"); }} className={`${styles.resizeHandle} ${styles.sw}`} />
-      <div onMouseDown={(e) => { e.stopPropagation(); onResizeMouseDown(e, element, "se"); }} className={`${styles.resizeHandle} ${styles.se}`} />
-
-      {/* botões de ação */}
+      {["nw", "ne", "sw", "se"].map((dir) => (
+        <div
+          key={dir}
+          onMouseDown={(e) => { e.stopPropagation(); handleResizeMouseDown(e, element, dir); }}
+          className={`${styles.resizeHandle} ${styles[dir]}`}
+        />
+      ))}
       <div className={styles.elementActions}>
         <button
           onMouseDown={(e) => e.stopPropagation()}
-          onClick={(e) => { e.stopPropagation(); onDuplicate(element.id); }}
+          onClick={(e) => { e.stopPropagation(); duplicateElement(element.id); }}
           className={`${styles.actionButton} ${styles.duplicateButton}`}
         >
           <Copy size={14} />
         </button>
         <button
           onMouseDown={(e) => e.stopPropagation()}
-          onClick={(e) => { e.stopPropagation(); onDelete(element.id); }}
+          onClick={(e) => { e.stopPropagation(); deleteElement(element.id); }}
           className={`${styles.actionButton} ${styles.deleteButton}`}
         >
           <Trash2 size={14} />
@@ -158,9 +134,7 @@ function CanvasElement({
         width: `${element.width}px`,
         height: element.type === "text" ? `${element.height}px` : "auto",
         outline: isSelected
-          ? isEditing
-            ? "1.5px solid #4299e1"   // azul sólido = modo edição
-            : "1.5px dashed #000"     // preto tracejado = selecionado/movendo
+          ? isEditing ? "1.5px solid #4299e1" : "1.5px dashed #000"
           : "none",
         cursor: isEditing ? "text" : isSelected ? "move" : "pointer",
       }}
@@ -169,14 +143,14 @@ function CanvasElement({
       {element.type === "text" && renderText()}
     </div>
   );
-}  
- 
+}
+
+//memo compara apenas id e isSelected — o elemento interno
+//é buscado direto do store com selector preciso
 function areEqual(prev, next) {
-  return (
-    prev.isSelected === next.isSelected &&
-    prev.element === next.element
-  );
+  return prev.elementId === next.elementId && prev.isSelected === next.isSelected;
 }
 
 export default memo(CanvasElement, areEqual);
- 
+
+
