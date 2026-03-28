@@ -1,8 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useRef, memo } from "react";
 import { Copy, Trash2 } from "lucide-react";
 import styles from "./reportbuilder.module.css";
 
-export default function CanvasElement({
+function CanvasElement({
   element,
   isSelected,
   currentJobId,
@@ -171,4 +171,12 @@ export default function CanvasElement({
   );
 }  
  
+function areEqual(prev, next) {
+  return (
+    prev.isSelected === next.isSelected &&
+    prev.element === next.element
+  );
+}
+
+export default memo(CanvasElement, areEqual);
  

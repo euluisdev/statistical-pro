@@ -102,7 +102,7 @@ export default function ReportBuilder() {
   useEffect(() => {
     if (!group || !piece) return;
     persistLayout(pages, pageOrientation, reportName);
-  }, [pages, pageOrientation]);
+  }, [pages, pageOrientation, reportName, persistLayout]);
 
   //charts do job
   async function loadJobCharts(jobId) {
