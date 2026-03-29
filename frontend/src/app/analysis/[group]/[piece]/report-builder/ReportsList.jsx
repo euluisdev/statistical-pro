@@ -111,7 +111,7 @@ export default function ReportsList({ API, currentState, onLoad, onClose }) {
           {!loading && reports.length === 0 && (
             <div style={emptyState}>
               <FileText size={40} color="#cbd5e0" />
-              <p>Nenhum snapshot salvo ainda.</p>
+              <p>Nenhum relatório salvo ainda.</p>
             </div>
           )}
           {!loading && reports.map((r) => (

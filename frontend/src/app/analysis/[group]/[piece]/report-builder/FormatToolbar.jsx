@@ -1,13 +1,21 @@
-import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Square, Underline } from "lucide-react";
+import { AlignCenter, AlignLeft, AlignRight, Baseline, Bold, Italic, PaintBucket, Underline } from "lucide-react";
 import styles from "./reportbuilder.module.css";
 
 export default function FormatToolbar({ element, onUpdate }) {
   const isTextSelected = element && element.type === "text";
 
+  //color current of the text (fallback security)
+  const currentTextColor = isTextSelected ? (element.color || "#000000") : "#000000";
+
+  //color current of the background
+  const currentBgColor = isTextSelected && element.backgroundColor && element.backgroundColor !== "transparent"
+    ? element.backgroundColor
+    : "#ffffff";
+
   return (
     <div className={styles.formatToolbar}>
       <select
-        value={isTextSelected ? element.fontSize : 13}
+        value={isTextSelected ? element.fontSize : 18}
         onChange={(e) => isTextSelected && onUpdate(element.id, { fontSize: Number(e.target.value) })}
         className={styles.fontSizeSelect}
         disabled={!isTextSelected}
@@ -31,7 +39,7 @@ export default function FormatToolbar({ element, onUpdate }) {
           cursor: isTextSelected ? "pointer" : "not-allowed"
         }}
       >
-        <Bold size={13} />
+        <Bold size={18} />
       </button>
 
       <button
@@ -47,7 +55,7 @@ export default function FormatToolbar({ element, onUpdate }) {
           cursor: isTextSelected ? "pointer" : "not-allowed"
         }}
       >
-        <Italic size={13} />
+        <Italic size={18} />
       </button>
 
       <button
@@ -63,7 +71,7 @@ export default function FormatToolbar({ element, onUpdate }) {
           cursor: isTextSelected ? "pointer" : "not-allowed"
         }}
       >
-        <Underline size={13} />
+        <Underline size={18} />
       </button>
 
       <button
@@ -77,7 +85,7 @@ export default function FormatToolbar({ element, onUpdate }) {
           cursor: isTextSelected ? "pointer" : "not-allowed"
         }}
       >
-        <AlignLeft size={13} />
+        <AlignLeft size={18} />
       </button>
 
       <button
@@ -91,7 +99,7 @@ export default function FormatToolbar({ element, onUpdate }) {
           cursor: isTextSelected ? "pointer" : "not-allowed"
         }}
       >
-        <AlignCenter size={13} />
+        <AlignCenter size={18} />
       </button>
 
       <button
@@ -105,46 +113,34 @@ export default function FormatToolbar({ element, onUpdate }) {
           cursor: isTextSelected ? "pointer" : "not-allowed"
         }}
       >
-        <AlignRight size={13} />
+        <AlignRight size={18} />
       </button>
 
-      {/*background color*/}
+      {/*color text*/}
       <div style={{ position: "relative", display: "inline-block" }}>
         <button
-          onClick={() => { }} //visual, o input fica embaixo
           className={styles.formatButton}
           disabled={!isTextSelected}
           style={{
-            backgroundColor: isTextSelected && element.backgroundColor && element.backgroundColor !== "transparent"
-              ? element.backgroundColor
-              : "#edf2f7",
-            color: isTextSelected && element.backgroundColor && element.backgroundColor !== "transparent"
-              ? "#fff"
-              : "#4a5568",
+            backgroundColor: "#edf2f7",
+            color: currentTextColor,      
             opacity: isTextSelected ? 1 : 0.5,
             cursor: isTextSelected ? "pointer" : "not-allowed",
             border: "1px solid #cbd5e0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          title="Cor de fundo"
+          title="Cor do texto"
         >
-          <Square size={13} />
+          <Baseline size={19} />
         </button>
 
-        {/*color picker invisível por cima do botão*/}
+        {/*color Picker invisível */}
         <input
           type="color"
-          value={isTextSelected && element.backgroundColor && element.backgroundColor !== "transparent"
-            ? element.backgroundColor
-            : "#ffffff"}
-          onChange={(e) => {
-            if (isTextSelected) {
-              const newColor = e.target.value;
-              onUpdate(element.id, {
-                backgroundColor: newColor === "#ffffff" ? "transparent" : newColor
-              });
-            }
-          }}
-          className={styles.colorPicker}
+          value={currentTextColor}
+          onChange={(e) => isTextSelected && onUpdate(element.id, { color: e.target.value })}
           disabled={!isTextSelected}
           style={{
             position: "absolute",
@@ -158,17 +154,51 @@ export default function FormatToolbar({ element, onUpdate }) {
         />
       </div>
 
-      <input
-        type="color"
-        value={isTextSelected ? element.color : "#000000"}
-        onChange={(e) => isTextSelected && onUpdate(element.id, { color: e.target.value })}
-        className={styles.colorPicker}
-        disabled={!isTextSelected}
-        style={{
-          opacity: isTextSelected ? 1 : 0.5,
-          cursor: isTextSelected ? "pointer" : "not-allowed"
-        }}
-      />
+      {/*backgrownd*/}
+      <div style={{ position: "relative", display: "inline-block" }}>
+        <button
+          className={styles.formatButton}
+          disabled={!isTextSelected}
+          style={{
+            backgroundColor: currentBgColor,           //fundo muda com a cor escolhida
+            color: currentBgColor === "#ffffff" || currentBgColor === "transparent"
+              ? "#4a5568"
+              : "#fff",                               //texto do ícone fica branco se fundo escuro
+            opacity: isTextSelected ? 1 : 0.5,
+            cursor: isTextSelected ? "pointer" : "not-allowed",
+            border: "1px solid #cbd5e0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center", 
+          }}
+          title="Cor de fundo"
+        >
+          <PaintBucket size={19} />
+        </button>
+
+        <input
+          type="color"
+          value={currentBgColor === "transparent" ? "#ffffff" : currentBgColor}
+          onChange={(e) => {
+            if (isTextSelected) {
+              const newColor = e.target.value;
+              onUpdate(element.id, {
+                backgroundColor: newColor === "#ffffff" ? "transparent" : newColor
+              });
+            }
+          }}
+          disabled={!isTextSelected}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            opacity: 0,
+            cursor: isTextSelected ? "pointer" : "not-allowed",
+          }}
+        />
+      </div>
 
     </div>
   );

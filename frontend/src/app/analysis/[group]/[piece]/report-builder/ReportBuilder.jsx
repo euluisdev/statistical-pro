@@ -189,7 +189,8 @@ export default function ReportBuilder() {
         availableCharts={availableCharts}
         loading={loading}
         onAddTextBox={addTextBox}
-        onDragStart={handleDragStart}
+        onDragStart={handleDragStart} 
+        API={API}
       />
  
       <div className={styles.mainArea}>
@@ -216,7 +217,7 @@ export default function ReportBuilder() {
  
             <button onClick={() => setShowReportsList(true)} style={btnSecondary}>
               <FolderOpen size={16} />
-              Versões
+              Template
             </button>
  
             {saveStatus === "saved" && (
@@ -227,7 +228,7 @@ export default function ReportBuilder() {
           </div>
  
           <button onClick={exportToPDF} className={styles.exportButton}>
-            <Download size={16} /> PDF
+            <Download size={16} />PDF
           </button>
         </div>
  

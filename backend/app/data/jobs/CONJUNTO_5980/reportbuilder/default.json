@@ -182,29 +182,9 @@
           "height": 650
         }
       ]
-    },
-    {
-      "id": 1774751240298,
-      "elements": [
-        {
-          "id": "image-1774751251769",
-          "type": "image",
-          "chart": {
-            "group": "CONJUNTO_5980",
-            "piece": "GROUP",
-            "page_type": "cg_group",
-            "filename": "fGROUP_20260328_231359_045011.png",
-            "url": "/static/jobs/96bf9775-b558-470a-900e-de6725aeacd7/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260328_231359_045011.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
-        }
-      ]
     }
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-13",
-  "updated_at": "2026-03-29T02:29:54.205866"
+  "updated_at": "2026-03-29T02:07:14.609363"
 }
