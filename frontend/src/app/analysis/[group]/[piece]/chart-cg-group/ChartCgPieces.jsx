@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import dynamic from "next/dynamic";
 import styles from "./chartcgpieces.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-export default function PiecesChart({ group, selectedYear, selectedWeek }) {
+const PiecesChart = forwardRef(function PiecesChart(
+  { group, selectedYear, selectedWeek, captureRef },
+  plotRef
+) {
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const [piecesData, setPiecesData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -58,10 +61,11 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
   }
 
   return (
-    <div className={styles.container}>
+    <div ref={captureRef} className={styles.container}>
       {/*chart */}
       <div className={styles.chartContainer}>
         <Plot
+          ref={plotRef}
           data={chartData.data}
           layout={chartData.layout}
           config={{
@@ -123,7 +127,10 @@ export default function PiecesChart({ group, selectedYear, selectedWeek }) {
       </div>
     </div>
   );
-}
+})
+
+export default PiecesChart;
+
 
 function prepareChartData(piecesReport, group) {
   const pieces = piecesReport.pieces;
@@ -181,7 +188,7 @@ function prepareChartData(piecesReport, group) {
     layout: {
       barmode: "stack",
       title: {
-        text: `CG Por Peça - ${group} - (${pieces.length} Peças)`,
+        text: `CG Por Peça | ${group} | (${pieces.length} Peças)`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
@@ -213,5 +220,3 @@ function prepareChartData(piecesReport, group) {
     },
   };
 }
- 
- 

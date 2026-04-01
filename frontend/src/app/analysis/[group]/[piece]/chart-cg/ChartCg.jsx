@@ -308,13 +308,13 @@ function prepareChartData(weeksData, piece, group) {
     layout: {
       barmode: "stack",
       title: {
-        text: `CG - ${group} - ${piece}`,
+        text: `CG | ${group} | ${piece}`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
         title: "",
         tickangle: -45,
-        tickfont: { size: 12, color: "black" },
+        tickfont: { size: 12, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
         showgrid: true,
       },
@@ -324,7 +324,8 @@ function prepareChartData(weeksData, piece, group) {
         ticksuffix: "%",
         tickfont: { size: 12, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
-        showgrid: true,
+        showgrid: true, 
+        dtick: 10,
       },
       legend: {
         x: 0.5,

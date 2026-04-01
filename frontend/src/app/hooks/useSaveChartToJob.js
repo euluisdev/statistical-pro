@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import html2canvas from "html2canvas";
 
 export function useSaveChartToJob(pageType = "general") {
   const [currentJobId, setCurrentJobId] = useState(null);
@@ -21,6 +22,21 @@ export function useSaveChartToJob(pageType = "general") {
     }
     setShowSaveModal(true);
   };
+
+  function waitForImages(container) {
+    const images = Array.from(container.querySelectorAll("img"));
+
+    return Promise.all(
+      images.map((img) => {
+        if (img.complete) return Promise.resolve();
+
+        return new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      })
+    );
+  }
 
   const saveChart = async (plotRef, group, piece, chartName = "CG") => {
     setSaveLoading(true);
@@ -87,12 +103,109 @@ export function useSaveChartToJob(pageType = "general") {
     }
   };
 
+  const saveDomChart = async (containerRef, group, piece, chartName) => {
+    setSaveLoading(true);
+
+    try {
+      const container = containerRef.current;
+      if (!container) throw new Error("Container não encontrado");
+
+      // === PASSO 1: Força crossOrigin em TODAS as imagens ===
+      const images = Array.from(container.querySelectorAll("img"));
+
+      await Promise.all(
+        images.map((img, index) => {
+          return new Promise((resolve) => {
+            if (!img.src || img.src.startsWith("data:")) {
+              resolve();
+              return;
+            }
+
+            // Força crossorigin antes de qualquer recarga
+            if (img.crossOrigin !== "anonymous") {
+              img.crossOrigin = "anonymous";
+            }
+
+            // Se já carregou corretamente, ok
+            if (img.complete && img.naturalWidth > 0) {
+              resolve();
+              return;
+            }
+
+            // Recarrega a imagem forçando CORS
+            const originalSrc = img.src;
+            img.src = "";                    // limpa
+            img.src = originalSrc + (originalSrc.includes("?") ? "&" : "?") + `t=${Date.now()}`;
+
+            img.onload = () => {
+              console.log(`Imagem ${index + 1} carregada com sucesso`);
+              resolve();
+            };
+
+            img.onerror = (err) => {
+              console.warn(`Falha ao carregar imagem ${index + 1}:`, img.src);
+              resolve(); // não trava o processo todo
+            };
+
+            // Timeout de segurança (evita travar eternamente)
+            setTimeout(resolve, 8000);
+          });
+        })
+      );
+
+      // === PASSO 2: html2canvas com configurações mais agressivas ===
+      const canvas = await html2canvas(container, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        logging: true,           // ative para ver detalhes
+        imageTimeout: 20000,
+        backgroundColor: "#ffffff",
+        removeContainer: true,
+        // width e height opcionais se quiser controlar
+        // proxy: null,          // só use se criar um proxy depois
+      });
+
+      const imageData = canvas.toDataURL("image/png", 1.0);
+
+      // Envio para o backend (mantive igual)
+      const response = await fetch(`${API}/jobs/job/${currentJobId}/save-chart`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          group,
+          piece,
+          page_type: pageType,
+          chart_name: chartName,
+          image_data: imageData
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Erro do servidor: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log("Gráfico DOM salvo:", result);
+      return result;
+
+    } catch (err) {
+      console.error("Erro ao salvar DOM com html2canvas:", err);
+      alert(`❌ Erro ao capturar imagens: ${err.message}`);
+      throw err;
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
   return {
     currentJobId,
     showSaveModal,
     saveLoading,
     openSaveModal,
     saveChart,
+    saveDomChart,
     closeSaveModal: () => setShowSaveModal(false)
   };
 }

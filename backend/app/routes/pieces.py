@@ -484,7 +484,10 @@ def get_piece_image(group: str, piece: str):
     for file in os.listdir(image_dir):
         if file.startswith("peca"):
             image_path = os.path.join(image_dir, file)
-            return FileResponse(image_path)
+            return FileResponse(
+                image_path, 
+                headers={"Access-Control-Allow-Origin": "*"}
+            )
     
     raise HTTPException(404, "Imagem não encontrada")
 

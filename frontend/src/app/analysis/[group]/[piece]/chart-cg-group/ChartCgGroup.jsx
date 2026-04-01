@@ -21,6 +21,7 @@ export default function ReportGroupClient({ params }) {
   const [loading, setLoading] = useState(false);
 
   const plotRef = useRef(null);
+  const captureRef = useRef(null);
 
   //hook to save chart in the job-id
   const {
@@ -28,7 +29,8 @@ export default function ReportGroupClient({ params }) {
     showSaveModal,
     saveLoading,
     openSaveModal,
-    saveChart,
+    saveChart, 
+    saveDomChart,
     closeSaveModal
   } = useSaveChartToJob("cg_group");
 
@@ -96,7 +98,14 @@ export default function ReportGroupClient({ params }) {
   }
 
   const handleSaveChart = async () => {
-    await saveChart(plotRef, group, "GROUP", "CGC");
+
+    await saveChart(plotRef, group, "GROUP", "CGC_MAIN");
+    await saveDomChart(
+      captureRef,
+      group,
+      "GROUP",
+      "CG_PIECES_FULL"
+    );
   };
 
   const chartData = reportData && reportData.length > 0
@@ -119,7 +128,7 @@ export default function ReportGroupClient({ params }) {
 
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CG Geral - {group} - ({piecesList.length} Peças)
+          CG Geral | {group} | ({piecesList.length} Peças)
         </h1>
 
         <div className={styles.controls}>
@@ -156,7 +165,7 @@ export default function ReportGroupClient({ params }) {
           <button
             onClick={generateWeekReport}
             disabled={loading}
-            className={styles.btnMenu} 
+            className={styles.btnMenu}
             title={"Gerar Análise"}
           >
             {loading ? "⏳ Gerando..." : <ArrowBigDown size={33} />}
@@ -184,7 +193,7 @@ export default function ReportGroupClient({ params }) {
 
         {reportData && reportData.length > 0 && (
           <div className={styles.historyContainer}>
-            <h3>HISTÓRICO ({reportData.length})</h3>
+            <h3>HISTÓRICO: ({reportData.length})</h3>
             <div className={styles.historyGrid}>
               {reportData.map((report) => (
                 <div key={`${report.year}-${report.week}`} className={styles.historyItem}>
@@ -231,6 +240,8 @@ export default function ReportGroupClient({ params }) {
       )}
 
       <ChartCgPieces
+        ref={plotRef}
+        captureRef={captureRef}
         group={group}
         selectedYear={selectedYear}
         selectedWeek={selectedWeek}
@@ -294,7 +305,7 @@ function prepareChartData(reportsData, group, piecesCount) {
     layout: {
       barmode: "stack",
       title: {
-        text: `CG Geral - ${group} - (${piecesCount} Peças)`,
+        text: `CG Geral | ${group} | (${piecesCount} Peças)`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {

@@ -344,7 +344,7 @@ function prepareChartData(weeksData, type, piece, group) {
     layout: {
       barmode: "stack",
       title: {
-        text: `${type} - ${group} - ${piece}`,
+        text: `${type} | ${group} | ${piece}`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
@@ -360,7 +360,8 @@ function prepareChartData(weeksData, type, piece, group) {
         ticksuffix: "%",
         tickfont: { size: 12, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
-        showgrid: true,
+        showgrid: true, 
+        dtick: 10,
       },
       legend: {
         x: 0.5,

@@ -23,7 +23,7 @@ app.mount("/static/jobs", StaticFiles(directory=JOBS_PATH), name="static_jobs")
 #cors - permitir local dev do front
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:8000"],
+    allow_origins=["*", "http://localhost:3000", "http://localhost:5173", "http://localhost:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
