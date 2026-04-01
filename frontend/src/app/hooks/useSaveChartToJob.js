@@ -105,12 +105,10 @@ export function useSaveChartToJob(pageType = "general") {
 
   const saveDomChart = async (containerRef, group, piece, chartName) => {
     setSaveLoading(true);
-
     try {
       const container = containerRef.current;
       if (!container) throw new Error("Container não encontrado");
 
-      // === PASSO 1: Força crossOrigin em TODAS as imagens ===
       const images = Array.from(container.querySelectorAll("img"));
 
       await Promise.all(
@@ -121,18 +119,17 @@ export function useSaveChartToJob(pageType = "general") {
               return;
             }
 
-            // Força crossorigin antes de qualquer recarga
+            //Força crossorigin antes de qualquer recarga
             if (img.crossOrigin !== "anonymous") {
               img.crossOrigin = "anonymous";
             }
 
-            // Se já carregou corretamente, ok
             if (img.complete && img.naturalWidth > 0) {
               resolve();
               return;
             }
 
-            // Recarrega a imagem forçando CORS
+            //Recarrega a imG forçando CORS
             const originalSrc = img.src;
             img.src = "";                    // limpa
             img.src = originalSrc + (originalSrc.includes("?") ? "&" : "?") + `t=${Date.now()}`;
@@ -147,28 +144,23 @@ export function useSaveChartToJob(pageType = "general") {
               resolve(); // não trava o processo todo
             };
 
-            // Timeout de segurança (evita travar eternamente)
             setTimeout(resolve, 8000);
           });
         })
       );
 
-      // === PASSO 2: html2canvas com configurações mais agressivas ===
       const canvas = await html2canvas(container, {
         scale: 3,
         useCORS: true,
         allowTaint: true,
-        logging: true,           // ative para ver detalhes
+        logging: true,        
         imageTimeout: 20000,
         backgroundColor: "#ffffff",
         removeContainer: true,
-        // width e height opcionais se quiser controlar
-        // proxy: null,          // só use se criar um proxy depois
       });
 
       const imageData = canvas.toDataURL("image/png", 1.0);
 
-      // Envio para o backend (mantive igual)
       const response = await fetch(`${API}/jobs/job/${currentJobId}/save-chart`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
