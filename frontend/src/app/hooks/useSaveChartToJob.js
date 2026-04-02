@@ -1,10 +1,16 @@
+'use client';
+
 import { useState, useEffect } from "react";
 import html2canvas from "html2canvas";
+import { useToast } from "@/app/components/providers/ToastProvider"
 
 export function useSaveChartToJob(pageType = "general") {
   const [currentJobId, setCurrentJobId] = useState(null);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+
+  const { showToast } = useToast();
+  console.log("useToast carregado:", typeof showToast === 'function' ? "OK" : "FALHOU");
 
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -17,7 +23,7 @@ export function useSaveChartToJob(pageType = "general") {
 
   const openSaveModal = () => {
     if (!currentJobId) {
-      alert("⚠️ Nenhum Job ativo! Crie um Job na página inicial primeiro.");
+      showToast("⚠️ Nenhum Job ativo! Crie um Job na página inicial primeiro.");
       return;
     }
     setShowSaveModal(true);
@@ -57,13 +63,6 @@ export function useSaveChartToJob(pageType = "general") {
         scale: 6
       });
 
-      console.log("Enviando imagem para o backend...");
-      console.log("JobID:", currentJobId);
-      console.log("Group:", group);
-      console.log("Piece:", piece);
-      console.log("Page Type:", pageType);
-      console.log("Chart Name:", chartName);
-
       const response = await fetch(
         `${API}/jobs/job/${currentJobId}/save-chart`,
         {
@@ -88,10 +87,8 @@ export function useSaveChartToJob(pageType = "general") {
       }
 
       const result = await response.json();
-
-      alert(`✓ Gráfico salvo com sucesso!\n📁 ${result.filename}`);
-
       setShowSaveModal(false);
+      showToast(`✓ Gráfico salvo com sucesso!\n ${result.filename}`, "success");
       return result;
 
     } catch (err) {
@@ -153,7 +150,7 @@ export function useSaveChartToJob(pageType = "general") {
         scale: 3,
         useCORS: true,
         allowTaint: true,
-        logging: true,        
+        logging: false,        
         imageTimeout: 20000,
         backgroundColor: "#ffffff",
         removeContainer: true,
@@ -179,12 +176,11 @@ export function useSaveChartToJob(pageType = "general") {
       }
 
       const result = await response.json();
-      console.log("Gráfico DOM salvo:", result);
       return result;
 
     } catch (err) {
       console.error("Erro ao salvar DOM com html2canvas:", err);
-      alert(`❌ Erro ao capturar imagens: ${err.message}`);
+      showToast(`❌ Erro ao capturar imagens: ${err.message}`, "error");
       throw err;
     } finally {
       setSaveLoading(false);

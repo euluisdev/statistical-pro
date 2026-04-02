@@ -92,14 +92,14 @@
           "height": 115
         },
         {
-          "id": "image-1774992870482",
+          "id": "image-1775085042153",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "GROUP",
             "page_type": "cg_group",
-            "filename": "fGROUP_20260331_183344_357831.png",
-            "url": "/static/jobs/9ee1d2d2-8fc3-49f9-83b5-14d8c31fd27a/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260331_183344_357831.png"
+            "filename": "fGROUP_20260401_201011_284595.png",
+            "url": "/static/jobs/e3ed4d06-5756-43d9-b0c6-2306544b1a1d/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260401_201011_284595.png"
           },
           "x": 24,
           "y": 120,
@@ -122,14 +122,14 @@
           "height": 115
         },
         {
-          "id": "image-1774992894091",
+          "id": "image-1775085068032",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "GROUP",
             "page_type": "cg_group",
-            "filename": "fGROUP_20260331_183347_026364.png",
-            "url": "/static/jobs/9ee1d2d2-8fc3-49f9-83b5-14d8c31fd27a/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260331_183347_026364.png"
+            "filename": "fGROUP_20260401_201005_942036.png",
+            "url": "/static/jobs/e3ed4d06-5756-43d9-b0c6-2306544b1a1d/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260401_201005_942036.png"
           },
           "x": 24,
           "y": 120,
@@ -321,5 +321,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-13",
-  "updated_at": "2026-04-01T02:33:23.556895"
+  "updated_at": "2026-04-02T02:33:07.477658"
 }
