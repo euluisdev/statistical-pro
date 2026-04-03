@@ -15,10 +15,6 @@ export default function Toast({ message, type = 'success', duration = 5000 }) {
 
   return (
     <div style={{
-      position: 'fixed',
-      bottom: '2rem',
-      right: '2rem',
-      zIndex: 999999,
       display: 'flex',
       alignItems: 'center',
       gap: '1rem',
@@ -32,8 +28,8 @@ export default function Toast({ message, type = 'success', duration = 5000 }) {
     }}>
       <div style={{ flexShrink: 0 }}>
         {type === 'success'
-          ? <CheckCircle style={{ width: 28, height: 28, color: '#16a34a' }} />
-          : <XCircle style={{ width: 28, height: 28, color: '#dc2626' }} />
+          ? <CheckCircle style={{ width: 28, height: 28, color: 'green' }} />
+          : <XCircle style={{ width: 28, height: 28, color: 'red' }} />
         }
       </div>
 

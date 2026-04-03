@@ -92,14 +92,14 @@
           "height": 115
         },
         {
-          "id": "image-1775085042153",
+          "id": "image-1775181120931",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "GROUP",
-            "page_type": "cg_group",
-            "filename": "fGROUP_20260401_201011_284595.png",
-            "url": "/static/jobs/e3ed4d06-5756-43d9-b0c6-2306544b1a1d/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260401_201011_284595.png"
+            "page_type": "cp_conjunto",
+            "filename": "fGROUP_20260402_225116_838739.png",
+            "url": "/static/jobs/d05c5558-eef7-43e0-9164-404e80a27645/CONJUNTO_5980/GROUP/cp_conjunto/fGROUP_20260402_225116_838739.png"
           },
           "x": 24,
           "y": 120,
@@ -122,14 +122,14 @@
           "height": 115
         },
         {
-          "id": "image-1775085068032",
+          "id": "image-1775181202289",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "GROUP",
-            "page_type": "cg_group",
-            "filename": "fGROUP_20260401_201005_942036.png",
-            "url": "/static/jobs/e3ed4d06-5756-43d9-b0c6-2306544b1a1d/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260401_201005_942036.png"
+            "page_type": "cp_conjunto",
+            "filename": "fGROUP_20260402_225116_838739.png",
+            "url": "/static/jobs/d05c5558-eef7-43e0-9164-404e80a27645/CONJUNTO_5980/GROUP/cp_conjunto/fGROUP_20260402_225116_838739.png"
           },
           "x": 24,
           "y": 120,
@@ -180,6 +180,21 @@
           "y": 120,
           "width": 1074,
           "height": 650
+        },
+        {
+          "id": "image-1775181205737",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "GROUP",
+            "page_type": "cp_conjunto",
+            "filename": "fGROUP_20260402_225115_503407.png",
+            "url": "/static/jobs/d05c5558-eef7-43e0-9164-404e80a27645/CONJUNTO_5980/GROUP/cp_conjunto/fGROUP_20260402_225115_503407.png"
+          },
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
         }
       ]
     },
@@ -212,14 +227,14 @@
           "height": 115
         },
         {
-          "id": "image-1775010476435",
+          "id": "image-1775181866394",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "GROUP",
-            "page_type": "cg_group",
-            "filename": "fGROUP_20260331_232716_823527.png",
-            "url": "/static/jobs/9ee1d2d2-8fc3-49f9-83b5-14d8c31fd27a/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260331_232716_823527.png"
+            "page_type": "cpk_conjunto",
+            "filename": "fGROUP_20260402_230351_577157.png",
+            "url": "/static/jobs/d05c5558-eef7-43e0-9164-404e80a27645/CONJUNTO_5980/GROUP/cpk_conjunto/fGROUP_20260402_230351_577157.png"
           },
           "x": 24,
           "y": 120,
@@ -270,6 +285,21 @@
           "y": 120,
           "width": 1074,
           "height": 650
+        },
+        {
+          "id": "image-1775181873354",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "GROUP",
+            "page_type": "cpk_conjunto",
+            "filename": "fGROUP_20260402_230352_247373.png",
+            "url": "/static/jobs/d05c5558-eef7-43e0-9164-404e80a27645/CONJUNTO_5980/GROUP/cpk_conjunto/fGROUP_20260402_230352_247373.png"
+          },
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
         }
       ]
     },
@@ -280,8 +310,8 @@
           "id": "text-1774650619995",
           "type": "text",
           "content": "Digite aqui...",
-          "x": 411,
-          "y": 19,
+          "x": 415.5902862548828,
+          "y": 38.5,
           "width": 290.8194274902344,
           "height": 38,
           "fontSize": 16,
@@ -289,7 +319,8 @@
           "fontStyle": "normal",
           "textDecoration": "none",
           "color": "#ff0000",
-          "textAlign": "center"
+          "textAlign": "center",
+          "backgroundColor": "#00eeff"
         },
         {
           "id": "image-1774651246669",
@@ -302,14 +333,14 @@
           "height": 115
         },
         {
-          "id": "image-1775010802746",
+          "id": "image-1775182809466",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "GROUP",
-            "page_type": "cg_group",
-            "filename": "fGROUP_20260331_233249_860494.png",
-            "url": "/static/jobs/9ee1d2d2-8fc3-49f9-83b5-14d8c31fd27a/CONJUNTO_5980/GROUP/cg_group/fGROUP_20260331_233249_860494.png"
+            "page_type": "cpk_conjunto",
+            "filename": "fGROUP_20260402_231936_477685.png",
+            "url": "/static/jobs/d05c5558-eef7-43e0-9164-404e80a27645/CONJUNTO_5980/GROUP/cpk_conjunto/fGROUP_20260402_231936_477685.png"
           },
           "x": 24,
           "y": 120,
@@ -321,5 +352,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-13",
-  "updated_at": "2026-04-02T02:33:07.477658"
+  "updated_at": "2026-04-03T02:21:08.845295"
 }

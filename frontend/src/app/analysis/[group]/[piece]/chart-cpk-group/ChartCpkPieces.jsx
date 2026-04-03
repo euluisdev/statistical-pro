@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState, forwardRef  } from "react";
+import { useEffect, useState, forwardRef  } from "react"; 
 import dynamic from "next/dynamic";
 import styles from "./chartcpkpieces.module.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 const PiecesChartCp = forwardRef(function PiecesChartCp(
-  { group, selectedYear, selectedWeek },
+  { group, selectedYear, selectedWeek, captureRef },
   plotRef
 ) {
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -61,8 +61,7 @@ const PiecesChartCp = forwardRef(function PiecesChartCp(
   }
 
   return (
-    <div className={styles.container}>
-
+    <div ref={captureRef} className={styles.container}>
       {/*chart */}
       <div className={styles.chartContainer}>
         <Plot
@@ -75,8 +74,8 @@ const PiecesChartCp = forwardRef(function PiecesChartCp(
             toImageButtonOptions: {
               format: "png",
               filename: `CPK_Por_Peca_${group}_${selectedYear}_W${selectedWeek}`,
-              height: 800,
-              width: 1400,
+              height: 1000,
+              width: 1600,
               scale: 4,
             },
             modeBarButtonsToAdd: ["toImage"],
@@ -87,7 +86,7 @@ const PiecesChartCp = forwardRef(function PiecesChartCp(
 
       {/*top five*/}
       <div className={styles.topFiveContainer}>
-        <h3 className={styles.topFiveTitle}>TOP FIVE - 5 PIORES ITENS</h3>
+        <h3 className={styles.topFiveTitle}>TOP FIVE | 5 PIORES ITENS</h3>
         <div className={styles.topFiveGrid}>
           {topFive.map((piece, idx) => (
             <div key={piece.part_number} className={styles.topFiveCard}>
@@ -129,6 +128,9 @@ const PiecesChartCp = forwardRef(function PiecesChartCp(
     </div>
   );
 });
+
+export default PiecesChartCp;
+
 
 function prepareChartData(piecesReport, group) {
   const pieces = piecesReport.pieces;
@@ -184,7 +186,7 @@ function prepareChartData(piecesReport, group) {
     layout: {
       barmode: "stack",
       title: {
-        text: `CPK Por Peça - ${group} - (${pieces.length} Peças)`,
+        text: `CPK Por Peça | ${group} | (${pieces.length} Peças)`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
@@ -217,6 +219,5 @@ function prepareChartData(piecesReport, group) {
   };
 }
 
-export default PiecesChartCp;
  
  

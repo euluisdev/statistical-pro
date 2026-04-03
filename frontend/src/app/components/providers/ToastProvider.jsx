@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Toast from '../ui/Toast';
 
-const ToastContext = createContext({ showToast: () => {} });
+const ToastContext = createContext({ showToast: () => { } });
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
@@ -28,7 +28,18 @@ export function ToastProvider({ children }) {
 
       {/*portal dedicado — renderiza fora do dom direto no body*/}
       {mounted && createPortal(
-        <>
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '2rem',
+            right: '2rem',
+            zIndex: 999999,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            alignItems: 'flex-end'
+          }}
+        >
           {toasts.map((toast) => (
             <Toast
               key={toast.id}
@@ -37,7 +48,7 @@ export function ToastProvider({ children }) {
               duration={toast.duration}
             />
           ))}
-        </>,
+        </div>,
         document.body
       )}
     </ToastContext.Provider>

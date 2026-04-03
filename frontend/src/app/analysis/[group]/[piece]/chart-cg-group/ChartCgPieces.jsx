@@ -4,7 +4,7 @@ import { useEffect, useState, forwardRef } from "react";
 import dynamic from "next/dynamic";
 import styles from "./chartcgpieces.module.css";
 
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false }); 
 
 const PiecesChart = forwardRef(function PiecesChart(
   { group, selectedYear, selectedWeek, captureRef },
@@ -86,7 +86,7 @@ const PiecesChart = forwardRef(function PiecesChart(
 
       {/*top five*/}
       <div className={styles.topFiveContainer}>
-        <h3 className={styles.topFiveTitle}>TOP FIVE - 5 PIORES ITENS</h3>
+        <h3 className={styles.topFiveTitle}>TOP FIVE | 5 PIORES ITENS</h3>
         <div className={styles.topFiveGrid}>
           {topFive.map((piece, idx) => (
             <div key={piece.part_number} className={styles.topFiveCard}>

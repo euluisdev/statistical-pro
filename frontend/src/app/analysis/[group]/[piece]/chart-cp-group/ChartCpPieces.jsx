@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import dynamic from "next/dynamic";
 import styles from "./chartcppieces.module.css";
 
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false }); 
 
-export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
+const PiecesChartCp = forwardRef(function PiecesChartCp(
+  { group, selectedYear, selectedWeek, captureRef },
+  plotRef
+) {    
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const [piecesData, setPiecesData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -58,10 +61,11 @@ export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
   }
 
   return (
-    <div className={styles.container}>
+    <div ref={captureRef} className={styles.container}>
       {/*chart */}
       <div className={styles.chartContainer}>
         <Plot
+          ref={plotRef}
           data={chartData.data}
           layout={chartData.layout}
           config={{
@@ -70,9 +74,9 @@ export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
             toImageButtonOptions: {
               format: "png",
               filename: `CP_Por_Peca_${group}_${selectedYear}_W${selectedWeek}`,
-              height: 800,
-              width: 1400,
-              scale: 2,
+              height: 1000,
+              width: 1600,
+              scale: 4,
             },
             modeBarButtonsToAdd: ["toImage"],
           }}
@@ -82,7 +86,7 @@ export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
 
       {/*top five*/}
       <div className={styles.topFiveContainer}>
-        <h3 className={styles.topFiveTitle}>TOP FIVE - 5 PIORES ITENS</h3>
+        <h3 className={styles.topFiveTitle}>TOP FIVE | 5 PIORES ITENS</h3>
         <div className={styles.topFiveGrid}>
           {topFive.map((piece, idx) => (
             <div key={piece.part_number} className={styles.topFiveCard}>
@@ -123,7 +127,9 @@ export default function PiecesChartCp({ group, selectedYear, selectedWeek }) {
       </div>
     </div>
   );
-}
+})
+
+export default PiecesChartCp;
 
 function prepareChartData(piecesReport, group) {
   const pieces = piecesReport.pieces;

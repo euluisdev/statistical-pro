@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import { ArrowBigDown, SaveAll, Undo2 } from "lucide-react";
 import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
 import { SaveChartModal } from "@/app/components/common/SaveChartModal";
-import ChartCpPieces from "./ChartCpPieces"
 import styles from "./chartcpgroup.module.css";
+import ChartCpPieces from "./ChartCpPieces"
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -21,6 +21,7 @@ export default function ReportGroupCpClient({ params }) {
   const [loading, setLoading] = useState(false);
 
   const plotRef = useRef(null);
+  const captureRef = useRef(null);
 
   //hook to save chart in the job-id
   const {
@@ -29,6 +30,7 @@ export default function ReportGroupCpClient({ params }) {
     saveLoading,
     openSaveModal,
     saveChart,
+    saveDomChart,
     closeSaveModal
   } = useSaveChartToJob("cp_conjunto");
 
@@ -96,6 +98,12 @@ export default function ReportGroupCpClient({ params }) {
 
   const handleSaveChart = async () => {
     await saveChart(plotRef, group, "GROUP", "CPC");
+    await saveDomChart(
+      captureRef,
+      group,
+      "GROUP",
+      "CP_PIECES_FULL"
+    );
   };
 
   const chartData = reportData && reportData.length > 0
@@ -118,7 +126,7 @@ export default function ReportGroupCpClient({ params }) {
 
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CP Geral - {group} - ({piecesList.length} Peças)
+          CP Geral | {group} | ({piecesList.length} Peças)
         </h1>
 
         <div className={styles.controls}>
@@ -181,20 +189,20 @@ export default function ReportGroupCpClient({ params }) {
           </button>
         </div>
 
-      {reportData && reportData.length > 0 && (
-        <div className={styles.historyContainer}>
-          <h3>HISTÓRICO ({reportData.length})</h3>
-          <div className={styles.historyGrid}>
-            {reportData.map((report) => (
-              <div key={`${report.year}-${report.week}`} className={styles.historyItem}>
-                <span className={styles.historyWeek}>
-                  {report.year} - W{report.week}
-                </span>
-              </div>
-            ))}
+        {reportData && reportData.length > 0 && (
+          <div className={styles.historyContainer}>
+            <h3>HISTÓRICO ({reportData.length})</h3>
+            <div className={styles.historyGrid}>
+              {reportData.map((report) => (
+                <div key={`${report.year}-${report.week}`} className={styles.historyItem}>
+                  <span className={styles.historyWeek}>
+                    {report.year} - W{report.week}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
 
       {chartData ? (
@@ -231,6 +239,8 @@ export default function ReportGroupCpClient({ params }) {
 
       {/*chart cp for piece */}
       <ChartCpPieces
+        ref={plotRef}
+        captureRef={captureRef}
         group={group}
         selectedYear={selectedYear}
         selectedWeek={selectedWeek}
@@ -300,16 +310,16 @@ function prepareChartData(reportsData, group, piecesCount) {
       xaxis: {
         title: "",
         tickangle: -45,
-        tickfont: { size: 13, color: "black", weight: "bold"  },
+        tickfont: { size: 13, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
       },
       yaxis: {
         title: "",
         range: [0, 100],
         ticksuffix: "%",
-        tickfont: { size: 14, color: "black", weight: "bold" }, 
+        tickfont: { size: 14, color: "black", weight: "bold" },
         dtick: 10,
-        gridcolor: "#e2e8f0", 
+        gridcolor: "#e2e8f0",
       },
       legend: {
         x: 0.5,

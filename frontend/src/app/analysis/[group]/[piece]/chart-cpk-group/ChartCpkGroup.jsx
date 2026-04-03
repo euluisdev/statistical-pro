@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { ArrowBigDown, ArrowBigRight, Grid3x3, SaveAll, Undo2 } from "lucide-react";
-import ChartCpkPieces from "./ChartCpkPieces";
 import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
 import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcpkgroup.module.css";
+import ChartCpkPieces from "./ChartCpkPieces";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -22,7 +22,7 @@ export default function ReportGroupCpkClient({ params }) {
   const [loading, setLoading] = useState(false);
 
   const plotRef = useRef(null);
-  const piecesPlotRef = useRef(null);
+  const captureRef = useRef(null);
   const router = useRouter();
 
   //hook to save chart in the job-id
@@ -31,7 +31,8 @@ export default function ReportGroupCpkClient({ params }) {
     showSaveModal,
     saveLoading,
     openSaveModal,
-    saveChart,
+    saveChart, 
+    saveDomChart, 
     closeSaveModal
   } = useSaveChartToJob("cpk_conjunto");
 
@@ -98,7 +99,12 @@ export default function ReportGroupCpkClient({ params }) {
 
   const handleSaveChart = async () => {
     await saveChart(plotRef, group, "GROUP", "CPKC");
-    await saveChart(piecesPlotRef, group, "GROUP", "CPKC_PIECES");
+    await saveDomChart(
+      captureRef,
+      group,
+      "GROUP",
+      "CPK_PIECES_FULL"
+    );
   };
 
   const chartData = reportData && reportData.length > 0
@@ -121,7 +127,7 @@ export default function ReportGroupCpkClient({ params }) {
 
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CPK Geral - {group} - ({piecesList.length} Peças)
+          CPK Geral | {group} | ({piecesList.length} Peças)
         </h1>
 
         <div className={styles.controls}>
@@ -233,7 +239,8 @@ export default function ReportGroupCpkClient({ params }) {
 
       {/* chart cpk por peça */}
       <ChartCpkPieces
-        ref={piecesPlotRef}
+        ref={plotRef}
+        captureRef={captureRef}
         group={group}
         selectedYear={selectedYear}
         selectedWeek={selectedWeek}
@@ -297,7 +304,7 @@ function prepareChartData(reportsData, group, piecesCount) {
     layout: {
       barmode: "stack",
       title: {
-        text: `CPK Geral - ${group} - (${piecesCount} Peças)`,
+        text: `CPK Geral | ${group} | (${piecesCount} Peças)`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {

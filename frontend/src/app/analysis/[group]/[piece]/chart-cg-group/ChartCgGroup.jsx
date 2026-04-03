@@ -8,7 +8,7 @@ import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcggroup.module.css";
 import ChartCgPieces from "./ChartCgPieces"
 
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false }); 
 
 export default function ReportGroupClient({ params }) {
   const { group } = params;
@@ -98,7 +98,6 @@ export default function ReportGroupClient({ params }) {
   }
 
   const handleSaveChart = async () => {
-
     await saveChart(plotRef, group, "GROUP", "CGC_MAIN");
     await saveDomChart(
       captureRef,

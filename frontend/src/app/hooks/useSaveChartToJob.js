@@ -10,7 +10,6 @@ export function useSaveChartToJob(pageType = "general") {
   const [saveLoading, setSaveLoading] = useState(false);
 
   const { showToast } = useToast();
-  console.log("useToast carregado:", typeof showToast === 'function' ? "OK" : "FALHOU");
 
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -93,7 +92,7 @@ export function useSaveChartToJob(pageType = "general") {
 
     } catch (err) {
       console.error("Erro ao salvar gráfico:", err);
-      alert(`❌ Erro ao salvar gráfico: ${err.message}`);
+      showToast(`❌ Erro ao salvar gráfico: ${err.message}`);
       throw err;
     } finally {
       setSaveLoading(false);
@@ -116,7 +115,7 @@ export function useSaveChartToJob(pageType = "general") {
               return;
             }
 
-            //Força crossorigin antes de qualquer recarga
+            //força crossorigin antes de qualquer recarga
             if (img.crossOrigin !== "anonymous") {
               img.crossOrigin = "anonymous";
             }
@@ -126,9 +125,9 @@ export function useSaveChartToJob(pageType = "general") {
               return;
             }
 
-            //Recarrega a imG forçando CORS
+            //recarrega a imG forçando CORS
             const originalSrc = img.src;
-            img.src = "";                    // limpa
+            img.src = "";                    //limpa
             img.src = originalSrc + (originalSrc.includes("?") ? "&" : "?") + `t=${Date.now()}`;
 
             img.onload = () => {
@@ -138,7 +137,7 @@ export function useSaveChartToJob(pageType = "general") {
 
             img.onerror = (err) => {
               console.warn(`Falha ao carregar imagem ${index + 1}:`, img.src);
-              resolve(); // não trava o processo todo
+              resolve(); //não trava o processo todo
             };
 
             setTimeout(resolve, 8000);
@@ -176,8 +175,9 @@ export function useSaveChartToJob(pageType = "general") {
       }
 
       const result = await response.json();
+      showToast(`Top Five salvo com sucesso!\n ${result.filename}`, "success");
       return result;
-
+      
     } catch (err) {
       console.error("Erro ao salvar DOM com html2canvas:", err);
       showToast(`❌ Erro ao capturar imagens: ${err.message}`, "error");
