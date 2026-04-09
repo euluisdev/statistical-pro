@@ -1,0 +1,214 @@
+[
+  {
+    "seq": 1,
+    "rows": [
+      {
+        "point_id": "28359_Y",
+        "label": "28359",
+        "axis": "Y",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "CÍRCULO",
+        "xmed": -0.82,
+        "cp": 0.71,
+        "cpk": -0.45,
+        "range": 1.41
+      },
+      {
+        "point_id": "28359_Z",
+        "label": "28359",
+        "axis": "Z",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "CÍRCULO",
+        "xmed": -0.363,
+        "cp": 0.88,
+        "cpk": 0.24,
+        "range": 1.14
+      },
+      {
+        "point_id": "28354_Y",
+        "label": "28354",
+        "axis": "Y",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "CÍRCULO",
+        "xmed": 1.133,
+        "cp": 0.54,
+        "cpk": -0.69,
+        "range": 1.84
+      },
+      {
+        "point_id": "28354_Z",
+        "label": "28354",
+        "axis": "Z",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "CÍRCULO",
+        "xmed": -0.5,
+        "cp": 0.87,
+        "cpk": 0.0,
+        "range": 1.15
+      }
+    ],
+    "action_type": "X",
+    "action_text": "Melhorar plano da peça.",
+    "responsible_name": "Marcelo",
+    "responsible_dept": "Ferramentaria",
+    "deadline_date": "2026-04-08",
+    "deadline_year": "",
+    "deadline_week": "14",
+    "status": "Em execurção",
+    "analysis": "Process",
+    "week_statuses": [
+      {
+        "week": "05",
+        "value": ""
+      },
+      {
+        "week": "06",
+        "value": ""
+      },
+      {
+        "week": "07",
+        "value": ""
+      },
+      {
+        "week": "08",
+        "value": ""
+      },
+      {
+        "week": "09",
+        "value": ""
+      },
+      {
+        "week": "10",
+        "value": ""
+      },
+      {
+        "week": "11",
+        "value": ""
+      },
+      {
+        "week": "12",
+        "value": ""
+      },
+      {
+        "week": "13",
+        "value": ""
+      },
+      {
+        "week": "14",
+        "value": "X"
+      }
+    ],
+    "created_at": "2026-04-08T20:14:35.800729",
+    "updated_at": "2026-04-08T20:16:13.195470"
+  },
+  {
+    "seq": 2,
+    "rows": [
+      {
+        "point_id": "PNT21 BORDA_T",
+        "label": "PNT21 BORDA",
+        "axis": "T",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "PONTO",
+        "xmed": 0.127,
+        "cp": 1.22,
+        "cpk": 0.91,
+        "range": 0.82
+      },
+      {
+        "point_id": "PNT20 BORDA_T",
+        "label": "PNT20 BORDA",
+        "axis": "T",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "PONTO",
+        "xmed": -0.283,
+        "cp": 1.18,
+        "cpk": 0.51,
+        "range": 0.85
+      },
+      {
+        "point_id": "PNT2 BORDA_T",
+        "label": "PNT2 BORDA",
+        "axis": "T",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "PONTO",
+        "xmed": -0.459,
+        "cp": 0.96,
+        "cpk": 0.08,
+        "range": 1.04
+      },
+      {
+        "point_id": "PNT19 BORDA_T",
+        "label": "PNT19 BORDA",
+        "axis": "T",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "PONTO",
+        "xmed": -0.051,
+        "cp": 1.2,
+        "cpk": 1.08,
+        "range": 0.83
+      }
+    ],
+    "action_type": "Não definida",
+    "action_text": "ajustar plano",
+    "responsible_name": "Everton",
+    "responsible_dept": "Ferramentaria",
+    "deadline_date": "2026-04-09",
+    "deadline_year": "",
+    "deadline_week": "13",
+    "status": "ok",
+    "analysis": "Process",
+    "week_statuses": [
+      {
+        "week": "05",
+        "value": ""
+      },
+      {
+        "week": "06",
+        "value": ""
+      },
+      {
+        "week": "07",
+        "value": ""
+      },
+      {
+        "week": "08",
+        "value": ""
+      },
+      {
+        "week": "09",
+        "value": ""
+      },
+      {
+        "week": "10",
+        "value": ""
+      },
+      {
+        "week": "11",
+        "value": ""
+      },
+      {
+        "week": "12",
+        "value": ""
+      },
+      {
+        "week": "13",
+        "value": "X"
+      },
+      {
+        "week": "14",
+        "value": ""
+      }
+    ],
+    "created_at": "2026-04-08T22:21:05.594584",
+    "updated_at": "2026-04-08T22:21:05.594584"
+  }
+]

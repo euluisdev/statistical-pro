@@ -92,14 +92,14 @@
           "height": 115
         },
         {
-          "id": "image-1775675583502",
+          "id": "image-1774734225642",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
-            "piece": "GROUP",
-            "page_type": "cp_conjunto",
-            "filename": "fGROUP_20260408_160845_708781.png",
-            "url": "/static/jobs/6194d778-c885-433e-bb4d-17702de85435/CONJUNTO_5980/GROUP/cp_conjunto/fGROUP_20260408_160845_708781.png"
+            "piece": "53327786",
+            "page_type": "cp_cpk",
+            "filename": "f53327786_20260328_184238_798822.png",
+            "url": "/static/jobs/96bf9775-b558-470a-900e-de6725aeacd7/CONJUNTO_5980/53327786/cp_cpk/f53327786_20260328_184238_798822.png"
           },
           "x": 24,
           "y": 120,
@@ -135,37 +135,6 @@
           "y": 120,
           "width": 1074,
           "height": 650
-        },
-        {
-          "id": "image-1775675757086",
-          "type": "image",
-          "chart": {
-            "group": "CONJUNTO_5980",
-            "piece": "53327786",
-            "page_type": "capability",
-            "filename": "f53327786_20260408_161441_395737.png",
-            "url": "/static/jobs/6194d778-c885-433e-bb4d-17702de85435/CONJUNTO_5980/53327786/capability/f53327786_20260408_161441_395737.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 532,
-          "height": 320
-        },
-        {
-          "id": "text-1775675770906",
-          "type": "text",
-          "content": "Digite aqui...",
-          "x": 406,
-          "y": 8,
-          "width": 300,
-          "height": 100,
-          "fontSize": 16,
-          "fontWeight": "normal",
-          "fontStyle": "normal",
-          "textDecoration": "none",
-          "color": "#000000",
-          "textAlign": "left",
-          "backgroundColor": "transparent"
         }
       ]
     },
@@ -196,15 +165,26 @@
           "y": -38.5,
           "width": 193.18057250976562,
           "height": 115
+        },
+        {
+          "id": "image-1774734301562",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_5980",
+            "piece": "53327786",
+            "page_type": "cp_cpk",
+            "filename": "f53327786_20260328_184241_263960.png",
+            "url": "/static/jobs/96bf9775-b558-470a-900e-de6725aeacd7/CONJUNTO_5980/53327786/cp_cpk/f53327786_20260328_184241_263960.png"
+          },
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
         }
       ]
-    },
-    {
-      "id": 1775697800276,
-      "elements": []
     }
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-14",
-  "updated_at": "2026-04-09T02:00:52.981149"
+  "updated_at": "2026-04-08T19:12:36.111718"
 }

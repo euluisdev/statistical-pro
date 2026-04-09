@@ -7,12 +7,12 @@ import styles from "./actionplan.module.css";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 //semanas exibidas na tabela
-const WEEKS = ["05","06","07","08","09","10","11","12","13","14"];
+const WEEKS = ["05", "06", "07", "08", "09", "10", "11", "12", "13", "14"];
 
 const ACTION_TYPES = [
   { value: "Não definida", label: "Não definida" },
-  { value: "X",   label: "X — Ação programada" },
-  { value: "R",   label: "R — Ação reprogramada" },
+  { value: "X", label: "X — Ação programada" },
+  { value: "R", label: "R — Ação reprogramada" },
   { value: "NOK", label: "NOK — Ação não efetiva" },
 ];
 
@@ -22,11 +22,11 @@ const fmt = (v) => v == null ? "—" : parseFloat(v).toFixed(2).replace(".", ","
 
 function cpkColor(val, colorHint) {
   if (colorHint === "green") return "#22bb44";
-  if (colorHint === "red")   return "#cc2222";
+  if (colorHint === "red") return "#cc2222";
   if (val == null) return "transparent";
   const n = parseFloat(val);
   if (n >= 1.33) return "#22bb44";
-  if (n >= 1.0)  return "#f0b800";
+  if (n >= 1.0) return "#f0b800";
   return "#cc2222";
 }
 
@@ -34,26 +34,26 @@ function cpkColor(val, colorHint) {
 function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
   const isEdit = !!plan;
 
-  const [points,       setPoints]       = useState([]);
-  const [loading,      setLoading]      = useState(true);
-  const [filterType,   setFilterType]   = useState("CPK");
-  const [filterVal,    setFilterVal]    = useState("All");
-  const [onlyCalc,     setOnlyCalc]     = useState(true);
+  const [points, setPoints] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filterType, setFilterType] = useState("CPK");
+  const [filterVal, setFilterVal] = useState("All");
+  const [onlyCalc, setOnlyCalc] = useState(true);
 
   // Form state
-  const [selectedPts,  setSelectedPts]  = useState(
+  const [selectedPts, setSelectedPts] = useState(
     isEdit ? plan.rows.map(r => r.point_id) : []
   );
-  const [actionType,   setActionType]   = useState(isEdit ? plan.action_type   : "Não definida");
-  const [actionText,   setActionText]   = useState(isEdit ? plan.action_text   : "");
-  const [respName,     setRespName]      = useState(isEdit ? plan.responsible_name : "");
-  const [respDept,     setRespDept]      = useState(isEdit ? plan.responsible_dept : "");
-  const [deadlineDate, setDeadlineDate]  = useState(isEdit ? plan.deadline_date : "");
-  const [deadlineYear, setDeadlineYear]  = useState(isEdit ? plan.deadline_year : "");
-  const [deadlineWeek, setDeadlineWeek]  = useState(isEdit ? plan.deadline_week : "");
-  const [status,       setStatus]        = useState(isEdit ? plan.status       : "");
-  const [analysis,     setAnalysis]      = useState(isEdit ? plan.analysis     : "Parts");
-  const [weekStatuses, setWeekStatuses]  = useState(
+  const [actionType, setActionType] = useState(isEdit ? plan.action_type : "Não definida");
+  const [actionText, setActionText] = useState(isEdit ? plan.action_text : "");
+  const [respName, setRespName] = useState(isEdit ? plan.responsible_name : "");
+  const [respDept, setRespDept] = useState(isEdit ? plan.responsible_dept : "");
+  const [deadlineDate, setDeadlineDate] = useState(isEdit ? plan.deadline_date : "");
+  const [deadlineYear, setDeadlineYear] = useState(isEdit ? plan.deadline_year : "");
+  const [deadlineWeek, setDeadlineWeek] = useState(isEdit ? plan.deadline_week : "");
+  const [status, setStatus] = useState(isEdit ? plan.status : "");
+  const [analysis, setAnalysis] = useState(isEdit ? plan.analysis : "Parts");
+  const [weekStatuses, setWeekStatuses] = useState(
     isEdit ? plan.week_statuses : WEEKS.map(w => ({ week: w, value: "" }))
   );
   const [saving, setSaving] = useState(false);
@@ -70,7 +70,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     );
 
-  const moveSelected = () => {/*points already shown selected inline */};
+  const moveSelected = () => {/*points already shown selected inline */ };
 
   const setWeekVal = (week, value) =>
     setWeekStatuses(prev =>
@@ -109,7 +109,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
         week_statuses: weekStatuses,
       };
 
-      const url    = isEdit
+      const url = isEdit
         ? `${API}/pieces/${group}/${piece}/action-plans/${plan.seq}`
         : `${API}/pieces/${group}/${piece}/action-plans`;
       const method = isEdit ? "PUT" : "POST";
@@ -136,7 +136,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
 
         {/*header */}
         <div className={styles.modalHeader}>
-          <h3>AutoMarb — Action Plan {isEdit ? `(SEQ ${plan.seq})` : "— Novo"}</h3>
+          <h3>AutoSigma | Action Plan {isEdit ? `(SEQ ${plan.seq})` : "— Novo"}</h3>
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
         </div>
 
@@ -150,7 +150,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
               <div className={styles.row}>
                 <label>Número da Ação</label>
                 <div className={styles.seqDisplay}>
-                  {isEdit ? String(plan.seq).padStart(3,"0") : "Auto"}
+                  {isEdit ? String(plan.seq).padStart(3, "0") : "Auto"}
                 </div>
               </div>
 
@@ -343,7 +343,7 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek }) {
           {ri === 0 && (
             <td rowSpan={rowCount} className={styles.tdSeq}>
               <div className={styles.seqCell}>
-                <span>{String(plan.seq).padStart(3,"0")}</span>
+                <span>{String(plan.seq).padStart(3, "0")}</span>
                 <div className={styles.rowActions}>
                   <button className={styles.editRowBtn} onClick={() => onEdit(plan)}
                     title="Editar">✏</button>
@@ -397,10 +397,10 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek }) {
                   <td key={w} rowSpan={rowCount}
                     className={`${styles.tdWeek} ${isCurrent ? styles.tdWeekCurrent : ""}`}
                     style={{
-                      background: val === "X"   ? "#aad4f5"
-                                : val === "NOK" ? "#ffaaaa"
-                                : val === "R"   ? "#ffe099"
-                                : "transparent"
+                      background: val === "X" ? "#aad4f5"
+                        : val === "NOK" ? "#ffaaaa"
+                          : val === "R" ? "#ffe099"
+                            : "transparent"
                     }}>
                     {val}
                   </td>
@@ -423,9 +423,9 @@ export default function ActionPlanPage() {
   const { group, piece } = useParams();
   const router = useRouter();
 
-  const [plans,       setPlans]       = useState([]);
-  const [loading,     setLoading]     = useState(true);
-  const [modalOpen,   setModalOpen]   = useState(false);
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const [editingPlan, setEditingPlan] = useState(null); // null = novo
 
   //semana atual para destacar coluna
@@ -435,7 +435,7 @@ export default function ActionPlanPage() {
     setLoading(true);
     try {
       const res = await fetch(`${API}/pieces/${group}/${piece}/action-plans`);
-      const d   = await res.json();
+      const d = await res.json();
       setPlans(d.plans || []);
     } catch { setPlans([]); }
     finally { setLoading(false); }
@@ -451,7 +451,7 @@ export default function ActionPlanPage() {
         next[exists] = plan;
         return next;
       }
-      return [...prev, plan].sort((a,b) => a.seq - b.seq);
+      return [...prev, plan].sort((a, b) => a.seq - b.seq);
     });
   };
 
@@ -461,7 +461,7 @@ export default function ActionPlanPage() {
     setPlans(prev => prev.filter(p => p.seq !== seq));
   };
 
-  const openNew  = () => { setEditingPlan(null); setModalOpen(true); };
+  const openNew = () => { setEditingPlan(null); setModalOpen(true); };
   const openEdit = (plan) => { setEditingPlan(plan); setModalOpen(true); };
 
   return (
@@ -473,10 +473,10 @@ export default function ActionPlanPage() {
           <button className={styles.backBtn} onClick={() => router.push("/")}>← Voltar</button>
           <div className={styles.toolbarCenter}>
             <span className={styles.toolbarTitle}>ACTION PLAN</span>
-            <span className={styles.toolbarSub}>{group} / {piece}</span>
+            <span className={styles.toolbarSub}>{group} | {piece}</span>
           </div>
           <button className={styles.newBtn} onClick={openNew}>
-            + Novo Plano de Ação
+            New
           </button>
         </div>
 
@@ -527,7 +527,7 @@ export default function ActionPlanPage() {
                 {plans.length === 0 ? (
                   <tr>
                     <td colSpan={15 + WEEKS.length + 1} className={styles.emptyTable}>
-                      Nenhum plano de ação criado. Clique em <strong>+ Novo Plano de Ação</strong>.
+                      Nenhum plano de ação criado. Clique em <strong> New</strong>.
                     </td>
                   </tr>
                 ) : (
@@ -563,6 +563,6 @@ export default function ActionPlanPage() {
       )}
     </div>
   );
-}  
- 
- 
+}
+
+
