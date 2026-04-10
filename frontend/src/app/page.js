@@ -223,7 +223,19 @@ export default function GroupsPage() {
           >
             <TrendingUpDown />
           </button>
-          <button className="btnRest"><ChartLine /></button>
+
+          <button
+            className="btnRest"
+            onClick={() => {
+              if (selectedGroup && selectedPiece) {
+                router.push(`/analysis/${selectedGroup}/${selectedPiece}/action-plan`);
+              }
+            }}
+            disabled={!selectedGroup || !selectedPiece}
+            title="Action Plan"
+          >
+            <ChartLine />
+          </button>
 
           <button
             className="btnRest"

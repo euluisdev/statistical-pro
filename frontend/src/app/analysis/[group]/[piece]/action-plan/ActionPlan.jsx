@@ -7,7 +7,7 @@ import styles from "./actionplan.module.css";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 //semanas exibidas na tabela
-const WEEKS = ["05", "06", "07", "08", "09", "10", "11", "12", "13", "14"];
+
 
 const ACTION_TYPES = [
   { value: "Não definida", label: "Não definida" },
@@ -21,13 +21,45 @@ const WEEK_VALUES = ["", "X", "NOK", "R"];
 const fmt = (v) => v == null ? "—" : parseFloat(v).toFixed(2).replace(".", ",");
 
 function cpkColor(val, colorHint) {
-  if (colorHint === "green") return "#22bb44";
-  if (colorHint === "red") return "#cc2222";
+  if (colorHint === "green") return "green";
+  if (colorHint === "red") return "red";
   if (val == null) return "transparent";
   const n = parseFloat(val);
-  if (n >= 1.33) return "#22bb44";
-  if (n >= 1.0) return "#f0b800";
-  return "#cc2222";
+  if (n >= 1.33) return "green";
+  if (n >= 1.0) return "yellow";
+  return "red";
+}
+
+//gerar 10 weeks deslizante in the table
+function getSlidingWeeks() {
+  const today = new Date();
+  let currentWeek = Math.ceil(
+    ((today - new Date(today.getFullYear(), 0, 1)) / 86400000 + 1) / 7
+  );
+
+  const isoWeek = today.getWeek ? today.getWeek() : currentWeek;
+  currentWeek = String(isoWeek).padStart(2, "0");
+
+  const weeks = [];
+  const startWeek = Math.max(1, isoWeek - 4); //começa 4 semanas antes da atual
+
+  for (let i = 0; i < 10; i++) {
+    let weekNum = startWeek + i;
+    if (weekNum > 53) weekNum = weekNum - 53; //evita passar de 53
+    weeks.push(String(weekNum).padStart(2, "0"));
+  }
+
+  return { weeks, currentWeek };
+}
+
+//extensão do date para pegar semana ISO
+if (!Date.prototype.getWeek) {
+  Date.prototype.getWeek = function () {
+    const d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+    d.setUTCDate(d.getUTCDate() + 3 - ((d.getUTCDay() + 6) % 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  };
 }
 
 //action Plan Modal
@@ -53,8 +85,11 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
   const [deadlineWeek, setDeadlineWeek] = useState(isEdit ? plan.deadline_week : "");
   const [status, setStatus] = useState(isEdit ? plan.status : "");
   const [analysis, setAnalysis] = useState(isEdit ? plan.analysis : "Parts");
+  const { weeks: availableWeeks } = getSlidingWeeks();
   const [weekStatuses, setWeekStatuses] = useState(
-    isEdit ? plan.week_statuses : WEEKS.map(w => ({ week: w, value: "" }))
+    isEdit
+      ? plan.week_statuses
+      : availableWeeks.map(w => ({ week: w, value: "" }))
   );
   const [saving, setSaving] = useState(false);
 
@@ -333,7 +368,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
 }
 
 //action plan table row
-function PlanTableRows({ plan, onEdit, onDelete, currentWeek }) {
+function PlanTableRows({ plan, onEdit, onDelete, currentWeek, weeks }) {
   const rowCount = plan.rows.length;
 
   return (
@@ -388,25 +423,30 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek }) {
               <td rowSpan={rowCount} className={styles.tdDate}>
                 {plan.deadline_date || ""}
               </td>
+
               {/*weeks*/}
-              {WEEKS.map(w => {
+              {weeks.map(w => {
                 const ws = plan.week_statuses?.find(x => x.week === w);
                 const val = ws?.value || "";
                 const isCurrent = w === currentWeek;
+
                 return (
-                  <td key={w} rowSpan={rowCount}
+                  <td
+                    key={w}
+                    rowSpan={rowCount}
                     className={`${styles.tdWeek} ${isCurrent ? styles.tdWeekCurrent : ""}`}
                     style={{
                       background: val === "X" ? "#aad4f5"
                         : val === "NOK" ? "#ffaaaa"
                           : val === "R" ? "#ffe099"
                             : "transparent"
-                    }}>
+                    }}
+                  >
                     {val}
                   </td>
                 );
               })}
-              {/*status*/}
+
               <td rowSpan={rowCount} className={styles.tdStatus}>
                 {plan.status}
               </td>
@@ -429,7 +469,7 @@ export default function ActionPlanPage() {
   const [editingPlan, setEditingPlan] = useState(null); // null = novo
 
   //semana atual para destacar coluna
-  const currentWeek = String(new Date().getWeek?.() ?? "09").padStart(2, "0");
+  const { weeks: displayWeeks, currentWeek } = getSlidingWeeks();
 
   const loadPlans = useCallback(async () => {
     setLoading(true);
@@ -488,13 +528,13 @@ export default function ActionPlanPage() {
             <table className={styles.table}>
               <thead>
                 <tr>
-                  {/*cabeçalho*/}
                   <th colSpan={15} className={styles.thPiece}>
                     {piece} | ACTION PLAN
                   </th>
-                  <th colSpan={WEEKS.length + 1} className={styles.thSemana}>SEMANA</th>
+                  <th colSpan={displayWeeks.length + 1} className={styles.thSemana}>SEMANA</th>
                 </tr>
                 <tr>
+                  {/* colunas fixas */}
                   <th className={styles.th}>SEQ</th>
                   <th className={styles.th}>LABEL</th>
                   <th className={styles.th}>AXIS</th>
@@ -514,20 +554,25 @@ export default function ActionPlanPage() {
                   <th className={styles.th}>ACTION PLAN</th>
                   <th className={styles.th}>RESPONSIBLE</th>
                   <th className={styles.th}>DATA</th>
-                  {WEEKS.map(w => (
-                    <th key={w}
-                      className={`${styles.th} ${styles.thWeek} ${w === currentWeek ? styles.thWeekCurrent : ""}`}>
+
+                  {/* Cabeçalho das semanas dinâmico */}
+                  {displayWeeks.map(w => (
+                    <th
+                      key={w}
+                      className={`${styles.th} ${styles.thWeek} ${w === currentWeek ? styles.thWeekCurrent : ""}`}
+                    >
                       {w}
                     </th>
                   ))}
+
                   <th className={styles.th}>STATUS</th>
                 </tr>
               </thead>
               <tbody>
                 {plans.length === 0 ? (
                   <tr>
-                    <td colSpan={15 + WEEKS.length + 1} className={styles.emptyTable}>
-                      Nenhum plano de ação criado. Clique em <strong> New</strong>.
+                    <td colSpan={15 + displayWeeks.length + 1} className={styles.emptyTable}>
+                      Nenhum plano de ação criado. Clique em <strong>New</strong>.
                     </td>
                   </tr>
                 ) : (
@@ -538,6 +583,7 @@ export default function ActionPlanPage() {
                       onEdit={openEdit}
                       onDelete={handleDelete}
                       currentWeek={currentWeek}
+                      weeks={displayWeeks}
                     />
                   ))
                 )}
@@ -546,7 +592,6 @@ export default function ActionPlanPage() {
           )}
         </div>
 
-        {/*legend */}
         <div className={styles.legend}>
           X — Ação programada &nbsp;|&nbsp; NOK — Ação não efetiva &nbsp;|&nbsp; R — Ação reprogramada
         </div>

@@ -98,6 +98,8 @@
   width: 22px;
   max-width: 22px;
   padding: 3px 2px;
+  vertical-align: middle; 
+  text-align: center;  
 }
 .thWeek {
   width: 26px; 
@@ -115,6 +117,7 @@
   color: black;
   font-size: 10px;
   white-space: nowrap;
+    vertical-align: middle; 
 }
 .tdSymbol { padding: 3px 2px; border: 1px solid #ccc; text-align: center; font-size: 9px; color: black; font-weight: bold }
 .tdCpk    { font-weight: bold; }
@@ -123,6 +126,8 @@
   padding: 3px 1px;
   border: 1px solid #ccc;
   color: black;
+    vertical-align: middle; 
+  text-align: center;  
 }
 .tdAction {
   padding: 4px 6px;
@@ -168,12 +173,15 @@
 .delRowBtn:hover  { color: red; }
 
 .verticalText {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
+  display: inline-block;
+  writing-mode: vertical-rl;   
+  text-orientation: mixed;
+  transform: rotate(180deg);  
   font-size: 8px;
+  font-weight: bold;
+  color: black;
   white-space: nowrap;
-  display: block;
-  line-height: 1;
+  padding: 4px 0;  
 }
 
 .trEven { background: white; }

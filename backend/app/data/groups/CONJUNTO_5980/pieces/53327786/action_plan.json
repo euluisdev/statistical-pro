@@ -99,26 +99,38 @@
       },
       {
         "week": "14",
-        "value": "X"
+        "value": "NOK"
       }
     ],
     "created_at": "2026-04-08T20:14:35.800729",
-    "updated_at": "2026-04-08T20:16:13.195470"
+    "updated_at": "2026-04-09T18:45:18.923851"
   },
   {
-    "seq": 2,
+    "seq": 3,
     "rows": [
       {
-        "point_id": "PNT21 BORDA_T",
-        "label": "PNT21 BORDA",
+        "point_id": "PNT9 BORDA_T",
+        "label": "PNT9 BORDA",
         "axis": "T",
         "lse": 0.5,
         "lie": -0.5,
         "symbol": "PONTO",
-        "xmed": 0.127,
-        "cp": 1.22,
-        "cpk": 0.91,
-        "range": 0.82
+        "xmed": 0.578,
+        "cp": 0.73,
+        "cpk": -0.11,
+        "range": 1.37
+      },
+      {
+        "point_id": "PNT6 BORDA_T",
+        "label": "PNT6 BORDA",
+        "axis": "T",
+        "lse": 0.5,
+        "lie": -0.5,
+        "symbol": "PONTO",
+        "xmed": -0.46,
+        "cp": 1.82,
+        "cpk": 0.14,
+        "range": 0.55
       },
       {
         "point_id": "PNT20 BORDA_T",
@@ -143,54 +155,18 @@
         "cp": 0.96,
         "cpk": 0.08,
         "range": 1.04
-      },
-      {
-        "point_id": "PNT19 BORDA_T",
-        "label": "PNT19 BORDA",
-        "axis": "T",
-        "lse": 0.5,
-        "lie": -0.5,
-        "symbol": "PONTO",
-        "xmed": -0.051,
-        "cp": 1.2,
-        "cpk": 1.08,
-        "range": 0.83
       }
     ],
-    "action_type": "Não definida",
-    "action_text": "ajustar plano",
-    "responsible_name": "Everton",
-    "responsible_dept": "Ferramentaria",
-    "deadline_date": "2026-04-09",
+    "action_type": "X",
+    "action_text": "Melhorar cordão de Solda.",
+    "responsible_name": "Lucas",
+    "responsible_dept": "Engenharia",
+    "deadline_date": "2026-04-13",
     "deadline_year": "",
-    "deadline_week": "13",
-    "status": "ok",
+    "deadline_week": "15",
+    "status": "A executar",
     "analysis": "Process",
     "week_statuses": [
-      {
-        "week": "05",
-        "value": ""
-      },
-      {
-        "week": "06",
-        "value": ""
-      },
-      {
-        "week": "07",
-        "value": ""
-      },
-      {
-        "week": "08",
-        "value": ""
-      },
-      {
-        "week": "09",
-        "value": ""
-      },
-      {
-        "week": "10",
-        "value": ""
-      },
       {
         "week": "11",
         "value": ""
@@ -201,14 +177,38 @@
       },
       {
         "week": "13",
-        "value": "X"
+        "value": ""
       },
       {
         "week": "14",
         "value": ""
+      },
+      {
+        "week": "15",
+        "value": "X"
+      },
+      {
+        "week": "16",
+        "value": ""
+      },
+      {
+        "week": "17",
+        "value": ""
+      },
+      {
+        "week": "18",
+        "value": ""
+      },
+      {
+        "week": "19",
+        "value": ""
+      },
+      {
+        "week": "20",
+        "value": ""
       }
     ],
-    "created_at": "2026-04-08T22:21:05.594584",
-    "updated_at": "2026-04-08T22:21:05.594584"
+    "created_at": "2026-04-09T22:45:12.470238",
+    "updated_at": "2026-04-09T22:45:12.470238"
   }
 ]
