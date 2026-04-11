@@ -92,6 +92,8 @@ def calculate_characteristic_qh(
     cp_color = classify_cp_color(cp)
     cpk_color = classify_cpk_color(cpk)
 
+    risk_level = classify_risk_level(mean_dev)
+
     return {
         "n": int(n),
         "mean": round(float(mean_dev), 3),
@@ -114,11 +116,37 @@ def calculate_characteristic_qh(
         "ok_percent": round(float(ok_percent), 2),
         "mean_color": mean_color,      #verde/amarelo/vermelho
         "cp_color": cp_color,            # verde/amarelo/vermelho
-        "cpk_color": cpk_color,          # verde/amarelo/vermelho
+        "cpk_color": cpk_color,          # verde/amarelo/vermelho 
+        "risk_level": risk_level,
         "desvio_medio": round(float(mean_dev), 3),
         "desvio_max": round(float(np.max(desvios)), 3),
         "desvio_min": round(float(np.min(desvios)), 3)
     }
+
+def classify_risk_level(desvio: float) -> str:
+    """
+    Classifica o RISK conforme a imagem enviada (baseado no desvio absoluto)
+    """
+    abs_desvio = abs(desvio)
+    
+    if abs_desvio <= 0.5:
+        return "To 0,5mm"
+    elif abs_desvio <= 1.0:
+        return "To 1,0mm"
+    elif abs_desvio <= 1.5:
+        return "To 1,5mm"
+    elif abs_desvio <= 2.0:
+        return "To 2,0mm"
+    elif abs_desvio <= 2.5:
+        return "To 2,5mm"
+    elif abs_desvio <= 3.0:
+        return "To 3,0mm"
+    elif abs_desvio <= 3.5:
+        return "To 3,5mm"
+    elif abs_desvio <= 4.0:
+        return "To 4,0mm"
+    else:
+        return "Up 4,5mm"
 
 
 def classify_mean_color(mean: float, lsl: float, usl: float) -> str:

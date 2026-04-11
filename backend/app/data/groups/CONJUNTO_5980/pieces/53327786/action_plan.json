@@ -12,7 +12,8 @@
         "xmed": -0.82,
         "cp": 0.71,
         "cpk": -0.45,
-        "range": 1.41
+        "range": 1.41,
+        "risk_level": "To 1,0mm"
       },
       {
         "point_id": "28359_Z",
@@ -24,7 +25,8 @@
         "xmed": -0.363,
         "cp": 0.88,
         "cpk": 0.24,
-        "range": 1.14
+        "range": 1.14,
+        "risk_level": "To 0,5mm"
       },
       {
         "point_id": "28354_Y",
@@ -36,7 +38,8 @@
         "xmed": 1.133,
         "cp": 0.54,
         "cpk": -0.69,
-        "range": 1.84
+        "range": 1.84,
+        "risk_level": "To 1,5mm"
       },
       {
         "point_id": "28354_Z",
@@ -48,10 +51,11 @@
         "xmed": -0.5,
         "cp": 0.87,
         "cpk": 0.0,
-        "range": 1.15
+        "range": 1.15,
+        "risk_level": "To 0,5mm"
       }
     ],
-    "action_type": "X",
+    "action_type": "Não definida",
     "action_text": "Melhorar plano da peça.",
     "responsible_name": "Marcelo",
     "responsible_dept": "Ferramentaria",
@@ -103,7 +107,7 @@
       }
     ],
     "created_at": "2026-04-08T20:14:35.800729",
-    "updated_at": "2026-04-09T18:45:18.923851"
+    "updated_at": "2026-04-10T20:22:55.207595"
   },
   {
     "seq": 3,
@@ -118,7 +122,8 @@
         "xmed": 0.578,
         "cp": 0.73,
         "cpk": -0.11,
-        "range": 1.37
+        "range": 1.37,
+        "risk_level": "To 1,0mm"
       },
       {
         "point_id": "PNT6 BORDA_T",
@@ -130,7 +135,8 @@
         "xmed": -0.46,
         "cp": 1.82,
         "cpk": 0.14,
-        "range": 0.55
+        "range": 0.55,
+        "risk_level": "To 0,5mm"
       },
       {
         "point_id": "PNT20 BORDA_T",
@@ -142,7 +148,8 @@
         "xmed": -0.283,
         "cp": 1.18,
         "cpk": 0.51,
-        "range": 0.85
+        "range": 0.85,
+        "risk_level": "To 0,5mm"
       },
       {
         "point_id": "PNT2 BORDA_T",
@@ -154,10 +161,11 @@
         "xmed": -0.459,
         "cp": 0.96,
         "cpk": 0.08,
-        "range": 1.04
+        "range": 1.04,
+        "risk_level": "To 0,5mm"
       }
     ],
-    "action_type": "X",
+    "action_type": "R",
     "action_text": "Melhorar cordão de Solda.",
     "responsible_name": "Lucas",
     "responsible_dept": "Engenharia",
@@ -209,6 +217,6 @@
       }
     ],
     "created_at": "2026-04-09T22:45:12.470238",
-    "updated_at": "2026-04-09T22:45:12.470238"
+    "updated_at": "2026-04-10T20:22:45.913295"
   }
 ]

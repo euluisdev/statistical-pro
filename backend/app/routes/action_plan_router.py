@@ -1,7 +1,4 @@
 """
-action_plan_router.py
-Prefix: /pieces 
-
 Endpoints:
   GET  /pieces/{group}/{piece}/action-plans          → lista alls os plan
   POST /pieces/{group}/{piece}/action-plans          → create new plan
@@ -124,7 +121,8 @@ def get_action_plan_points(group: str, piece: str):
             "symbol":    ch.get("tipo_geometrico", ""),
             "tolerance": f"{tol_m}|+{tol_p}" if tol_m and tol_p else "",
             "cp_color":  ch.get("cp_color"),
-            "cpk_color": ch.get("cpk_color"),
+            "cpk_color": ch.get("cpk_color"), 
+            "risk_level": ch.get("risk_level", "To 0,5mm"),
         })
 
     return {"group": group, "piece": piece, "points": points}
@@ -172,8 +170,9 @@ def create_action_plan(group: str, piece: str, body: ActionPlanCreate):
             "symbol":   ch.get("tipo_geometrico", ""),
             "xmed":     _safe_float(ch.get("mean")),
             "cp":       _safe_float(ch.get("cp")),
-            "cpk":      _safe_float(ch.get("cpk")),
-            "range":    _safe_float(ch.get("range")),
+            "cpk":      _safe_float(ch.get("cpk")), 
+            "range":    _safe_float(ch.get("range")), 
+            "risk_level": ch.get("risk_level", "To 0,5mm"),
         })
 
     plan = {
@@ -245,7 +244,8 @@ def update_action_plan(group: str, piece: str, seq: int, body: ActionPlanUpdate)
             "xmed":     _safe_float(ch.get("mean")),
             "cp":       _safe_float(ch.get("cp")),
             "cpk":      _safe_float(ch.get("cpk")),
-            "range":    _safe_float(ch.get("range")),
+            "range":    _safe_float(ch.get("range")), 
+            "risk_level": ch.get("risk_level", "To 0,5mm"),
         })
 
     plans[idx] = {

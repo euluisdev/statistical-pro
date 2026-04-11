@@ -6,9 +6,6 @@ import styles from "./actionplan.module.css";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-//semanas exibidas na tabela
-
-
 const ACTION_TYPES = [
   { value: "Não definida", label: "Não definida" },
   { value: "X", label: "X — Ação programada" },
@@ -282,7 +279,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
 
             {/* Histórico / semanas */}
             <fieldset className={styles.fieldset}>
-              <legend>Histórico — Semanas</legend>
+              <legend>Histórico | Semanas</legend>
               <div className={styles.weeksGrid}>
                 {weekStatuses.map(ws => (
                   <div key={ws.week} className={styles.weekCell}>
@@ -327,10 +324,8 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
                   onChange={e => setAnalysis(e.target.value)}>
                   <option>Parts</option>
                   <option>Process</option>
+                  <option>Investigation</option>
                   <option>Machine</option>
-                  <option>Man</option>
-                  <option>Method</option>
-                  <option>Environment</option>
                 </select>
               </fieldset>
             </div>
@@ -365,6 +360,33 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
       </div>
     </div>
   );
+}
+
+
+//função para definir a cor de fundo do RISK
+function getRiskBackgroundColor(risk) {
+  if (!risk) return "#f0f0f0";
+
+  switch (risk) {
+    case "To 0,5mm": return "#e5e7eb";   //cinza claro
+    case "To 1,0mm": return "#bfdbfe";   //azul claro
+    case "To 1,5mm": return "#fef08c";   //amarelo
+    case "To 2,0mm": return "#fca5a5";   //vermelho claro
+    case "To 2,5mm": return "#60a5fa";   //azul médio
+    case "To 3,0mm": return "#1e40af";   //azul escuro
+    case "To 3,5mm": return "#7c3aed";   //roxo
+    case "To 4,0mm": return "#6b7280";   //cinza escuro
+    case "Up 4,5mm": return "#1f2937";   //quase preto
+    default: return "#f3f4f6";
+  }
+}
+
+//função para definir a cor do texto - contraste
+function getRiskTextColor(risk) {
+  if (!risk) return "#111827";
+
+  const darkColors = ["To 3,0mm", "To 3,5mm", "To 4,0mm", "Up 4,5mm"];
+  return darkColors.includes(risk) ? "#ffffff" : "#111827";
 }
 
 //action plan table row
@@ -404,8 +426,17 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek, weeks }) {
           {ri === 0 && (
             <>
               {/*desviation + root cause */}
-              <td rowSpan={rowCount} className={styles.tdVertical}>
-                <span className={styles.verticalText}>{plan.action_type}</span>
+              <td
+                rowSpan={rowCount}
+                className={styles.tdVertical}
+                style={{
+                  backgroundColor: getRiskBackgroundColor(row.risk_level),
+                  color: getRiskTextColor(row.risk_level),   //para contraste branco ou preto
+                }}
+              >
+                <span className={styles.verticalText}>
+                  {row.risk_level || "—"}
+                </span>
               </td>
               <td rowSpan={rowCount} className={styles.tdVertical}>
                 <span className={styles.verticalText}>{plan.analysis}</span>
@@ -555,7 +586,7 @@ export default function ActionPlanPage() {
                   <th className={styles.th}>RESPONSIBLE</th>
                   <th className={styles.th}>DATA</th>
 
-                  {/* Cabeçalho das semanas dinâmico */}
+                  {/*cabeçalho das semanas dinâmico */}
                   {displayWeeks.map(w => (
                     <th
                       key={w}

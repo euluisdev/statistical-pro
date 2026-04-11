@@ -1,0 +1,291 @@
+.pageBackground {
+  background: #fff;
+  min-height: 100vh;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 10px 16px 30px;
+}
+
+/* ── Toolbar ─────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.toolbarCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.toolbarTitle {
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #222;
+}
+.toolbarSub { font-size: 11px; color: #666; }
+
+.backBtn {
+  background: #9a9a9a; border: none;
+  padding: 6px 14px; cursor: pointer;
+  font-size: 12px; font-weight: bold; color: #222;
+}
+.backBtn:hover { background: #888; }
+
+.loadingState {
+  text-align: center; padding: 60px;
+  font-size: 14px; color: #666;
+}
+
+/* ── Main content grid ───────────────────────────────── */
+.content {
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── Charts column ───────────────────────────────────── */
+.chartsCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Generic chart box (border fiel à imagem) ────────── */
+.chartBox {
+  border: 1.5px solid #bbb;
+  padding: 12px 14px 10px;
+  background: #fff;
+  position: relative;
+}
+.chartTitle {
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #111;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.emptyChart {
+  font-size: 11px; color: #aaa;
+  text-align: center; padding: 10px;
+}
+
+/* ── DEVIATION chart ─────────────────────────────────── */
+.deviationChart {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.deviationBars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+}
+.devBarRow {
+  display: flex;
+  align-items: center;
+}
+.devBar {
+  min-width: 40px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1px;
+  transition: width 0.3s ease;
+}
+.devBarLabel {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+
+/* Legenda direita do deviation */
+.deviationLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 90px;
+}
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.legendSwatch {
+  width: 14px;
+  height: 12px;
+  flex-shrink: 0;
+}
+.legendLabel {
+  font-size: 10px;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* ── ROOT CAUSE chart ────────────────────────────────── */
+.rootCauseChart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 8px;
+  padding: 0 10px;
+  height: 160px;
+}
+.rcCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.rcCount {
+  font-size: 11px;
+  font-weight: bold;
+  color: #222;
+}
+.rcBar {
+  width: 42px;
+  border-radius: 2px 2px 0 0;
+  min-height: 4px;
+  transition: height 0.3s ease;
+}
+.rcLabel {
+  font-size: 10px;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── CHARACTERISTICS chart ───────────────────────────── */
+.charChart {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.charRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.charLabel {
+  font-size: 10px;
+  color: #333;
+  text-align: right;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+.charBarWrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 6px;
+}
+.charBar {
+  height: 18px;
+  background: #9ca3af;   /* cinza médio fiel à imagem */
+  border-radius: 1px;
+  transition: width 0.3s ease;
+  min-width: 2px;
+}
+.charCount {
+  font-size: 10px;
+  font-weight: bold;
+  color: #222;
+  white-space: nowrap;
+}
+.charAxisX {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 98px;
+  margin-top: 2px;
+}
+.axisNum {
+  font-size: 8px;
+  color: #888;
+}
+
+/* ── Piece column ────────────────────────────────────── */
+.pieceCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+/* Linha azul decorativa no topo — fiel à imagem */
+.blueLine {
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, #1e3a5f, #3b82f6, #1e3a5f);
+  border-radius: 2px;
+  margin-bottom: 10px;
+}
+
+.riskTitle {
+  text-align: center;
+  line-height: 1.1;
+}
+.riskTitle h1 {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #111;
+  text-transform: uppercase;
+}
+
+.pieceInfo {
+  font-size: 14px;
+  font-weight: bold;
+  color: #222;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* Imagem da peça — fiel à imagem: borda fina, fundo branco */
+.pieceImageWrap {
+  width: 100%;
+  border: 1.5px solid #bbb;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  padding: 10px;
+}
+.pieceImage {
+  max-width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+}
+.imgPlaceholder {
+  font-size: 13px;
+  color: #aaa;
+  padding: 40px;
+  text-align: center;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+  .pieceCol { order: -1; }
+}
