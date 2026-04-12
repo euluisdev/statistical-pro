@@ -1,50 +1,69 @@
+/* riskassessment.module.css — layout igual às outras pages do sistema */
+
+/* ── Fundo externo cinza escuro (igual action plan, control chart, etc.) ──── */
 .pageBackground {
-  background: #fff;
+  background: #6e6e6e;
   min-height: 100vh;
   padding: 10px;
+  margin-top: 1rem;
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ── Container branco interno com borda e margens ────────────────────────── */
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  background: #fff;
+  background: #f0f0f0;
+  border: 2px solid #8a8a8a;
   padding: 10px 16px 30px;
 }
 
-/* ── Toolbar ─────────────────────────────────────────── */
+/* ── Toolbar — botão esquerdo, título centro, botão direito ──────────────── */
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
+  gap: 8px;
 }
 .toolbarCenter {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 }
 .toolbarTitle {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: bold;
   letter-spacing: 2px;
-  color: #222;
+  color: #111;
+  text-transform: uppercase;
 }
-.toolbarSub { font-size: 11px; color: #666; }
+.toolbarSub {
+  font-size: 11px;
+  color: #555;
+}
 
 .backBtn {
-  background: #9a9a9a; border: none;
-  padding: 6px 14px; cursor: pointer;
-  font-size: 12px; font-weight: bold; color: #222;
+  background: #9a9a9a;
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: #222;
+  white-space: nowrap;
 }
 .backBtn:hover { background: #888; }
 
 .loadingState {
-  text-align: center; padding: 60px;
-  font-size: 14px; color: #666;
+  text-align: center;
+  padding: 60px;
+  font-size: 14px;
+  color: #666;
 }
 
-/* ── Main content grid ───────────────────────────────── */
+/* ── Main content grid: 3 gráficos | imagem da peça ─────────────────────── */
 .content {
   display: grid;
   grid-template-columns: 460px 1fr;
@@ -52,16 +71,16 @@
   align-items: start;
 }
 
-/* ── Charts column ───────────────────────────────────── */
+/* ── Charts column ───────────────────────────────────────────────────────── */
 .chartsCol {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* ── Generic chart box (border fiel à imagem) ────────── */
+/* ── Generic chart box ───────────────────────────────────────────────────── */
 .chartBox {
-  border: 1.5px solid #bbb;
+  border: 2px solid #333;
   padding: 12px 14px 10px;
   background: #fff;
   position: relative;
@@ -76,67 +95,100 @@
   text-transform: uppercase;
 }
 .emptyChart {
-  font-size: 11px; color: #aaa;
-  text-align: center; padding: 10px;
+  font-size: 11px;
+  color: #aaa;
+  text-align: center;
+  padding: 10px;
 }
 
-/* ── DEVIATION chart ─────────────────────────────────── */
-.deviationChart {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
+/*DEVIATION*/
+.deviationBox {
+  border: 2px solid #333;
+  padding: 15px 18px 12px;
+  background: white;
 }
-.deviationBars {
+
+.devTitle {
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.devMain {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.devBarContainer {
   flex: 1;
+  height: 58px;   
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  overflow: visible;
+}
+
+.devSegment {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;     
+  min-width: 30px;
+}
+
+.devNumber {
+  font-size: 11px;
+  font-weight: bold;
+  color: #111;
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.85);
+}
+
+/* Linha vertical separadora */
+.divider {
+  position: absolute;
+  right: 0;
+  top: -45px;     
+  bottom: -45px;  
+  width: 1px;
+  background-color: #999;
+  z-index: 5;
+}
+
+/* Legenda */
+.devLegend {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  justify-content: center;
-}
-.devBarRow {
-  display: flex;
-  align-items: center;
-}
-.devBar {
-  min-width: 40px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 1px;
-  transition: width 0.3s ease;
-}
-.devBarLabel {
-  font-size: 11px;
-  font-weight: bold;
-  padding: 0 6px;
-  white-space: nowrap;
+  min-width: 135px;
 }
 
-/* Legenda direita do deviation */
-.deviationLegend {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 90px;
-}
 .legendRow {
   display: flex;
   align-items: center;
-  gap: 5px;
-}
-.legendSwatch {
-  width: 14px;
-  height: 12px;
-  flex-shrink: 0;
-}
-.legendLabel {
-  font-size: 10px;
-  color: #333;
-  white-space: nowrap;
+  gap: 7px;
 }
 
-/* ── ROOT CAUSE chart ────────────────────────────────── */
+.legendColor {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #555;
+  flex-shrink: 0;
+}
+
+.legendText {
+  font-size: 13px;
+  font-weight: bold;   
+  color: #222;
+}
+
+/* ── ROOT CAUSE chart ────────────────────────────────────────────────────── */
 .rootCauseChart {
   display: flex;
   align-items: flex-end;
@@ -158,10 +210,19 @@
   color: #222;
 }
 .rcBar {
-  width: 42px;
-  border-radius: 2px 2px 0 0;
-  min-height: 4px;
-  transition: height 0.3s ease;
+  width: 55px;
+  border-radius: 8px 8px 2px 2px;
+  transition: height 0.35s ease;
+  position: relative;
+  overflow: hidden;
+  
+  box-shadow: 
+    0 12px 20px rgba(0, 0, 0, 0.4),
+    inset 0 -8px 12px rgba(0, 0, 0, 0.3),
+    inset 0 6px 10px rgba(255, 255, 255, 0.4);
+  
+  border: 1px solid #d96d2a61;
+  background: linear-gradient(to bottom, #ff8a3d, #f97316, #e06b1f);
 }
 .rcLabel {
   font-size: 10px;
@@ -170,7 +231,7 @@
   white-space: nowrap;
 }
 
-/* ── CHARACTERISTICS chart ───────────────────────────── */
+/* ── CHARACTERISTICS chart ───────────────────────────────────────────────── */
 .charChart {
   display: flex;
   flex-direction: column;
@@ -197,7 +258,7 @@
 }
 .charBar {
   height: 18px;
-  background: #9ca3af;   /* cinza médio fiel à imagem */
+  background: #9ca3af;
   border-radius: 1px;
   transition: width 0.3s ease;
   min-width: 2px;
@@ -219,7 +280,7 @@
   color: #888;
 }
 
-/* ── Piece column ────────────────────────────────────── */
+/* ── Piece column ────────────────────────────────────────────────────────── */
 .pieceCol {
   display: flex;
   flex-direction: column;
@@ -228,7 +289,7 @@
   padding-top: 4px;
 }
 
-/* Linha azul decorativa no topo — fiel à imagem */
+/* Linha azul decorativa — fiel à imagem original */
 .blueLine {
   width: 100%;
   height: 5px;
@@ -259,7 +320,7 @@
   margin-top: 4px;
 }
 
-/* Imagem da peça — fiel à imagem: borda fina, fundo branco */
+/* Imagem da peça */
 .pieceImageWrap {
   width: 100%;
   border: 1.5px solid #bbb;
@@ -282,10 +343,12 @@
   text-align: center;
 }
 
-/* ── Responsive ──────────────────────────────────────── */
+/* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
   }
   .pieceCol { order: -1; }
-}
+}  
+ 
+ 

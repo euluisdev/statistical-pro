@@ -6,7 +6,7 @@ import styles from "./risk-assessment.module.css";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-//same cores of the action plan
+// ── Mesmas cores do action plan ───────────────────────────────────────────────
 const RISK_LEVELS = [
   { label: "To 0,5mm", color: "#e5e7eb", text: "#111" },
   { label: "To 1,0mm", color: "#bfdbfe", text: "#111" },
@@ -23,88 +23,88 @@ function getRiskColor(label) {
   return RISK_LEVELS.find(r => r.label === label) ?? { color: "#f3f4f6", text: "#111" };
 }
 
-//deviation horizontal bar chart
+//DEVIATION CHART
 function DeviationChart({ deviationCounts }) {
-  // deviationCounts: { "To 0,5mm": 34, "To 1,0mm": 3, ... }
-  const total = Object.values(deviationCounts).reduce((a, b) => a + b, 0);
-  const maxVal = Math.max(...Object.values(deviationCounts), 1);
+  const riskOrder = [
+    "To 0,5mm", "To 1,0mm", "To 1,5mm", "To 2,0mm",
+    "To 2,5mm", "To 3,0mm", "To 3,5mm", "To 4,0mm", "Up 4,5mm"
+  ];
 
-  //só exibe faixas que têm count > 0, mas mostra todas na legenda
-  const presentLevels = RISK_LEVELS.filter(r => (deviationCounts[r.label] ?? 0) > 0);
+  const total = riskOrder.reduce((sum, key) => sum + (deviationCounts[key] || 0), 0);
 
   return (
-    <div className={styles.chartBox}>
-      <div className={styles.chartTitle}>DEVIATION</div>
-      <div className={styles.deviationChart}>
-        {/* Barras horizontais — uma por faixa de risco presente */}
-        <div className={styles.deviationBars}>
-          {presentLevels.map(r => {
-            const count = deviationCounts[r.label] ?? 0;
-            const widthPct = Math.round((count / (total || 1)) * 100);
+    <div className={styles.deviationBox}>
+      <div className={styles.devTitle}>DEVIATION</div>
+
+      <div className={styles.devMain}>
+        {/* Barra horizontal com tamanho fixo e linhas verticais */}
+        <div className={styles.devBarContainer}>
+          {riskOrder.map((label, index) => {
+            const count = deviationCounts[label] || 0;
+            const riskInfo = RISK_LEVELS.find(r => r.label === label);
+
             return (
-              <div key={r.label} className={styles.devBarRow}>
-                <div
-                  className={styles.devBar}
-                  style={{
-                    width: `${Math.max(widthPct, 8)}%`,
-                    background: r.color,
-                    border: "1px solid #bbb",
-                  }}
-                >
-                  <span
-                    className={styles.devBarLabel}
-                    style={{ color: r.text }}
-                  >
+              <div
+                key={label}
+                className={styles.devSegment}
+                style={{ backgroundColor: riskInfo?.color || "#ccc" }}
+              >
+                {count > 0 && (
+                  <span className={styles.devNumber}>
                     {String(count).padStart(3, "0")}
                   </span>
-                </div>
+                )}
+                {/* Linha vertical separadora (exceto no último) */}
+                {index < riskOrder.length - 1 && (
+                  <div className={styles.divider} />
+                )}
               </div>
             );
           })}
-          {presentLevels.length === 0 && (
-            <div className={styles.emptyChart}>Sem dados</div>
-          )}
         </div>
 
-        {/* Legenda lateral */}
-        <div className={styles.deviationLegend}>
-          {RISK_LEVELS.map(r => (
-            <div key={r.label} className={styles.legendRow}>
-              <div
-                className={styles.legendSwatch}
-                style={{ background: r.color, border: "1px solid #bbb" }}
-              />
-              <span className={styles.legendLabel}>{r.label}</span>
-            </div>
-          ))}
+        {/* Legenda */}
+        <div className={styles.devLegend}>
+          {riskOrder.map((label) => {
+            const riskInfo = RISK_LEVELS.find(r => r.label === label);
+            return (
+              <div key={label} className={styles.legendRow}>
+                <div
+                  className={styles.legendColor}
+                  style={{ backgroundColor: riskInfo?.color || "#ccc" }}
+                />
+                <span className={styles.legendText}>{label}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 }
 
-//root Cause vertical bar chart
-//cores fiéis à imagem: Parts=azul claro, Process=laranja, Investigation=marrom
+// ── Root Cause vertical bar chart ─────────────────────────────────────────────
+// Cores fiéis à imagem: Parts=azul claro, Process=laranja, Investigation=marrom
 const ROOT_CAUSE_OPTIONS = ["Parts", "Process", "Investigation", "Machine"];
-const ROOT_CAUSE_COLORS  = {
-  Parts:         "#93c5fd",   // azul claro
-  Process:       "#f97316",   // laranja
+const ROOT_CAUSE_COLORS = {
+  Parts: "#93c5fd",   // azul claro
+  Process: "#f97316",   // laranja
   Investigation: "#78350f",   // marrom
-  Machine:       "#6b7280",   // cinza
+  Machine: "#6b7280",   // cinza
 };
 
 function RootCauseChart({ rootCauseCounts }) {
   const maxVal = Math.max(...Object.values(rootCauseCounts), 1);
-  const BAR_H  = 120; // px altura máxima das barras
+  const BAR_H = 120; // px altura máxima das barras
 
   return (
     <div className={styles.chartBox}>
       <div className={styles.chartTitle}>ROOT CAUSE</div>
       <div className={styles.rootCauseChart}>
         {ROOT_CAUSE_OPTIONS.map(rc => {
-          const count  = rootCauseCounts[rc] ?? 0;
-          const barH   = count > 0 ? Math.max(Math.round((count / maxVal) * BAR_H), 6) : 4;
-          const color  = ROOT_CAUSE_COLORS[rc] ?? "#aaa";
+          const count = rootCauseCounts[rc] ?? 0;
+          const barH = count > 0 ? Math.max(Math.round((count / maxVal) * BAR_H), 6) : 4;
+          const color = ROOT_CAUSE_COLORS[rc] ?? "#aaa";
           return (
             <div key={rc} className={styles.rcCol}>
               <span className={styles.rcCount}>{count}</span>
@@ -121,11 +121,11 @@ function RootCauseChart({ rootCauseCounts }) {
   );
 }
 
-//characteristics horizontal bar chart
-//agrupa pontos por tipo_geometrico symbol - superfície, furo, Linha de Corte, Acoplamento…
+// ── Characteristics horizontal bar chart ──────────────────────────────────────
+// Agrupa pontos por tipo_geometrico (symbol): Superfície, Furo, Linha de Corte, Acoplamento…
 function CharacteristicsChart({ charCounts }) {
-  const entries  = Object.entries(charCounts).sort((a, b) => b[1] - a[1]);
-  const maxVal   = Math.max(...entries.map(([, v]) => v), 1);
+  const entries = Object.entries(charCounts).sort((a, b) => b[1] - a[1]);
+  const maxVal = Math.max(...entries.map(([, v]) => v), 1);
 
   return (
     <div className={styles.chartBox}>
@@ -160,18 +160,18 @@ function CharacteristicsChart({ charCounts }) {
   );
 }
 
-//main Page
-export default function RiskAssessment() {
+// ── Main Page ─────────────────────────────────────────────────────────────────
+export default function RiskAssessmentPage() {
   const { group, piece } = useParams();
   const router = useRouter();
 
-  const [loading,   setLoading]   = useState(true);
-  const [imgError,  setImgError]  = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [imgError, setImgError] = useState(false);
 
   // Dados derivados dos action plans
-  const [deviationCounts,  setDeviationCounts]  = useState({});
-  const [rootCauseCounts,  setRootCauseCounts]  = useState({});
-  const [charCounts,       setCharCounts]       = useState({});
+  const [deviationCounts, setDeviationCounts] = useState({});
+  const [rootCauseCounts, setRootCauseCounts] = useState({});
+  const [charCounts, setCharCounts] = useState({});
 
   const pieceImageUrl = `${API}/pieces/${group}/${piece}/imagens`;
 
@@ -182,12 +182,12 @@ export default function RiskAssessment() {
       .then(data => {
         const plans = data.plans ?? [];
 
-        const devCounts  = {};
-        const rcCounts   = {};
-        const chrCounts  = {};
+        const devCounts = {};
+        const rcCounts = {};
+        const chrCounts = {};
 
         plans.forEach(plan => {
-          //root cause: uma contagem por plano (campo analysis)
+          // Root cause: uma contagem por plano (campo analysis)
           const rc = plan.analysis ?? "";
           if (rc) rcCounts[rc] = (rcCounts[rc] ?? 0) + plan.rows.length;
 
@@ -207,7 +207,7 @@ export default function RiskAssessment() {
         setRootCauseCounts(rcCounts);
         setCharCounts(chrCounts);
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, [group, piece]);
 
@@ -218,7 +218,7 @@ export default function RiskAssessment() {
         {/* Toolbar */}
         <div className={styles.toolbar}>
           <button className={styles.backBtn}
-            onClick={() => router.push(`/action-plan/${group}/${piece}`)}>
+            onClick={() => router.push(`/analysis/${group}/${piece}/action-plan`)}>
             ← Action Plan
           </button>
           <div className={styles.toolbarCenter}>
@@ -235,8 +235,8 @@ export default function RiskAssessment() {
 
             {/* ── Coluna esquerda: 3 gráficos ────────────────── */}
             <div className={styles.chartsCol}>
-              <DeviationChart     deviationCounts={deviationCounts} />
-              <RootCauseChart     rootCauseCounts={rootCauseCounts} />
+              <DeviationChart deviationCounts={deviationCounts} />
+              <RootCauseChart rootCauseCounts={rootCauseCounts} />
               <CharacteristicsChart charCounts={charCounts} />
             </div>
 
@@ -276,6 +276,4 @@ export default function RiskAssessment() {
       </div>
     </div>
   );
-}  
- 
- 
+}
