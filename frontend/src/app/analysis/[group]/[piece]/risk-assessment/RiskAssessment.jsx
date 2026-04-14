@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "./risk-assessment.module.css";
+import { ChartLine } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -83,14 +84,13 @@ function DeviationChart({ deviationCounts }) {
   );
 }
 
-// ── Root Cause vertical bar chart ─────────────────────────────────────────────
-// Cores fiéis à imagem: Parts=azul claro, Process=laranja, Investigation=marrom
+//root Cause vertical bar chart
 const ROOT_CAUSE_OPTIONS = ["Parts", "Process", "Investigation", "Machine"];
 const ROOT_CAUSE_COLORS = {
-  Parts: "#93c5fd",   // azul claro
-  Process: "#f97316",   // laranja
-  Investigation: "#78350f",   // marrom
-  Machine: "#6b7280",   // cinza
+  Parts: "#93c5fd",   //azul claro
+  Process: "#f97316",   //laranja
+  Investigation: "#78350f",  // marrom
+  Machine: "#6b7280",   //cinza
 };
 
 function RootCauseChart({ rootCauseCounts }) {
@@ -121,39 +121,41 @@ function RootCauseChart({ rootCauseCounts }) {
   );
 }
 
-// ── Characteristics horizontal bar chart ──────────────────────────────────────
-// Agrupa pontos por tipo_geometrico (symbol): Superfície, Furo, Linha de Corte, Acoplamento…
 function CharacteristicsChart({ charCounts }) {
-  const entries = Object.entries(charCounts).sort((a, b) => b[1] - a[1]);
-  const maxVal = Math.max(...entries.map(([, v]) => v), 1);
+  const entries = Object.entries(charCounts)
+    .sort((a, b) => b[1] - a[1]);   //ordena do maior para o menor
+
+  const maxVal = Math.max(...entries.map(([, count]) => count), 1);
 
   return (
     <div className={styles.chartBox}>
       <div className={styles.chartTitle}>CHARACTERISTICS</div>
-      <div className={styles.charChart}>
+      
+      <div className={styles.charContainer}>
         {entries.map(([label, count]) => {
-          const widthPct = Math.round((count / maxVal) * 100);
+          const percentage = (count / maxVal) * 100;
+
           return (
             <div key={label} className={styles.charRow}>
               <span className={styles.charLabel}>{label}</span>
+              
               <div className={styles.charBarWrap}>
-                <div
+                <div 
                   className={styles.charBar}
-                  style={{ width: `${Math.max(widthPct, 2)}%` }}
+                  style={{ width: `${percentage}%` }}
                 />
-                <span className={styles.charCount}>{count}</span>
               </div>
+              
+              <span className={styles.charCount}>{count}</span>
             </div>
           );
         })}
-        {entries.length === 0 && <div className={styles.emptyChart}>Sem dados</div>}
       </div>
-      {/* Eixo X numérico */}
+
+      {/*eixo X*/}
       <div className={styles.charAxisX}>
-        {Array.from({ length: 11 }, (_, i) =>
-          Math.round((maxVal / 10) * i)
-        ).map((v, i) => (
-          <span key={i} className={styles.axisNum}>{v}</span>
+        {Array.from({ length: 6 }, (_, i) => Math.round((maxVal / 5) * i)).map((value, i) => (
+          <span key={i} className={styles.axisNum}>{value}</span>
         ))}
       </div>
     </div>
@@ -217,9 +219,9 @@ export default function RiskAssessmentPage() {
 
         {/* Toolbar */}
         <div className={styles.toolbar}>
-          <button className={styles.backBtn}
+          <button className={styles.backBtn} title="Action Plan"
             onClick={() => router.push(`/analysis/${group}/${piece}/action-plan`)}>
-            ← Action Plan
+            <ChartLine size={28} />
           </button>
           <div className={styles.toolbarCenter}>
             <span className={styles.toolbarTitle}>RISK ASSESSMENT</span>
@@ -233,16 +235,16 @@ export default function RiskAssessmentPage() {
         ) : (
           <div className={styles.content}>
 
-            {/* ── Coluna esquerda: 3 gráficos ────────────────── */}
+            {/*coluna esquerda 3 gráficos*/}
             <div className={styles.chartsCol}>
               <DeviationChart deviationCounts={deviationCounts} />
               <RootCauseChart rootCauseCounts={rootCauseCounts} />
               <CharacteristicsChart charCounts={charCounts} />
             </div>
 
-            {/* ── Coluna direita: título + imagem da peça ────── */}
+            {/*coluna direita título + imagem da peça*/}
             <div className={styles.pieceCol}>
-              {/* Linha azul decorativa topo */}
+              {/*linha azul decorativa topo*/}
               <div className={styles.blueLine} />
 
               <div className={styles.riskTitle}>
@@ -251,7 +253,7 @@ export default function RiskAssessmentPage() {
               </div>
 
               <div className={styles.pieceInfo}>
-                {piece}
+                {group} | {piece} 
               </div>
 
               {/* Imagem da peça */}

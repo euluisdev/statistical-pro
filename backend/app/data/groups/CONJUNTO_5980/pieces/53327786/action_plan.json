@@ -53,6 +53,19 @@
         "cpk": 0.0,
         "range": 1.15,
         "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍR5_Y",
+        "label": "CÍR5",
+        "axis": "Y",
+        "lse": 1.0,
+        "lie": -1.0,
+        "symbol": "CÍRCULO",
+        "xmed": -0.784,
+        "cp": 1.56,
+        "cpk": 0.34,
+        "range": 1.28,
+        "risk_level": "To 1,0mm"
       }
     ],
     "action_type": "Não definida",
@@ -107,7 +120,7 @@
       }
     ],
     "created_at": "2026-04-08T20:14:35.800729",
-    "updated_at": "2026-04-10T20:22:55.207595"
+    "updated_at": "2026-04-13T21:57:43.062494"
   },
   {
     "seq": 3,
@@ -163,6 +176,45 @@
         "cpk": 0.08,
         "range": 1.04,
         "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "SLTR1_Y",
+        "label": "SLTR1",
+        "axis": "Y",
+        "lse": 1.0,
+        "lie": -1.0,
+        "symbol": "SLOT",
+        "xmed": -1.012,
+        "cp": 1.3,
+        "cpk": -0.02,
+        "range": 1.54,
+        "risk_level": "To 1,5mm"
+      },
+      {
+        "point_id": "SLTR1_Z",
+        "label": "SLTR1",
+        "axis": "Z",
+        "lse": 1.0,
+        "lie": -1.0,
+        "symbol": "SLOT",
+        "xmed": -0.101,
+        "cp": 2.74,
+        "cpk": 2.46,
+        "range": 0.73,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "N/D_M",
+        "label": "N/D",
+        "axis": "M",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "N/D",
+        "xmed": -0.972,
+        "cp": 0.43,
+        "cpk": -0.09,
+        "range": 3.75,
+        "risk_level": "To 1,0mm"
       }
     ],
     "action_type": "R",
@@ -217,6 +269,103 @@
       }
     ],
     "created_at": "2026-04-09T22:45:12.470238",
-    "updated_at": "2026-04-10T20:22:45.913295"
+    "updated_at": "2026-04-13T21:57:01.100860"
+  },
+  {
+    "seq": 4,
+    "rows": [
+      {
+        "point_id": "OBLONGO_1_X",
+        "label": "OBLONGO_1",
+        "axis": "X",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "SLOT",
+        "xmed": -0.513,
+        "cp": 13.33,
+        "cpk": 1.93,
+        "range": 0.09,
+        "risk_level": "To 1,0mm"
+      },
+      {
+        "point_id": "CÍRCULO_8_Z",
+        "label": "CÍRCULO_8",
+        "axis": "Z",
+        "lse": 1.0,
+        "lie": -1.0,
+        "symbol": "CÍRCULO",
+        "xmed": -0.247,
+        "cp": 15.38,
+        "cpk": 11.59,
+        "range": 0.13,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "PTO_DE_SUPERFICIE_11_Z",
+        "label": "PTO_DE_SUPERFICIE_11",
+        "axis": "Z",
+        "lse": 0.7,
+        "lie": -0.7,
+        "symbol": "PONTO",
+        "xmed": -0.093,
+        "cp": 5.6,
+        "cpk": 4.85,
+        "range": 0.25,
+        "risk_level": "To 0,5mm"
+      }
+    ],
+    "action_type": "Não definida",
+    "action_text": "Ajustar aleta.",
+    "responsible_name": "Lucas",
+    "responsible_dept": "Engenharia",
+    "deadline_date": "2026-04-13",
+    "deadline_year": "",
+    "deadline_week": "16",
+    "status": "Em andamento",
+    "analysis": "Parts",
+    "week_statuses": [
+      {
+        "week": "12",
+        "value": ""
+      },
+      {
+        "week": "13",
+        "value": ""
+      },
+      {
+        "week": "14",
+        "value": ""
+      },
+      {
+        "week": "15",
+        "value": ""
+      },
+      {
+        "week": "16",
+        "value": "NOK"
+      },
+      {
+        "week": "17",
+        "value": ""
+      },
+      {
+        "week": "18",
+        "value": ""
+      },
+      {
+        "week": "19",
+        "value": ""
+      },
+      {
+        "week": "20",
+        "value": ""
+      },
+      {
+        "week": "21",
+        "value": ""
+      }
+    ],
+    "created_at": "2026-04-13T21:22:09.215121",
+    "updated_at": "2026-04-13T21:22:09.215121"
   }
 ]

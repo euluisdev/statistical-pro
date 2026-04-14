@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "./actionplan.module.css";
+import { Grid3x3, Settings } from "lucide-react";
+import { useSaveActionPlanToJob } from "@/app/hooks/useSaveActionPlanToJob";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -69,7 +71,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
   const [filterVal, setFilterVal] = useState("All");
   const [onlyCalc, setOnlyCalc] = useState(true);
 
-  // Form state
+  //form state
   const [selectedPts, setSelectedPts] = useState(
     isEdit ? plan.rows.map(r => r.point_id) : []
   );
@@ -497,7 +499,9 @@ export default function ActionPlanPage() {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingPlan, setEditingPlan] = useState(null); // null = novo
+  const [editingPlan, setEditingPlan] = useState(null); //null = novo
+  const tableRef = useRef(null);
+  const { saveLoading, triggerSave } = useSaveActionPlanToJob();
 
   //semana atual para destacar coluna
   const { weeks: displayWeeks, currentWeek } = getSlidingWeeks();
@@ -541,15 +545,39 @@ export default function ActionPlanPage() {
 
         {/*toolbar */}
         <div className={styles.toolbar}>
-          <button className={styles.backBtn} onClick={() => router.push("/")}>← Voltar</button>
+          <button
+            onClick={() => router.push(`/analysis/${group}/${piece}`)}
+            className={styles.newBtn}
+            title={"Go To analysis"}
+          >
+            <Grid3x3 size={30} />
+          </button>
           <div className={styles.toolbarCenter}>
             <span className={styles.toolbarTitle}>ACTION PLAN</span>
             <span className={styles.toolbarSub}>{group} | {piece}</span>
           </div>
-          <button className={styles.newBtn} onClick={openNew}>
-            New
+          
+          {/*botão capturar — só aparece quando há planos */}
+          {plans.length > 0 && (
+            <button
+              className={styles.captureBtn}
+              onClick={() => triggerSave(tableRef, group, piece)}
+              disabled={saveLoading}
+              title="Salvar print da tabela no Job ativo"
+            >
+              {saveLoading ? "⏳ Salvando…" : "📷 Capturar"}
+            </button>
+          )}
+
+          <button className={styles.newBtn} title="Risk Assessment" onClick={() => router.push(`/analysis/${group}/${piece}/risk-assessment`)}>
+            Risk
+          </button>
+          <button className={styles.newBtn} onClick={openNew} title="New Action">
+            <Settings size={30} />
           </button>
         </div>
+
+        <div ref={tableRef}>
 
         {/*table */}
         <div className={styles.tableWrapper}>
@@ -626,6 +654,7 @@ export default function ActionPlanPage() {
         <div className={styles.legend}>
           X — Ação programada &nbsp;|&nbsp; NOK — Ação não efetiva &nbsp;|&nbsp; R — Ação reprogramada
         </div>
+        </div>{/*fecha div ref={tableRef}*/}
       </div>
 
       {modalOpen && (

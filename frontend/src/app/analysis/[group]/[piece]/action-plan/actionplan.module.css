@@ -45,12 +45,20 @@
 .backBtn:hover { background: #888; }
 
 .newBtn {
-  background: green; color: white;
-  border: none; padding: 8px 18px;
-  cursor: pointer; font-size: 13px; font-weight: bold;
-  letter-spacing: 0.5px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #677172;
+  width: 35px;
+  height: 35px;
+  transition: 0.2s;
+  border: none;
+  cursor: pointer;
 }
-.newBtn:hover { background: #1e451e; }
+.newBtn:hover { color: red; }
 
 /*table*/
 .tableWrapper {

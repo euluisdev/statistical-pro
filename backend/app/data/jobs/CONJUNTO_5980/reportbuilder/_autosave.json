@@ -92,17 +92,17 @@
           "height": 115
         },
         {
-          "id": "image-1775938183205",
+          "id": "image-1776132209689",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "53327786",
-            "page_type": "controlchart",
-            "filename": "f53327786_20260411_170911_407641.png",
-            "url": "/static/jobs/6bae7695-8a23-4e2e-a9c3-8638a9a5683f/CONJUNTO_5980/53327786/controlchart/f53327786_20260411_170911_407641.png"
+            "page_type": "ActionPlan",
+            "filename": "f53327786_20260413_230259_731161.png",
+            "url": "/static/jobs/837b84e8-a5c1-41bf-9d78-e3d715c1b7ec/CONJUNTO_5980/53327786/ActionPlan/f53327786_20260413_230259_731161.png"
           },
-          "x": 24,
-          "y": 120,
+          "x": 48,
+          "y": 153,
           "width": 1074,
           "height": 650
         }
@@ -137,14 +137,14 @@
           "height": 115
         },
         {
-          "id": "image-1775938183205",
+          "id": "image-1776132605071",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "53327786",
-            "page_type": "controlchart",
-            "filename": "f53327786_20260411_170911_407641.png",
-            "url": "/static/jobs/6bae7695-8a23-4e2e-a9c3-8638a9a5683f/CONJUNTO_5980/53327786/controlchart/f53327786_20260411_170911_407641.png"
+            "page_type": "ActionPlan",
+            "filename": "f53327786_20260413_230259_731161.png",
+            "url": "/static/jobs/837b84e8-a5c1-41bf-9d78-e3d715c1b7ec/CONJUNTO_5980/53327786/ActionPlan/f53327786_20260413_230259_731161.png"
           },
           "x": 24,
           "y": 120,
@@ -180,21 +180,6 @@
           "y": -38.5,
           "width": 193.18057250976562,
           "height": 115
-        },
-        {
-          "id": "image-1775938183205",
-          "type": "image",
-          "chart": {
-            "group": "CONJUNTO_5980",
-            "piece": "53327786",
-            "page_type": "controlchart",
-            "filename": "f53327786_20260411_170911_407641.png",
-            "url": "/static/jobs/6bae7695-8a23-4e2e-a9c3-8638a9a5683f/CONJUNTO_5980/53327786/controlchart/f53327786_20260411_170911_407641.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
         }
       ]
     },
@@ -2619,5 +2604,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-14",
-  "updated_at": "2026-04-11T20:10:39.760252"
+  "updated_at": "2026-04-14T02:14:45.157523"
 }

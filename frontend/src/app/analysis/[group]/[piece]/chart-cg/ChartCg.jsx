@@ -127,7 +127,7 @@ export default function ReportClient({ params }) {
 
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CG - {group} - {piece}
+          CG | {group} | {piece}
         </h1>
 
         <div className={styles.controls}>
