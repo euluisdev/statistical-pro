@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "./actionplan.module.css";
-import { Grid3x3, Settings } from "lucide-react";
+import { ArrowBigRight, Grid3x3, Settings } from "lucide-react";
 import { useSaveActionPlanToJob } from "@/app/hooks/useSaveActionPlanToJob";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -569,6 +569,9 @@ export default function ActionPlanPage() {
             </button>
           )}
 
+          <button className={styles.newBtn} title="Report" >
+            <ArrowBigRight size={30} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
+          </button>
           <button className={styles.newBtn} title="Risk Assessment" onClick={() => router.push(`/analysis/${group}/${piece}/risk-assessment`)}>
             Risk
           </button>
