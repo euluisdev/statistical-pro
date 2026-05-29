@@ -355,7 +355,7 @@
       "bgImage": null
     }
   ],
-  "locked": false,
+  "locked": true,
   "modalSelections": {
     "28354": {
       "axes": {
