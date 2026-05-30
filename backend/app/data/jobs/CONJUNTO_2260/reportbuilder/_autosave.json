@@ -1,0 +1,112 @@
+{
+  "pages": [
+    {
+      "id": 1,
+      "elements": [
+        {
+          "id": "text-1780080290376",
+          "type": "text",
+          "content": "Digite aqui...",
+          "x": 100,
+          "y": 150,
+          "width": 300,
+          "height": 100,
+          "fontSize": 16,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#000000",
+          "textAlign": "left",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "text-1780080290449",
+          "type": "text",
+          "content": "",
+          "x": -17.090286254882812,
+          "y": 0,
+          "width": 1139.0902862548828,
+          "height": 485,
+          "fontSize": 16,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#000000",
+          "textAlign": "left",
+          "backgroundColor": "#ff0000"
+        },
+        {
+          "id": "text-1780080367968",
+          "type": "text",
+          "content": "CONFORMIDADE GEOMETRICA\n                  WEEK 22",
+          "x": 203.5902862548828,
+          "y": 563,
+          "width": 714.8194274902344,
+          "height": 158.77777767181396,
+          "fontSize": 48,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#ff0000",
+          "textAlign": "left",
+          "backgroundColor": "transparent"
+        }
+      ]
+    },
+    {
+      "id": 1780080603060,
+      "elements": [
+        {
+          "id": "text-1780080605678",
+          "type": "text",
+          "content": "ITAESBRA",
+          "x": 992.1805725097656,
+          "y": 0,
+          "width": 129.81942749023438,
+          "height": 64,
+          "fontSize": 24,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#ff0000",
+          "textAlign": "left",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "image-1780080679935",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_2260",
+            "piece": "51966401",
+            "page_type": "cg",
+            "filename": "f51966401_20260529_155052_408519.png",
+            "url": "/static/jobs/44865434-dd6d-41ae-9706-7b5aa39660f9/CONJUNTO_2260/51966401/cg/f51966401_20260529_155052_408519.png"
+          },
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
+        },
+        {
+          "id": "text-1780080693430",
+          "type": "text",
+          "content": "______________________________________________________________________________________________________________________________________________________________",
+          "x": 46.59028625488281,
+          "y": 15,
+          "width": 1070.2291412353516,
+          "height": 41,
+          "fontSize": 16,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#000000",
+          "textAlign": "left",
+          "backgroundColor": "transparent"
+        }
+      ]
+    }
+  ],
+  "pageOrientation": "landscape",
+  "reportName": "Relatório sem título",
+  "updated_at": "2026-05-29T18:53:44.290434"
+}
