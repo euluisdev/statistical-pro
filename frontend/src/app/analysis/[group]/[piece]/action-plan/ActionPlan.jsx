@@ -561,7 +561,7 @@ export default function ActionPlanPage() {
           {plans.length > 0 && (
             <button
               className={styles.captureBtn}
-              onClick={() => triggerSave(tableRef, group, piece)}
+              onClick={() => triggerSave(group, piece)}
               disabled={saveLoading}
               title="Salvar print da tabela no Job ativo"
             >
@@ -580,7 +580,7 @@ export default function ActionPlanPage() {
           </button>
         </div>
 
-        <div ref={tableRef}>
+        <div id="action-plan-table">
 
         {/*table */}
         <div className={styles.tableWrapper}>
