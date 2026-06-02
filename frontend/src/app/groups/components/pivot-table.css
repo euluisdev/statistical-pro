@@ -1,0 +1,194 @@
+/* =============================================
+   PIVOT TABLE — totalmente isolado via .pivot-wrapper
+   Não afeta nenhum outro elemento da página
+   ============================================= */
+
+/* ── Wrapper externo ────────────────────────── */
+.pivot-wrapper {
+  margin-top: 1rem;
+  max-width: 900px;
+  width: 100%;
+  border-radius: 2px;
+  border: 2px solid #95a5a6;
+  background: #ecf0f1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  /* CRÍTICO: garante que overflow-x funcione */
+  overflow: hidden;
+}
+
+/* ── Barra superior ─────────────────────────── */
+.pivot-wrapper .pivot-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #34495e;
+  border-bottom: 2px solid #2c3e50;
+}
+
+.pivot-wrapper .pivot-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pivot-wrapper .pivot-legend {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.pivot-wrapper .leg {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.pivot-wrapper .leg-ok   { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.pivot-wrapper .leg-warn { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.pivot-wrapper .leg-fail { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+/* ── Container com scroll lateral e vertical ── */
+.pivot-wrapper .pivot-scroll-container {
+  overflow-x: auto;   /* scroll horizontal para as datas */
+  overflow-y: auto;   /* scroll vertical para as linhas  */
+  max-height: 400px;
+  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: #95a5a6 #ecf0f1;
+}
+
+.pivot-wrapper .pivot-scroll-container::-webkit-scrollbar {
+  height: 8px;
+  width: 6px;
+}
+.pivot-wrapper .pivot-scroll-container::-webkit-scrollbar-track {
+  background: #ecf0f1;
+}
+.pivot-wrapper .pivot-scroll-container::-webkit-scrollbar-thumb {
+  background: #95a5a6;
+  border-radius: 2px;
+}
+.pivot-wrapper .pivot-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #7f8c8d;
+}
+
+/* ── Tabela ─────────────────────────────────── */
+.pivot-wrapper .pivot-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: max-content; /* essencial para o scroll horizontal funcionar */
+  table-layout: auto;
+}
+
+/* ── Cabeçalhos ─────────────────────────────── */
+.pivot-wrapper .pivot-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #34495e;
+  color: white;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  border-bottom: 2px solid #2c3e50;
+  border-right: 1px solid #2c3e50;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* ── Colunas sticky (fixas à esquerda) ───────── */
+.pivot-wrapper .pivot-table th.pt-sticky,
+.pivot-wrapper .pivot-table td.pt-sticky {
+  position: sticky;
+  z-index: 1;
+}
+
+/* thead + sticky = z-index maior para não sumir atrás do conteúdo */
+.pivot-wrapper .pivot-table thead th.pt-sticky {
+  z-index: 3;
+}
+
+/* Offsets: soma das larguras das colunas anteriores */
+.pivot-wrapper .pt-s1 { left: 0;     min-width: 110px; }
+.pivot-wrapper .pt-s2 { left: 110px; min-width:  36px; max-width: 36px; }
+.pivot-wrapper .pt-s3 { left: 146px; min-width:  60px; }
+.pivot-wrapper .pt-s4 { left: 206px; min-width:  78px; }
+.pivot-wrapper .pt-s5 { left: 284px; min-width:  74px; }
+.pivot-wrapper .pt-s6 { left: 358px; min-width:  44px; max-width: 44px; }
+.pivot-wrapper .pt-s7 { left: 402px; min-width:  44px; max-width: 44px; }
+
+/* Separador visual após última coluna sticky */
+.pivot-wrapper .pt-s7 {
+  border-right: 2px solid #3498db !important;
+  box-shadow: 3px 0 6px -1px rgba(0,0,0,0.25);
+}
+
+/* ── Células de dados ────────────────────────── */
+.pivot-wrapper .pivot-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid #d5dbdb;
+  border-right: 1px solid #d5dbdb;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: #2c3e50;
+  background: white;
+}
+
+/* Fundo sticky nas células de dados */
+.pivot-wrapper .pivot-table td.pt-sticky {
+  background: white;
+}
+
+/* Linhas alternadas */
+.pivot-wrapper .pivot-table tbody tr:nth-child(even) td {
+  background: #f8f9fa;
+}
+.pivot-wrapper .pivot-table tbody tr:nth-child(even) td.pt-sticky {
+  background: #f8f9fa;
+}
+
+/* Hover */
+.pivot-wrapper .pivot-table tbody tr:hover td {
+  background: #d5dbdb !important;
+}
+
+/* ── Alinhamentos por tipo ───────────────────── */
+.pivot-wrapper .pt-left   { text-align: left; }
+.pivot-wrapper .pt-center { text-align: center; }
+.pivot-wrapper .pt-right  { text-align: right; }
+
+.pivot-wrapper .pt-axis  { text-align: center; font-weight: 700; color: #2980b9; }
+.pivot-wrapper .pt-type  { color: #7f8c8d; }
+.pivot-wrapper .pt-tolp  { text-align: center; font-weight: 600; color: #27ae60; }
+.pivot-wrapper .pt-tolm  { text-align: center; font-weight: 600; color: #e74c3c; }
+
+/* ── Coluna de data ───────────────────────────── */
+.pivot-wrapper .pivot-table th.pt-date {
+  min-width: 68px;
+  color: #aed6f1;
+  font-size: 0.68rem;
+}
+
+/* ── Células de desvio ───────────────────────── */
+.pivot-wrapper .pt-desvio {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  min-width: 60px;
+}
+
+.pivot-wrapper .pt-ok   { color: #1e8449; }
+.pivot-wrapper .pt-warn { color: #b7950b; background: #fef9e7 !important; font-weight: 600; }
+.pivot-wrapper .pt-fail { color: #c0392b; background: #fdedec !important; font-weight: 700; }  
+ 
+ 
+ 

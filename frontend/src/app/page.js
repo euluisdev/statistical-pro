@@ -7,6 +7,7 @@ import GroupManager from "./groups/components/GroupManager";
 import PieceManager from "./groups/components/PieceManager";
 import TxtManager from "./groups/components/TxtManager";
 import ConfirmModal from "./components/common/ConfirmModal";
+import PivotTable from "./groups/components/Pivottable";
 import { ArrowBigRight, ChartLine, House, Grid3x3, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked, ChartColumnBig, FileChartColumn, FileChartColumnIncreasing, FileChartLine } from "lucide-react";
 
 import "./styles.css";
@@ -254,31 +255,7 @@ export default function GroupsPage() {
       </div>
 
       {/*table data */}
-      {parsedData.length > 0 && (
-        <div className="table-container">
-          <h2>Dados Extraídos ({parsedData.length} linhas)</h2>
-          <div className="table-wrapper">
-            <table className="table">
-              <thead>
-                <tr>
-                  {Object.keys(parsedData[0]).map((col) => (
-                    <th key={col}>{col}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {parsedData.map((row, i) => (
-                  <tr key={i}>
-                    {Object.keys(parsedData[0]).map((col) => (
-                      <td key={col + i}>{String(row[col])}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      {parsedData.length > 0 && <PivotTable parsedData={parsedData} />}
 
       <ConfirmModal
         isOpen={showResetModal}
