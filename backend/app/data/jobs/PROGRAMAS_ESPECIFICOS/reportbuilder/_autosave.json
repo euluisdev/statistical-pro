@@ -18,21 +18,6 @@
           "color": "#ffffff",
           "textAlign": "center",
           "backgroundColor": "#ff3d3d"
-        },
-        {
-          "id": "image-1780335734027",
-          "type": "image",
-          "chart": {
-            "group": "PROGRAMAS_ESPECIFICOS",
-            "piece": "534896710",
-            "page_type": "controlchart",
-            "filename": "f534896710_20260601_144152_466695.png",
-            "url": "/static/jobs/fc433824-842f-4fef-b9d1-55bc60275eb4/PROGRAMAS_ESPECIFICOS/534896710/controlchart/f534896710_20260601_144152_466695.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
         }
       ]
     },
@@ -79,21 +64,6 @@
           "y": -26,
           "width": 160.18057250976562,
           "height": 52
-        },
-        {
-          "id": "image-1780335149223",
-          "type": "image",
-          "chart": {
-            "group": "PROGRAMAS_ESPECIFICOS",
-            "piece": "534896710",
-            "page_type": "cg",
-            "filename": "f534896710_20260601_143118_724846.png",
-            "url": "/static/jobs/fc433824-842f-4fef-b9d1-55bc60275eb4/PROGRAMAS_ESPECIFICOS/534896710/cg/f534896710_20260601_143118_724846.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
         }
       ]
     },
@@ -109,66 +79,19 @@
           "y": -26,
           "width": 160.18057250976562,
           "height": 52
-        },
-        {
-          "id": "image-1780335345612",
-          "type": "image",
-          "chart": {
-            "group": "PROGRAMAS_ESPECIFICOS",
-            "piece": "534896710",
-            "page_type": "cp_cpk",
-            "filename": "f534896710_20260601_143438_947191.png",
-            "url": "/static/jobs/fc433824-842f-4fef-b9d1-55bc60275eb4/PROGRAMAS_ESPECIFICOS/534896710/cp_cpk/f534896710_20260601_143438_947191.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
         }
       ]
     },
     {
       "id": 1780335350823,
-      "elements": [
-        {
-          "id": "image-1780335353477",
-          "type": "image",
-          "chart": {
-            "group": "PROGRAMAS_ESPECIFICOS",
-            "piece": "534896710",
-            "page_type": "cp_cpk",
-            "filename": "f534896710_20260601_143439_480563.png",
-            "url": "/static/jobs/fc433824-842f-4fef-b9d1-55bc60275eb4/PROGRAMAS_ESPECIFICOS/534896710/cp_cpk/f534896710_20260601_143439_480563.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
-        }
-      ]
+      "elements": []
     },
     {
       "id": 1780335744045,
-      "elements": [
-        {
-          "id": "image-1780335746325",
-          "type": "image",
-          "chart": {
-            "group": "PROGRAMAS_ESPECIFICOS",
-            "piece": "534896710",
-            "page_type": "controlchart",
-            "filename": "f534896710_20260601_144153_768162.png",
-            "url": "/static/jobs/fc433824-842f-4fef-b9d1-55bc60275eb4/PROGRAMAS_ESPECIFICOS/534896710/controlchart/f534896710_20260601_144153_768162.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
-        }
-      ]
+      "elements": []
     }
   ],
   "pageOrientation": "landscape",
   "reportName": "w21",
-  "updated_at": "2026-06-01T17:42:27.130995"
+  "updated_at": "2026-06-02T17:05:29.653105"
 }
