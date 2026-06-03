@@ -232,11 +232,11 @@ async def screenshot_action_plan(job_id: str, body: ScreenshotRequest):
  
     # Cria pasta de destino
     safe_piece = Path(body.piece).name
-    target_dir  = job_path / safe_piece / "ActionPlan"
+    target_dir  = job_path / safe_piece / body.group / "ActionPlan"
     target_dir.mkdir(parents=True, exist_ok=True)
  
     try:
-        from playwright.async_api import async_playwright
+        from playwright.sync_api import sync_playwright
     except ImportError:
         raise HTTPException(500,
             "Playwright não instalado. Execute: pip install playwright && python -m playwright install chromium"
@@ -244,8 +244,8 @@ async def screenshot_action_plan(job_id: str, body: ScreenshotRequest):
  
     results = []
  
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
             headless=True,
             args=[
                 "--no-sandbox",

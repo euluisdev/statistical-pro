@@ -19,13 +19,13 @@ export default function PivotTable({ parsedData }) {
 
     //mapeamento de colunas com fallbacks
     const colMap = {
-      NomePonto:      ["NomePonto", "Ponto", "nome_ponto"],
-      Eixo:           ["Eixo", "eixo"],
-      Localização:    ["Localização", "Localizacao", "Loc", "Localizacão"],
+      NomePonto: ["NomePonto", "Ponto", "nome_ponto"],
+      Eixo: ["Eixo", "eixo"],
+      Localização: ["Localização", "Localizacao", "Loc", "Localizacão"],
       TipoGeométrico: ["TipoGeométrico", "TipoGeometrico", "Tipo"],
-      Nominal:        ["Nominal", "nominal"],
-      "Tol+":         ["Tol+", "TolPlus", "tol_plus"],
-      "Tol-":         ["Tol-", "TolMinus", "tol_minus"],
+      Nominal: ["Nominal", "nominal"],
+      "Tol+": ["Tol+", "TolPlus", "tol_plus"],
+      "Tol-": ["Tol-", "TolMinus", "tol_minus"],
     };
 
     const resolveCol = (key) =>
@@ -36,12 +36,17 @@ export default function PivotTable({ parsedData }) {
 
     const desvioKey = ["Desvio", "desvio"].find((k) => sample.hasOwnProperty(k)) || "Desvio";
 
-    // Coleta datas únicas na ordem de aparição
+    //coleta datas únicas na ordem de aparição
     const datesSet = new Set();
     parsedData.forEach((row) => {
       if (reportKey && row[reportKey] != null) datesSet.add(String(row[reportKey]));
     });
-    const dates = Array.from(datesSet);
+    const dates = Array.from(datesSet).sort((a, b) => {
+      const [da, ma, aa] = a.split("/");
+      const [db, mb, ab] = b.split("/");
+
+      return new Date(aa, ma - 1, da) - new Date(ab, mb - 1, db);
+    });
 
     // Agrupamento por identidade do ponto
     const rowKey = (row) => resolved.map(({ real }) => String(row[real] ?? "")).join("||");
@@ -81,8 +86,8 @@ export default function PivotTable({ parsedData }) {
 
   //classes sticky com offset
   const S = ["pt-sticky pt-s1", "pt-sticky pt-s2", "pt-sticky pt-s3",
-             "pt-sticky pt-s4", "pt-sticky pt-s5", "pt-sticky pt-s6",
-             "pt-sticky pt-s7"];
+    "pt-sticky pt-s4", "pt-sticky pt-s5", "pt-sticky pt-s6",
+    "pt-sticky pt-s7"];
 
   return (
     <div className="pivot-wrapper">
@@ -141,6 +146,5 @@ export default function PivotTable({ parsedData }) {
       </div>
     </div>
   );
-} 
- 
- 
+}
+
