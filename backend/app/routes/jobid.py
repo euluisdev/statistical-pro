@@ -182,172 +182,162 @@ def list_charts_in_job(job_id: str, group: str = None):
         )
     
 
+
+
+
+
+
+
+
+
+
+
+    
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional
-import os
-import re
-import base64
 from pathlib import Path
-from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
+import io
+import os
  
+# reutiliza as helpers já existentes no seu jobs_router.py
+# BASE_PATH e _safe_folder() já declarados no seu arquivo
  
-# ── reutiliza as helpers já existentes no seu jobs_router.py ─────────────────
-# BASE_PATH, _safe_folder() — já declarados no seu arquivo
+A4_W_PX = 1123
+A4_H_PX = 794
  
+_executor = ThreadPoolExecutor(max_workers=2)
  
-# ── Schema do novo endpoint ───────────────────────────────────────────────────
  
 class ScreenshotRequest(BaseModel):
-    page_url:   str          # URL completa da página, ex: "http://localhost:3000/action-plan/CONJUNTO_5980/53327786"
-    group:      str          # ex: "CONJUNTO_5980"
-    piece:      str          # ex: "53327786"
-    wait_for:   str = "#action-plan-table"   # seletor CSS para aguardar antes de capturar
-    zoom:       float = 1.0  # zoom extra (1.0 = normal, 0.8 = reduz um pouco para caber mais)
+    page_url: str
+    group:    str
+    piece:    str
+    wait_for: str   = "#action-plan-table"
+    zoom:     float = 1.0
  
  
-# ── Constantes A4 landscape 
-A4_W_PX = 1123   # 297mm × 3.78px/mm ≈ 1123px
-A4_H_PX = 794    # 210mm × 3.78px/mm ≈ 794px
+def _run_playwright_sync(page_url: str, wait_for: str) -> bytes:
+    """
+    Função SÍNCRONA que roda num thread separado com seu próprio event loop.
+    Isso contorna o problema do Windows onde o loop do uvicorn não suporta
+    criar subprocessos via asyncio.
+    """
+    import asyncio
+    # No Windows é obrigatório usar ProactorEventLoop para subprocessos
+    if os.name == "nt":
+        loop = asyncio.ProactorEventLoop()
+    else:
+        loop = asyncio.new_event_loop()
  
+    asyncio.set_event_loop(loop)
  
-# ── ENDPOINT: tira screenshot da página e salva no job
+    async def _capture():
+        from playwright.async_api import async_playwright
+ 
+        async with async_playwright() as p:
+            browser = await p.chromium.launch(
+                headless=True,
+                args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+            )
+            page = await browser.new_page(viewport={"width": 1600, "height": 900})
+            try:
+                await page.goto(page_url, wait_until="networkidle", timeout=15_000)
+                print("URL FINAL:", page.url)
+                await page.wait_for_selector(wait_for, state="attached",timeout=15_000)
+                await page.wait_for_timeout(1_000)
+ 
+                el   = await page.query_selector(wait_for)
+                bbox = await el.bounding_box()
+ 
+                await page.set_viewport_size({
+                    "width":  max(1600, int(bbox["width"])  + 40),
+                    "height": max(900,  int(bbox["height"]) + 40),
+                })
+ 
+                screenshot = await el.screenshot(type="png")
+                return screenshot
+            finally:
+                await browser.close()
+ 
+    try:
+        return loop.run_until_complete(_capture())
+    finally:
+        loop.close()
+ 
  
 @router.post("/job/{job_id}/screenshot-action-plan")
 async def screenshot_action_plan(job_id: str, body: ScreenshotRequest):
-    """
-    Usa Playwright (Chromium headless) para renderizar a página do Action Plan,
-    captura a tabela em alta resolução, divide em folhas A4 landscape e salva
-    cada PNG no job ativo.
- 
-    Estrutura salva:
-      data/jobs/{job_id}/{piece}/ActionPlan/AP_{piece}.png
-      data/jobs/{job_id}/{piece}/ActionPlan/AP_{piece}_page2.png  (se necessário)
-    """
- 
-    # Verifica se o job existe
     job_path = Path(BASE_PATH) / job_id
     if not job_path.exists():
         raise HTTPException(404, "JobID não encontrado")
  
-    # Cria pasta de destino
-    safe_piece = Path(body.piece).name
-    target_dir  = job_path / safe_piece / body.group / "ActionPlan"
-    target_dir.mkdir(parents=True, exist_ok=True)
- 
     try:
-        from playwright.sync_api import sync_playwright
+        import playwright  # noqa — só verifica se está instalado
     except ImportError:
         raise HTTPException(500,
-            "Playwright não instalado. Execute: pip install playwright && python -m playwright install chromium"
+            "Playwright não instalado. Execute:\n"
+            "pip install playwright\n"
+            "python -m playwright install chromium"
         )
  
+    try:
+        from PIL import Image
+    except ImportError:
+        raise HTTPException(500,
+            "Pillow não instalado. Execute: pip install Pillow"
+        )
+ 
+    safe_piece = Path(body.piece).name
+    target_dir = job_path / safe_piece / body.group / "ActionPlan"
+    target_dir.mkdir(parents=True, exist_ok=True)
+ 
+    # Roda Playwright no executor (thread separada com event loop próprio)
+    loop = asyncio.get_event_loop()
+    try:
+        screenshot_bytes = await loop.run_in_executor(
+            _executor,
+            _run_playwright_sync,
+            body.page_url,
+            body.wait_for,
+        )
+    except Exception as e:
+        raise HTTPException(500, f"Erro ao capturar screenshot: {str(e)}")
+ 
+    # Divide em fatias A4 com Pillow
+    img = Image.open(io.BytesIO(screenshot_bytes))
+    scale_ratio = A4_W_PX / img.width
+    new_w = A4_W_PX
+    new_h = int(img.height * scale_ratio)
+    img_resized = img.resize((new_w, new_h), Image.LANCZOS)
+ 
+    total_pages = max(1, -(-new_h // A4_H_PX))
     results = []
  
-    with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-            ]
+    for page_idx in range(total_pages):
+        y_start   = page_idx * A4_H_PX
+        y_end     = min(y_start + A4_H_PX, new_h)
+        slice_img = Image.new("RGB", (new_w, A4_H_PX), (255, 255, 255))
+        slice_img.paste(img_resized.crop((0, y_start, new_w, y_end)), (0, 0))
+ 
+        filename = (
+            f"AP_{safe_piece}.png" if total_pages == 1
+            else f"AP_{safe_piece}_page{page_idx + 1}.png"
         )
+        filepath = target_dir / filename
  
-        # Viewport largo para não quebrar a tabela
-        page = await browser.new_page(
-            viewport={"width": 1600, "height": 900}
-        )
+        buf = io.BytesIO()
+        slice_img.save(buf, format="PNG")
+        filepath.write_bytes(buf.getvalue())
  
-        try:
-            # 1. Navega para a página
-            await page.goto(body.page_url, wait_until="networkidle", timeout=30000)
- 
-            # 2. Aguarda a tabela aparecer no DOM
-            await page.wait_for_selector(body.wait_for, timeout=15000)
- 
-            # 3. Aguarda mais 1s para garantir que dados dinâmicos carregaram
-            await page.wait_for_timeout(1000)
- 
-            # 4. Pega dimensões reais da tabela
-            table_el = await page.query_selector(body.wait_for)
-            if not table_el:
-                raise HTTPException(404, f"Elemento '{body.wait_for}' não encontrado na página")
- 
-            bbox = await table_el.bounding_box()
-            if not bbox:
-                raise HTTPException(500, "Não foi possível obter dimensões da tabela")
- 
-            table_w = int(bbox["width"])
-            table_h = int(bbox["height"])
- 
-            # 5. Captura screenshot da tabela inteira em alta resolução (device_scale_factor=3)
-            #    Redimensiona viewport para garantir que a tabela inteira é visível
-            await page.set_viewport_size({
-                "width":  max(1600, table_w + 40),
-                "height": max(900,  table_h + 40),
-            })
- 
-            # Recalcula bbox após redimensionar
-            bbox = await table_el.bounding_box()
- 
-            screenshot_bytes = await table_el.screenshot(
-                type="png",
-                scale="device",   # usa device_scale_factor
-            )
- 
-            # 6. Converte para PIL para dividir em fatias A4
-            try:
-                from PIL import Image
-                import io
-            except ImportError:
-                raise HTTPException(500,
-                    "Pillow não instalado. Execute: pip install Pillow"
-                )
- 
-            img = Image.open(io.BytesIO(screenshot_bytes))
- 
-            # Redimensiona para largura A4 landscape mantendo proporção
-            scale_ratio = A4_W_PX / img.width
-            new_w = A4_W_PX
-            new_h = int(img.height * scale_ratio)
-            img_resized = img.resize((new_w, new_h), Image.LANCZOS)
- 
-            # 7. Divide em fatias A4 se necessário
-            total_pages = max(1, -(-new_h // A4_H_PX))   # ceil division
- 
-            for page_idx in range(total_pages):
-                y_start = page_idx * A4_H_PX
-                y_end   = min(y_start + A4_H_PX, new_h)
- 
-                # Cria imagem da fatia com fundo branco
-                slice_img = Image.new("RGB", (new_w, A4_H_PX), (255, 255, 255))
-                crop = img_resized.crop((0, y_start, new_w, y_end))
-                slice_img.paste(crop, (0, 0))
- 
-                # Nome do arquivo
-                if total_pages == 1:
-                    filename = f"AP_{safe_piece}.png"
-                else:
-                    filename = f"AP_{safe_piece}_page{page_idx + 1}.png"
- 
-                # Sobrescreve se existir (nova captura = versão mais recente)
-                filepath = target_dir / filename
- 
-                buf = io.BytesIO()
-                slice_img.save(buf, format="PNG", optimize=False)
-                filepath.write_bytes(buf.getvalue())
- 
-                static_url = f"/static/jobs/{job_id}/{safe_piece}/ActionPlan/{filename}"
-                results.append({
-                    "page":       page_idx + 1,
-                    "filename":   filename,
-                    "static_url": static_url,
-                    "path":       str(filepath),
-                })
- 
-        finally:
-            await browser.close()
+        results.append({
+            "page":       page_idx + 1,
+            "filename":   filename,
+            "static_url": f"/static/jobs/{job_id}/{safe_piece}/ActionPlan/{filename}",
+        })
  
     return {
         "status":      "ok",
@@ -355,4 +345,4 @@ async def screenshot_action_plan(job_id: str, body: ScreenshotRequest):
         "piece":       safe_piece,
         "total_pages": len(results),
         "files":       results,
-    }    
+    }

@@ -15,12 +15,6 @@ import os
 
 app = FastAPI(title="Statistical Project API")
 
-JOBS_PATH = os.path.join(os.path.dirname(__file__), "data", "jobs")
-
-os.makedirs(JOBS_PATH, exist_ok=True)
-
-app.mount("/static/jobs", StaticFiles(directory=JOBS_PATH), name="static_jobs")
-
 #cors - permitir local dev do front
 app.add_middleware(
     CORSMiddleware,
@@ -39,6 +33,12 @@ app.include_router(control_chart_router)
 app.include_router(capability_router) 
 app.include_router(reportbuilder_router)
 app.include_router(action_plan_router) 
+
+JOBS_PATH = os.path.join(os.path.dirname(__file__), "data", "jobs")
+
+os.makedirs(JOBS_PATH, exist_ok=True)
+
+app.mount("/static/jobs", StaticFiles(directory=JOBS_PATH), name="static_jobs")
 
 @app.get("/")
 def ping():
