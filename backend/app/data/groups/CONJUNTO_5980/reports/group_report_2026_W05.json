@@ -1,13 +1,13 @@
 {
   "year": 2026,
   "week": 5,
-  "green": 249,
-  "green_percent": 73.24,
+  "green": 301,
+  "green_percent": 70.33,
   "yellow": 37,
-  "yellow_percent": 10.88,
-  "red": 54,
-  "red_percent": 15.88,
-  "total": 340,
+  "yellow_percent": 8.64,
+  "red": 90,
+  "red_percent": 21.03,
+  "total": 428,
   "pieces_processed": 2,
-  "generated_at": "2026-03-30T20:16:48.668013"
+  "generated_at": "2026-06-05T08:31:56.314289"
 }
