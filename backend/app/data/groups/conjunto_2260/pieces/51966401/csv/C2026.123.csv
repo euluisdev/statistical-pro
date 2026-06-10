@@ -1,0 +1,2 @@
+Data,Hora,Localização,TipoGeométrico,NomePonto,Eixo,Nominal,Medido,Desvio,Tol+,Tol-
+05/05/2026,15:43:34,LOC1,CÍRCULO,CÍR1,D,22.5,22.51,0.01,1.0,-1.0
