@@ -63,13 +63,48 @@ def calculate_characteristic_qh(
     tol_minus: float
 ) -> Dict:
     """
-    Cálculo EXATO usado no QH / PC-DMIS.
+    Cálculo usado como referência do Apêndice F do Manual de CEP (SPC) da AIAG.
     """
 
     n = len(desvios)
     mean_dev = np.mean(desvios)
+
+    SUBGROUP_SIZE = 5
+
+    D2_TABLE = {
+        2: 1.128,
+        3: 1.693,
+        4: 2.059,
+        5: 2.326,
+        6: 2.534,
+        7: 2.704,
+        8: 2.847,
+        9: 2.970,
+        10: 3.078
+    }
+
+    D2 = D2_TABLE[SUBGROUP_SIZE]
+
+    subgroups = [
+        desvios[i:i + SUBGROUP_SIZE]
+        for i in range(0, len(desvios), SUBGROUP_SIZE)
+    ]
+
+    subgroups = [
+        g for g in subgroups
+        if len(g) == SUBGROUP_SIZE
+    ]
+
+    ranges = [
+        np.max(g) - np.min(g)
+        for g in subgroups
+    ]
+
+    r_bar = np.mean(ranges) if ranges else 0
+
+    sigma = r_bar / D2 if r_bar > 0 else 0
+
     r = np.max(desvios) - np.min(desvios)
-    sigma = r / 6 if r > 0 else 0
 
     lsl = -abs(tol_minus)
     usl = abs(tol_plus)

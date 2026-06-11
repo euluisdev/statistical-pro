@@ -163,21 +163,6 @@
           "color": "#000000",
           "textAlign": "left",
           "backgroundColor": "transparent"
-        },
-        {
-          "id": "image-1780657566778",
-          "type": "image",
-          "chart": {
-            "group": "CONJUNTO_5980",
-            "piece": "53327786",
-            "page_type": "cg",
-            "filename": "f53327786_20260605_074643_422212.png",
-            "url": "/static/jobs/e91344ab-1a26-4146-9e33-66bd83ae135e/CONJUNTO_5980/53327786/cg/f53327786_20260605_074643_422212.png"
-          },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
         }
       ]
     },
@@ -226,14 +211,14 @@
           "backgroundColor": "transparent"
         },
         {
-          "id": "image-1780657858624",
+          "id": "image-1781143812554",
           "type": "image",
           "chart": {
-            "group": "CONJUNTO_5980",
-            "piece": "53327786",
-            "page_type": "cp_cpk",
-            "filename": "f53327786_20260605_074811_163540.png",
-            "url": "/static/jobs/e91344ab-1a26-4146-9e33-66bd83ae135e/CONJUNTO_5980/53327786/cp_cpk/f53327786_20260605_074811_163540.png"
+            "group": "534896710",
+            "piece": "534896710",
+            "page_type": "ActionPlan",
+            "filename": "AP_534896710.png",
+            "url": "/static/jobs/5b31e976-55c2-43d5-b33d-62c453156d32/534896710/534896710/ActionPlan/AP_534896710.png"
           },
           "x": 24,
           "y": 120,
@@ -1942,14 +1927,14 @@
           "backgroundColor": "transparent"
         },
         {
-          "id": "image-1780660745651",
+          "id": "image-1781143180064",
           "type": "image",
           "chart": {
-            "group": "CONJUNTO_5980",
-            "piece": "GROUP",
-            "page_type": "cpk_conjunto",
-            "filename": "fGROUP_20260605_083720_981435.png",
-            "url": "/static/jobs/e91344ab-1a26-4146-9e33-66bd83ae135e/CONJUNTO_5980/GROUP/cpk_conjunto/fGROUP_20260605_083720_981435.png"
+            "group": "534896710",
+            "piece": "534896710",
+            "page_type": "ActionPlan",
+            "filename": "AP_534896710.png",
+            "url": "/static/jobs/5b31e976-55c2-43d5-b33d-62c453156d32/534896710/534896710/ActionPlan/AP_534896710.png"
           },
           "x": 24,
           "y": 120,
@@ -1961,5 +1946,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-21",
-  "updated_at": "2026-06-05T12:24:36.118312"
+  "updated_at": "2026-06-11T02:33:19.194901"
 }
