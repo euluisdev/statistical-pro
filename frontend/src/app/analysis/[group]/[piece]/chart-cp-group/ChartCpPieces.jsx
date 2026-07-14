@@ -133,7 +133,7 @@ export default PiecesChartCp;
 
 function prepareChartData(piecesReport, group) {
   const pieces = piecesReport.pieces;
-  const labels = pieces.map((p) => p.part_number);
+  const labels = pieces.map((p) => `${p.part_number}<br>${p.part_name}`);
 
   const greenData = pieces.map((p) => p.green_percent);
   const yellowData = pieces.map((p) => p.yellow_percent);
@@ -192,7 +192,7 @@ function prepareChartData(piecesReport, group) {
         title: "",
         tickangle: 0, 
         type: "category",
-        tickfont: { size: 14, color: "black", weight: "bold" }, 
+        tickfont: { size: 11, color: "black", weight: "bold" }, 
         gridcolor: "#e2e8f0",
       },
       yaxis: {
@@ -208,7 +208,7 @@ function prepareChartData(piecesReport, group) {
         y: -0.15,
         xanchor: "center",
         orientation: "h",
-        font: { size: 15, color: "black" },
+        font: { size: 13, color: "black" },
       },
       margin: { l: 60, r: 40, t: 80, b: 100 },
       paper_bgcolor: "white",

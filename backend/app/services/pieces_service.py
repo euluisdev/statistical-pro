@@ -154,3 +154,24 @@ def delete_txt_file(group: str, piece: str, filename: str):
 
     return True, filename
 
+
+
+def get_piece_info(group: str, piece: str):
+    """Retorna as informações da peça (info.json)."""
+
+    group_safe = sanitize_piece_name(group)
+    piece_safe = sanitize_piece_name(piece)
+
+    info_file = os.path.join(
+        BASE_DIR,
+        group_safe,
+        "pieces",
+        piece_safe,
+        "info.json"
+    )
+
+    if not os.path.exists(info_file):
+        return None
+
+    with open(info_file, "r", encoding="utf-8") as f:
+        return json.load(f)

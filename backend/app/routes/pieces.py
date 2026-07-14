@@ -9,7 +9,8 @@ from app.services.pieces_service import(
     ensure_piece_dirs, 
     sanitize_piece_name, 
     list_txt_files, 
-    delete_txt_file
+    delete_txt_file, 
+    get_piece_info
 ) 
 from app.services.pcdmis_csv_service import extract_all_txt_to_csv, load_all_csv_as_dataframe, save_analysis_csv
 from app.services.statistics_service import calculate_statistics
@@ -30,6 +31,15 @@ class CreatePieceReq(BaseModel):
 def get_pieces(group: str):
     return list_pieces(group)
 
+
+@router.get("/{group}/{piece}")
+def get_piece(group: str, piece: str):
+    info = get_piece_info(group, piece)
+
+    if info is None:
+        raise HTTPException(status_code=404, detail="Peça não encontrada")
+
+    return info
 
 
 @router.delete("/{group}/{part_number}")

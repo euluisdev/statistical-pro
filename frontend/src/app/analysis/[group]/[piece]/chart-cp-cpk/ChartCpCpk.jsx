@@ -19,6 +19,7 @@ export default function ReportCpCpkClient({ params }) {
   const [availableWeeks, setAvailableWeeks] = useState([]);
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [pieceInfo, setPieceInfo] = useState(null);
 
   const router = useRouter();
   const cpPlotRef = useRef(null);
@@ -45,6 +46,21 @@ export default function ReportCpCpkClient({ params }) {
   useEffect(() => {
     loadAvailableWeeks();
     loadAllReports();
+  }, [group, piece]);
+
+  useEffect(() => {
+    async function loadPieceInfo() {
+      try {
+        const response = await fetch(`${API}/pieces/${group}/${piece}`);
+        const data = await response.json();
+
+        setPieceInfo(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadPieceInfo();
   }, [group, piece]);
 
   async function loadAvailableWeeks() {
@@ -111,11 +127,11 @@ export default function ReportCpCpkClient({ params }) {
   };
 
   const cpChartData = reportData && reportData.length > 0
-    ? prepareChartData(reportData, "CP", piece, group)
+    ? prepareChartData(reportData, "CP", piece, group, pieceInfo)
     : null;
 
   const cpkChartData = reportData && reportData.length > 0
-    ? prepareChartData(reportData, "CPK", piece, group)
+    ? prepareChartData(reportData, "CPK", piece, group, pieceInfo)
     : null;
 
   return (
@@ -286,7 +302,7 @@ export default function ReportCpCpkClient({ params }) {
   );
 }
 
-function prepareChartData(weeksData, type, piece, group) {
+function prepareChartData(weeksData, type, piece, group, pieceInfo) {
   if (!weeksData || weeksData.length === 0) return null;
 
   const weekLabels = weeksData.map((w) => `Week ${w.week}`);
@@ -341,7 +357,7 @@ function prepareChartData(weeksData, type, piece, group) {
     layout: {
       barmode: "stack",
       title: {
-        text: `${type} | ${group} | ${piece}`,
+        text: `${type} | ${piece} - ${pieceInfo?.part_name ?? ""}`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
@@ -357,7 +373,7 @@ function prepareChartData(weeksData, type, piece, group) {
         ticksuffix: "%",
         tickfont: { size: 12, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
-        showgrid: true, 
+        showgrid: true,
         dtick: 10,
       },
       legend: {

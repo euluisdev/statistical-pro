@@ -78,7 +78,7 @@ function SingleChart({ chartData, onRef }) {
     parseFloat((yMin + i * step).toFixed(2))
   );
 
-  const step_x = Math.max(1, Math.floor(deviations.length / 14));
+  const step_x = 1;
 
   const cpColor = stats.cp_color === "green" ? styles.green : styles.red;
   const cpkColor = stats.cpk_color === "green" ? styles.green : styles.red;
@@ -125,15 +125,16 @@ function SingleChart({ chartData, onRef }) {
             if (i % step_x !== 0) return null;
             const cx = xScale(i);
             const baseY = PAD.top + innerH;
-            const [datePart, timePart] = m.datetime.split("\n");
+            const [datePart, timePart] = m.datetime.split("\n"); 
+            const shortTime = timePart ? timePart.slice(0, 5) : "";
             return (
               <g key={i}>
-                <text x={cx} y={baseY + 10} textAnchor="middle" fontSize="7" fill="black">
+                <text x={cx + 33} y={baseY + 15} textAnchor="middle" fontSize="8" fill="black" transform={`rotate(+90 ${cx} ${baseY + 12})`}>
                   {datePart}
                 </text>
-                {timePart && (
-                  <text x={cx} y={baseY + 20} textAnchor="middle" fontSize="7" fill="black">
-                    {timePart}
+                {shortTime && (
+                  <text x={cx} y={baseY + 15} textAnchor="middle" fontSize="8" fill="black" transform={`rotate(+90 ${cx} ${baseY + 12})`}>
+                    {shortTime}
                   </text>
                 )}
               </g>
@@ -152,7 +153,7 @@ function SingleChart({ chartData, onRef }) {
           <strong>{point} {axis}</strong>
           <div>SPECIFIED: {fmt(stats.nominal)}</div>
           <div>- {stats.n ?? measurements.length} Controle(s) -</div>
-          <div>Tamanho Amostral: {measurements.length}</div>
+          <div>Tamanho Amostral: 5</div>
         </div>
 
         <Sparkline values={deviations.slice(-20)} />

@@ -19,6 +19,7 @@ export default function ReportClient({ params }) {
   const [availableWeeks, setAvailableWeeks] = useState([]);
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [pieceInfo, setPieceInfo] = useState(null);
 
   const plotRef = useRef(null);
   const router = useRouter();
@@ -44,6 +45,21 @@ export default function ReportClient({ params }) {
   useEffect(() => {
     loadAvailableWeeks();
     loadAllReports();
+  }, [group, piece]);
+
+  useEffect(() => {
+    async function loadPieceInfo() {
+      try {
+        const response = await fetch(`${API}/pieces/${group}/${piece}`);
+        const data = await response.json();
+
+        setPieceInfo(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadPieceInfo();
   }, [group, piece]);
 
   async function loadAvailableWeeks() {
@@ -108,7 +124,7 @@ export default function ReportClient({ params }) {
   };
 
   const chartData = reportData && reportData.length > 0
-    ? prepareChartData(reportData, piece, group)
+    ? prepareChartData(reportData, piece, group, pieceInfo)
     : null;
 
   return (
@@ -255,7 +271,7 @@ export default function ReportClient({ params }) {
   );
 }
 
-function prepareChartData(weeksData, piece, group) {
+function prepareChartData(weeksData, piece, group, pieceInfo) {
   if (!weeksData || weeksData.length === 0) return null;
 
   const weekLabels = weeksData.map((w) => `Week ${w.week}`);
@@ -283,7 +299,7 @@ function prepareChartData(weeksData, piece, group) {
         x: weekLabels,
         y: yellowData,
         name: "75% < CG ≤ 100%",
-        type: "bar", 
+        type: "bar",
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -294,7 +310,7 @@ function prepareChartData(weeksData, piece, group) {
         x: weekLabels,
         y: redData,
         name: "CG > 100%",
-        type: "bar", 
+        type: "bar",
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -305,7 +321,7 @@ function prepareChartData(weeksData, piece, group) {
     layout: {
       barmode: "stack",
       title: {
-        text: `CG | ${group} | ${piece}`,
+        text: `CG | ${piece} - ${pieceInfo?.part_name ?? ""}`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
@@ -321,7 +337,7 @@ function prepareChartData(weeksData, piece, group) {
         ticksuffix: "%",
         tickfont: { size: 12, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
-        showgrid: true, 
+        showgrid: true,
         dtick: 10,
       },
       legend: {
@@ -338,6 +354,6 @@ function prepareChartData(weeksData, piece, group) {
       hovermode: "x unified",
     },
   };
-} 
- 
+}
+
 
