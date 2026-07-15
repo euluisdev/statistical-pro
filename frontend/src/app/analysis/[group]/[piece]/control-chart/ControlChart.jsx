@@ -8,7 +8,7 @@ import { ArrowBigRight, Grid3x3, SaveAll, Settings } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-// ── Mini sparkline SVG ────────────────────────────────────────────────────────
+//mini sparkline SVG
 function Sparkline({ values }) {
   if (!values?.length) return null;
   const w = 120, h = 46;
@@ -28,13 +28,13 @@ function Sparkline({ values }) {
   );
 }
 
-// ── Single Control Chart ──────────────────────────────────────────────────────
-// Recebe onRef para registrar o elemento no hook de captura.
+//single Control Chart
+//recebe onRef para registrar o elemento no hook de captura
 function SingleChart({ chartData, onRef }) {
   const { point, axis, stats, measurements } = chartData;
   const rowRef = useRef(null);
 
-  // Registra/desregistra a ref no hook pai
+  //registra/desregistra a ref no hook pai
   useEffect(() => {
     if (onRef) onRef(point, axis, rowRef.current);
     return () => {
@@ -42,8 +42,8 @@ function SingleChart({ chartData, onRef }) {
     };
   }, [point, axis, onRef]);
 
-  const W = 820, H = 185;
-  const PAD = { top: 18, right: 10, bottom: 60, left: 46 };
+  const W = 820, H = 215;
+  const PAD = { top: 18, right: 10, bottom: 90, left: 46 };
   const innerW = W - PAD.left - PAD.right;
   const innerH = H - PAD.top - PAD.bottom;
 
@@ -125,15 +125,15 @@ function SingleChart({ chartData, onRef }) {
             if (i % step_x !== 0) return null;
             const cx = xScale(i);
             const baseY = PAD.top + innerH;
-            const [datePart, timePart] = m.datetime.split("\n"); 
+            const [datePart, timePart] = m.datetime.split("\n");
             const shortTime = timePart ? timePart.slice(0, 5) : "";
             return (
               <g key={i}>
-                <text x={cx + 33} y={baseY + 15} textAnchor="middle" fontSize="8" fill="black" transform={`rotate(+90 ${cx} ${baseY + 12})`}>
+                <text x={cx + 18} y={baseY + 15} textAnchor="middle" fontFamily="Arial" fontSize="9.5" fill="black" fontWeight="bold" transform={`rotate(+90 ${cx} ${baseY + 12})`}>
                   {datePart}
                 </text>
                 {shortTime && (
-                  <text x={cx} y={baseY + 15} textAnchor="middle" fontSize="8" fill="black" transform={`rotate(+90 ${cx} ${baseY + 12})`}>
+                  <text x={cx + 58} y={baseY + 15} textAnchor="middle" fontFamily="Arial" fontSize="9.5" fill="black" fontWeight="bold" transform={`rotate(+90 ${cx} ${baseY + 12})`}>
                     {shortTime}
                   </text>
                 )}
@@ -370,7 +370,7 @@ function LoadingCharts() {
   );
 }
 
-//main Page __________________________________________________________________________________________#
+//main Page
 export default function ControlChart({ params }) {
   const { group, piece } = params;
   const router = useRouter();
@@ -379,6 +379,21 @@ export default function ControlChart({ params }) {
   const [chartsData, setChartsData] = useState(null);
   const [loadingCharts, setLoadingCharts] = useState(false);
   const [chartError, setChartError] = useState(null);
+  const [pieceInfo, setPieceInfo] = useState(null);
+
+  useEffect(() => {
+    async function loadPieceInfo() {
+      try {
+        const response = await fetch(`${API}/pieces/${group}/${piece}`);
+        const data = await response.json();
+        setPieceInfo(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadPieceInfo();
+  }, [group, piece]);
 
   //hook print
   const { saveLoading, registerChartRef, triggerSave, currentJobId } =
@@ -460,12 +475,12 @@ export default function ControlChart({ params }) {
             <button onClick={() => setChartError(null)}>Tentar novamente</button>
           </div>
         ) : !chartsData ? (
-          <StaticPlaceholder group={group} piece={piece} />
+          <StaticPlaceholder group={piece} piece={pieceInfo?.part_name} />
         ) : (
           <>
             <div className={styles.header}>
               <h1>CONTROL CHART</h1>
-              <h2>{group} – {piece}</h2>
+              <h2>{piece} - {pieceInfo?.part_name}</h2>
               <p className={styles.subtitle}>Individual Values</p>
             </div>
             <div className={styles.divider} />
