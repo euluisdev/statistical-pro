@@ -13,6 +13,16 @@ export function useSaveControlChartToJob() {
     }
   }, []);
 
+  const headerRefs = useRef({
+    header: null,
+    divider: null,
+    legend: null,
+  });
+
+  const registerHeaderRefs = (refs) => {
+    headerRefs.current = refs;
+  };
+
   const registerChartRef = (pointId, axis, el) => {
     if (!pointId) return;
     if (el) {
@@ -29,7 +39,7 @@ export function useSaveControlChartToJob() {
   };
 
   /*print todos os pontos e salva 1 PNG por ponto no jobid ativo*/
-  const triggerSave = async (group, piece) => {
+  const triggerSave = async (group, piece, pieceName) => {
     if (!currentJobId) {
       alert("⚠️ Nenhum Job ativo! Crie um Job na página inicial primeiro.");
       return;
@@ -75,6 +85,17 @@ export function useSaveControlChartToJob() {
           gap: 0;
           width: fit-content;
         `;
+
+        const { header, divider, legend } = headerRefs.current;
+
+        if (header)
+          wrapper.appendChild(header.cloneNode(true));
+
+        if (divider)
+          wrapper.appendChild(divider.cloneNode(true));
+
+        if (legend)
+          wrapper.appendChild(legend.cloneNode(true));
 
         //clona cada chartRow para não alterar o DOM original
         const clones = axisEls.map(([, el]) => {
@@ -160,7 +181,8 @@ export function useSaveControlChartToJob() {
   return {
     currentJobId,
     saveLoading,
-    registerChartRef,
+    registerChartRef, 
+    registerHeaderRefs, 
     triggerSave,
   };
 }

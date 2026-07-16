@@ -381,6 +381,10 @@ export default function ControlChart({ params }) {
   const [chartError, setChartError] = useState(null);
   const [pieceInfo, setPieceInfo] = useState(null);
 
+  const headerRef = useRef(null);
+  const dividerRef = useRef(null);
+  const legendRef = useRef(null);
+
   useEffect(() => {
     async function loadPieceInfo() {
       try {
@@ -396,7 +400,7 @@ export default function ControlChart({ params }) {
   }, [group, piece]);
 
   //hook print
-  const { saveLoading, registerChartRef, triggerSave, currentJobId } =
+  const { saveLoading, registerChartRef, registerHeaderRefs, triggerSave, currentJobId } =
     useSaveControlChartToJob();
 
   const handleGenerate = useCallback(async (selections) => {
@@ -418,6 +422,14 @@ export default function ControlChart({ params }) {
       setLoadingCharts(false);
     }
   }, [group, piece]);
+
+  useEffect(() => {
+    registerHeaderRefs({
+      header: headerRef.current,
+      divider: dividerRef.current,
+      legend: legendRef.current,
+    });
+  }, [registerHeaderRefs]);
 
   //agrupa os charts por ponto para saber quantos pontos únicos existem
   const uniquePoints = chartsData
@@ -443,7 +455,13 @@ export default function ControlChart({ params }) {
             {chartsData && uniquePoints.length > 0 && (
               <button
                 className={styles.btnMenu}
-                onClick={() => triggerSave(group, piece)}
+                onClick={() =>
+                  triggerSave(
+                    group,
+                    piece,
+                    pieceInfo?.part_name
+                  )
+                }
                 disabled={saveLoading}
                 title={
                   currentJobId
@@ -478,13 +496,15 @@ export default function ControlChart({ params }) {
           <StaticPlaceholder group={piece} piece={pieceInfo?.part_name} />
         ) : (
           <>
-            <div className={styles.header}>
+            <div ref={headerRef} className={styles.header}>
               <h1>CONTROL CHART</h1>
               <h2>{piece} - {pieceInfo?.part_name}</h2>
               <p className={styles.subtitle}>Individual Values</p>
             </div>
-            <div className={styles.divider} />
-            <Legend />
+            <div ref={dividerRef} className={styles.divider} />
+            <div ref={legendRef}>
+              <Legend />
+            </div>
             <div className={styles.chartsContainer}>
               {chartsData.map((cd, i) =>
                 cd.error ? (

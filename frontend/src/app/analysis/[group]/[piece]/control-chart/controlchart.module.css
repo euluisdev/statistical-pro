@@ -156,6 +156,7 @@
   padding: 4px 8px;
   background: #e8e8e8;
   border: 1px solid #bbb;
+  justify-content: center;
   align-items: center;
 }
 .legendItem {
