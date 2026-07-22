@@ -92,14 +92,14 @@
           "height": 115
         },
         {
-          "id": "image-1784339188433",
+          "id": "image-1784680447737",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534896710",
             "page_type": "ActionPlan",
             "filename": "AP_534896710.png",
-            "url": "/static/jobs/cb0d3357-c4d5-4340-9ac3-07a430efcdc2/CONJUNTO_5980/534896710/ActionPlan/AP_534896710.png"
+            "url": "/static/jobs/32e9b1e1-027c-414c-928f-5e209e5a605c/CONJUNTO_5980/534896710/ActionPlan/AP_534896710.png"
           },
           "x": 24,
           "y": 120,
@@ -227,14 +227,14 @@
           "height": 115
         },
         {
-          "id": "image-1784339157045",
+          "id": "image-1784680403880",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534896710",
             "page_type": "ActionPlan",
             "filename": "AP_534896710.png",
-            "url": "/static/jobs/cb0d3357-c4d5-4340-9ac3-07a430efcdc2/CONJUNTO_5980/534896710/ActionPlan/AP_534896710.png"
+            "url": "/static/jobs/32e9b1e1-027c-414c-928f-5e209e5a605c/CONJUNTO_5980/534896710/ActionPlan/AP_534896710.png"
           },
           "x": 24,
           "y": 120,
@@ -247,14 +247,14 @@
       "id": 1784339174121,
       "elements": [
         {
-          "id": "image-1784340703383",
+          "id": "image-1784685063816",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534896710",
             "page_type": "ActionPlan",
             "filename": "AP_534896710.png",
-            "url": "/static/jobs/cb0d3357-c4d5-4340-9ac3-07a430efcdc2/CONJUNTO_5980/534896710/ActionPlan/AP_534896710.png"
+            "url": "/static/jobs/32e9b1e1-027c-414c-928f-5e209e5a605c/CONJUNTO_5980/534896710/ActionPlan/AP_534896710.png"
           },
           "x": 24,
           "y": 120,
@@ -266,5 +266,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-23",
-  "updated_at": "2026-07-18T02:33:24.521925"
+  "updated_at": "2026-07-22T01:56:45.119100"
 }

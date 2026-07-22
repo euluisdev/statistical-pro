@@ -19,9 +19,27 @@ const WEEK_VALUES = ["", "X", "NOK", "R"];
 
 const fmt = (v) => v == null ? "—" : parseFloat(v).toFixed(2).replace(".", ",");
 
-function cpkColor(val, colorHint) {
-  if (colorHint === "green") return "green";
-  if (colorHint === "red") return "red";
+function cpkColor(val) {
+  if (val == null) return "transparent";
+  const n = parseFloat(val);
+  if (n >= 1.33) return "green";
+  if (n >= 1.0) return "yellow";
+  return "red";
+}
+
+function xmedColor(xmed, lse, lie) {
+  if (xmed == null) return "transparent";
+  //usa a menor tolerância absoluta como referência
+  const tol = Math.min(
+    Math.abs(lse ?? Infinity),
+    Math.abs(lie ?? Infinity)
+  );
+  if (!isFinite(tol) || tol === 0) return "transparent";
+  return Math.abs(parseFloat(xmed)) > tol * 0.5 ? "red" : "green";
+}
+
+//CP
+function cpColor(val) {
   if (val == null) return "transparent";
   const n = parseFloat(val);
   if (n >= 1.33) return "green";
@@ -399,92 +417,121 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek, weeks }) {
     <>
       {plan.rows.map((row, ri) => (
         <tr key={`${plan.seq}-${ri}`} className={ri % 2 === 0 ? styles.trEven : styles.trOdd}>
+
+          {/* SEQ — só na primeira linha, com rowSpan */}
           {ri === 0 && (
             <td rowSpan={rowCount} className={styles.tdSeq}>
               <div className={styles.seqCell}>
                 <span>{String(plan.seq).padStart(3, "0")}</span>
                 <div className={styles.rowActions}>
-                  <button className={styles.editRowBtn} onClick={() => onEdit(plan)}
-                    title="Editar">✏</button>
-                  <button className={styles.delRowBtn} onClick={() => onDelete(plan.seq)}
-                    title="Excluir">🗑</button>
+                  <button className={styles.editRowBtn} onClick={() => onEdit(plan)} title="Editar">✏</button>
+                  <button className={styles.delRowBtn} onClick={() => onDelete(plan.seq)} title="Excluir">🗑</button>
                 </div>
               </div>
             </td>
           )}
+
+          {/* Colunas por eixo */}
           <td className={styles.td}>{row.label}</td>
           <td className={styles.td}>{row.axis}</td>
           <td className={styles.td}>{fmt(row.lse)}</td>
           <td className={styles.td}>{fmt(row.lie)}</td>
           <td className={styles.tdSymbol}>{row.symbol}</td>
-          <td className={styles.td}>{fmt(row.xmed)}</td>
-          <td className={styles.td}>{fmt(row.cp)}</td>
-          <td className={`${styles.td} ${styles.tdCpk}`}
-            style={{ background: cpkColor(row.cpk, null), color: row.cpk != null ? "white" : "inherit" }}>
+
+          {/* XMED com cor */}
+          <td
+            className={styles.td}
+            style={{
+              background: xmedColor(row.xmed, row.lse, row.lie),
+              color: xmedColor(row.xmed, row.lse, row.lie) !== "transparent" ? "white" : "inherit",
+              fontWeight: "bold",
+            }}
+          >
+            {fmt(row.xmed)}
+          </td>
+
+          {/* CP com cor */}
+          <td
+            className={styles.td}
+            style={{
+              background: cpColor(row.cp),
+              color: cpColor(row.cp) !== "transparent" ? "white" : "inherit",
+              fontWeight: "bold",
+            }}
+          >
+            {fmt(row.cp)}
+          </td>
+
+          {/* CPK com cor */}
+          <td
+            className={`${styles.td} ${styles.tdCpk}`}
+            style={{
+              background: cpkColor(row.cpk),
+              color: cpkColor(row.cpk) !== "transparent" ? "white" : "inherit",
+            }}
+          >
             {fmt(row.cpk)}
           </td>
+
           <td className={styles.td}>{fmt(row.range)}</td>
 
+          {/*RISK Desviation*/}
+          <td
+            className={styles.tdVertical}
+            style={{
+              backgroundColor: getRiskBackgroundColor(row.risk_level),
+              color: getRiskTextColor(row.risk_level),
+            }}
+          >
+            <span className={styles.verticalText}>
+              {row.risk_level || "—"}
+            </span>
+          </td>
+
+          {/*RISK Root Cause — 1 por eixo*/}
+          <td className={styles.tdVertical}>
+            <span className={styles.verticalText}>{plan.analysis}</span>
+          </td>
+
+          {/*campos do plano — rowSpan*/}
           {ri === 0 && (
             <>
-              {/*desviation + root cause */}
-              <td
-                rowSpan={rowCount}
-                className={styles.tdVertical}
-                style={{
-                  backgroundColor: getRiskBackgroundColor(row.risk_level),
-                  color: getRiskTextColor(row.risk_level),   //para contraste branco ou preto
-                }}
-              >
-                <span className={styles.verticalText}>
-                  {row.risk_level || "—"}
-                </span>
-              </td>
-              <td rowSpan={rowCount} className={styles.tdVertical}>
-                <span className={styles.verticalText}>{plan.analysis}</span>
-              </td>
-              {/*action Plan */}
               <td rowSpan={rowCount} className={styles.tdAction}>
                 {plan.action_text}
               </td>
-              {/*responsible */}
               <td rowSpan={rowCount} className={styles.tdResp}>
                 {plan.responsible_name}
                 {plan.responsible_dept ? ` (${plan.responsible_dept})` : ""}
               </td>
-              {/*data */}
               <td rowSpan={rowCount} className={styles.tdDate}>
                 {plan.deadline_date || ""}
               </td>
-
-              {/*weeks*/}
               {weeks.map(w => {
                 const ws = plan.week_statuses?.find(x => x.week === w);
                 const val = ws?.value || "";
-                const isCurrent = w === currentWeek;
-
                 return (
                   <td
                     key={w}
                     rowSpan={rowCount}
-                    className={`${styles.tdWeek} ${isCurrent ? styles.tdWeekCurrent : ""}`}
+                    className={`${styles.tdWeek} ${w === currentWeek ? styles.tdWeekCurrent : ""}`}
                     style={{
-                      background: val === "X" ? "#aad4f5"
-                        : val === "NOK" ? "#ffaaaa"
-                          : val === "R" ? "#ffe099"
-                            : "transparent"
+                      background:
+                        val === "X" ? "#aad4f5" :
+                          val === "NOK" ? "#ffaaaa" :
+                            val === "R" ? "#ffe099" :
+                              "transparent",
                     }}
                   >
                     {val}
                   </td>
                 );
               })}
-
               <td rowSpan={rowCount} className={styles.tdStatus}>
                 {plan.status}
               </td>
             </>
           )}
+
         </tr>
       ))}
     </>
@@ -556,7 +603,7 @@ export default function ActionPlanPage() {
             <span className={styles.toolbarTitle}>ACTION PLAN</span>
             <span className={styles.toolbarSub}>{group} | {piece}</span>
           </div>
-          
+
           {/*botão capturar — só aparece quando há planos */}
           {plans.length > 0 && (
             <button
@@ -582,81 +629,81 @@ export default function ActionPlanPage() {
 
         <div id="action-plan-table">
 
-        {/*table */}
-        <div className={styles.tableWrapper}>
-          {loading ? (
-            <div className={styles.loadingState}>Carregando planos…</div>
-          ) : (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th colSpan={15} className={styles.thPiece}>
-                    {piece} | ACTION PLAN
-                  </th>
-                  <th colSpan={displayWeeks.length + 1} className={styles.thSemana}>SEMANA</th>
-                </tr>
-                <tr>
-                  {/* colunas fixas */}
-                  <th className={styles.th}>SEQ</th>
-                  <th className={styles.th}>LABEL</th>
-                  <th className={styles.th}>AXIS</th>
-                  <th className={styles.th}>LSE</th>
-                  <th className={styles.th}>LIE</th>
-                  <th className={styles.th}>SYMBOL</th>
-                  <th className={styles.th}>XMED</th>
-                  <th className={styles.th}>CP</th>
-                  <th className={styles.th}>CPK</th>
-                  <th className={styles.th}>RANGE</th>
-                  <th className={`${styles.th} ${styles.thVertical}`}>
-                    <span className={styles.verticalText}>RISK - Desviation</span>
-                  </th>
-                  <th className={`${styles.th} ${styles.thVertical}`}>
-                    <span className={styles.verticalText}>RISK - Root Cause</span>
-                  </th>
-                  <th className={styles.th}>ACTION PLAN</th>
-                  <th className={styles.th}>RESPONSIBLE</th>
-                  <th className={styles.th}>DATA</th>
-
-                  {/*cabeçalho das semanas dinâmico */}
-                  {displayWeeks.map(w => (
-                    <th
-                      key={w}
-                      className={`${styles.th} ${styles.thWeek} ${w === currentWeek ? styles.thWeekCurrent : ""}`}
-                    >
-                      {w}
-                    </th>
-                  ))}
-
-                  <th className={styles.th}>STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {plans.length === 0 ? (
+          {/*table */}
+          <div className={styles.tableWrapper}>
+            {loading ? (
+              <div className={styles.loadingState}>Carregando planos…</div>
+            ) : (
+              <table className={styles.table}>
+                <thead>
                   <tr>
-                    <td colSpan={15 + displayWeeks.length + 1} className={styles.emptyTable}>
-                      Nenhum plano de ação criado. Clique em <strong>New</strong>.
-                    </td>
+                    <th colSpan={15} className={styles.thPiece}>
+                      {piece} | ACTION PLAN
+                    </th>
+                    <th colSpan={displayWeeks.length + 1} className={styles.thSemana}>SEMANA</th>
                   </tr>
-                ) : (
-                  plans.map(plan => (
-                    <PlanTableRows
-                      key={plan.seq}
-                      plan={plan}
-                      onEdit={openEdit}
-                      onDelete={handleDelete}
-                      currentWeek={currentWeek}
-                      weeks={displayWeeks}
-                    />
-                  ))
-                )}
-              </tbody>
-            </table>
-          )}
-        </div>
+                  <tr>
+                    {/* colunas fixas */}
+                    <th className={styles.th}>SEQ</th>
+                    <th className={styles.th}>LABEL</th>
+                    <th className={styles.th}>AXIS</th>
+                    <th className={styles.th}>LSE</th>
+                    <th className={styles.th}>LIE</th>
+                    <th className={styles.th}>SYMBOL</th>
+                    <th className={styles.th}>XMED</th>
+                    <th className={styles.th}>CP</th>
+                    <th className={styles.th}>CPK</th>
+                    <th className={styles.th}>RANGE</th>
+                    <th className={`${styles.th} ${styles.thVertical}`}>
+                      <span className={styles.verticalText}>RISK - Desviation</span>
+                    </th>
+                    <th className={`${styles.th} ${styles.thVertical}`}>
+                      <span className={styles.verticalText}>RISK - Root Cause</span>
+                    </th>
+                    <th className={styles.th}>ACTION PLAN</th>
+                    <th className={styles.th}>RESPONSIBLE</th>
+                    <th className={styles.th}>DATA</th>
 
-        <div className={styles.legend}>
-          X — Ação programada &nbsp;|&nbsp; NOK — Ação não efetiva &nbsp;|&nbsp; R — Ação reprogramada
-        </div>
+                    {/*cabeçalho das semanas dinâmico */}
+                    {displayWeeks.map(w => (
+                      <th
+                        key={w}
+                        className={`${styles.th} ${styles.thWeek} ${w === currentWeek ? styles.thWeekCurrent : ""}`}
+                      >
+                        {w}
+                      </th>
+                    ))}
+
+                    <th className={styles.th}>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {plans.length === 0 ? (
+                    <tr>
+                      <td colSpan={15 + displayWeeks.length + 1} className={styles.emptyTable}>
+                        Nenhum plano de ação criado. Clique em <strong>New</strong>.
+                      </td>
+                    </tr>
+                  ) : (
+                    plans.map(plan => (
+                      <PlanTableRows
+                        key={plan.seq}
+                        plan={plan}
+                        onEdit={openEdit}
+                        onDelete={handleDelete}
+                        currentWeek={currentWeek}
+                        weeks={displayWeeks}
+                      />
+                    ))
+                  )}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          <div className={styles.legend}>
+            X — Ação programada &nbsp;|&nbsp; NOK — Ação não efetiva &nbsp;|&nbsp; R — Ação reprogramada
+          </div>
         </div>{/*fecha div ref={tableRef}*/}
       </div>
 
