@@ -1,0 +1,287 @@
+[
+  {
+    "seq": 1,
+    "rows": [
+      {
+        "point_id": "CÍRCULO_1_X",
+        "label": "CÍRCULO_1",
+        "axis": "X",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": 0.02,
+        "cp": 1.14,
+        "cpk": 1.1,
+        "range": 0.95,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_1_Y",
+        "label": "CÍRCULO_1",
+        "axis": "Y",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": 0.147,
+        "cp": 4.36,
+        "cpk": 3.29,
+        "range": 0.28,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_11_X",
+        "label": "CÍRCULO_11",
+        "axis": "X",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.432,
+        "cp": 2.01,
+        "cpk": 0.93,
+        "range": 0.83,
+        "risk_level": "To 0,5mm"
+      }
+    ],
+    "action_type": "X",
+    "action_text": "DIMINUIR DIÂMENTRO DO FURO.",
+    "responsible_name": "TUBA",
+    "responsible_dept": "FERRAMENTARIA",
+    "deadline_date": "2026-07-28",
+    "deadline_year": "2026",
+    "deadline_week": "29",
+    "status": "IN PROGRESS",
+    "analysis": "Investigation",
+    "week_statuses": [
+      {
+        "week": "26",
+        "value": ""
+      },
+      {
+        "week": "27",
+        "value": ""
+      },
+      {
+        "week": "28",
+        "value": ""
+      },
+      {
+        "week": "29",
+        "value": "X"
+      },
+      {
+        "week": "30",
+        "value": ""
+      },
+      {
+        "week": "31",
+        "value": ""
+      },
+      {
+        "week": "32",
+        "value": ""
+      },
+      {
+        "week": "33",
+        "value": ""
+      },
+      {
+        "week": "34",
+        "value": ""
+      },
+      {
+        "week": "35",
+        "value": ""
+      }
+    ],
+    "created_at": "2026-07-22T19:12:49.717406",
+    "updated_at": "2026-07-22T19:12:49.717406"
+  },
+  {
+    "seq": 2,
+    "rows": [
+      {
+        "point_id": "CÍRCULO_1_X",
+        "label": "CÍRCULO_1",
+        "axis": "X",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": 0.02,
+        "cp": 1.14,
+        "cpk": 1.1,
+        "range": 0.95,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_1_Y",
+        "label": "CÍRCULO_1",
+        "axis": "Y",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": 0.147,
+        "cp": 4.36,
+        "cpk": 3.29,
+        "range": 0.28,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_2_X",
+        "label": "CÍRCULO_2",
+        "axis": "X",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": -0.528,
+        "cp": 0.83,
+        "cpk": 0.1,
+        "range": 1.7,
+        "risk_level": "To 1,0mm"
+      },
+      {
+        "point_id": "CÍRCULO_11_Y",
+        "label": "CÍRCULO_11",
+        "axis": "Y",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": -0.035,
+        "cp": 2.76,
+        "cpk": 2.64,
+        "range": 0.54,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_4_X",
+        "label": "CÍRCULO_4",
+        "axis": "X",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.107,
+        "cp": 0.66,
+        "cpk": 0.57,
+        "range": 1.67,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_10_Y",
+        "label": "CÍRCULO_10",
+        "axis": "Y",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.38,
+        "cp": 1.11,
+        "cpk": 0.58,
+        "range": 1.68,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_9_X",
+        "label": "CÍRCULO_9",
+        "axis": "X",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": -1.024,
+        "cp": 0.82,
+        "cpk": -0.23,
+        "range": 1.7,
+        "risk_level": "To 1,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_9_Y",
+        "label": "CÍRCULO_9",
+        "axis": "Y",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": -0.008,
+        "cp": 1.02,
+        "cpk": 1.01,
+        "range": 1.95,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_10_X",
+        "label": "CÍRCULO_10",
+        "axis": "X",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.115,
+        "cp": 1.25,
+        "cpk": 1.07,
+        "range": 1.0,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_8_Y",
+        "label": "CÍRCULO_8",
+        "axis": "Y",
+        "lse": 0.7,
+        "lie": -0.7,
+        "symbol": "CÍRCULO",
+        "xmed": 0.083,
+        "cp": 1.56,
+        "cpk": 1.37,
+        "range": 0.76,
+        "risk_level": "To 0,5mm"
+      }
+    ],
+    "action_type": "X",
+    "action_text": "TROCAR PULSÃO DOS FUROS.",
+    "responsible_name": "MARCELO",
+    "responsible_dept": "FERRAMENTARIA",
+    "deadline_date": "2026-07-30",
+    "deadline_year": "2026",
+    "deadline_week": "30",
+    "status": "COMCLUÍDO",
+    "analysis": "Machine",
+    "week_statuses": [
+      {
+        "week": "26",
+        "value": ""
+      },
+      {
+        "week": "27",
+        "value": ""
+      },
+      {
+        "week": "28",
+        "value": ""
+      },
+      {
+        "week": "29",
+        "value": ""
+      },
+      {
+        "week": "30",
+        "value": "R"
+      },
+      {
+        "week": "31",
+        "value": ""
+      },
+      {
+        "week": "32",
+        "value": ""
+      },
+      {
+        "week": "33",
+        "value": ""
+      },
+      {
+        "week": "34",
+        "value": ""
+      },
+      {
+        "week": "35",
+        "value": ""
+      }
+    ],
+    "created_at": "2026-07-22T22:01:36.958673",
+    "updated_at": "2026-07-22T22:01:36.958673"
+  }
+]
