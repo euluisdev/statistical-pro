@@ -307,7 +307,7 @@ async def screenshot_action_plan(job_id: str, body: ScreenshotRequest):
         results.append({
             "page":       i + 1,
             "filename":   name,
-            "static_url": f"/static/jobs/{job_id}/{safe_piece}/ActionPlan/{name}",
+            "static_url": f"/static/jobs/{job_id}/{body.group}/{safe_piece}/ActionPlan/{name}",
         })
  
     return {"status": "ok", "total_pages": len(results), "files": results}
