@@ -195,32 +195,35 @@ def list_charts_in_job(job_id: str, group: str = None):
     
 
 """
-Mudança de estratégia:
-  Backend monta o HTML da tabela diretamente dos dados salvos e
-   o Playwright renderiza esse HTML isolado — sem dependência do frontend.
+the backend is a photographer only:
+  1abre a URL de print - já renderizada pelo React com o slice correto
+  2aguarda #action-plan-table
+  3tira screenshot
+  4save
+  
 """
-
+ 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
+from typing import Optional
 import asyncio
-import io
 import os
  
 _executor = ThreadPoolExecutor(max_workers=2)
  
-A4_H_PX = 1123   #altura A4 landscape para dividir em folhas
- 
  
 class ScreenshotRequest(BaseModel):
-    page_url: str
-    group:    str
-    piece:    str
+    page_url:    str
+    group:       str
+    piece:       str
+    page_index:  int = 0          #índice da página - para nomear o arquivo
+    total_pages: int = 1          #total de páginas - para nomear
  
  
 def _shoot(page_url: str) -> bytes:
-    """Roda em thread separada com ProactorEventLoop (fix Windows)."""
+    """Abre a URL, espera a tabela, tira screenshot. Nada mais."""
  
     loop = asyncio.ProactorEventLoop() if os.name == "nt" else asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -231,26 +234,21 @@ def _shoot(page_url: str) -> bytes:
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
             page    = await browser.new_page(
-                viewport        = {"width": 1800, "height": 900},
-                device_scale_factor = 3,          #qualidade
+                viewport            = {"width": 1800, "height": 1200},
+                device_scale_factor = 2,
             )
  
+            #abre a rota de print - sem navbar, sem toolbar)
             await page.goto(page_url, wait_until="networkidle", timeout=30_000)
+ 
+            #aguarda o elemento da tabela
             await page.wait_for_selector("#action-plan-table", timeout=15_000)
-            await page.wait_for_timeout(800)       # garante renderização das cores
  
-            #esconde toolbar e botões de edição para o print ficar limpo
-            await page.evaluate("""() => {
-                document.querySelectorAll('[class*="toolbar"]').forEach(e => e.style.display = 'none');
-                document.querySelectorAll('[class*="rowActions"]').forEach(e => e.style.visibility = 'hidden');
-            }""")
+            #aguarda renderização das cores CSS
+            await page.wait_for_timeout(800)
  
+            #captura exatamente o elemento — sem nada ao redor
             el  = await page.query_selector("#action-plan-table")
-            if el is None:
-              raise HTTPException(
-                  404,
-                  "Tabela não encontrada"
-            )
             png = await el.screenshot(type="png", scale="device")
  
             await browser.close()
@@ -264,13 +262,10 @@ def _shoot(page_url: str) -> bytes:
  
 @router.post("/job/{job_id}/screenshot-action-plan")
 async def screenshot_action_plan(job_id: str, body: ScreenshotRequest):
-    from PIL import Image
- 
     job_path = Path(BASE_PATH) / job_id
     if not job_path.exists():
         raise HTTPException(404, "JobID não encontrado")
  
-    #roda o playwright no executor (thread separada)
     try:
         png_bytes = await asyncio.get_event_loop().run_in_executor(
             _executor, _shoot, body.page_url
@@ -278,36 +273,25 @@ async def screenshot_action_plan(job_id: str, body: ScreenshotRequest):
     except Exception as e:
         raise HTTPException(500, f"Screenshot falhou: {e}")
  
-    #salva dividindo em folhas A4 se necessário
+    #nomeia o arquivo: AP_PIECE.png ou AP_PIECE_p1.png, AP_PIECE_p2.png...
     safe_piece = Path(body.piece).name
     out_dir    = job_path / body.group / safe_piece / "ActionPlan"
     out_dir.mkdir(parents=True, exist_ok=True)
  
-    try:
-        img = Image.open(io.BytesIO(png_bytes))
-    except Exception as e:
-        raise HTTPException(
-            500,
-            f"PNG inválido: {e}"
-        )
-    n_pages  = max(1, -(-img.height // A4_H_PX))
-    results  = []
+    if body.total_pages == 1:
+        filename = f"AP_{safe_piece}.png"
+    else:
+        filename = f"AP_{safe_piece}_p{body.page_index + 1}.png"
  
-    for i in range(n_pages):
-        y0    = i * A4_H_PX
-        y1    = min(y0 + A4_H_PX, img.height)
-        sheet = Image.new("RGB", (img.width, A4_H_PX), (255, 255, 255))
-        sheet.paste(img.crop((0, y0, img.width, y1)), (0, 0))
+    (out_dir / filename).write_bytes(png_bytes)
  
-        name = f"AP_{safe_piece}.png" if n_pages == 1 else f"AP_{safe_piece}_p{i+1}.png"
-        buf  = io.BytesIO()
-        sheet.save(buf, "PNG", compress_level=1)
-        (out_dir / name).write_bytes(buf.getvalue())
- 
-        results.append({
-            "page":       i + 1,
-            "filename":   name,
-            "static_url": f"/static/jobs/{job_id}/{body.group}/{safe_piece}/ActionPlan/{name}",
-        })
- 
-    return {"status": "ok", "total_pages": len(results), "files": results}
+    return {
+        "status": "ok",
+        "files": [{
+            "page":       body.page_index + 1,
+            "filename":   filename,
+            "static_url": f"/static/jobs/{job_id}/{safe_piece}/ActionPlan/{filename}",
+        }],
+    }  
+
+  

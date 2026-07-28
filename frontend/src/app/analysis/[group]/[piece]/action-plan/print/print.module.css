@@ -1,0 +1,18 @@
+/*print.module.css
+  página de print: sem navbar, sem margens extras, fundo branco puro
+  a playwright captura exatamente este elemento
+*/
+
+.printRoot {
+  /*fundo branco puro — sem herdar cinza do sistema*/
+  background: #ffffff;
+  /*padding pequeno para não cortar bordas da tabela*/
+  padding: 8px 10px 12px 10px;
+  /*largura fixa que cabe no viewport 1800px do playwright*/
+  width: fit-content;
+  min-width: 1600px;
+  /*remove qualquer margin que o layout global possa injetar*/
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}  
+ 

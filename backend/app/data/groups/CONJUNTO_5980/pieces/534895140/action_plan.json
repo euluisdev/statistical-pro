@@ -29,16 +29,16 @@
         "risk_level": "To 0,5mm"
       },
       {
-        "point_id": "CÍRCULO_11_X",
-        "label": "CÍRCULO_11",
-        "axis": "X",
-        "lse": 0.8,
-        "lie": -0.8,
+        "point_id": "CÍRCULO_2_Y",
+        "label": "CÍRCULO_2",
+        "axis": "Y",
+        "lse": 0.6,
+        "lie": -0.6,
         "symbol": "CÍRCULO",
-        "xmed": 0.432,
-        "cp": 2.01,
-        "cpk": 0.93,
-        "range": 0.83,
+        "xmed": 0.123,
+        "cp": 4.17,
+        "cpk": 3.31,
+        "range": 0.28,
         "risk_level": "To 0,5mm"
       }
     ],
@@ -50,7 +50,7 @@
     "deadline_year": "2026",
     "deadline_week": "29",
     "status": "IN PROGRESS",
-    "analysis": "Investigation",
+    "analysis": "Parts",
     "week_statuses": [
       {
         "week": "26",
@@ -94,7 +94,7 @@
       }
     ],
     "created_at": "2026-07-22T19:12:49.717406",
-    "updated_at": "2026-07-22T19:12:49.717406"
+    "updated_at": "2026-07-27T23:09:27.116962"
   },
   {
     "seq": 2,
@@ -283,5 +283,426 @@
     ],
     "created_at": "2026-07-22T22:01:36.958673",
     "updated_at": "2026-07-22T22:01:36.958673"
+  },
+  {
+    "seq": 3,
+    "rows": [
+      {
+        "point_id": "CÍRCULO_5_Y",
+        "label": "CÍRCULO_5",
+        "axis": "Y",
+        "lse": 0.7,
+        "lie": -0.7,
+        "symbol": "CÍRCULO",
+        "xmed": -0.237,
+        "cp": 1.77,
+        "cpk": 1.17,
+        "range": 0.65,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_5_Z",
+        "label": "CÍRCULO_5",
+        "axis": "Z",
+        "lse": 0.7,
+        "lie": -0.7,
+        "symbol": "CÍRCULO",
+        "xmed": -0.932,
+        "cp": 0.7,
+        "cpk": -0.23,
+        "range": 1.84,
+        "risk_level": "To 1,0mm"
+      }
+    ],
+    "action_type": "X",
+    "action_text": "FURO MAIOOR QUE O ESPECIFICADO!",
+    "responsible_name": "TUBA",
+    "responsible_dept": "FERRAMENTARIA",
+    "deadline_date": "2026-07-30",
+    "deadline_year": "2026",
+    "deadline_week": "31",
+    "status": "EM ANÁLISE",
+    "analysis": "Investigation",
+    "week_statuses": [
+      {
+        "week": "27",
+        "value": ""
+      },
+      {
+        "week": "28",
+        "value": ""
+      },
+      {
+        "week": "29",
+        "value": ""
+      },
+      {
+        "week": "30",
+        "value": ""
+      },
+      {
+        "week": "31",
+        "value": "X"
+      },
+      {
+        "week": "32",
+        "value": ""
+      },
+      {
+        "week": "33",
+        "value": ""
+      },
+      {
+        "week": "34",
+        "value": ""
+      },
+      {
+        "week": "35",
+        "value": ""
+      },
+      {
+        "week": "36",
+        "value": ""
+      }
+    ],
+    "created_at": "2026-07-27T21:45:27.765961",
+    "updated_at": "2026-07-27T21:45:27.765961"
+  },
+  {
+    "seq": 4,
+    "rows": [
+      {
+        "point_id": "CÍRCULO_9_X",
+        "label": "CÍRCULO_9",
+        "axis": "X",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": -1.024,
+        "cp": 0.82,
+        "cpk": -0.23,
+        "range": 1.7,
+        "risk_level": "To 1,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_9_Y",
+        "label": "CÍRCULO_9",
+        "axis": "Y",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": -0.008,
+        "cp": 1.02,
+        "cpk": 1.01,
+        "range": 1.95,
+        "risk_level": "To 0,5mm"
+      }
+    ],
+    "action_type": "Não definida",
+    "action_text": "AJUSTAR O PLANO DOS FUROS.",
+    "responsible_name": "LUCAS ",
+    "responsible_dept": "ENGENHARIA",
+    "deadline_date": "2026-08-01",
+    "deadline_year": "2026",
+    "deadline_week": "31",
+    "status": "IN PROGRESS",
+    "analysis": "Process",
+    "week_statuses": [
+      {
+        "week": "27",
+        "value": ""
+      },
+      {
+        "week": "28",
+        "value": ""
+      },
+      {
+        "week": "29",
+        "value": ""
+      },
+      {
+        "week": "30",
+        "value": ""
+      },
+      {
+        "week": "31",
+        "value": "NOK"
+      },
+      {
+        "week": "32",
+        "value": ""
+      },
+      {
+        "week": "33",
+        "value": ""
+      },
+      {
+        "week": "34",
+        "value": ""
+      },
+      {
+        "week": "35",
+        "value": ""
+      },
+      {
+        "week": "36",
+        "value": ""
+      }
+    ],
+    "created_at": "2026-07-27T21:48:00.256580",
+    "updated_at": "2026-07-27T21:48:00.256580"
+  },
+  {
+    "seq": 5,
+    "rows": [
+      {
+        "point_id": "CÍRCULO_1_X",
+        "label": "CÍRCULO_1",
+        "axis": "X",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": 0.02,
+        "cp": 1.14,
+        "cpk": 1.1,
+        "range": 0.95,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_1_Y",
+        "label": "CÍRCULO_1",
+        "axis": "Y",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": 0.147,
+        "cp": 4.36,
+        "cpk": 3.29,
+        "range": 0.28,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_2_X",
+        "label": "CÍRCULO_2",
+        "axis": "X",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": -0.528,
+        "cp": 0.83,
+        "cpk": 0.1,
+        "range": 1.7,
+        "risk_level": "To 1,0mm"
+      },
+      {
+        "point_id": "CÍRCULO_2_Y",
+        "label": "CÍRCULO_2",
+        "axis": "Y",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": 0.123,
+        "cp": 4.17,
+        "cpk": 3.31,
+        "range": 0.28,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_11_X",
+        "label": "CÍRCULO_11",
+        "axis": "X",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.432,
+        "cp": 2.01,
+        "cpk": 0.93,
+        "range": 0.83,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_11_Y",
+        "label": "CÍRCULO_11",
+        "axis": "Y",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": -0.035,
+        "cp": 2.76,
+        "cpk": 2.64,
+        "range": 0.54,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_4_X",
+        "label": "CÍRCULO_4",
+        "axis": "X",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.107,
+        "cp": 0.66,
+        "cpk": 0.57,
+        "range": 1.67,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_4_Y",
+        "label": "CÍRCULO_4",
+        "axis": "Y",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.076,
+        "cp": 1.29,
+        "cpk": 1.17,
+        "range": 0.76,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_8_X",
+        "label": "CÍRCULO_8",
+        "axis": "X",
+        "lse": 0.7,
+        "lie": -0.7,
+        "symbol": "CÍRCULO",
+        "xmed": 0.512,
+        "cp": 1.37,
+        "cpk": 0.37,
+        "range": 0.81,
+        "risk_level": "To 1,0mm"
+      },
+      {
+        "point_id": "CÍRCULO_10_X",
+        "label": "CÍRCULO_10",
+        "axis": "X",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.115,
+        "cp": 1.25,
+        "cpk": 1.07,
+        "range": 1.0,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "CÍRCULO_10_Y",
+        "label": "CÍRCULO_10",
+        "axis": "Y",
+        "lse": 0.8,
+        "lie": -0.8,
+        "symbol": "CÍRCULO",
+        "xmed": 0.38,
+        "cp": 1.11,
+        "cpk": 0.58,
+        "range": 1.68,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "PTO_DE_SUPERFICIE_17_Z",
+        "label": "PTO_DE_SUPERFICIE_17",
+        "axis": "Z",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "PONTO",
+        "xmed": -0.145,
+        "cp": 1.4,
+        "cpk": 1.06,
+        "range": 0.98,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "PTO_DE_SUPERFICIE_19_Z",
+        "label": "PTO_DE_SUPERFICIE_19",
+        "axis": "Z",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "PONTO",
+        "xmed": -0.087,
+        "cp": 1.61,
+        "cpk": 1.38,
+        "range": 0.82,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "PTO_DE_SUPERFICIE_20_Z",
+        "label": "PTO_DE_SUPERFICIE_20",
+        "axis": "Z",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "PONTO",
+        "xmed": 0.117,
+        "cp": 1.89,
+        "cpk": 1.52,
+        "range": 0.58,
+        "risk_level": "To 0,5mm"
+      },
+      {
+        "point_id": "PTO_DE_SUPERFICIE_21_Z",
+        "label": "PTO_DE_SUPERFICIE_21",
+        "axis": "Z",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "PONTO",
+        "xmed": -0.402,
+        "cp": 1.07,
+        "cpk": 0.35,
+        "range": 1.25,
+        "risk_level": "To 0,5mm"
+      }
+    ],
+    "action_type": "Não definida",
+    "action_text": "AJUSTAR FINAL DE CORTE",
+    "responsible_name": "",
+    "responsible_dept": "",
+    "deadline_date": "2026-08-01",
+    "deadline_year": "2026",
+    "deadline_week": "32",
+    "status": "IN ANÁLISE",
+    "analysis": "Investigation",
+    "week_statuses": [
+      {
+        "week": "27",
+        "value": ""
+      },
+      {
+        "week": "28",
+        "value": ""
+      },
+      {
+        "week": "29",
+        "value": ""
+      },
+      {
+        "week": "30",
+        "value": ""
+      },
+      {
+        "week": "31",
+        "value": ""
+      },
+      {
+        "week": "32",
+        "value": "X"
+      },
+      {
+        "week": "33",
+        "value": ""
+      },
+      {
+        "week": "34",
+        "value": ""
+      },
+      {
+        "week": "35",
+        "value": ""
+      },
+      {
+        "week": "36",
+        "value": ""
+      }
+    ],
+    "created_at": "2026-07-27T21:50:14.717329",
+    "updated_at": "2026-07-27T21:50:14.717329"
   }
 ]
