@@ -52,7 +52,7 @@ function getRiskBackgroundColor(risk) {
 
 function getRiskTextColor(risk) {
   return ["To 3,0mm","To 3,5mm","To 4,0mm","Up 4,5mm"].includes(risk)
-    ? "#fff" : "#111";
+    ? "#fff" : "black";
 }
 
 function getSlidingWeeks() {
@@ -138,19 +138,19 @@ function PrintTable({ plans, group, piece, weeks, currentWeek }) {
 
               <td className={styles.td} style={{
                 background: xmedColor(row.xmed, row.lse, row.lie),
-                color: xmedColor(row.xmed, row.lse, row.lie) !== "transparent" ? "white" : "inherit",
+                color: xmedColor(row.xmed, row.lse, row.lie) !== "transparent" ? "black" : "inherit",
                 fontWeight: "bold",
               }}>{fmt(row.xmed)}</td>
 
               <td className={styles.td} style={{
                 background: cpColor(row.cp),
-                color: cpColor(row.cp) !== "transparent" ? "white" : "inherit",
+                color: cpColor(row.cp) !== "transparent" ? "black" : "inherit",
                 fontWeight: "bold",
               }}>{fmt(row.cp)}</td>
 
               <td className={`${styles.td} ${styles.tdCpk}`} style={{
                 background: cpkColor(row.cpk),
-                color: cpkColor(row.cpk) !== "transparent" ? "white" : "inherit",
+                color: cpkColor(row.cpk) !== "transparent" ? "black" : "inherit",
               }}>{fmt(row.cpk)}</td>
 
               <td className={styles.td}>{fmt(row.range)}</td>
@@ -159,7 +159,7 @@ function PrintTable({ plans, group, piece, weeks, currentWeek }) {
                 backgroundColor: getRiskBackgroundColor(row.risk_level),
                 color: getRiskTextColor(row.risk_level),
               }}>
-                <span className={styles.verticalText}>{row.risk_level || "—"}</span>
+                <span className={styles.verticalText}>{row.risk_level?.replace("mm", "") || "—"}</span>
               </td>
 
               <td className={styles.tdVertical}>

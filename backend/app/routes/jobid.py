@@ -277,11 +277,11 @@ async def screenshot_action_plan(job_id: str, body: ScreenshotRequest):
     safe_piece = Path(body.piece).name
     out_dir    = job_path / body.group / safe_piece / "ActionPlan"
     out_dir.mkdir(parents=True, exist_ok=True)
+    existing = sorted(out_dir.glob("AP_*.png"))
+
+    next_number = len(existing) + 1
  
-    if body.total_pages == 1:
-        filename = f"AP_{safe_piece}.png"
-    else:
-        filename = f"AP_{safe_piece}_p{body.page_index + 1}.png"
+    filename = f"AP_{safe_piece}_{next_number:03d}.png"
  
     (out_dir / filename).write_bytes(png_bytes)
  

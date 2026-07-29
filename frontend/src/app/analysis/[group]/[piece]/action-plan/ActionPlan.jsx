@@ -443,7 +443,7 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek, weeks }) {
             className={styles.td}
             style={{
               background: xmedColor(row.xmed, row.lse, row.lie),
-              color: xmedColor(row.xmed, row.lse, row.lie) !== "transparent" ? "white" : "inherit",
+              color: xmedColor(row.xmed, row.lse, row.lie) !== "transparent" ? "black" : "inherit",
               fontWeight: "bold",
             }}
           >
@@ -455,7 +455,7 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek, weeks }) {
             className={styles.td}
             style={{
               background: cpColor(row.cp),
-              color: cpColor(row.cp) !== "transparent" ? "white" : "inherit",
+              color: cpColor(row.cp) !== "transparent" ? "black" : "inherit",
               fontWeight: "bold",
             }}
           >
@@ -467,7 +467,7 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek, weeks }) {
             className={`${styles.td} ${styles.tdCpk}`}
             style={{
               background: cpkColor(row.cpk),
-              color: cpkColor(row.cpk) !== "transparent" ? "white" : "inherit",
+              color: cpkColor(row.cpk) !== "transparent" ? "black" : "inherit",
             }}
           >
             {fmt(row.cpk)}
@@ -484,7 +484,7 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek, weeks }) {
             }}
           >
             <span className={styles.verticalText}>
-              {row.risk_level || "—"}
+              {row.risk_level?.replace("mm", "") || "—"}
             </span>
           </td>
 
