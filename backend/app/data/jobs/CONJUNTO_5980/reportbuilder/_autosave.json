@@ -92,14 +92,14 @@
           "height": 115
         },
         {
-          "id": "image-1785292260679",
+          "id": "image-1785350311769",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_009.png",
-            "url": "/static/jobs/5d2c0068-7011-4ee5-ade2-65bc6e7bf394/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_009.png"
+            "filename": "AP_534895140_001.png",
+            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_001.png"
           },
           "x": 24,
           "y": 120,
@@ -122,19 +122,19 @@
           "height": 115
         },
         {
-          "id": "image-1785290312770",
+          "id": "image-1785350906229",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_008.png",
-            "url": "/static/jobs/5d2c0068-7011-4ee5-ade2-65bc6e7bf394/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_008.png"
+            "filename": "AP_534895140_003.png",
+            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_003.png"
           },
           "x": 24,
-          "y": 86,
-          "width": 1074,
-          "height": 650
+          "y": 120,
+          "width": 1071.8194274902344,
+          "height": 512.8888854980469
         }
       ]
     },
@@ -152,14 +152,14 @@
           "height": 115
         },
         {
-          "id": "image-1785289466229",
+          "id": "image-1785351115502",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_p2.png",
-            "url": "/static/jobs/5d2c0068-7011-4ee5-ade2-65bc6e7bf394/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_p2.png"
+            "filename": "AP_534895140_004.png",
+            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_004.png"
           },
           "x": 24,
           "y": 120,
@@ -197,19 +197,19 @@
           "height": 115
         },
         {
-          "id": "image-1785286781993",
+          "id": "image-1785354439344",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_p1.png",
-            "url": "/static/jobs/5d2c0068-7011-4ee5-ade2-65bc6e7bf394/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_p1.png"
+            "filename": "AP_534895140_007.png",
+            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_007.png"
           },
-          "x": 24,
-          "y": 120,
-          "width": 1074,
-          "height": 650
+          "x": 15.090286254882812,
+          "y": 127,
+          "width": 1091.8194274902344,
+          "height": 521
         }
       ]
     },
@@ -242,24 +242,24 @@
           "height": 115
         },
         {
-          "id": "image-1785286792578",
+          "id": "image-1785354480447",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_p2.png",
-            "url": "/static/jobs/5d2c0068-7011-4ee5-ade2-65bc6e7bf394/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_p2.png"
+            "filename": "AP_534895140_008.png",
+            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_008.png"
           },
-          "x": 48.59028625488281,
-          "y": 19,
-          "width": 1024.8194274902344,
-          "height": 592
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
         }
       ]
     }
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-23",
-  "updated_at": "2026-07-29T02:31:01.487653"
+  "updated_at": "2026-07-29T21:35:50.198032"
 }

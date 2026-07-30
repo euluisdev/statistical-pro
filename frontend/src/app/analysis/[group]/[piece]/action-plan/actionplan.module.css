@@ -8,7 +8,7 @@
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
   background: #f0f0f0;
   border: 2px solid #8a8a8a;
@@ -116,10 +116,11 @@
 .thWeekCurrent {
   background: #b0c4d8;
   font-size: 11px;
+    border: 1px solid black;
 }
 
 .td {
-  padding: 2px 3px;
+  padding: 1px 2px;
   border: 1px solid black;
   text-align: center;
   color: black;
@@ -147,38 +148,39 @@
   white-space: normal;
   line-height: 1;
   text-align: center;
+  font-weight: bold
 }
 .tdResp {
   padding: 1px 2px; border: 1px solid black;
-  font-size: 10px; min-width: 40px; max-width: 50px; white-space: normal; text-align: center;
+  font-size: 10px; min-width: 40px; max-width: 50px; white-space: normal; text-align: center; font-weight: bold;
 }
-.tdDate { padding: 1px 2px; border: 1px solid black; font-size: 10px; white-space: nowrap; text-align: center; }
+.tdDate { padding: 1px 2px; border: 1px solid black; font-size: 10px; white-space: nowrap; text-align: center; font-weight: bold; }
 .tdWeek {
   width: 26px; min-width: 26px;
-  padding: 2px;
+  padding: 1px;
   border: 1px solid black;
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold;
   align-items: center;
 }
 .tdWeekCurrent { background: #d0dcea !important; }
 .tdStatus {
-  padding: 1px 2px; border: 1px solid black;
-  font-size: 10px; min-width: 50px; text-align: center;
+  padding: 1px 1px; border: 1px solid black;
+  font-size: 10px; width: 80px; text-align: center; font-weight: bold;
 }
 .tdSeq {
-  padding: 3px 4px; border: 1px solid black;
+  padding: 1px 3px; border: 1px solid black;
   text-align: center; vertical-align: top;
 }
 
 .seqCell {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5px; font-size: 11px; font-weight: bold;
 }
 .rowActions { display: flex; gap: 2px; }
 .editRowBtn, .delRowBtn {
   border: none; background: none; cursor: pointer;
-  font-size: 15px; padding: 1px 3px; color: #999;
+  font-size: 10px; padding: 0.5px 2px; color: #999;
 }
 .editRowBtn:hover { color: blue; }
 .delRowBtn:hover  { color: red; }
@@ -212,9 +214,10 @@
 /* ── Legend ──────────────────────────────────────────── */
 .legend {
   margin-top: 10px;
-  font-size: 11px;
-  color: #555;
+  font-size: 13px;
+  color: black;
   text-align: center;
+  font-weight: bold;
 }
 
 /* ── Modal Overlay ───────────────────────────────────── */
@@ -251,7 +254,9 @@
 }
 .modalLeft  { border-right: 1px solid #ccc; }
 
-/* ── Fieldset ────────────────────────────────────────── */
+
+
+/*fieldset*/
 .fieldset {
   border: 1px solid #bbb;
   padding: 8px 12px 10px;
@@ -335,23 +340,34 @@
   padding: 2px 2px; border: 1px solid #bbb;
   text-align: center; background: white;
 }
-.week_X   { background: #aad4f5 !important; }
-.week_NOK { background: #ffaaaa !important; }
+.week_X   { background: blue !important; }
+.week_NOK { background: red !important; }
 .week_R   { background: #ffe099 !important; }
 
-/* Inputs */
+
+
+/*inputs*/
 .inp {
   flex: 1; padding: 4px 6px; border: 1px solid #bbb;
-  font-size: 12px; background: white; color: #222;
+  font-size: 12px; background: white; color: black;
 }
 .sel {
   padding: 3px 6px; border: 1px solid #bbb;
   font-size: 12px; background: white; color: #222;
 }
 .textarea {
-  width: 100%; min-height: 80px; padding: 6px;
-  border: 1px solid #bbb; font-size: 12px;
-  resize: vertical; color: #222; font-family: inherit;
+  width: 100%;
+  min-height: 100px;
+  padding: 6px;
+  border: 1px solid #bbb;
+  background-color: #fff;
+  color: #000;
+  color-scheme: light;
+  font-size: 13px;
+  font-family: inherit;
+
+  resize: none;
+  overflow-y: auto;
 }
 
 .loadingMsg { font-size: 12px; color: #666; padding: 10px; text-align: center; }

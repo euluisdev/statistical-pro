@@ -205,7 +205,7 @@ export default function CapabilityPage() {
             <span className={styles.toolbarSub}>{group} / {piece}</span>
           </div>
 
-          <button className={styles.btnMenu} onClick={() => triggerSave(group, piece)}>
+          <button className={styles.btnMenu} title="SAVE PNG" onClick={() => triggerSave(group, piece)}>
             <SaveAll size={30} />
           </button> 
 

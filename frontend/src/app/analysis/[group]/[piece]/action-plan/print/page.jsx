@@ -1,7 +1,6 @@
 "use client";
 
 //rota: /analysis/GROUP/PIECE/action-plan/print?start=0&end=9
-//
 //estou renderizando apenas a tabela ActionPlan - sem navbar, sem toolbar, sem modal
 //somente com os planos de startIdx até endIdx
 //a playwright abre esta URL e tira o screenshot
@@ -9,7 +8,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import styles from "../actionplan.module.css";
-import printStyles from "./print.module.css";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -244,7 +242,7 @@ export default function ActionPlanPrintPage() {
 
   return (
     //id que a playwright usa como seletor de captura
-    <div id="action-plan-table" className={printStyles.printRoot}>
+    <div id="action-plan-table" >
       <PrintTable
         plans={plans}
         group={group}

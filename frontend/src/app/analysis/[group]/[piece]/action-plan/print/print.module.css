@@ -5,7 +5,7 @@
 
 .printRoot {
   /*fundo branco puro — sem herdar cinza do sistema*/
-  background: #ffffff;
+/*   background: #ffffff; */
   /*padding pequeno para não cortar bordas da tabela*/
   padding: 8px 10px 12px 10px;
   /*largura fixa que cabe no viewport 1800px do playwright*/

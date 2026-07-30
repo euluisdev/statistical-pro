@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "./actionplan.module.css";
-import { ArrowBigRight, Grid3x3, Settings } from "lucide-react";
+import { ArrowBigRight, Grid3x3, SaveAll, Settings } from "lucide-react";
 import { useSaveActionPlanToJob } from "@/app/hooks/useSaveActionPlanToJob";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -77,6 +77,13 @@ if (!Date.prototype.getWeek) {
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
   };
+}
+
+function formatDate(date) {
+  if (!date) return "";
+
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year.slice(2)}`;
 }
 
 //action Plan Modal
@@ -188,7 +195,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
 
         {/*header */}
         <div className={styles.modalHeader}>
-          <h3>AutoSigma | Action Plan {isEdit ? `(SEQ ${plan.seq})` : "— Novo"}</h3>
+          <h3>AutoSigma | Action Plan {isEdit ? `(SEQ ${plan.seq})` : "— New"}</h3>
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
         </div>
 
@@ -206,7 +213,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
                 </div>
               </div>
 
-              {/*tipo of the action */}
+              {/*type of the action */}
               <div className={styles.radioGroup}>
                 {ACTION_TYPES.map(at => (
                   <label key={at.value} className={styles.radioLabel}>
@@ -229,14 +236,14 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
                 <select className={styles.sel} value={filterVal} onChange={e => setFilterVal(e.target.value)}>
                   <option>All</option>
                   <option>&lt; 1.00</option>
-                  <option>1.00-1.33</option>
+                  <option>1.00 - 1.33</option>
                   <option>&gt;= 1.33</option>
                 </select>
               </div>
 
               <label className={styles.checkLabel}>
                 <input type="checkbox" checked={onlyCalc} onChange={e => setOnlyCalc(e.target.checked)} />
-                Somente pontos cálculo
+                Calculation points only
               </label>
 
               {/*lista de pontos */}
@@ -297,7 +304,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
           {/*col RT histórico + execução + prazo*/}
           <div className={styles.modalRight}>
 
-            {/* Histórico / semanas */}
+            {/*histórico / semanas */}
             <fieldset className={styles.fieldset}>
               <legend>Histórico | Semanas</legend>
               <div className={styles.weeksGrid}>
@@ -318,7 +325,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
               </div>
             </fieldset>
 
-            {/*action de execução */}
+            {/*action of the executation */}
             <fieldset className={styles.fieldset}>
               <legend>Ação de execução</legend>
               <textarea
@@ -330,7 +337,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
               />
             </fieldset>
 
-            {/* status + análise*/}
+            {/*status + análise*/}
             <div className={styles.rowGap}>
               <fieldset className={styles.fieldset} style={{ flex: 1 }}>
                 <legend>Status</legend>
@@ -344,7 +351,7 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
                   onChange={e => setAnalysis(e.target.value)}>
                   <option>Parts</option>
                   <option>Process</option>
-                  <option>Investigation</option>
+                  <option>Analysis</option>
                   <option>Machine</option>
                 </select>
               </fieldset>
@@ -354,17 +361,15 @@ function ActionPlanModal({ group, piece, plan, onClose, onSaved }) {
             <fieldset className={styles.fieldset}>
               <legend>Prazo</legend>
               <div className={styles.row}>
-                <label>Data</label>
                 <input type="date" className={styles.inp} value={deadlineDate}
                   onChange={e => setDeadlineDate(e.target.value)} />
               </div>
               <div className={styles.row}>
-                <label>Ano</label>
                 <input className={styles.inp} value={deadlineYear}
-                  onChange={e => setDeadlineYear(e.target.value)} placeholder="2026" />
-                <label style={{ marginLeft: 8 }}>Semana</label>
+                  onChange={e => setDeadlineYear(e.target.value)} placeholder="Year" />
+                <label style={{ marginLeft: 8 }}></label>
                 <input className={styles.inp} value={deadlineWeek}
-                  onChange={e => setDeadlineWeek(e.target.value)} placeholder="09" />
+                  onChange={e => setDeadlineWeek(e.target.value)} placeholder="Week" />
               </div>
             </fieldset>
           </div>
@@ -504,7 +509,7 @@ function PlanTableRows({ plan, onEdit, onDelete, currentWeek, weeks }) {
                 {plan.responsible_dept ? ` (${plan.responsible_dept})` : ""}
               </td>
               <td rowSpan={rowCount} className={styles.tdDate}>
-                {plan.deadline_date || ""}
+                {formatDate(plan.deadline_date || "")}
               </td>
               {weeks.map(w => {
                 const ws = plan.week_statuses?.find(x => x.week === w);
@@ -546,9 +551,10 @@ export default function ActionPlanPage() {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingPlan, setEditingPlan] = useState(null); //null = novo
+  const [editingPlan, setEditingPlan] = useState(null); 
   const tableRef = useRef(null);
   const { saveLoading, triggerSave } = useSaveActionPlanToJob();
+  const [pieceInfo, setPieceInfo] = useState(null);
 
   //semana atual para destacar coluna
   const { weeks: displayWeeks, currentWeek } = getSlidingWeeks();
@@ -564,6 +570,19 @@ export default function ActionPlanPage() {
   }, [group, piece]);
 
   useEffect(() => { loadPlans(); }, [loadPlans]);
+
+  useEffect(() => {
+    async function loadPieceInfo() {
+      try {
+        const response = await fetch(`${API}/pieces/${group}/${piece}`);
+        const data = await response.json();
+        setPieceInfo(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadPieceInfo();
+  }, [group, piece]);
 
   const handleSaved = (plan) => {
     setPlans(prev => {
@@ -601,18 +620,17 @@ export default function ActionPlanPage() {
           </button>
           <div className={styles.toolbarCenter}>
             <span className={styles.toolbarTitle}>ACTION PLAN</span>
-            <span className={styles.toolbarSub}>{group} | {piece}</span>
+            <span className={styles.toolbarSub}>{piece} | {pieceInfo?.part_name ?? ""}</span>
           </div>
 
           {/*botão capturar — só aparece quando há planos */}
           {plans.length > 0 && (
-            <button
-              className={styles.captureBtn}
-              onClick={() => triggerSave(group, piece)}
+            <button 
+              className={styles.newBtn} 
+              title="SAVE PNG" 
               disabled={saveLoading}
-              title="Salvar print da tabela no Job ativo"
-            >
-              {saveLoading ? "⏳ Salvando…" : "📷 Capturar"}
+              onClick={() => triggerSave(group, piece)}>
+              <SaveAll size={30} />
             </button>
           )}
 
@@ -638,7 +656,7 @@ export default function ActionPlanPage() {
                 <thead>
                   <tr>
                     <th colSpan={15} className={styles.thPiece}>
-                      {piece} | ACTION PLAN
+                      {piece} | {pieceInfo?.part_name ?? ""}
                     </th>
                     <th colSpan={displayWeeks.length + 1} className={styles.thSemana}>SEMANA</th>
                   </tr>
