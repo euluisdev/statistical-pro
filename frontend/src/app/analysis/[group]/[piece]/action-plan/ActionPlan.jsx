@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "./actionplan.module.css";
-import { ArrowBigRight, Grid3x3, SaveAll, Settings } from "lucide-react";
+import { ArrowBigRight, Grid3x3, Loader2, SaveAll, Settings } from "lucide-react";
 import { useSaveActionPlanToJob } from "@/app/hooks/useSaveActionPlanToJob";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -551,7 +551,7 @@ export default function ActionPlanPage() {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingPlan, setEditingPlan] = useState(null); 
+  const [editingPlan, setEditingPlan] = useState(null);
   const tableRef = useRef(null);
   const { saveLoading, triggerSave } = useSaveActionPlanToJob();
   const [pieceInfo, setPieceInfo] = useState(null);
@@ -625,12 +625,15 @@ export default function ActionPlanPage() {
 
           {/*botão capturar — só aparece quando há planos */}
           {plans.length > 0 && (
-            <button 
-              className={styles.newBtn} 
-              title="SAVE PNG" 
+            <button
+              className={styles.newBtn}
               disabled={saveLoading}
-              onClick={() => triggerSave(group, piece)}>
-              <SaveAll size={30} />
+              onClick={() => triggerSave(group, piece)}
+            >
+              {saveLoading
+                ? <Loader2 size={30} className={styles.loadingSpinner} />
+                : <SaveAll size={30} />
+              }
             </button>
           )}
 
@@ -723,6 +726,15 @@ export default function ActionPlanPage() {
             X — Ação programada &nbsp;|&nbsp; NOK — Ação não efetiva &nbsp;|&nbsp; R — Ação reprogramada
           </div>
         </div>{/*fecha div ref={tableRef}*/}
+
+        {saveLoading && (
+          <div className={styles.loadingOverlay}>
+            <Loader2
+              size={50}
+              className={styles.loadingSpinner}
+            />
+          </div>
+        )}
       </div>
 
       {modalOpen && (

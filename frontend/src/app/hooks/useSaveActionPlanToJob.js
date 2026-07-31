@@ -6,16 +6,18 @@
 //a lib playwright é apenas um fotógrafo — não manipula DOM
 
 import { useState, useEffect } from "react";
+import { useToast } from "@/app/components/providers/ToastProvider"
 
 //altura máxima útil por página em px, na escala do browser
 const MAX_PAGE_HEIGHT = 1000;
 
-const API      = process.env.NEXT_PUBLIC_API_URL      || "http://localhost:8000";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const FRONTEND = process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
 
 export function useSaveActionPlanToJob() {
   const [currentJobId, setCurrentJobId] = useState(null);
-  const [saveLoading,  setSaveLoading]  = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (typeof window !== "undefined")
@@ -33,9 +35,9 @@ export function useSaveActionPlanToJob() {
   //divide planos em fatias sem cortar nenhum plano no meio
   function buildPageSlices(plans) {
     const HEADER_H = 80;   //altura aproximada do thead
-    const slices   = [];   //cada item: start: idx, end: idx
-    let pageH      = HEADER_H;
-    let pageStart  = 0;
+    const slices = [];   //cada item: start: idx, end: idx
+    let pageH = HEADER_H;
+    let pageStart = 0;
 
     plans.forEach((plan, idx) => {
       const planH = estimatePlanHeight(plan);
@@ -44,7 +46,7 @@ export function useSaveActionPlanToJob() {
         //fecha a página atual sem incluir este plano
         slices.push({ start: pageStart, end: idx - 1 });
         pageStart = idx;
-        pageH     = HEADER_H + planH;
+        pageH = HEADER_H + planH;
       } else {
         pageH += planH;
       }
@@ -61,7 +63,7 @@ export function useSaveActionPlanToJob() {
   //dispara o print
   const triggerSave = async (group, piece) => {
     if (!currentJobId) {
-      alert("⚠️ Nenhum Job ativo!");
+      showToast("⚠️ Nenhum Job ativo!");
       return;
     }
 
@@ -74,7 +76,7 @@ export function useSaveActionPlanToJob() {
       const { plans = [] } = await plansRes.json();
 
       if (plans.length === 0) {
-        alert("⚠️ Nenhum plano de ação para capturar.");
+        showToast("⚠️ Nenhum plano de ação para capturar.");
         return;
       }
 
@@ -93,10 +95,10 @@ export function useSaveActionPlanToJob() {
         const res = await fetch(
           `${API}/jobs/job/${currentJobId}/screenshot-action-plan`,
           {
-            method:  "POST",
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              page_url:   printUrl,
+              page_url: printUrl,
               group,
               piece,
               page_index: i,          //backend usa para nomear o arquivo
@@ -111,8 +113,7 @@ export function useSaveActionPlanToJob() {
         allFiles.push(...(data.files ?? []));
       }
 
-      alert(
-        `✅ ${allFiles.length} folha(s) salva(s)!\n` +
+      showToast(`Auto Sigma informa: ${allFiles.length} arquivo(s) salvo(s)!\n` +
         allFiles.map((f) => `  • ${f.filename}`).join("\n")
       );
 
@@ -120,13 +121,12 @@ export function useSaveActionPlanToJob() {
 
     } catch (err) {
       console.error("Erro ao salvar Action Plan:", err);
-      alert(`❌ ${err.message}`);
+      showToast(`❌ ${err.message}`);
     } finally {
       setSaveLoading(false);
     }
   };
 
   return { currentJobId, saveLoading, triggerSave };
-}  
- 
- 
+}
+

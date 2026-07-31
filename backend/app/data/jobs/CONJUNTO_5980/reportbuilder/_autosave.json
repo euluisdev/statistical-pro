@@ -92,14 +92,14 @@
           "height": 115
         },
         {
-          "id": "image-1785350311769",
+          "id": "image-1785459175990",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_001.png",
-            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_001.png"
+            "filename": "AP_534895140_015.png",
+            "url": "/static/jobs/0152c0ca-fc28-4baf-a29b-3be43458da7c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_015.png"
           },
           "x": 24,
           "y": 120,
@@ -122,19 +122,35 @@
           "height": 115
         },
         {
-          "id": "image-1785350906229",
+          "id": "image-1785459215928",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_003.png",
-            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_003.png"
+            "filename": "AP_534895140_016.png",
+            "url": "/static/jobs/0152c0ca-fc28-4baf-a29b-3be43458da7c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_016.png"
           },
           "x": 24,
           "y": 120,
-          "width": 1071.8194274902344,
-          "height": 512.8888854980469
+          "width": 1074,
+          "height": 650
+        },
+        {
+          "id": "text-1785459250137",
+          "type": "text",
+          "content": "Digite aqui...",
+          "x": 411,
+          "y": 26.5,
+          "width": 280.8194274902344,
+          "height": 53.5,
+          "fontSize": 16,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#000000",
+          "textAlign": "left",
+          "backgroundColor": "transparent"
         }
       ]
     },
@@ -152,14 +168,14 @@
           "height": 115
         },
         {
-          "id": "image-1785351115502",
+          "id": "image-1785464654607",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
-            "page_type": "ActionPlan",
-            "filename": "AP_534895140_004.png",
-            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_004.png"
+            "page_type": "riskassessment",
+            "filename": "f534895140_20260730_232336_093594.png",
+            "url": "/static/jobs/0152c0ca-fc28-4baf-a29b-3be43458da7c/CONJUNTO_5980/534895140/riskassessment/f534895140_20260730_232336_093594.png"
           },
           "x": 24,
           "y": 120,
@@ -197,19 +213,19 @@
           "height": 115
         },
         {
-          "id": "image-1785354439344",
+          "id": "image-1785460799343",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_007.png",
-            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_007.png"
+            "filename": "AP_534895140_017.png",
+            "url": "/static/jobs/0152c0ca-fc28-4baf-a29b-3be43458da7c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_017.png"
           },
-          "x": 15.090286254882812,
-          "y": 127,
-          "width": 1091.8194274902344,
-          "height": 521
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
         }
       ]
     },
@@ -242,14 +258,14 @@
           "height": 115
         },
         {
-          "id": "image-1785354480447",
+          "id": "image-1785460826493",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
             "page_type": "ActionPlan",
-            "filename": "AP_534895140_008.png",
-            "url": "/static/jobs/e3db6af3-94a0-42de-afc8-83f07505455c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_008.png"
+            "filename": "AP_534895140_018.png",
+            "url": "/static/jobs/0152c0ca-fc28-4baf-a29b-3be43458da7c/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_018.png"
           },
           "x": 24,
           "y": 120,
@@ -261,5 +277,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-23",
-  "updated_at": "2026-07-29T21:35:50.198032"
+  "updated_at": "2026-07-31T02:24:15.416603"
 }

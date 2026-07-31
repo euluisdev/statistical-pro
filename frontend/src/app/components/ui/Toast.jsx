@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { Bold, CheckCircle, XCircle } from 'lucide-react';
 
-export default function Toast({ message, type = 'success', duration = 5000 }) {
+export default function Toast({ message, type = 'success', duration = 8000 }) {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -19,12 +19,12 @@ export default function Toast({ message, type = 'success', duration = 5000 }) {
       alignItems: 'center',
       gap: '1rem',
       background: 'white',
-      border: '1px solid #d1d5db',
+      border: '1.5px solid #d1d5db',
       boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
       borderRadius: '1rem',
       padding: '1.25rem',
-      maxWidth: '380px',
-      minWidth: '280px',
+      maxWidth: '450px',
+      minWidth: '300px',
     }}>
       <div style={{ flexShrink: 0 }}>
         {type === 'success'
@@ -35,10 +35,10 @@ export default function Toast({ message, type = 'success', duration = 5000 }) {
 
       <div style={{
         fontSize: '14px',
-        fontWeight: 500,
-        color: '#111827',
+        fontWeight: 'bold',
+        color: 'black',
         whiteSpace: 'pre-line',
-        lineHeight: 1.4,
+        lineHeight: 1.6,
         flex: 1,
       }}>
         {message}
@@ -48,13 +48,14 @@ export default function Toast({ message, type = 'success', duration = 5000 }) {
         onClick={() => setVisible(false)}
         style={{
           marginLeft: 'auto',
-          color: '#9ca3af',
+          color: 'red',
           background: 'none',
           border: 'none',
           cursor: 'pointer',
-          fontSize: '1.25rem',
+          fontSize: '1.5rem',
           lineHeight: 1,
-          flexShrink: 0,
+          flexShrink: 0, 
+          fontWeight: 'bold'
         }}
       >
         ✕

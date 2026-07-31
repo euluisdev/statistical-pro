@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "./risk-assessment.module.css";
-import { ChartLine } from "lucide-react";
+import { ChartLine, SaveAll } from "lucide-react";
+import { useSaveRiskAssessmentToJob } from "@/app/hooks/useSaveRiskAssessmentToJob";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-// ── Mesmas cores do action plan ───────────────────────────────────────────────
+
+//same colors of the action plan
 const RISK_LEVELS = [
   { label: "To 0,5mm", color: "#e5e7eb", text: "#111" },
   { label: "To 1,0mm", color: "#bfdbfe", text: "#111" },
@@ -38,7 +40,7 @@ function DeviationChart({ deviationCounts }) {
       <div className={styles.devTitle}>DEVIATION</div>
 
       <div className={styles.devMain}>
-        {/* Barra horizontal com tamanho fixo e linhas verticais */}
+        {/*barra horizontal com tamanho fixo e linhas verticais*/}
         <div className={styles.devBarContainer}>
           {riskOrder.map((label, index) => {
             const count = deviationCounts[label] || 0;
@@ -55,7 +57,7 @@ function DeviationChart({ deviationCounts }) {
                     {String(count).padStart(3, "0")}
                   </span>
                 )}
-                {/* Linha vertical separadora (exceto no último) */}
+                {/*linha vertical separadora */}
                 {index < riskOrder.length - 1 && (
                   <div className={styles.divider} />
                 )}
@@ -130,7 +132,7 @@ function CharacteristicsChart({ charCounts }) {
   return (
     <div className={styles.chartBox}>
       <div className={styles.chartTitle}>CHARACTERISTICS</div>
-      
+
       <div className={styles.charContainer}>
         {entries.map(([label, count]) => {
           const percentage = (count / maxVal) * 100;
@@ -138,14 +140,14 @@ function CharacteristicsChart({ charCounts }) {
           return (
             <div key={label} className={styles.charRow}>
               <span className={styles.charLabel}>{label}</span>
-              
+
               <div className={styles.charBarWrap}>
-                <div 
+                <div
                   className={styles.charBar}
                   style={{ width: `${percentage}%` }}
                 />
               </div>
-              
+
               <span className={styles.charCount}>{count}</span>
             </div>
           );
@@ -162,7 +164,7 @@ function CharacteristicsChart({ charCounts }) {
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────────────────────────
+//main page
 export default function RiskAssessmentPage() {
   const { group, piece } = useParams();
   const router = useRouter();
@@ -170,10 +172,17 @@ export default function RiskAssessmentPage() {
   const [loading, setLoading] = useState(true);
   const [imgError, setImgError] = useState(false);
 
-  // Dados derivados dos action plans
+  //dados derivados dos action plans
   const [deviationCounts, setDeviationCounts] = useState({});
   const [rootCauseCounts, setRootCauseCounts] = useState({});
   const [charCounts, setCharCounts] = useState({});
+  const [pieceInfo, setPieceInfo] = useState(null);
+
+  const riskRef = useRef(null);
+  const {
+    saveLoading,
+    triggerSave
+  } = useSaveRiskAssessmentToJob();
 
   const pieceImageUrl = `${API}/pieces/${group}/${piece}/imagens`;
 
@@ -189,17 +198,17 @@ export default function RiskAssessmentPage() {
         const chrCounts = {};
 
         plans.forEach(plan => {
-          // Root cause: uma contagem por plano (campo analysis)
+          //root cause: uma contagem por plano
           const rc = plan.analysis ?? "";
           if (rc) rcCounts[rc] = (rcCounts[rc] ?? 0) + plan.rows.length;
 
-          // Por cada row: risk_level → deviation, symbol → characteristics
+          //por cada row: risk_level - deviation, symbol - characteristics
           plan.rows.forEach(row => {
             // Deviation
             const rl = row.risk_level ?? "";
             if (rl) devCounts[rl] = (devCounts[rl] ?? 0) + 1;
 
-            // Characteristics (symbol / tipo_geometrico)
+            //characteristics - symbol / tipo_geometrico
             const sym = row.symbol ?? "";
             if (sym) chrCounts[sym] = (chrCounts[sym] ?? 0) + 1;
           });
@@ -213,9 +222,25 @@ export default function RiskAssessmentPage() {
       .finally(() => setLoading(false));
   }, [group, piece]);
 
+
+  useEffect(() => {
+    async function loadPieceInfo() {
+      try {
+        const response = await fetch(`${API}/pieces/${group}/${piece}`);
+        const data = await response.json();
+
+        setPieceInfo(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadPieceInfo();
+  }, [group, piece]);
+
+
   return (
     <div className={styles.pageBackground}>
-      <div className={styles.container}>
+      <div ref={riskRef} className={styles.container}>
 
         {/* Toolbar */}
         <div className={styles.toolbar}>
@@ -223,9 +248,17 @@ export default function RiskAssessmentPage() {
             onClick={() => router.push(`/analysis/${group}/${piece}/action-plan`)}>
             <ChartLine size={28} />
           </button>
+          <button
+            className={styles.backBtn}
+            title="Salvar PNG"
+            disabled={saveLoading}
+            onClick={() => triggerSave(riskRef, group, piece)}
+          >
+            <SaveAll size={28} />
+          </button>
           <div className={styles.toolbarCenter}>
             <span className={styles.toolbarTitle}>RISK ASSESSMENT</span>
-            <span className={styles.toolbarSub}>{group} | {piece}</span>
+            <span className={styles.toolbarSub}>{piece} | {pieceInfo?.part_name}</span>
           </div>
           <div style={{ width: 100 }} />
         </div>
@@ -253,7 +286,7 @@ export default function RiskAssessmentPage() {
               </div>
 
               <div className={styles.pieceInfo}>
-                {group} | {piece} 
+                {piece} | {pieceInfo?.part_name}
               </div>
 
               {/* Imagem da peça */}
@@ -279,3 +312,4 @@ export default function RiskAssessmentPage() {
     </div>
   );
 }
+

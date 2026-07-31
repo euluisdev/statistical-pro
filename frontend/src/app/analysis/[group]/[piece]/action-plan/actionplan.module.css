@@ -94,7 +94,7 @@
 
 .th {
   background: #e8ecf0;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
   color: black;
   padding: 3px 1px;
@@ -120,12 +120,13 @@
 }
 
 .td {
-  padding: 1px 2px;
+  padding: 1px 1px;
   border: 1px solid black;
   text-align: center;
   color: black;
-  font-size: 11px;
-  white-space: nowrap;
+  font-size: 12px;
+
+  max-width: 120px;
     vertical-align: middle; 
     font-weight: bold;
 }
@@ -391,4 +392,32 @@
 .saveBtn:hover:not(:disabled) { background: #1e451e; }
 .saveBtn:disabled { background: #888; cursor: not-allowed; }  
  
+
+
+/* load */
+.loadingOverlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: blue;
+  background: rgba(255,255,255,.30);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+}
+.loadingSpinner {
+  animation: spin .8s linear infinite;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
  
