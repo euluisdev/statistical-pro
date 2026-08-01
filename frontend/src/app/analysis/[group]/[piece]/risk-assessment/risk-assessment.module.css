@@ -1,17 +1,18 @@
 .pageBackground {
   background: #6e6e6e;
   min-height: 100vh;
-  padding: 10px;
+  padding: 12px;
   margin-top: 1rem;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/*Container branco interno com borda e margens*/
+/*container branco interno com borda e margens*/
 .container {
   max-width: 1400px;
+    min-height: 100vh; 
   margin: 0 auto;
   background: #f0f0f0;
-  border: 2px solid #8a8a8a;
+  border: 2px solid #000;
   padding: 10px 16px 30px;
 }
 
@@ -76,7 +77,8 @@
 .chartsCol {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  margin-top: 2rem;
+  gap: 15px;
 }
 
 /*generic chart box */

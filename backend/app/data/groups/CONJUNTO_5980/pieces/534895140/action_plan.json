@@ -678,5 +678,76 @@
     ],
     "created_at": "2026-07-27T21:50:14.717329",
     "updated_at": "2026-07-30T22:18:54.620148"
+  },
+  {
+    "seq": 6,
+    "rows": [
+      {
+        "point_id": "CÍRCULO_1_X",
+        "label": "CÍRCULO_1",
+        "axis": "X",
+        "lse": 0.6,
+        "lie": -0.6,
+        "symbol": "CÍRCULO",
+        "xmed": 0.02,
+        "cp": 1.14,
+        "cpk": 1.1,
+        "range": 0.95,
+        "risk_level": "To 0,5mm"
+      }
+    ],
+    "action_type": "Não definida",
+    "action_text": "dnckjnsdcbjqdcn dkjdnce",
+    "responsible_name": "ewwfvwe",
+    "responsible_dept": "serefvrfv",
+    "deadline_date": "2026-07-31",
+    "deadline_year": "2026",
+    "deadline_week": "31",
+    "status": "em execução",
+    "analysis": "Parts",
+    "week_statuses": [
+      {
+        "week": "27",
+        "value": ""
+      },
+      {
+        "week": "28",
+        "value": ""
+      },
+      {
+        "week": "29",
+        "value": ""
+      },
+      {
+        "week": "30",
+        "value": ""
+      },
+      {
+        "week": "31",
+        "value": "X"
+      },
+      {
+        "week": "32",
+        "value": ""
+      },
+      {
+        "week": "33",
+        "value": ""
+      },
+      {
+        "week": "34",
+        "value": ""
+      },
+      {
+        "week": "35",
+        "value": ""
+      },
+      {
+        "week": "36",
+        "value": ""
+      }
+    ],
+    "created_at": "2026-07-31T23:01:58.884772",
+    "updated_at": "2026-07-31T23:01:58.884772"
   }
 ]

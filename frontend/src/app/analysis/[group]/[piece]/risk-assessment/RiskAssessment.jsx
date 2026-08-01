@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "./risk-assessment.module.css";
-import { ChartLine, SaveAll } from "lucide-react";
+import { ChartLine, Loader2, SaveAll } from "lucide-react";
 import { useSaveRiskAssessmentToJob } from "@/app/hooks/useSaveRiskAssessmentToJob";
+import LoadingOverlay from "@/app/components/LoadingOverlay/LoadingOverlay";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -244,17 +245,24 @@ export default function RiskAssessmentPage() {
 
         {/* Toolbar */}
         <div className={styles.toolbar}>
-          <button className={styles.backBtn} title="Action Plan"
+          <button 
+            className={styles.backBtn} 
+            data-html2canvas-ignore
+            title="Action Plan"
             onClick={() => router.push(`/analysis/${group}/${piece}/action-plan`)}>
-            <ChartLine size={28} />
+            <ChartLine size={30} />
           </button>
           <button
+            data-html2canvas-ignore
             className={styles.backBtn}
             title="Salvar PNG"
             disabled={saveLoading}
             onClick={() => triggerSave(riskRef, group, piece)}
-          >
-            <SaveAll size={28} />
+          >  
+            {saveLoading
+              ? <Loader2 size={30} className={styles.loadingSpinner} />
+              : <SaveAll size={30} />
+            }
           </button>
           <div className={styles.toolbarCenter}>
             <span className={styles.toolbarTitle}>RISK ASSESSMENT</span>
@@ -309,6 +317,10 @@ export default function RiskAssessmentPage() {
           </div>
         )}
       </div>
+
+      {saveLoading && (
+        <LoadingOverlay text="Gerando imagem..." />
+      )}
     </div>
   );
 }

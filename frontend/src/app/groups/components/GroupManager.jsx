@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { FolderPlus, Trash2, PlayCircle, Pause } from "lucide-react";
 
 import ConfirmModal from "@/app/components/common/ConfirmModal";
-
+import { useToast } from "@/app/components/providers/ToastProvider";
 
 export default function GroupManager({
   groups,
@@ -25,7 +25,7 @@ export default function GroupManager({
   const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
 
-
+  const { showToast } = useToast();
   const API = process.env.NEXT_PUBLIC_API_URL;
 
   //update the currentJobId from localStorage
@@ -96,7 +96,7 @@ export default function GroupManager({
         if (onJobCreated) {
           onJobCreated(data.jobid);
         }
-        alert("Job criado com sucesso!");
+        showToast("Job criado com sucesso!");
       }
     } catch (err) {
       console.error("Erro ao criar job:", err);
@@ -108,7 +108,7 @@ export default function GroupManager({
 
   const finishJob = async () => {
     if (!currentJobId) {
-      alert("Nenhum job ativo para encerrar");
+      showToast("Nenhum job ativo para encerrar");
       setShowFinishJobModal(false);
       return;
     }
@@ -136,11 +136,11 @@ export default function GroupManager({
         onJobFinished();
       }
 
-      alert("Job encerrado com sucesso!");
+      showToast("Job encerrado com sucesso!");
 
     } catch (err) {
       console.error("Erro ao encerrar job:", err);
-      alert(`Erro ao encerrar job: ${err.message}`);
+      showToast(`Erro ao encerrar job: ${err.message}`);
     } finally {
       setFinishLoading(false);
       setShowFinishJobModal(false);

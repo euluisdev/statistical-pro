@@ -8,6 +8,7 @@ import PieceManager from "./groups/components/PieceManager";
 import TxtManager from "./groups/components/TxtManager";
 import ConfirmModal from "./components/common/ConfirmModal";
 import PivotTable from "./groups/components/Pivottable";
+import { useToast } from "@/app/components/providers/ToastProvider";
 import { ArrowBigRight, ChartLine, House, Grid3x3, ChartNoAxesCombined, TrendingUpDown, ChartColumnStacked, ChartColumnBig, FileChartColumn, FileChartColumnIncreasing, FileChartLine } from "lucide-react";
 
 import "./styles.css";
@@ -24,6 +25,7 @@ export default function GroupsPage() {
   const [parsedData, setParsedData] = useState([]);
   const [msg, setMsg] = useState(null);
   const [showResetModal, setShowResetModal] = useState(false);
+  const { showToast } = useToast();
 
 
   useEffect(() => {
@@ -78,16 +80,14 @@ export default function GroupsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">SIX SIGMA</h1>
-
-      {msg && <p className="message">{msg}</p>}
+      <h1 className="title">AUTO SIGMA</h1>
 
       <div className="grid">
         <GroupManager
           groups={groups}
           selectedGroup={selectedGroup}
           onGroupCreated={(name) => {
-            setMsg(`✓ Grupo "${name}" criado`);
+            showToast(`✓ Grupo "${name}" criado`);
             loadGroups();
           }}
           onGroupDeleted={() => {
@@ -104,11 +104,11 @@ export default function GroupsPage() {
           pieces={pieces}
           selectedPiece={selectedPiece}
           onPieceCreated={() => {
-            setMsg("✓ Peça criada");
+            showToast("✓ Peça criada");
             loadPieces(selectedGroup);
           }}
           onPieceDeleted={() => {
-            setMsg("✓ Peça apagada");
+            showToast("✓ Peça apagada");
             setSelectedPiece("");
             loadPieces(selectedGroup);
           }}
@@ -120,7 +120,7 @@ export default function GroupsPage() {
           selectedPiece={selectedPiece}
           onDataExtracted={(data) => {
             setParsedData(data);
-            setMsg(`✓ ${data.length} linhas extraídas`);
+            showToast(`✓ ${data.length} linhas extraídas`);
           }}
         />
 

@@ -15,7 +15,7 @@
 
 .box{
     background:white;
-
+    color: blue;
     padding:20px 28px;
 
     border-radius:12px;
@@ -33,12 +33,18 @@
 
 .spinner{
     animation:spin .9s linear infinite;
+    color: blue;
 }
 
 @keyframes spin{
     from{transform:rotate(0deg);}
     to{transform:rotate(360deg);}
 }  
+
+.newBtn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
  
  
  

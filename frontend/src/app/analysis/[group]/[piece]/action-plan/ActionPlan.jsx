@@ -640,7 +640,11 @@ export default function ActionPlanPage() {
           <button className={styles.newBtn} title="Report" >
             <ArrowBigRight size={30} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
           </button>
-          <button className={styles.newBtn} title="Risk Assessment" onClick={() => router.push(`/analysis/${group}/${piece}/risk-assessment`)}>
+          <button 
+            className={styles.newBtn} 
+            title="Risk Assessment" 
+            onClick={() => router.push(`/analysis/${group}/${piece}/risk-assessment`)}
+          >
             Risk
           </button>
           <button className={styles.newBtn} onClick={openNew} title="New Action">

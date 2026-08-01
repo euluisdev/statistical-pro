@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Plus, Trash2, Grid3x3, Image as ImageIcon } from "lucide-react";
 
 import ConfirmModal from "@/app/components/common/ConfirmModal";
+import { useToast } from "@/app/components/providers/ToastProvider";
+import Toast from "@/app/components/ui/Toast";
 
 export default function PieceManager({
   selectedGroup,
@@ -24,13 +26,12 @@ export default function PieceManager({
   const [showDeletePieceModal, setShowDeletePieceModal] = useState(false);
 
   const API = process.env.NEXT_PUBLIC_API_URL;
-
+  const { showToast } = useToast();
   const router = useRouter();
 
   useEffect(() => {
     setPreviewImageUrl(`${API}/pieces/${selectedGroup}/${selectedPiece}/imagens`);
   }, [selectedGroup, selectedPiece]);
-
 
   const createPiece = async (e) => {
     e.preventDefault();
@@ -201,6 +202,7 @@ export default function PieceManager({
         onConfirm={async () => {
           await createPiece(new Event("submit"));
           setShowCreatePieceModal(false);
+          showToast("Peça criada com sucesso!", "success");
         }}
       />
 
@@ -212,6 +214,7 @@ export default function PieceManager({
         onConfirm={async () => {
           await deletePiece();
           setShowDeletePieceModal(false);
+          showToast("Peça removida com sucesso!", "success");
         }}
       />
 
