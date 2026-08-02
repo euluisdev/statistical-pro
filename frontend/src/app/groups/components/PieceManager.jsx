@@ -202,7 +202,6 @@ export default function PieceManager({
         onConfirm={async () => {
           await createPiece(new Event("submit"));
           setShowCreatePieceModal(false);
-          showToast("Peça criada com sucesso!", "success");
         }}
       />
 
@@ -214,7 +213,6 @@ export default function PieceManager({
         onConfirm={async () => {
           await deletePiece();
           setShowDeletePieceModal(false);
-          showToast("Peça removida com sucesso!", "success");
         }}
       />
 

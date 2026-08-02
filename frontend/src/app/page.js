@@ -56,7 +56,7 @@ export default function GroupsPage() {
       const data = await res.json();
       setGroups(data);
     } catch (err) {
-      setMsg("Erro ao carregar grupos");
+      showToast("Erro ao carregar grupos");
     }
   };
 
@@ -91,7 +91,7 @@ export default function GroupsPage() {
             loadGroups();
           }}
           onGroupDeleted={() => {
-            setMsg(`✓ Grupo apagado`);
+            showToast(`✓ Grupo apagado`);
             setSelectedGroup("");
             setPieces([]);
             loadGroups();

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Upload, FileText, Trash2, RefreshCw } from "lucide-react";
+import { useToast } from "@/app/components/providers/ToastProvider";
 
 import ConfirmModal from "@/app/components/common/ConfirmModal";
 
@@ -13,6 +14,7 @@ export default function TxtManager({ selectedGroup, selectedPiece, onDataExtract
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const API = process.env.NEXT_PUBLIC_API_URL;
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (selectedPiece && selectedGroup) {
@@ -62,7 +64,7 @@ export default function TxtManager({ selectedGroup, selectedPiece, onDataExtract
     }
   };
 
-  const deleteTxt = async (filename) => {
+  const deleteTxt = async (filename) => { 
     try {
       const res = await fetch(
         `${API}/pieces/${encodeURIComponent(selectedGroup)}/${encodeURIComponent(
@@ -73,9 +75,11 @@ export default function TxtManager({ selectedGroup, selectedPiece, onDataExtract
 
       if (res.ok) {
         loadTxtList();
+        showToast("Arquivo Excluído!");
       }
     } catch (err) {
       console.error(err);
+      showToast(err);
     }
   };
 
@@ -150,7 +154,7 @@ export default function TxtManager({ selectedGroup, selectedPiece, onDataExtract
 
       {/*list txt */}
       <div className="card">
-        <h2>Arquivos</h2>
+        <h2>Arquivos {txtList.length}.TXT's</h2>
 
         {/*box txt*/}
         <div className="txt-box-sm">
@@ -164,7 +168,7 @@ export default function TxtManager({ selectedGroup, selectedPiece, onDataExtract
                   checked={selected.includes(file)}
                   onChange={() => toggleSelect(file)}
                 />
-                <span>{file.substring(0, 12)}...</span>
+                <span>{file.substring(0, 15)}</span>
               </label>
             ))
           )}
@@ -202,8 +206,6 @@ export default function TxtManager({ selectedGroup, selectedPiece, onDataExtract
           setShowDeleteModal(false);
         }}
       />
-
-
     </>
   );
 };

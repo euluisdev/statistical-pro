@@ -41,11 +41,14 @@ export default function PivotTable({ parsedData }) {
     parsedData.forEach((row) => {
       if (reportKey && row[reportKey] != null) datesSet.add(String(row[reportKey]));
     });
+
+    //ordena do relatório mais recente para o mais antigo
+    //o fluxo prioriza a análise das medições mais recentes
     const dates = Array.from(datesSet).sort((a, b) => {
       const [da, ma, aa] = a.split("/");
       const [db, mb, ab] = b.split("/");
 
-      return new Date(aa, ma - 1, da) - new Date(ab, mb - 1, db);
+      return new Date(ab, mb - 1, db) - new Date(aa, ma - 1, da);
     });
 
     // Agrupamento por identidade do ponto
@@ -70,18 +73,35 @@ export default function PivotTable({ parsedData }) {
 
   const { rows, dates } = pivoted;
 
-  // Define classe de cor do desvio comparando com tolerâncias
+  //define classe de cor do desvio comparando com tolerâncias
   const desvioClass = (meta, val) => {
     const n = parseFloat(val);
+
     if (isNaN(n)) return "";
+
     const tolP = parseFloat(meta["Tol+"]);
     const tolM = parseFloat(meta["Tol-"]);
-    if (!isNaN(tolP) && !isNaN(tolM)) {
-      if (n > tolP || n < tolM) return "pt-fail";
-      if (Math.abs(n) >= Math.abs(tolP) * 0.8) return "pt-warn";
-      return "pt-ok";
+
+    if (isNaN(tolP) || isNaN(tolM)) return "";
+
+    //fora da tolerância
+    if (n > tolP || n < tolM) {
+      return "pt-fail";
     }
-    return "";
+
+    //80% da maior tolerância
+    const limite = Math.max(Math.abs(tolP), Math.abs(tolM)) * 0.8;
+
+    if (Math.abs(n) >= limite) {
+      return "pt-warn";
+    }
+
+    return "pt-ok";
+  };
+
+  const formatHeaderDate = (date) => {
+    const [day, month] = date.split("/");
+    return `${day}/${month}`;
   };
 
   //classes sticky com offset
@@ -116,7 +136,9 @@ export default function PivotTable({ parsedData }) {
               <th className={S[5] + " pt-center"}>Tol+</th>
               <th className={S[6] + " pt-center"}>Tol−</th>
               {dates.map((d) => (
-                <th key={d} className="pt-date">{d}</th>
+                <th key={d} className="pt-date">
+                  {formatHeaderDate(d)}
+                </th>
               ))}
             </tr>
           </thead>
