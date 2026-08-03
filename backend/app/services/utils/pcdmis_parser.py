@@ -25,26 +25,43 @@ def ler_relatorio_pcdmis(caminho_arquivo):
             continue
 
         if linha.upper().startswith("DIM "):
-            m_loc = re.search(r"DIM\s+(LOC\d+)", linha, re.IGNORECASE)
+            m_loc = re.search(r"DIM\s+(LOC\d+|DIST\d+)", linha, re.IGNORECASE)
             id_loc = m_loc.group(1).strip() if m_loc else "N/D"
 
-            m_loc_text = re.search(r"LOCALIZAÇÃO\s+DE\s+(.*)", linha, re.IGNORECASE)
-            if m_loc_text:
-                resto = m_loc_text.group(1).strip()
+            m_tipo = re.search(r"(LOCALIZAÇÃO|DISTÂNCIA)\s+.*?DE\s+(.*)", linha, re.IGNORECASE)
+            if m_tipo:
+                resto = m_tipo.group(2).strip()
                 resto = re.sub(r"\s+DP=.*$", "", resto, flags=re.IGNORECASE).strip()
-                parts = resto.split()
-                if len(parts) >= 2:
-                    tipo_geo = parts[0].strip()
-                    nome_ponto = " ".join(parts[1:]).strip()
-                elif len(parts) == 1:
-                    tipo_geo = parts[0].strip()
-                    nome_ponto = "N/D"
+
+                # Se for uma distância, monta um nome resumido
+                if id_loc.startswith("DIST"):
+
+                    m_dist = re.search(
+                        r"(C[ÍI]RCULO_\d+).*?PARA\s+C[ÍI]RCULO\s+(C[ÍI]RCULO_\d+)",
+                        resto,
+                        re.IGNORECASE
+                    )
+
+                    tipo_geo = "DIST"
+
+                    if m_dist:
+                        nome_ponto = f"{m_dist.group(1)} → {m_dist.group(2)}"
+                    else:
+                        nome_ponto = resto
+
+                #caso normal LOCALIZAÇÃO
                 else:
-                    tipo_geo = "N/D"
-                    nome_ponto = "N/D"
-            else:
-                tipo_geo = "N/D"
-                nome_ponto = "N/D"
+                    parts = resto.split()
+
+                    if len(parts) >= 2:
+                        tipo_geo = parts[0].strip()
+                        nome_ponto = " ".join(parts[1:]).strip()
+                    elif len(parts) == 1:
+                        tipo_geo = parts[0].strip()
+                        nome_ponto = "N/D"
+                    else:
+                        tipo_geo = "N/D"
+                        nome_ponto = "N/D"
 
             continue
 
