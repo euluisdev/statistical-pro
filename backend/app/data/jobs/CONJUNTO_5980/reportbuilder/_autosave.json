@@ -92,14 +92,14 @@
           "height": 115
         },
         {
-          "id": "image-1785549815599",
+          "id": "image-1785808617919",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_5980",
             "piece": "534895140",
-            "page_type": "ActionPlan",
-            "filename": "AP_534895140_001.png",
-            "url": "/static/jobs/3e3e2c87-9096-4677-b81f-d1176ccc2c1f/CONJUNTO_5980/534895140/ActionPlan/AP_534895140_001.png"
+            "page_type": "cg",
+            "filename": "f534895140_20260803_225639_400900.png",
+            "url": "/static/jobs/534b0b67-ca3e-417d-a0d6-9ab5e37f3b7a/CONJUNTO_5980/534895140/cg/f534895140_20260803_225639_400900.png"
           },
           "x": 24,
           "y": 120,
@@ -262,5 +262,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "WEEK-23",
-  "updated_at": "2026-08-01T02:07:26.787436"
+  "updated_at": "2026-08-04T01:56:58.847041"
 }

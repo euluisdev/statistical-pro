@@ -2,8 +2,9 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowBigDown, ArrowBigRight, ChartColumnBig, ChartColumnStacked, ChartColumn, House, FileChartColumn, FileChartColumnIncreasing, FileChartLine, ChartNoAxesCombined, TrendingUpDown } from "lucide-react";
+import { ArrowBigDown, ArrowBigRight, ChartColumnBig, ChartColumnStacked, ChartColumn, House, FileChartColumn, FileChartColumnIncreasing, FileChartLine, ChartNoAxesCombined, TrendingUpDown, ChartLine } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/app/components/providers/ToastProvider";
 
 import styles from "./analysis.module.css";
 import summaryStyles from "./summary.module.css";
@@ -14,6 +15,7 @@ export default function AnalysisPage() {
   const piece = params?.piece;
 
   const router = useRouter();
+  const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const [statistics, setStatistics] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -26,6 +28,9 @@ export default function AnalysisPage() {
   const [showPercentage, setShowPercentage] = useState(true);
 
   const [pieceImageUrl, setPieceImageUrl] = useState(null);
+  const [pieceInfo, setPieceInfo] = useState(null);
+
+  const { showToast } = useToast();
 
   function getCurrentWeek() {
     const now = new Date();
@@ -54,7 +59,7 @@ export default function AnalysisPage() {
 
     setGenerating(true);
     try {
-      // 1. Gera o analysis.csv
+      //1gera o analysis.csv
       const resGen = await fetch(
         `http://localhost:8000/pieces/${group}/${piece}/generate_analysis?week=${selectedWeek}&year=${selectedYear}`,
         { method: "POST" }
@@ -62,7 +67,7 @@ export default function AnalysisPage() {
 
       if (!resGen.ok) throw new Error("Erro ao gerar análise");
 
-      // 2. Calcula as estatísticas
+      //2calcula as estatísticas
       setCalculating(true);
       const resCalc = await fetch(
         `http://localhost:8000/pieces/${group}/${piece}/calculate_statistics?week=${selectedWeek}&year=${selectedYear}`,
@@ -75,17 +80,33 @@ export default function AnalysisPage() {
       setStatistics(json.statistics);
 
       setPieceImageUrl(`http://localhost:8000/pieces/${group}/${piece}/imagens`);
+      showToast("✓ Análise Estátística Calculado!")
 
 
       await loadAvailableFiles();
     } catch (err) {
       console.error("Erro:", err);
-      alert("Erro ao processar análise: " + err.message);
+      showToast("Erro ao processar análise: " + err.message);
     } finally {
       setGenerating(false);
       setCalculating(false);
     }
   }
+
+  useEffect(() => {
+    async function loadPieceInfo() {
+      try {
+        const response = await fetch(`${API}/pieces/${group}/${piece}`);
+        const data = await response.json();
+
+        setPieceInfo(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadPieceInfo();
+  }, [group, piece]);
 
   useEffect(() => {
     if (group && piece) {
@@ -121,7 +142,7 @@ export default function AnalysisPage() {
         <div className={styles.header}>
           <div className={styles.headerTop}>
             <h1 className={styles.title}>
-              ANÁLISE ESTATÍSTICA: {group} / {piece}
+              ANÁLISE ESTATÍSTICA: {group} | {piece} - {pieceInfo?.part_name ?? ""}
             </h1>
 
             <div className={styles.checkboxContainer}>
@@ -197,8 +218,10 @@ export default function AnalysisPage() {
             <button className={styles.btnMenu} title="Capability" >
               <TrendingUpDown size={30} onClick={() => router.push(`/analysis/${group}/${piece}/capability`)} />
             </button>
-
-            <button className={styles.btnMenu} title="Report" >
+            <button className={styles.btnMenu} title="Action Plan" >
+              <ChartLine size={30} onClick={() => router.push(`/analysis/${group}/${piece}/action-plan`)} />
+            </button>
+            <button className={styles.btnMenu} title="Report Builder" >
               <ArrowBigRight size={30} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
             </button>
 

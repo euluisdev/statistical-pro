@@ -7,6 +7,7 @@ import { Grid3x3, ArrowBigDown, SaveAll, ArrowBigRight, ChartColumnBig } from "l
 import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
 import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcg.module.css";
+import { useToast } from "@/app/components/providers/ToastProvider";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -23,6 +24,8 @@ export default function ReportClient({ params }) {
 
   const plotRef = useRef(null);
   const router = useRouter();
+
+  const { showToast } = useToast();
 
   //hook to save chart in the job-id
   const {
@@ -110,10 +113,10 @@ export default function ReportClient({ params }) {
       await loadAllReports();
       await loadAvailableWeeks();
 
-      alert(`✓ Relatório da semana ${selectedWeek}/${selectedYear} gerado!`);
+      showToast(`✓ Relatório W${selectedWeek} | ${selectedYear} gerado!`);
     } catch (err) {
       console.error("Erro ao gerar relatório:", err);
-      alert("Erro ao gerar relatório: " + err.message);
+      showToast("Erro ao gerar relatório: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -289,37 +292,40 @@ function prepareChartData(weeksData, piece, group, pieceInfo) {
         y: greenData,
         name: "CG ≤ 75%",
         type: "bar",
+        width: 0.2,
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
-        textfont: { color: "black", size: 18, weight: "bold" },
+        textfont: { color: "black", size: 17, weight: "bold" },
         hovertemplate: "<b>%{x}</b><br>Verde: %{text} (%{y:.1f}%)<extra></extra>",
       },
       {
         x: weekLabels,
         y: yellowData,
         name: "75% < CG ≤ 100%",
-        type: "bar",
+        type: "bar", 
+        width: 0.2,
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
-        textfont: { color: "black", size: 18, weight: "bold" },
+        textfont: { color: "black", size: 17, weight: "bold" },
         hovertemplate: "<b>%{x}</b><br>Amarelo: %{text} (%{y:.1f}%)<extra></extra>",
       },
       {
         x: weekLabels,
         y: redData,
         name: "CG > 100%",
-        type: "bar",
+        type: "bar", 
+        width: 0.2,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
-        textfont: { color: "white", size: 18, weight: "bold" },
+        textfont: { color: "white", size: 17, weight: "bold" },
         hovertemplate: "<b>%{x}</b><br>Vermelho: %{text} (%{y:.1f}%)<extra></extra>",
       },
     ],
     layout: {
-      barmode: "stack",
+      barmode: "stack", 
       title: {
         text: `CG | ${piece} - ${pieceInfo?.part_name ?? ""}`,
         font: { size: 22, weight: "bold", color: "black" },
