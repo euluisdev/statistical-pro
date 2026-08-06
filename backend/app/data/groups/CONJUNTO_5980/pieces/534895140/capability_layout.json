@@ -1,0 +1,179 @@
+{
+  "pages": [
+    {
+      "cards": [
+        {
+          "id": "43awe8h",
+          "point": "CÍRCULO_1",
+          "axes": [
+            {
+              "axis": "X",
+              "pageIdx": 0,
+              "cp": 1.85,
+              "cpk": 1.65,
+              "xmed": 0.064,
+              "range": 0.85,
+              "tol_plus": 0.6,
+              "tol_minus": -0.6,
+              "tolerance": "-0,60|+0,60",
+              "nominal": 3306.84,
+              "cp_color": "green",
+              "cpk_color": "green"
+            },
+            {
+              "axis": "Y",
+              "pageIdx": 0,
+              "cp": 4.47,
+              "cpk": 3.3,
+              "xmed": 0.158,
+              "range": 0.28,
+              "tol_plus": 0.6,
+              "tol_minus": -0.6,
+              "tolerance": "-0,60|+0,60",
+              "nominal": -137,
+              "cp_color": "green",
+              "cpk_color": "green"
+            }
+          ],
+          "x": 40,
+          "y": 40,
+          "connectorX": 170,
+          "connectorY": 0
+        },
+        {
+          "id": "d24qe7a",
+          "point": "CÍRCULO_2",
+          "axes": [
+            {
+              "axis": "X",
+              "pageIdx": 0,
+              "cp": 0.91,
+              "cpk": 0.11,
+              "xmed": -0.53,
+              "range": 1.01,
+              "tol_plus": 0.6,
+              "tol_minus": -0.6,
+              "tolerance": "-0,60|+0,60",
+              "nominal": 3306.84,
+              "cp_color": "red",
+              "cpk_color": "red"
+            },
+            {
+              "axis": "Y",
+              "pageIdx": 0,
+              "cp": 3.88,
+              "cpk": 3.01,
+              "xmed": 0.135,
+              "range": 0.28,
+              "tol_plus": 0.6,
+              "tol_minus": -0.6,
+              "tolerance": "-0,60|+0,60",
+              "nominal": 137,
+              "cp_color": "green",
+              "cpk_color": "green"
+            }
+          ],
+          "x": 310,
+          "y": 40,
+          "connectorX": 440,
+          "connectorY": 0
+        }
+      ],
+      "bgImage": null
+    },
+    {
+      "cards": [
+        {
+          "id": "twnsxnn",
+          "point": "CÍRCULO_11",
+          "axes": [
+            {
+              "axis": "X",
+              "pageIdx": 1,
+              "cp": 2.87,
+              "cpk": 1.25,
+              "xmed": 0.453,
+              "range": 0.71,
+              "tol_plus": 0.8,
+              "tol_minus": -0.8,
+              "tolerance": "-0,80|+0,80",
+              "nominal": 3242,
+              "cp_color": "green",
+              "cpk_color": "yellow"
+            },
+            {
+              "axis": "Y",
+              "pageIdx": 1,
+              "cp": 2.42,
+              "cpk": 2.31,
+              "xmed": -0.036,
+              "range": 0.54,
+              "tol_plus": 0.8,
+              "tol_minus": -0.8,
+              "tolerance": "-0,80|+0,80",
+              "nominal": 0,
+              "cp_color": "green",
+              "cpk_color": "green"
+            }
+          ],
+          "x": 253,
+          "y": 211,
+          "connectorX": 710,
+          "connectorY": 0
+        },
+        {
+          "id": "g6659j2",
+          "point": "CÍRCULO_3 → CÍRCULO_4",
+          "axes": [
+            {
+              "axis": "M",
+              "pageIdx": 1,
+              "cp": 1.47,
+              "cpk": 1.35,
+              "xmed": -0.04,
+              "range": 0.49,
+              "tol_plus": 0.5,
+              "tol_minus": -0.5,
+              "tolerance": "-0,50|+0,50",
+              "nominal": 68.57,
+              "cp_color": "green",
+              "cpk_color": "green"
+            }
+          ],
+          "x": 853,
+          "y": 110,
+          "connectorX": 980,
+          "connectorY": 0
+        }
+      ],
+      "bgImage": null
+    }
+  ],
+  "locked": true,
+  "modalSelections": {
+    "CÍRCULO_1": {
+      "axes": {
+        "X": 0,
+        "Y": 0
+      }
+    },
+    "CÍRCULO_2": {
+      "axes": {
+        "X": 0,
+        "Y": 0
+      }
+    },
+    "CÍRCULO_11": {
+      "axes": {
+        "X": 1,
+        "Y": 1
+      }
+    },
+    "CÍRCULO_3 → CÍRCULO_4": {
+      "axes": {
+        "M": 1
+      }
+    }
+  },
+  "modalNumPages": 2
+}

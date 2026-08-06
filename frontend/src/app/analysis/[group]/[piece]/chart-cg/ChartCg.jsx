@@ -276,14 +276,15 @@ export default function ReportClient({ params }) {
 
 function prepareChartData(weeksData, piece, group, pieceInfo) {
   if (!weeksData || weeksData.length === 0) return null;
+  const weeks = weeksData.slice(-22);
 
-  const weekLabels = weeksData.map((w) => `Week ${w.week}`);
-  const greenData = weeksData.map((w) => w.green_percent);
-  const yellowData = weeksData.map((w) => w.yellow_percent);
-  const redData = weeksData.map((w) => w.red_percent);
-  const greenValues = weeksData.map((w) => w.green);
-  const yellowValues = weeksData.map((w) => w.yellow);
-  const redValues = weeksData.map((w) => w.red);
+  const weekLabels = weeks.map((w) => `Week ${w.week}`);
+  const greenData = weeks.map((w) => w.green_percent);
+  const yellowData = weeks.map((w) => w.yellow_percent);
+  const redData = weeks.map((w) => w.red_percent);
+  const greenValues = weeks.map((w) => w.green);
+  const yellowValues = weeks.map((w) => w.yellow);
+  const redValues = weeks.map((w) => w.red);
 
   return {
     data: [
@@ -292,7 +293,6 @@ function prepareChartData(weeksData, piece, group, pieceInfo) {
         y: greenData,
         name: "CG ≤ 75%",
         type: "bar",
-        width: 0.2,
         marker: { color: "green" },
         text: greenValues,
         textposition: "inside",
@@ -304,7 +304,6 @@ function prepareChartData(weeksData, piece, group, pieceInfo) {
         y: yellowData,
         name: "75% < CG ≤ 100%",
         type: "bar", 
-        width: 0.2,
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -316,7 +315,6 @@ function prepareChartData(weeksData, piece, group, pieceInfo) {
         y: redData,
         name: "CG > 100%",
         type: "bar", 
-        width: 0.2,
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
