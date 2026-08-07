@@ -324,12 +324,16 @@ function prepareChartData(weeksData, piece, group, pieceInfo) {
     ],
     layout: {
       barmode: "stack", 
+      bargap: 0.45,
+      bargroupgap: 0,
       title: {
         text: `CG | ${piece} - ${pieceInfo?.part_name ?? ""}`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
-        title: "",
+        title: "", 
+        categoryorder: "array", 
+        categoryarray: weekLabels,
         tickangle: -45,
         tickfont: { size: 12, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
