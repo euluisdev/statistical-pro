@@ -8,6 +8,7 @@ import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
 import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcpkgroup.module.css";
 import ChartCpkPieces from "./ChartCpkPieces";
+import { useToast } from "@/app/components/providers/ToastProvider";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -24,6 +25,7 @@ export default function ReportGroupCpkClient({ params }) {
   const plotRef = useRef(null);
   const captureRef = useRef(null);
   const router = useRouter();
+  const { showToast } = useToast();
 
   //hook to save chart in the job-id
   const {
@@ -86,12 +88,12 @@ export default function ReportGroupCpkClient({ params }) {
         throw new Error(json.detail || "Erro ao gerar relatório");
       }
 
-      alert(`✓ Relatório CPK gerado!\nSemana ${selectedWeek}/${selectedYear}\nPeças processadas: ${json.pieces_processed}\n\nVerde: ${json.data.green}\nAmarelo: ${json.data.yellow}\nVermelho: ${json.data.red}`);
+      showToast(`✓ Gráfico CPK gerado!\nSemana ${selectedWeek}/${selectedYear}\nPeças processadas: ${json.pieces_processed}\n\nVerde: ${json.data.green}\nAmarelo: ${json.data.yellow}\nVermelho: ${json.data.red}`);
 
       await loadGroupReports();
     } catch (err) {
       console.error("Erro ao gerar relatório:", err);
-      alert("Erro ao gerar relatório: " + err.message);
+      showToast("Erro ao gerar relatório: " + err.message);
     } finally {
       setLoading(false);
     }

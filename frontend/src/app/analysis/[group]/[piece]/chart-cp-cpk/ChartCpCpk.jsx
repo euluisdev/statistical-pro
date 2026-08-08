@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
 import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcpcpk.module.css";
+import { useToast } from "@/app/components/providers/ToastProvider";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -24,6 +25,8 @@ export default function ReportCpCpkClient({ params }) {
   const router = useRouter();
   const cpPlotRef = useRef(null);
   const cpkPlotRef = useRef(null);
+
+  const { showToast } = useToast(); 
 
   //hook to save chart in the job-id
   const {
@@ -77,7 +80,6 @@ export default function ReportCpCpkClient({ params }) {
     try {
       const res = await fetch(`${API}/pieces/${group}/${piece}/report/cp-cpk`);
       const json = await res.json();
-      console.log(json);
 
       if (json.weeks && json.weeks.length > 0) {
         setReportData(json.weeks);
@@ -112,10 +114,10 @@ export default function ReportCpCpkClient({ params }) {
       await loadAllReports();
       await loadAvailableWeeks();
 
-      alert(`✓ Relatório da semana ${selectedWeek}/${selectedYear} gerado!`);
+      showToast(`✓ Gráfico W${selectedWeek} / ${selectedYear} gerado!`);
     } catch (err) {
       console.error("Erro ao gerar relatório:", err);
-      alert("Erro ao gerar relatório: " + err.message);
+      showToast("Erro ao gerar relatório: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -150,7 +152,7 @@ export default function ReportCpCpkClient({ params }) {
 
       <div className={styles.header}>
         <h1 className={styles.title}>
-          CP / CPK - {group} - {piece}
+          CP | CPK | {piece} - {pieceInfo?.part_name ?? ""}
         </h1>
 
         <div className={styles.controls}>
@@ -304,24 +306,47 @@ export default function ReportCpCpkClient({ params }) {
 
 function prepareChartData(weeksData, type, piece, group, pieceInfo) {
   if (!weeksData || weeksData.length === 0) return null;
+  const MAX_REPORTS = 22;
 
-  const weekLabels = weeksData.map((w) => `Week ${w.week}`);
+  //pega somente as 22 semanas mais recentes
+  const recentWeeks = weeksData.slice(-MAX_REPORTS);
+
+  //posições fixas de 0 até 21
+  const positions = recentWeeks.map((_, index) => index);
+
+  const weekLabels = recentWeeks.map((w) => `Week ${w.week}`);
 
   //select data from cp or cpk
   const prefix = type.toLowerCase();
 
-  const greenData = weeksData.map((w) => w[`${prefix}_green_percent`]);
-  const yellowData = weeksData.map((w) => w[`${prefix}_yellow_percent`]);
-  const redData = weeksData.map((w) => w[`${prefix}_red_percent`]);
+  const greenData = recentWeeks.map(
+    (w) => w[`${prefix}_green_percent`]
+  );
 
-  const greenValues = weeksData.map((w) => w[`${prefix}_green`]);
-  const yellowValues = weeksData.map((w) => w[`${prefix}_yellow`]);
-  const redValues = weeksData.map((w) => w[`${prefix}_red`]);
+  const yellowData = recentWeeks.map(
+    (w) => w[`${prefix}_yellow_percent`]
+  );
+
+  const redData = recentWeeks.map(
+    (w) => w[`${prefix}_red_percent`]
+  );
+
+  const greenValues = recentWeeks.map(
+    (w) => w[`${prefix}_green`]
+  );
+
+  const yellowValues = recentWeeks.map(
+    (w) => w[`${prefix}_yellow`]
+  );
+
+  const redValues = recentWeeks.map(
+    (w) => w[`${prefix}_red`]
+  );
 
   return {
     data: [
       {
-        x: weekLabels,
+        x: positions,
         y: greenData,
         name: `${type} ≥ 1,33`,
         type: "bar",
@@ -332,7 +357,7 @@ function prepareChartData(weeksData, type, piece, group, pieceInfo) {
         hovertemplate: `<b>%{x}</b><br>Verde: %{text} (%{y:.1f}%)<extra></extra>`,
       },
       {
-        x: weekLabels,
+        x: positions,
         y: yellowData,
         name: `1 ≤ ${type} < 1,33`,
         type: "bar",
@@ -343,7 +368,7 @@ function prepareChartData(weeksData, type, piece, group, pieceInfo) {
         hovertemplate: `<b>%{x}</b><br>Amarelo: %{text} (%{y:.1f}%)<extra></extra>`,
       },
       {
-        x: weekLabels,
+        x: positions,
         y: redData,
         name: `${type} < 1`,
         type: "bar",
@@ -362,8 +387,16 @@ function prepareChartData(weeksData, type, piece, group, pieceInfo) {
       },
       xaxis: {
         title: "",
+        range: [-0.5, 21.5],
+        tickmode: "array",
+        tickvals: positions,
+        ticktext: weekLabels,
         tickangle: -45,
-        tickfont: { size: 11, color: "black", weight: "bold" },
+        tickfont: {
+          size: 11,
+          color: "black",
+          weight: "bold"
+        },
         gridcolor: "#e2e8f0",
         showgrid: true,
       },

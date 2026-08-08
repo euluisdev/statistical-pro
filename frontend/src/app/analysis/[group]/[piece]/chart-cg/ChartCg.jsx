@@ -276,15 +276,44 @@ export default function ReportClient({ params }) {
 
 function prepareChartData(weeksData, piece, group, pieceInfo) {
   if (!weeksData || weeksData.length === 0) return null;
-  const weeks = weeksData.slice(-22);
+  const recentWeeks = weeksData.slice(-22);
 
-  const weekLabels = weeks.map((w) => `Week ${w.week}`);
-  const greenData = weeks.map((w) => w.green_percent);
-  const yellowData = weeks.map((w) => w.yellow_percent);
-  const redData = weeks.map((w) => w.red_percent);
-  const greenValues = weeks.map((w) => w.green);
-  const yellowValues = weeks.map((w) => w.yellow);
-  const redValues = weeks.map((w) => w.red);
+  //sempre existem 22 posições no eixo X
+  const weekLabels = Array.from(
+    { length: 22 },
+    (_, i) => recentWeeks[i] ? `Week ${recentWeeks[i].week}` : ""
+  );
+
+  //dados reais
+  const greenData = Array.from(
+    { length: 22 },
+    (_, i) => recentWeeks[i]?.green_percent ?? 0
+  );
+
+  const yellowData = Array.from(
+    { length: 22 },
+    (_, i) => recentWeeks[i]?.yellow_percent ?? 0
+  );
+
+  const redData = Array.from(
+    { length: 22 },
+    (_, i) => recentWeeks[i]?.red_percent ?? 0
+  );
+
+  const greenValues = Array.from(
+    { length: 22 },
+    (_, i) => recentWeeks[i]?.green ?? ""
+  );
+
+  const yellowValues = Array.from(
+    { length: 22 },
+    (_, i) => recentWeeks[i]?.yellow ?? ""
+  );
+
+  const redValues = Array.from(
+    { length: 22 },
+    (_, i) => recentWeeks[i]?.red ?? ""
+  );
 
   return {
     data: [
@@ -303,7 +332,7 @@ function prepareChartData(weeksData, piece, group, pieceInfo) {
         x: weekLabels,
         y: yellowData,
         name: "75% < CG ≤ 100%",
-        type: "bar", 
+        type: "bar",
         marker: { color: "yellow" },
         text: yellowValues,
         textposition: "inside",
@@ -314,7 +343,7 @@ function prepareChartData(weeksData, piece, group, pieceInfo) {
         x: weekLabels,
         y: redData,
         name: "CG > 100%",
-        type: "bar", 
+        type: "bar",
         marker: { color: "red" },
         text: redValues,
         textposition: "inside",
@@ -323,21 +352,18 @@ function prepareChartData(weeksData, piece, group, pieceInfo) {
       },
     ],
     layout: {
-      barmode: "stack", 
-      bargap: 0.45,
-      bargroupgap: 0,
+      barmode: "stack",
       title: {
         text: `CG | ${piece} - ${pieceInfo?.part_name ?? ""}`,
         font: { size: 22, weight: "bold", color: "black" },
       },
       xaxis: {
-        title: "", 
-        categoryorder: "array", 
-        categoryarray: weekLabels,
+        title: "",
         tickangle: -45,
         tickfont: { size: 12, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
-        showgrid: true,
+        showgrid: true, 
+          range: [-0.5, 21.5],
       },
       yaxis: {
         title: "",

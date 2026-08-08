@@ -73,19 +73,56 @@
           "backgroundColor": "transparent"
         },
         {
-          "id": "image-1780080679935",
+          "id": "text-1780080693430",
+          "type": "text",
+          "content": "______________________________________________________________________________________________________________________________________________________________",
+          "x": 46.59028625488281,
+          "y": 15,
+          "width": 1070.2291412353516,
+          "height": 41,
+          "fontSize": 16,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#000000",
+          "textAlign": "left",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "image-1786152510287",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_2260",
-            "piece": "51966401",
+            "piece": "53488040",
             "page_type": "cg",
-            "filename": "f51966401_20260529_155052_408519.png",
-            "url": "/static/jobs/44865434-dd6d-41ae-9706-7b5aa39660f9/CONJUNTO_2260/51966401/cg/f51966401_20260529_155052_408519.png"
+            "filename": "f53488040_20260807_222804_811722.png",
+            "url": "/static/jobs/b0ba7c6b-e4c5-4e1b-bf0c-8d1af86b556d/CONJUNTO_2260/53488040/cg/f53488040_20260807_222804_811722.png"
           },
           "x": 24,
           "y": 120,
           "width": 1074,
           "height": 650
+        }
+      ]
+    },
+    {
+      "id": 1786156312677,
+      "elements": [
+        {
+          "id": "text-1780080605678",
+          "type": "text",
+          "content": "ITAESBRA",
+          "x": 992.1805725097656,
+          "y": 0,
+          "width": 129.81942749023438,
+          "height": 64,
+          "fontSize": 24,
+          "fontWeight": "normal",
+          "fontStyle": "normal",
+          "textDecoration": "none",
+          "color": "#ff0000",
+          "textAlign": "left",
+          "backgroundColor": "transparent"
         },
         {
           "id": "text-1780080693430",
@@ -102,11 +139,26 @@
           "color": "#000000",
           "textAlign": "left",
           "backgroundColor": "transparent"
+        },
+        {
+          "id": "image-1786156326162",
+          "type": "image",
+          "chart": {
+            "group": "CONJUNTO_2260",
+            "piece": "53488040",
+            "page_type": "cp_cpk",
+            "filename": "f53488040_20260807_232946_246708.png",
+            "url": "/static/jobs/b0ba7c6b-e4c5-4e1b-bf0c-8d1af86b556d/CONJUNTO_2260/53488040/cp_cpk/f53488040_20260807_232946_246708.png"
+          },
+          "x": 24,
+          "y": 120,
+          "width": 1074,
+          "height": 650
         }
       ]
     }
   ],
   "pageOrientation": "landscape",
   "reportName": "Relatório sem título",
-  "updated_at": "2026-05-29T18:53:44.290434"
+  "updated_at": "2026-08-08T02:32:07.224871"
 }
