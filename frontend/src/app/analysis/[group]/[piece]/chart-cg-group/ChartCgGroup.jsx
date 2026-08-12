@@ -2,17 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { ArrowBigDown, SaveAll, Undo2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowBigDown, ArrowBigRight, Grid3x3, SaveAll, Undo2 } from "lucide-react";
 import { useSaveChartToJob } from "@/app/hooks/useSaveChartToJob";
 import { SaveChartModal } from "@/app/components/common/SaveChartModal";
 import styles from "./chartcggroup.module.css";
-import ChartCgPieces from "./ChartCgPieces"; 
+import ChartCgPieces from "./ChartCgPieces";
 import { useToast } from "@/app/components/providers/ToastProvider";
 
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false }); 
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 export default function ReportGroupClient({ params }) {
-  const { group } = params;
+  const { group, piece } = params;
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -23,6 +24,8 @@ export default function ReportGroupClient({ params }) {
 
   const plotRef = useRef(null);
   const captureRef = useRef(null);
+  const router = useRouter();
+  
   const { showToast } = useToast();
 
   //hook to save chart in the job-id
@@ -31,7 +34,7 @@ export default function ReportGroupClient({ params }) {
     showSaveModal,
     saveLoading,
     openSaveModal,
-    saveChart, 
+    saveChart,
     saveDomChart,
     closeSaveModal
   } = useSaveChartToJob("cg_group");
@@ -87,9 +90,9 @@ export default function ReportGroupClient({ params }) {
         throw new Error(json.detail || "Erro ao gerar relatório");
       }
 
-      showToast(`✓ Relatório gerado!\nSemana ${selectedWeek}/${selectedYear}\nPeças processadas: ${json.pieces_processed}\n\nVerde: ${json.data.green}\nAmarelo: ${json.data.yellow}\nVermelho: ${json.data.red}`);
+      showToast(`✓ Gráfico da W${selectedWeek}/${selectedYear} Gerado!\nPeças processadas: ${json.pieces_processed}`);
 
-      // Recarrega relatórios
+      //recarrega relatórios
       await loadGroupReports();
     } catch (err) {
       console.error("Erro ao gerar relatório:", err);
@@ -190,6 +193,18 @@ export default function ReportGroupClient({ params }) {
           >
             <Undo2 size={33} />
           </button>
+
+          <button
+            onClick={() => router.push(`/analysis/${group}/${piece}`)}
+            className={styles.btnMenu}
+            title="Ir para Analysis"
+          >
+            <Grid3x3 size={33} />
+          </button>
+
+          <button className={styles.btnMenu} title="Report Builder" >
+            <ArrowBigRight size={33} onClick={() => router.push(`/analysis/${group}/${piece}/report-builder`)} />
+          </button>
         </div>
 
         {reportData && reportData.length > 0 && (
@@ -254,49 +269,90 @@ export default function ReportGroupClient({ params }) {
 function prepareChartData(reportsData, group, piecesCount) {
   if (!reportsData || reportsData.length === 0) return null;
 
-  const weekLabels = reportsData.map((r) => `Week ${r.week}`);
+  //pega somente as 22 semanas mais recentes
+  const recentData = reportsData.slice(-22);
 
-  const greenData = reportsData.map((r) => r.green_percent);
-  const yellowData = reportsData.map((r) => r.yellow_percent);
-  const redData = reportsData.map((r) => r.red_percent);
+  //weeks reais que possuem dados
+  const weekLabels = recentData.map((r) => `Week ${r.week}`);
 
-  const greenValues = reportsData.map((r) => r.green);
-  const yellowValues = reportsData.map((r) => r.yellow);
-  const redValues = reportsData.map((r) => r.red);
+  //completa até 22 posições
+  const fixedLabels = [
+    ...weekLabels,
+    ...Array(22 - weekLabels.length).fill("")
+  ];
+
+  const greenData = [
+    ...recentData.map((r) => r.green_percent),
+    ...Array(22 - recentData.length).fill(null)
+  ];
+
+  const yellowData = [
+    ...recentData.map((r) => r.yellow_percent),
+    ...Array(22 - recentData.length).fill(null)
+  ];
+
+  const redData = [
+    ...recentData.map((r) => r.red_percent),
+    ...Array(22 - recentData.length).fill(null)
+  ];
+
+  const greenValues = [
+    ...recentData.map((r) => r.green),
+    ...Array(22 - recentData.length).fill(null)
+  ];
+
+  const yellowValues = [
+    ...recentData.map((r) => r.yellow),
+    ...Array(22 - recentData.length).fill(null)
+  ];
+
+  const redValues = [
+    ...recentData.map((r) => r.red),
+    ...Array(22 - recentData.length).fill(null)
+  ];
 
   return {
     data: [
       {
-        x: weekLabels,
+        x: fixedLabels,
         y: greenData,
         name: "CG ≤ 75%",
         type: "bar",
         marker: { color: "green" },
         text: greenValues,
-        textposition: "inside",
-        textfont: { color: "black", size: 14, weight: "bold" },
+        textposition: "inside", 
+        textangle: 0,
+        insidetextanchor: "middle",
+        constraintext: "none", 
+        textfont: { color: "black", size: 16, weight: "bold" },
         hovertemplate: "<b>%{x}</b><br>Verde: %{text} pontos (%{y:.1f}%)<extra></extra>",
       },
       {
-        x: weekLabels,
+        x: fixedLabels,
         y: yellowData,
         name: "75% < CG ≤ 100%",
         type: "bar",
         marker: { color: "yellow" },
         text: yellowValues,
-        textposition: "inside",
-        textfont: { color: "black", size: 14, weight: "bold" },
+        textposition: "inside", 
+        textangle: 0,
+        insidetextanchor: "middle",
+        constraintext: "none",
+        textfont: { color: "black", size: 16, weight: "bold" },
         hovertemplate: "<b>%{x}</b><br>Amarelo: %{text} pontos (%{y:.1f}%)<extra></extra>",
       },
       {
-        x: weekLabels,
+        x: fixedLabels,
         y: redData,
         name: "CG > 100%",
         type: "bar",
         marker: { color: "red" },
         text: redValues,
-        textposition: "inside",
-        textfont: { color: "white", size: 14, weight: "bold" },
+        textposition: "inside", 
+        textangle: 0,
+        insidetextanchor: "middle",
+        constraintext: "none",
+        textfont: { color: "white", size: 16, weight: "bold" },
         hovertemplate: "<b>%{x}</b><br>Vermelho: %{text} pontos (%{y:.1f}%)<extra></extra>",
       },
     ],
@@ -311,6 +367,7 @@ function prepareChartData(reportsData, group, piecesCount) {
         tickangle: -45,
         tickfont: { size: 13, color: "black", weight: "bold" },
         gridcolor: "#e2e8f0",
+          range: [-0.5, 21.5],
       },
       yaxis: {
         title: "",
@@ -333,4 +390,7 @@ function prepareChartData(reportsData, group, piecesCount) {
       hovermode: "x unified",
     },
   };
-}
+}  
+ 
+ 
+ 
