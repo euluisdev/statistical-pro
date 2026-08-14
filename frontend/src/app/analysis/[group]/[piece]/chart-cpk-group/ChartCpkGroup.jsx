@@ -307,6 +307,71 @@ function prepareChartData(reportsData, group, piecesCount) {
     ...Array(22 - recentData.length).fill(null)
   ];
 
+  const annotations = [];
+
+  recentData.forEach((report, index) => {
+    const green = report.green_percent || 0;
+    const yellow = report.yellow_percent || 0;
+    const red = report.red_percent || 0;
+
+    // Verde
+    if (report.green != null) {
+      annotations.push({
+        x: fixedLabels[index],
+        y: green / 2,
+        xref: "x",
+        yref: "y",
+        text: String(report.green),
+        showarrow: false,
+        xanchor: "center",
+        yanchor: "middle",
+        font: {
+          color: "black",
+          size: 16,
+          weight: "bold",
+        },
+      });
+    }
+
+    // Amarelo
+    if (report.yellow != null) {
+      annotations.push({
+        x: fixedLabels[index],
+        y: green + yellow / 2,
+        xref: "x",
+        yref: "y",
+        text: String(report.yellow),
+        showarrow: false,
+        xanchor: "center",
+        yanchor: "middle",
+        font: {
+          color: "black",
+          size: 16,
+          weight: "bold",
+        },
+      });
+    }
+
+    // Vermelho
+    if (report.red != null) {
+      annotations.push({
+        x: fixedLabels[index],
+        y: green + yellow + red / 2,
+        xref: "x",
+        yref: "y",
+        text: String(report.red),
+        showarrow: false,
+        xanchor: "center",
+        yanchor: "middle",
+        font: {
+          color: "white",
+          size: 16,
+          weight: "bold",
+        },
+      });
+    }
+  });
+
   return {
     data: [
       {
@@ -315,13 +380,7 @@ function prepareChartData(reportsData, group, piecesCount) {
         name: "CPK ≥ 1,33",
         type: "bar",
         marker: { color: "green" },
-        text: greenValues,
-        textposition: "inside", 
-        textangle: 0,
-        insidetextanchor: "middle",
-        constraintext: "none", 
-        cliponaxis: false, 
-        textfont: { color: "black", size: 14, weight: "bold" },
+        customdata: greenValues,
         hovertemplate: "<b>%{x}</b><br>Verde: %{text} pontos (%{y:.1f}%)<extra></extra>",
       },
       {
@@ -330,13 +389,7 @@ function prepareChartData(reportsData, group, piecesCount) {
         name: "1 ≤ CPK < 1,33",
         type: "bar",
         marker: { color: "yellow" },
-        text: yellowValues,
-        textposition: "inside", 
-        textangle: 0,
-        insidetextanchor: "middle",
-        constraintext: "none", 
-        cliponaxis: false, 
-        textfont: { color: "black", size: 14, weight: "bold" },
+        customdata: yellowValues,
         hovertemplate: "<b>%{x}</b><br>Amarelo: %{text} pontos (%{y:.1f}%)<extra></extra>",
       },
       {
@@ -345,13 +398,7 @@ function prepareChartData(reportsData, group, piecesCount) {
         name: "CPK < 1",
         type: "bar",
         marker: { color: "red" },
-        text: redValues,
-        textposition: "inside", 
-        textangle: 0,
-        insidetextanchor: "middle",
-        constraintext: "none", 
-        cliponaxis: false, 
-        textfont: { color: "white", size: 14, weight: "bold" },
+        customdata: redValues,
         hovertemplate: "<b>%{x}</b><br>Vermelho: %{text} pontos (%{y:.1f}%)<extra></extra>",
       },
     ],
@@ -365,8 +412,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         title: "",
         tickangle: -45,
         tickfont: { size: 13, color: "black", weight: "bold" },
-        gridcolor: "#e2e8f0", 
-          range: [-0.5, 21.5],
+        gridcolor: "#e2e8f0",
+        range: [-0.5, 21.5],
       },
       yaxis: {
         title: "",
@@ -385,7 +432,8 @@ function prepareChartData(reportsData, group, piecesCount) {
       },
       margin: { l: 60, r: 40, t: 80, b: 100 },
       paper_bgcolor: "white",
-      plot_bgcolor: "#d5d6d6ff",
+      plot_bgcolor: "#d5d6d6ff", 
+      annotations: annotations,
       hovermode: "x unified",
     },
   };
