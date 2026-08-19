@@ -314,7 +314,7 @@ function prepareChartData(reportsData, group, piecesCount) {
     const yellow = report.yellow_percent || 0;
     const red = report.red_percent || 0;
 
-    // Verde
+    //green
     if (report.green != null) {
       annotations.push({
         x: fixedLabels[index],
@@ -333,7 +333,7 @@ function prepareChartData(reportsData, group, piecesCount) {
       });
     }
 
-    // Amarelo
+    //yellow
     if (report.yellow != null) {
       annotations.push({
         x: fixedLabels[index],
@@ -352,7 +352,7 @@ function prepareChartData(reportsData, group, piecesCount) {
       });
     }
 
-    // Vermelho
+    //red
     if (report.red != null) {
       annotations.push({
         x: fixedLabels[index],

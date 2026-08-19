@@ -311,6 +311,75 @@ function prepareChartData(reportsData, group, piecesCount) {
     ...Array(22 - recentData.length).fill(null)
   ];
 
+  const annotations = [];
+
+  recentData.forEach((r, index) => {
+    const green = r.green_percent || 0;
+    const yellow = r.yellow_percent || 0;
+    const red = r.red_percent || 0;
+
+    const greenValue = r.green;
+    const yellowValue = r.yellow;
+    const redValue = r.red;
+
+    // Verde
+    if (greenValue !== null && greenValue !== undefined) {
+      annotations.push({
+        x: index,
+        y: green / 2,
+        xref: "x",
+        yref: "y",
+        text: String(greenValue),
+        showarrow: false,
+        font: {
+          color: "black",
+          size: 16,
+          weight: "bold",
+        },
+        xanchor: "center",
+        yanchor: "middle",
+      });
+    }
+
+    // Amarelo
+    if (yellowValue !== null && yellowValue !== undefined) {
+      annotations.push({
+        x: index,
+        y: green + yellow / 2,
+        xref: "x",
+        yref: "y",
+        text: String(yellowValue),
+        showarrow: false,
+        font: {
+          color: "black",
+          size: 16,
+          weight: "bold",
+        },
+        xanchor: "center",
+        yanchor: "middle",
+      });
+    }
+
+    // Vermelho
+    if (redValue !== null && redValue !== undefined) {
+      annotations.push({
+        x: index,
+        y: green + yellow + red / 2,
+        xref: "x",
+        yref: "y",
+        text: String(redValue),
+        showarrow: false,
+        font: {
+          color: "white",
+          size: 16,
+          weight: "bold",
+        },
+        xanchor: "center",
+        yanchor: "middle",
+      });
+    }
+  });
+
   return {
     data: [
       {
@@ -319,14 +388,9 @@ function prepareChartData(reportsData, group, piecesCount) {
         name: "CP ≥ 1,33",
         type: "bar",
         marker: { color: "green" },
-        text: greenValues,
-        textposition: "inside", 
-        textangle: 0,
-        insidetextanchor: "middle",
-        constraintext: "none", 
-        cliponaxis: false, 
+        customdata: greenValues,
         textfont: { color: "black", size: 14, weight: "bold" },
-        hovertemplate: "<b>%{x}</b><br>Verde: %{text} pontos (%{y:.1f}%)<extra></extra>",
+        hovertemplate: "<b>%{x}</b><br>Verde: %{customdata} pontos (%{y:.1f}%)<extra></extra>",
       },
       {
         x: fixedLabels,
@@ -334,14 +398,9 @@ function prepareChartData(reportsData, group, piecesCount) {
         name: "1 ≤ CP < 1,33",
         type: "bar",
         marker: { color: "yellow" },
-        text: yellowValues,
-        textposition: "inside", 
-        textangle: 0,
-        insidetextanchor: "middle",
-        constraintext: "none", 
-        cliponaxis: false, 
+        customdata: yellowValues,
         textfont: { color: "black", size: 14, weight: "bold" },
-        hovertemplate: "<b>%{x}</b><br>Amarelo: %{text} pontos (%{y:.1f}%)<extra></extra>",
+        hovertemplate: "<b>%{x}</b><br>Amarelo: %{customdata} pontos (%{y:.1f}%)<extra></extra>",
       },
       {
         x: fixedLabels,
@@ -349,18 +408,14 @@ function prepareChartData(reportsData, group, piecesCount) {
         name: "CP < 1",
         type: "bar",
         marker: { color: "red" },
-        text: redValues,
-        textposition: "inside", 
-        textangle: 0,
-        insidetextanchor: "middle",
-        constraintext: "none", 
-        cliponaxis: false, 
+        customdata: redValues,
         textfont: { color: "white", size: 14, weight: "bold" },
-        hovertemplate: "<b>%{x}</b><br>Vermelho: %{text} pontos (%{y:.1f}%)<extra></extra>",
+        hovertemplate: "<b>%{x}</b><br>Vermelho: %{customdata} pontos (%{y:.1f}%)<extra></extra>",
       },
     ],
     layout: {
-      barmode: "stack",
+      barmode: "stack", 
+      annotations, 
       title: {
         text: `CP Geral - ${group} - (${piecesCount} Peças)`,
         font: { size: 22, weight: "bold", color: "black" },
@@ -369,8 +424,8 @@ function prepareChartData(reportsData, group, piecesCount) {
         title: "",
         tickangle: -45,
         tickfont: { size: 13, color: "black", weight: "bold" },
-        gridcolor: "#e2e8f0", 
-          range: [-0.5, 21.5],
+        gridcolor: "#e2e8f0",
+        range: [-0.5, 21.5],
       },
       yaxis: {
         title: "",
