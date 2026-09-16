@@ -15,6 +15,10 @@ import os
 
 app = FastAPI(title="Statistical Project API")
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 #cors - permitir local dev do front
 app.add_middleware(
     CORSMiddleware,
