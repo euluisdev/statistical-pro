@@ -1,192 +1,148 @@
 "use client";
 
-import { Grid3x3, House } from "lucide-react";
-import "./documentation-help.css";
+import Link from "next/link";
+import {
+  ArrowRight,
+  BarChart3,
+  BookOpen,
+  FileText,
+  Workflow,
+} from "lucide-react";
+
+import DocumentationLayout from "./components/DocumentationLayout";
+import "./documentation.css";
 
 export default function DocumentationHomePage() {
   return (
-    <div className="doc-page">
-      <header className="doc-header">
-        <h1>SIX SIGMA</h1>
-        <p>Guia de Uso — Página Inicial (Home)</p>
-      </header>
+    <DocumentationLayout>
+      <div className="doc-page">
+        <header className="doc-header">
+          <h1>Guia de Uso — SIX SIGMA</h1>
 
-      <section className="doc-section">
-        <h2>Objetivo da Página</h2>
-        <p>
-          A Página Inicial é o ponto de partida do sistema SIX SIGMA.
-          Nela você executa todo o fluxo básico necessário para iniciar
-          uma análise estatística sem necessidade de treinamento prévio.
-        </p>
+          <p>
+            Documentação interna para utilização do sistema de análise
+            estatística.
+          </p>
+        </header>
 
-        <ul>
-          <li>Criar e gerenciar grupos</li>
-          <li>Criar e gerenciar peças</li>
-          <li>Importar arquivos TXT de medição</li>
-          <li>Visualizar dados extraídos</li>
-          <li>Avançar para qualquer página do sistema</li>
-        </ul>
-      </section>
+        <section className="doc-section">
+          <h2>Bem-vindo à documentação</h2>
 
-      <section className="doc-section">
-        <h2>Estrutura da Tela</h2>
-        <p>A página é dividida em três módulos principais:</p>
+          <p>
+            Este guia foi desenvolvido para auxiliar na utilização do sistema
+            SIX SIGMA, apresentando os principais recursos, fluxos de trabalho
+            e conceitos utilizados durante as análises.
+          </p>
 
-        <ol>
-          <li><strong>Gerenciador de Grupos</strong></li>
-          <li><strong>Gerenciador de Peças</strong></li>
-          <li><strong>Gerenciador de Arquivos TXT</strong></li>
-        </ol>
+          <p>
+            Utilize o menu lateral para acessar diretamente a área desejada.
+          </p>
+        </section>
 
-        <p>
-          Abaixo desses módulos existe uma barra de ações com botões para navegação
-          e, ao final da página, a tabela de dados extraídos.
-        </p>
-      </section>
+        <section className="doc-section">
+          <h2>Por onde começar?</h2>
 
-      <section className="doc-section">
-        <h2>Gerenciador de Grupos</h2>
+          <p>
+            Para realizar uma análise completa, recomenda-se seguir o fluxo
+            abaixo:
+          </p>
 
-        <p>
-          Um <strong>Conjunto</strong> representa um template lógico de peças,
-          como um produto, projeto ou família de componentes do carro.
-        </p>
+          <ol>
+            <li>Selecionar ou criar um conjunto.</li>
+            <li>Selecionar ou criar uma peça.</li>
+            <li>Importar os arquivos de medição.</li>
+            <li>Validar os dados extraídos.</li>
+            <li>Realizar a análise estatística.</li>
+            <li>Interpretar os resultados.</li>
+            <li>Gerar o relatório final.</li>
+          </ol>
+        </section>
 
-        <h3>Funcionalidades</h3>
-        <ul>
-          <li>Criar novo grupo</li>
-          <li>Selecionar grupo existente</li>
-          <li>Excluir grupo</li>
-        </ul>
+        <section className="doc-section">
+          <h2>Acesso rápido</h2>
 
-        <h3>Como usar</h3>
-        <ol>
-          <li>Digite o nome do grupo</li>
-          <li>Clique em <strong>Adicionar</strong></li>
-          <li>Selecione o grupo na lista</li>
-        </ol>
+          <div className="doc-quick-links">
+            <Link
+              href="/documentation/home-page"
+              className="doc-quick-link"
+            >
+              <div className="doc-quick-link-icon">
+                <BookOpen size={20} />
+              </div>
 
-        <div className="doc-alert">
-          Ao selecionar um grupo, o sistema carrega automaticamente
-          todas as peças vinculadas a ele.
-        </div>
-      </section>
+              <div>
+                <strong>Página Inicial</strong>
+                <span>
+                  Aprenda a criar conjuntos, peças e importar arquivos.
+                </span>
+              </div>
 
-      <section className="doc-section">
-        <h2>Gerenciador de Peças</h2>
+              <ArrowRight size={17} />
+            </Link>
 
-        <p>
-          Uma <strong>Peça</strong> representa o item físico
-          que será analisado dentro de um grupo.
-        </p>
+            <Link
+              href="/documentation/analysis"
+              className="doc-quick-link"
+            >
+              <div className="doc-quick-link-icon">
+                <BarChart3 size={20} />
+              </div>
 
-        <div className="doc-warning">
-          É obrigatório selecionar um grupo antes de criar uma peça.
-        </div>
+              <div>
+                <strong>Análise</strong>
+                <span>
+                  Entenda o fluxo de análise e visualização dos resultados.
+                </span>
+              </div>
 
-        <h3>Funcionalidades</h3>
-        <ul>
-          <li>Criar nova peça</li>
-          <li>Selecionar peça existente</li>
-          <li>Excluir peça</li>
-        </ul>
+              <ArrowRight size={17} />
+            </Link>
 
-        <h3>Como usar</h3>
-        <ol>
-          <li>Selecione um grupo</li>
-          <li>Digite o nome da peça</li>
-          <li>Clique em <strong>Adicionar</strong></li>
-          <li>Selecione a peça criada</li>
-        </ol>
-      </section>
+            <Link
+              href="/documentation/report-builder"
+              className="doc-quick-link"
+            >
+              <div className="doc-quick-link-icon">
+                <FileText size={20} />
+              </div>
 
-      <section className="doc-section">
-        <h2>Importação de Arquivos TXT</h2>
+              <div>
+                <strong>Report Builder</strong>
+                <span>
+                  Consulte o processo de montagem e exportação do relatório.
+                </span>
+              </div>
 
-        <p>
-          Este módulo permite importar arquivos de medição
-          no formato <strong>.txt</strong>.
-        </p>
+              <ArrowRight size={17} />
+            </Link>
 
-        <h3>Pré-requisitos</h3>
-        <ul>
-          <li>Grupo selecionado</li>
-          <li>Peça selecionada</li>
-        </ul>
+            <Link
+              href="/documentation/workflows"
+              className="doc-quick-link"
+            >
+              <div className="doc-quick-link-icon">
+                <Workflow size={20} />
+              </div>
 
-        <h3>Fluxo de uso</h3>
-        <ol>
-          <li>Selecionar o arquivo TXT</li>
-          <li>Aguardar a leitura automática</li>
-          <li>Visualizar os dados extraídos</li>
-        </ol>
+              <div>
+                <strong>Fluxos de Trabalho</strong>
+                <span>
+                  Consulte os procedimentos completos de utilização.
+                </span>
+              </div>
 
-        <div className="doc-alert">
-          Os dados extraídos são armazenados temporariamente
-          no navegador e exibidos em formato de tabela.
-        </div>
-      </section>
+              <ArrowRight size={17} />
+            </Link>
+          </div>
+        </section>
 
-      <section className="doc-section">
-        <h2>Tabela de Dados Extraídos</h2>
-
-        <p>
-          Após a importação, os dados são exibidos em uma tabela dinâmica.
-        </p>
-
-        <ul>
-          <li>As colunas são geradas automaticamente</li>
-          <li>Os valores refletem exatamente o conteúdo do TXT</li>
-          <li>A tabela serve para validação antes da análise</li>
-        </ul>
-      </section>
-
-      <section className="doc-section">
-        <h2>Barra de Ações</h2>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Ícone</th>
-              <th>Função</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><House /></td>
-              <td>Reseta todo o fluxo da página</td>
-            </tr>
-            <tr>
-              <td><Grid3x3 /></td>
-              <td>Avança para a página de Análise</td>
-            </tr>
-            <tr>
-              <td>📊</td>
-              <td>Funcionalidades futuras</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section className="doc-section">
-        <h2>Fluxo Completo de Uso</h2>
-
-        <ol>
-          <li>Criar grupo</li>
-          <li>Selecionar grupo</li>
-          <li>Criar peça</li>
-          <li>Selecionar peça</li>
-          <li>Importar arquivo TXT</li>
-          <li>Validar dados</li>
-          <li>Ir para Análise</li>
-        </ol>
-      </section>
-
-      <footer className="doc-footer">
-        <p>Sistema SIX SIGMA — Documentação Interna</p>
-      </footer>
-    </div>
+        <footer className="doc-footer">
+          <p>Sistema SIX SIGMA — Documentação Interna</p>
+        </footer>
+      </div>
+    </DocumentationLayout>
   );
-}
+}  
+
   
  

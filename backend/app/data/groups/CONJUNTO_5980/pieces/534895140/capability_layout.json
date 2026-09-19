@@ -73,10 +73,10 @@
               "cpk_color": "green"
             }
           ],
-          "x": 310,
-          "y": 40,
-          "connectorX": 440,
-          "connectorY": 0
+          "x": 905,
+          "y": 132,
+          "connectorX": 607,
+          "connectorY": 352
         }
       ],
       "bgImage": null
@@ -147,9 +147,52 @@
         }
       ],
       "bgImage": null
+    },
+    {
+      "cards": [
+        {
+          "id": "d53xn1f",
+          "point": "CÍRCULO_5",
+          "axes": [
+            {
+              "axis": "Y",
+              "pageIdx": 2,
+              "cp": 2.12,
+              "cpk": 1.47,
+              "xmed": -0.215,
+              "range": 0.53,
+              "tol_plus": 0.7,
+              "tol_minus": -0.7,
+              "tolerance": "-0,70|+0,70",
+              "nominal": -141.23,
+              "cp_color": "green",
+              "cpk_color": "green"
+            },
+            {
+              "axis": "Z",
+              "pageIdx": 2,
+              "cp": 1.23,
+              "cpk": -0.39,
+              "xmed": -0.919,
+              "range": 1.84,
+              "tol_plus": 0.7,
+              "tol_minus": -0.7,
+              "tolerance": "-0,70|+0,70",
+              "nominal": 150.36,
+              "cp_color": "yellow",
+              "cpk_color": "red"
+            }
+          ],
+          "x": 40,
+          "y": 179,
+          "connectorX": 170,
+          "connectorY": 140
+        }
+      ],
+      "bgImage": null
     }
   ],
-  "locked": true,
+  "locked": false,
   "modalSelections": {
     "CÍRCULO_1": {
       "axes": {
@@ -173,7 +216,13 @@
       "axes": {
         "M": 1
       }
+    },
+    "CÍRCULO_5": {
+      "axes": {
+        "Y": 2,
+        "Z": 2
+      }
     }
   },
-  "modalNumPages": 2
+  "modalNumPages": 3
 }
