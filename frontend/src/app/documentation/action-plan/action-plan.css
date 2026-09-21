@@ -1,0 +1,38 @@
+.action-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  margin: 18px 0;
+  padding: 18px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #2563eb;
+}
+
+.action-feature strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 15px;
+  color: #111827;
+}
+
+.action-feature p {
+  margin-bottom: 8px;
+}
+
+.action-feature ul {
+  margin-bottom: 0;
+}
+
+.doc-navigation-next {
+  margin-left: auto;
+}  
+ 
+ 

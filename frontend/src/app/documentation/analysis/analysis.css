@@ -1,0 +1,55 @@
+.analysis-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-top: 20px;
+}
+
+.analysis-card {
+  display: grid;
+
+  grid-template-columns: 32px 1fr;
+  column-gap: 12px;
+
+  padding: 18px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #2563eb;
+}
+
+.analysis-card strong {
+  align-self: center;
+
+  font-size: 15px;
+  color: #111827;
+}
+
+.analysis-card span {
+  grid-column: 2;
+
+  margin-top: 4px;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  color: #6b7280;
+}
+
+.doc-navigation-next {
+  margin-left: auto;
+}
+
+@media (max-width: 750px) {
+  .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+}  
+ 
+ 

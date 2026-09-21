@@ -1,0 +1,198 @@
+/* =========================================================
+   HOME PAGE — ACESSO RÁPIDO
+   ========================================================= */
+
+.doc-quick-links {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.doc-quick-link {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  text-decoration: none;
+
+  color: #374151;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.doc-quick-link:hover {
+  background: #f9fafb;
+
+  border-color: #d1d5db;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.doc-quick-link-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #f3f4f6;
+
+  color: #374151;
+}
+
+.doc-quick-link > div:nth-child(2) {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.doc-quick-link strong {
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #1f2937;
+}
+
+.doc-quick-link span {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+
+  color: #6b7280;
+}
+
+.doc-quick-link > svg {
+  flex-shrink: 0;
+
+  color: #9ca3af;
+
+  transition:
+    transform 0.15s ease,
+    color 0.15s ease;
+}
+
+.doc-quick-link:hover > svg {
+  color: #374151;
+
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   NAVEGAÇÃO ENTRE PÁGINAS
+   ========================================================= */
+
+.doc-page-navigation {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-top: 40px;
+}
+
+.doc-navigation-link {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  text-decoration: none;
+
+  color: #374151;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.doc-navigation-link:hover {
+  background: #f9fafb;
+
+  border-color: #d1d5db;
+}
+
+.doc-navigation-link div {
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-navigation-link small {
+  font-size: 11px;
+
+  color: #9ca3af;
+}
+
+.doc-navigation-link strong {
+  margin-top: 2px;
+
+  font-size: 13px;
+
+  color: #1f2937;
+}
+
+.doc-navigation-next {
+  margin-left: auto;
+
+  text-align: right;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .doc-quick-link {
+    padding: 12px;
+  }
+
+  .doc-quick-link-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .doc-page-navigation {
+    flex-direction: column;
+  }
+
+  .doc-navigation-next {
+    margin-left: 0;
+
+    text-align: left;
+  }
+}
+ 

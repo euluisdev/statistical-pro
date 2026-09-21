@@ -1,0 +1,50 @@
+.concept-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+
+  margin-top: 18px;
+  padding: 20px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #2563eb;
+}
+
+.concept-box strong {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 16px;
+  color: #111827;
+}
+
+.concept-box p {
+  margin-bottom: 12px;
+}
+
+.formula {
+  display: inline-block;
+
+  margin: 6px 0 12px;
+  padding: 10px 14px;
+
+  border-radius: 6px;
+
+  background: #f3f4f6;
+
+  color: #111827;
+
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.doc-navigation-next {
+  margin-left: auto;
+}  
+ 
+ 

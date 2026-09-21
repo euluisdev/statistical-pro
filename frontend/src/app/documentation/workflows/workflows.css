@@ -1,0 +1,70 @@
+.workflow {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-top: 24px;
+}
+
+.workflow-step {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 20px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #2563eb;
+}
+
+.workflow-step > span {
+  position: absolute;
+
+  top: 12px;
+  right: 14px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #9ca3af;
+}
+
+.workflow-step strong {
+  margin-top: 12px;
+
+  font-size: 15px;
+  color: #111827;
+}
+
+.workflow-step p {
+  margin-top: 6px;
+  margin-bottom: 0;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  color: #6b7280;
+}
+
+@media (max-width: 850px) {
+  .workflow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .workflow {
+    grid-template-columns: 1fr;
+  }
+} 
+ 
+ 
+ 
