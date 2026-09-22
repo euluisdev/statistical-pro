@@ -1,38 +1,55 @@
-.analysis-grid {
-  display: grid;
+/* =========================================================
+   ANÁLISE — RECURSOS
+   ========================================================= */
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.analysis-resource-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.analysis-resource {
+  display: flex;
+  align-items: center;
 
   gap: 14px;
 
-  margin-top: 20px;
-}
-
-.analysis-card {
-  display: grid;
-
-  grid-template-columns: 32px 1fr;
-  column-gap: 12px;
-
-  padding: 18px;
-
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  padding: 15px 16px;
 
   background: #ffffff;
 
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.analysis-resource-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #eff6ff;
   color: #2563eb;
 }
 
-.analysis-card strong {
-  align-self: center;
+.analysis-resource strong {
+  display: block;
 
-  font-size: 15px;
-  color: #111827;
+  font-size: 14px;
+  color: #1f2937;
 }
 
-.analysis-card span {
-  grid-column: 2;
+.analysis-resource span {
+  display: block;
 
   margin-top: 4px;
 
@@ -42,14 +59,199 @@
   color: #6b7280;
 }
 
-.doc-navigation-next {
-  margin-left: auto;
+
+/* =========================================================
+   CP / CPK
+   ========================================================= */
+
+.cpk-guide {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-top: 22px;
 }
 
-@media (max-width: 750px) {
-  .analysis-grid {
+.cpk-guide-item {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 15px 16px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  background: #f9fafb;
+}
+
+.cpk-guide-item svg {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  color: #166534;
+}
+
+.cpk-guide-symbol {
+  width: 20px;
+  height: 20px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f59e0b;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cpk-guide-item strong {
+  display: block;
+
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.cpk-guide-item span {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   FLUXO ANÁLISE → REPORT BUILDER
+   ========================================================= */
+
+.analysis-report-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  margin-top: 24px;
+  padding: 20px;
+
+  background: #f9fafb;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.analysis-report-flow > div:not(.analysis-report-arrow) {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 7px;
+
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.analysis-report-flow svg {
+  color: #2563eb;
+}
+
+.analysis-report-arrow {
+  color: #9ca3af;
+
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   FLUXO COMPLETO
+   ========================================================= */
+
+.analysis-flow {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.analysis-flow-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.analysis-flow-item strong {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  font-size: 12px;
+}
+
+.analysis-flow-item span {
+  font-size: 13px;
+  line-height: 1.4;
+
+  color: #374151;
+}
+
+
+/*RESPONSIVIDADE*/
+
+@media (max-width: 700px) {
+  .analysis-flow {
     grid-template-columns: 1fr;
   }
-}  
+
+  .analysis-report-flow {
+    flex-direction: column;
+  }
+
+  .analysis-report-arrow {
+    transform: rotate(90deg);
+  }
+}
  
  
