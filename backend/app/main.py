@@ -9,6 +9,7 @@ from .routes.control_chart import router as control_chart_router
 from .routes.capability import router as capability_router
 from .routes.reportbuilder_router import router as reportbuilder_router 
 from .routes.action_plan_router import router as action_plan_router
+from .routes.report_pdf import router as report_pdf_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os 
@@ -37,6 +38,7 @@ app.include_router(control_chart_router)
 app.include_router(capability_router) 
 app.include_router(reportbuilder_router)
 app.include_router(action_plan_router) 
+app.include_router(report_pdf_router)   
 
 JOBS_PATH = os.path.join(os.path.dirname(__file__), "data", "jobs")
 
