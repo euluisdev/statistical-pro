@@ -8,7 +8,7 @@ import { uid, clamp } from "./Helpers";
 import CanvasPage, { CANVAS_W, CANVAS_H } from "./CanvasPage";
 import ConfigModal from "./ConfigModal";
 import { Camera, Grid3x3, LockKeyhole, LockKeyholeOpen, SaveAll, Settings } from "lucide-react";
-import { useSaveCapabilityToJob } from "@/app/hooks/useSaveCapabilityToJob"; 
+import { useSaveCapabilityToJob } from "@/app/hooks/useSaveCapabilityToJob";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -21,12 +21,13 @@ export default function CapabilityPage() {
   const [pages, setPages] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [pieceInfo, setPieceInfo] = useState(null);
 
   //num pages
   const [savedModalSelections, setSavedModalSelections] = useState(null);
   const [savedModalNumPages, setSavedModalNumPages] = useState(null);
 
-  const { triggerSave } = useSaveCapabilityToJob(pages, CanvasPage); 
+  const { triggerSave } = useSaveCapabilityToJob(pages, CanvasPage);
 
   //here eu carrego layout salvo do backend ao montar
   useEffect(() => {
@@ -41,6 +42,21 @@ export default function CapabilityPage() {
         if (d.modalNumPages) setSavedModalNumPages(d.modalNumPages);
       })
       .catch(() => { });
+  }, [group, piece]);
+
+  useEffect(() => {
+    async function loadPieceInfo() {
+      try {
+        const response = await fetch(`${API}/pieces/${group}/${piece}`);
+        const data = await response.json();
+
+        setPieceInfo(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadPieceInfo();
   }, [group, piece]);
 
   //here persisto layout + estado do modal no backend -debounced 800ms
@@ -202,12 +218,12 @@ export default function CapabilityPage() {
 
           <div className={styles.toolbarCenter}>
             <span className={styles.toolbarTitle}>CAPABILITY REPORT</span>
-            <span className={styles.toolbarSub}>{group} / {piece}</span>
+            <span className={styles.toolbarSub}>{pieceInfo?.part_name} / {piece}</span>
           </div>
 
           <button className={styles.btnMenu} title="SAVE PNG" onClick={() => triggerSave(group, piece)}>
             <SaveAll size={30} />
-          </button> 
+          </button>
 
           <div className={styles.toolbarRight}>
             <button

@@ -197,7 +197,7 @@ export default function ConfigModal({
                   onClick={() => setNumPages((n) => Math.max(1, n - 1))}>−</button>
                 <span className={styles.pgCount}>{numPages}</span>
                 <button className={styles.pgBtn}
-                  onClick={() => setNumPages((n) => Math.min(10, n + 1))}>+</button>
+                  onClick={() => setNumPages((n) => Math.min(20, n + 1))}>+</button>
               </div>
             </div>
  

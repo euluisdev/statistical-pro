@@ -17,6 +17,7 @@ const FRONTEND = process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000"
 export function useSaveActionPlanToJob() {
   const [currentJobId, setCurrentJobId] = useState(null);
   const [saveLoading, setSaveLoading] = useState(false);
+  
   const { showToast } = useToast();
 
   useEffect(() => {

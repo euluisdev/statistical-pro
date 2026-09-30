@@ -2,12 +2,12 @@
 Exportação do PDF final do Report Builder no backend.
 
 Fluxo:
-  1. Abre UMA vez a rota de impressão do Next (/print/reportbuilder/{group}/{piece})
+  1. Abre UMA vez a rota de impressão do Next (/analysis/{group}/{piece}/report-builder/print)
   2. Para cada página do relatório: troca a página, espera imagens, gera 1 PDF (vetorial)
   3. Junta todos os PDFs em um só com pypdf
   4. O frontend acompanha o progresso por polling e baixa o arquivo no final
 
-Dependências:  pip install pypdf   (playwright + chromium você já tem)
+Dependências:  pip install pypdf 
 """
 
 import asyncio
@@ -23,12 +23,10 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-# from config import BASE_PATH      
 BASE_PATH = os.path.join(
     os.path.dirname(os.path.dirname(__file__)),
     "data", "jobs"
 )
-
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
 router = APIRouter()
@@ -84,11 +82,45 @@ async def _render_pdf(export_id: str, job_id: str, group: str, piece: str, out_d
             )
 
             page = await context.new_page()
-            url = f"{FRONTEND_URL}/print/reportbuilder/{group}/{piece}"
-            await page.goto(url, wait_until="networkidle", timeout=90_000)
 
-            # espera o layout carregar do backend e o canvas montar
-            await page.wait_for_selector('#print-canvas[data-ready="true"]', timeout=60_000)
+            # ── diagnóstico: guarda o que o Chromium "viu" ──
+            debug_logs: list[str] = []
+            page.on("console", lambda m: debug_logs.append(f"[console.{m.type}] {m.text}"))
+            page.on("pageerror", lambda e: debug_logs.append(f"[pageerror] {e}"))
+            page.on("requestfailed", lambda r: debug_logs.append(f"[requestfailed] {r.url} {r.failure}"))
+            page.on(
+                "response",
+                lambda r: debug_logs.append(f"[http {r.status}] {r.url}") if r.status >= 400 else None,
+            )
+
+            url = f"{FRONTEND_URL}/analysis/{group}/{piece}/report-builder/print"
+            try:
+                # "networkidle" não é confiável no modo dev do Next (HMR mantém conexões abertas)
+                await page.goto(url, wait_until="domcontentloaded", timeout=90_000)
+
+                # espera o layout carregar do backend e o canvas montar
+                await page.wait_for_selector(
+                    '#print-canvas[data-ready="true"]', state="attached", timeout=60_000
+                )
+            except Exception as e:
+                shot = out_dir / "debug_print.png"
+                log_file = out_dir / "debug_print.log"
+                try:
+                    await page.screenshot(path=str(shot), full_page=True)
+                except Exception:
+                    pass
+                try:
+                    title = await page.title()
+                except Exception:
+                    title = "?"
+                log_file.write_text(
+                    f"URL: {url}\nTITLE: {title}\n\n" + "\n".join(debug_logs[-100:]),
+                    encoding="utf-8",
+                )
+                raise RuntimeError(
+                    f"Rota de impressão não ficou pronta (URL={url}). "
+                    f"Veja {shot} e {log_file}"
+                ) from e
 
             total = await page.evaluate("window.__pageCount")
             orientation = await page.evaluate("window.__orientation")
@@ -198,6 +230,6 @@ async def export_download(export_id: str):
     path = Path(state["file"])
     if not path.exists():
         raise HTTPException(404, "Arquivo não encontrado")
-    return FileResponse(path, media_type="application/pdf", filename=path.name)  
+    return FileResponse(path, media_type="application/pdf", filename=path.name)
 
   

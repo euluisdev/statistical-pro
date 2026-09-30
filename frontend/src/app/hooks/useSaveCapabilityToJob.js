@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useToast } from "@/app/components/providers/ToastProvider"
 
 export function useSaveCapabilityToJob(pages, CanvasPage) {
 
@@ -6,6 +7,8 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
   const [saveLoading, setSaveLoading] = useState(false);
 
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -17,17 +20,17 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
 
     if (!CanvasPage) {
       console.error("CanvasPage está undefined. Verifique o import.");
-      alert("Erro interno: CanvasPage não encontrado.");
+      showToast("Erro interno: CanvasPage não encontrado.");
       return;
     }
 
     if (!currentJobId) {
-      alert("⚠️ Nenhum Job ativo!");
+      showToast("⚠️ Nenhum Job ativo!");
       return;
     }
 
     if (!pages || pages.length === 0) {
-      alert("⚠️ Nenhuma página para capturar.");
+      showToast("⚠️ Nenhuma página para capturar.");
       return;
     }
 
@@ -38,7 +41,7 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
       html2canvas = (await import("html2canvas")).default;
     } catch (err) {
       console.error(err);
-      alert("❌ html2canvas não encontrado.");
+      showToast("❌ html2canvas não encontrado.");
       setSaveLoading(false);
       return;
     }
@@ -83,7 +86,7 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
           })
         );
 
-        // aguarda render
+        //aguarda render
         await new Promise((r) => setTimeout(r, 350));
 
         // captura imagem
@@ -96,7 +99,7 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
           height: wrapper.scrollHeight
         });
 
-        // limpa DOM
+        //clear DOM
         rootReact.unmount();
         document.body.removeChild(wrapper);
 
@@ -146,12 +149,12 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
     // feedback final
     if (failures.length === 0) {
       const fileList = results.map(r => `  • ${r.filename}`).join("\n");
-      alert(`✅ ${results.length} página(s) salva(s)!\n\n${fileList}`);
+      showToast(`✅ ${results.length} página(s) salva(s)!\n\n${fileList}`);
     } else {
       const okList = results.map(r => `  ✓ Página ${r.page}`).join("\n");
       const failList = failures.map(f => `  ✗ Página ${f.page}: ${f.error}`).join("\n");
 
-      alert(
+      showToast(
         `Salvas (${results.length}):\n${okList || "  nenhuma"}\n\n` +
         `Falhas (${failures.length}):\n${failList}`
       );
@@ -165,4 +168,6 @@ export function useSaveCapabilityToJob(pages, CanvasPage) {
     saveLoading,
     currentJobId
   };
-}
+}  
+ 
+ 

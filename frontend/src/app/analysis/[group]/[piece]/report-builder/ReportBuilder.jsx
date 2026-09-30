@@ -17,6 +17,7 @@ import ReportsList from "./ReportsList";
 import GridSelector from "./GridSelector";
 import GridOverlay from "./GridOverlay";
 import AlignmentGuides from "./AlignmentGuides";
+import ExportProgressModal from "./ExportProgressModal";
 import { useDragDrop } from "./useDragDrop";
 import { useState } from "react";
 
@@ -212,6 +213,11 @@ export default function ReportBuilder() {
 
   return (
     <div className={styles.container}>
+      <ExportProgressModal
+        exporting={exporting}
+        progress={exportProgress}
+      />
+
       {showReportsList && (
         <ReportsList
           API={API}
@@ -264,13 +270,13 @@ export default function ReportBuilder() {
             )}
           </div>
 
-          <button onClick={exportToPDF} disabled={exporting} className={styles.exportButton}>
+          <button
+            onClick={exportToPDF}
+            disabled={exporting}
+            className={styles.exportButton}
+          >
             <Download size={16} />
-            {exporting
-              ? exportProgress.status === "merging"
-                ? "Juntando..."
-                : `${exportProgress.done}/${exportProgress.total || "…"}`
-              : "PDF"}
+            PDF
           </button>
         </div>
 

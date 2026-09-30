@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from "react";
+import { useToast } from "@/app/components/providers/ToastProvider";
 
 export function useSaveControlChartToJob() {
   const [currentJobId, setCurrentJobId] = useState(null);
   const [saveLoading, setSaveLoading] = useState(false);
 
   const chartRefsMap = useRef({});
-  const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; 
+
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -41,13 +44,13 @@ export function useSaveControlChartToJob() {
   /*print todos os pontos e salva 1 PNG por ponto no jobid ativo*/
   const triggerSave = async (group, piece, pieceName) => {
     if (!currentJobId) {
-      alert("⚠️ Nenhum Job ativo! Crie um Job na página inicial primeiro.");
+      showToast("⚠️ Nenhum Job ativo! Crie um Job na página inicial primeiro.");
       return;
     }
 
     const points = Object.keys(chartRefsMap.current);
     if (points.length === 0) {
-      alert("⚠️ Nenhum gráfico disponível para capturar.");
+      showToast("⚠️ Nenhum gráfico disponível para capturar.");
       return;
     }
     setSaveLoading(true);
@@ -56,7 +59,7 @@ export function useSaveControlChartToJob() {
     try {
       html2canvas = (await import("html2canvas")).default;
     } catch {
-      alert("❌ Dependência html2canvas não encontrada.");
+      showToast("❌ Dependência html2canvas não encontrada.");
       setSaveLoading(false);
       return;
     }
@@ -165,11 +168,11 @@ export function useSaveControlChartToJob() {
     //feedback final
     if (failures.length === 0) {
       const fileList = results.map((r) => `  • ${r.filename}`).join("\n");
-      alert(`✅ ${results.length} gráfico(s) salvo(s) com sucesso!\n\n${fileList}`);
+      showToast(`✅ ${results.length} gráfico(s) salvo(s) com sucesso!\n\n${fileList}`);
     } else {
       const okList = results.map((r) => `  ✓ ${r.pointId}`).join("\n");
       const failList = failures.map((f) => `  ✗ ${f.pointId}: ${f.error}`).join("\n");
-      alert(
+      showToast(
         `Salvos (${results.length}):\n${okList || "  nenhum"}\n\n` +
         `Falhas (${failures.length}):\n${failList}`
       );
