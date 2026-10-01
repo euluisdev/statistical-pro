@@ -78,6 +78,10 @@ export default function GroupsPage() {
     if (selectedGroup) loadPieces(selectedGroup);
   }, [selectedGroup]);
 
+  useEffect(() => {
+    setParsedData([]);
+  }, [selectedPiece]);
+
   return (
     <div className="page-container">
       <h1 className="title">AUTO SIGMA</h1>

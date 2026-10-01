@@ -22,6 +22,7 @@ from pathlib import Path
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from starlette.background import BackgroundTask
 
 BASE_PATH = os.path.join(
     os.path.dirname(os.path.dirname(__file__)),
@@ -222,14 +223,34 @@ async def export_status(export_id: str):
     return {k: state[k] for k in ("status", "done", "total", "error")}
 
 
+def _cleanup_export(export_id: str, path: Path):
+    try:
+        path.unlink(missing_ok=True)
+    finally:
+        EXPORTS.pop(export_id, None)
+
+
 @router.get("/reportbuilder/export-pdf/{export_id}/download")
 async def export_download(export_id: str):
     state = EXPORTS.get(export_id)
+
     if not state or state["status"] != "done" or not state["file"]:
         raise HTTPException(404, "PDF ainda não está pronto")
+
     path = Path(state["file"])
+
     if not path.exists():
         raise HTTPException(404, "Arquivo não encontrado")
-    return FileResponse(path, media_type="application/pdf", filename=path.name)
+
+    return FileResponse(
+        path,
+        media_type="application/pdf",
+        filename=path.name,
+        background=BackgroundTask(
+            _cleanup_export,
+            export_id,
+            path,
+        ),
+    )
 
   

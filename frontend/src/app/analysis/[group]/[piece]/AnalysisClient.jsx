@@ -14,6 +14,11 @@ export default function AnalysisPage() {
   const group = params?.group;
   const piece = params?.piece;
 
+  const analysisStorageKey =
+    group && piece
+      ? `analysisState_${group}_${piece}`
+      : null;
+
   const router = useRouter();
   const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -77,10 +82,26 @@ export default function AnalysisPage() {
       if (!resCalc.ok) throw new Error("Erro ao calcular estatísticas");
 
       const json = await resCalc.json();
-      setStatistics(json.statistics);
 
-      setPieceImageUrl(`http://localhost:8000/pieces/${group}/${piece}/imagens`);
-      showToast("✓ Análise Estátística Calculado!")
+      const imageUrl = `http://localhost:8000/pieces/${group}/${piece}/imagens`;
+
+      setStatistics(json.statistics);
+      setPieceImageUrl(imageUrl);
+
+      if (analysisStorageKey) {
+        localStorage.setItem(
+          analysisStorageKey,
+          JSON.stringify({
+            statistics: json.statistics,
+            selectedYear,
+            selectedWeek,
+            showPercentage,
+            pieceImageUrl: imageUrl,
+          })
+        );
+      }
+
+      showToast("✓ Análise Estátística Calculado!");
 
 
       await loadAvailableFiles();
@@ -113,6 +134,26 @@ export default function AnalysisPage() {
       loadAvailableFiles();
     }
   }, [group, piece]);
+
+  useEffect(() => {
+    if (!analysisStorageKey) return;
+
+    const savedState = localStorage.getItem(analysisStorageKey);
+
+    if (!savedState) return;
+
+    try {
+      const parsed = JSON.parse(savedState);
+
+      setStatistics(parsed.statistics ?? null);
+      setSelectedYear(parsed.selectedYear ?? new Date().getFullYear());
+      setSelectedWeek(parsed.selectedWeek ?? getCurrentWeek());
+      setShowPercentage(parsed.showPercentage ?? true);
+      setPieceImageUrl(parsed.pieceImageUrl ?? null);
+    } catch (err) {
+      console.error("Erro ao recuperar estado da análise:", err);
+    }
+  }, [analysisStorageKey]);
 
   if (!group || !piece) {
     return (

@@ -89,14 +89,14 @@
           "backgroundColor": "transparent"
         },
         {
-          "id": "image-1786481299398",
+          "id": "image-1790815124137",
           "type": "image",
           "chart": {
             "group": "CONJUNTO_2260",
-            "piece": "GROUP",
-            "page_type": "cg_group",
-            "filename": "fGROUP_20260811_174741_971993.png",
-            "url": "/static/jobs/02df74ce-4713-4e47-bff4-daa987a0398a/CONJUNTO_2260/GROUP/cg_group/fGROUP_20260811_174741_971993.png"
+            "piece": "51966401",
+            "page_type": "capability",
+            "filename": "f51966401_20260930_213800_472833.png",
+            "url": "/static/jobs/6cf4dd7b-5d2e-47da-97e5-57bc73ee6ebe/CONJUNTO_2260/51966401/capability/f51966401_20260930_213800_472833.png"
           },
           "x": 24,
           "y": 120,
@@ -160,5 +160,5 @@
   ],
   "pageOrientation": "landscape",
   "reportName": "Relatório sem título",
-  "updated_at": "2026-08-12T00:04:41.935534"
+  "updated_at": "2026-10-01T01:22:38.703352"
 }
